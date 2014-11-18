@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="client/">
+      <UniqueIdentifier>{088b246b-c831-4a9f-874f-9ada637da393}</UniqueIdentifier>
+      <Extensions>
+      </Extensions>
+    </Filter>
+    <Filter Include="libs">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="client/\components/">
+      <UniqueIdentifier>{7830165c-747d-40a5-b700-17544b27736c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="client/\components/\graphics/">
+      <UniqueIdentifier>{bebd17ba-dd9e-4134-ad04-827fe980283c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{3b3e2d06-40a9-42a9-8ef1-876da95907ac}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\client\Client.h">
+      <Filter>client/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\Component.h">
+      <Filter>client/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\Graphics.h">
+      <Filter>client/\components/</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\begin_code.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\close_code.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_assert.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_atomic.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_audio.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_bits.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_blendmode.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_clipboard.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_config.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_cpuinfo.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_endian.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_error.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_events.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_filesystem.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_gamecontroller.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_gesture.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_haptic.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_hints.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_image.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_joystick.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_keyboard.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_keycode.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_loadso.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_log.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_main.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_messagebox.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_mouse.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_mutex.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_name.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_opengl.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_opengles.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_opengles2.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_pixels.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_platform.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_power.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_quit.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_rect.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_render.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_revision.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_rwops.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_scancode.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_shape.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_stdinc.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_surface.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_system.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_syswm.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_assert.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_common.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_compare.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_crc32.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_font.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_fuzzer.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_harness.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_images.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_log.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_md5.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_test_random.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_thread.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_timer.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_touch.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_types.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_version.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="other\sdl\include\SDL_video.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\Camera.h">
+      <Filter>client/\components/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\Model.h">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\Map.h">
+      <Filter>client/\components/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\Tile.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\Player.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\Protocol.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\Players.h">
+      <Filter>client/\components/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\Sphere.h">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\system.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\PlayerModel.h">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\Resources.h">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\ObjModel.h">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\quad3.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\quad2.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\Model2d.h">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\GUI.h">
+      <Filter>client/\components/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\Text.h">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\Rectangle.h">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\client\Client.cpp">
+      <Filter>client/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\Graphics.cpp">
+      <Filter>client/\components/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\Camera.cpp">
+      <Filter>client/\components/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\Model.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\Map.cpp">
+      <Filter>client/\components/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\Players.cpp">
+      <Filter>client/\components/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\Sphere.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\PlayerModel.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\Resources.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\ObjModel.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\Model2d.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\GUI.cpp">
+      <Filter>client/\components/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\Text.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\Rectangle.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
