@@ -50,6 +50,11 @@ public:
 	///<param name="t">Vertex UV coordinates</param>
 	void addQuad(quad2 v,quad2 t);
 
+	///<summary>Add generated rounded-rectangle data in the buffers</summary>
+	///<param name="in">Inner space</param>
+	///<param name="out">Outer space</param>
+	void addRectangle(quad2 in,quad2 out);
+
 private:
 	///<summary>Vertex positions buffer in the RAM</summary>
 	std::vector <glm::vec2> vertex;

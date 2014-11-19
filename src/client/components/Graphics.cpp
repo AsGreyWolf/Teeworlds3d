@@ -7,7 +7,6 @@
 #include "graphics/PlayerModel.h"
 #include "graphics/Model.h"
 #include "graphics/Resources.h"
-#include "graphics/Sphere.h"
 #include "../../tools/Protocol.h"
 
 float renderSize=1;

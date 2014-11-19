@@ -26,7 +26,7 @@ bool Players::OnInit(){
 		p[i]->color=vec4(static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),1);
 		n[i]->update(p[i]);
 	}
-	cursor=new Model2d(GL_TRIANGLES,m_Client->m_Graphics);
+	cursor=new Model2d(m_Client->m_Graphics);
 	cursor->addQuad(quad2(-0.0625f,-0.0625f,0.125f,0.125f),m_Client->m_Graphics->m_Resources->gameCursor[0]);
 	cursor->texture=m_Client->m_Graphics->m_Resources->textureGame;
 	cursor->create();

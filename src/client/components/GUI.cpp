@@ -4,7 +4,6 @@
 #include "graphics/Resources.h"
 #include "graphics/Text.h"
 #include "graphics/Model2d.h"
-#include "graphics/Rectangle.h"
 Model2d* test;
 bool GUI::OnInit(){
 	fpsObject=new Text(m_Client->m_Graphics,std::to_string(m_Client->fps),Resources::FONT_BIG,Text::ALIGN_RIGHT_TOP,true);
@@ -33,7 +32,8 @@ void GUI::OnRender2d(){
 void GUI::OnTick(){}
 void GUI::OnMessage(int type,char* value){}
 void GUI::fill(quad2 in,quad2 out){
-	test=new Rectangle(m_Client->m_Graphics,in,out);
+	test=new Model2d(m_Client->m_Graphics);
+	test->addRectangle(in,out);
 	test->coloring=vec4(0,0,0,0.5f);
 	test->create();
 }

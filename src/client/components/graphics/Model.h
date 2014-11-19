@@ -27,10 +27,10 @@ public:
 	///<param name="type">Type of the verts (GL_TRIANGLES)</param>
 	///<param name="g">Link to the Graphics component</param>
 	///<param name="lighting">Use lighting?</param>
-	Model(int type,Graphics* g,bool lighting);
+	Model(int type,Graphics* g,bool lighting=true);
 	///<summary>Creates the model and buffers in the GPU</summary>
 	///<param name="g">Link to the Graphics component</param>
-	Model(Graphics* g);
+	Model(Graphics* g,bool lighting=true);
 	~Model();
 	///<summary>Fills the buffers in the GPU with values in the RAM</summary>
 	void create();
@@ -55,6 +55,20 @@ public:
 	///<param name="n">Vertex normal</param>
 	///<param name="t">Vertex UV coordinates</param>
 	void addQuad(quad3 v,glm::vec3 n,quad2 t);
+
+	///<summary>Add generated sphere data in the buffers</summary>
+	///<param name="rings">Number of rings</param>
+	///<param name="sectors">Number of sectors</param>
+	///<param name="lengthiness">3-axis deformation</param>
+	///<param name="radius">Radius</param>
+	///<param name="texcoord">UV coordinates</param>
+	///<param name="backstart">Reverse generation</param>
+	void addSphere(int rings, int sectors,vec3 lengthiness,float radius,quad2 texcoord,bool backstart);
+
+	///<summary>Add generated data in the buffers from the OBJ file</summary>
+	///<param name="filename">Path to the file from data folder</param>
+	void addObjModel(std::string filename);
+
 private:
 	///<summary>Vertex positions buffer in the RAM</summary>
 	std::vector <glm::vec3> vertex;

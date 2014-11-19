@@ -1,5 +1,4 @@
 #include "PlayerModel.h"
-#include "Sphere.h"
 #include "../Graphics.h"
 #include "Resources.h"
 #include "../../../tools/Player.h"
@@ -38,12 +37,18 @@ void PlayerModel::render(){
 PlayerModel::PlayerModel(Graphics* g):Model(g){
 }
 void PlayerModel::create(){
-	lArm=new Sphere(m_Graphics,true,detalization,detalization,vec3(1,1,1),RenderSize/8,m_Graphics->m_Resources->texturePos8x4[6],false);
-	rArm=new Sphere(m_Graphics,true,detalization,detalization,vec3(1,1,1),RenderSize/8,m_Graphics->m_Resources->texturePos8x4[6],true);
-	lFoot=new Sphere(m_Graphics,true,detalization,detalization,vec3(0.7f,1,0.5f),RenderSize/2.4f,m_Graphics->m_Resources->texturePos8x4[14]+m_Graphics->m_Resources->texturePos8x4[15],false);
-	rFoot=new Sphere(m_Graphics,true,detalization,detalization,vec3(0.7f,1,0.5f),RenderSize/2.4f,m_Graphics->m_Resources->texturePos8x4[14]+m_Graphics->m_Resources->texturePos8x4[15],true);
-	Body=new Sphere(m_Graphics,true,detalization,detalization,vec3(1,1,1),RenderSize/2,m_Graphics->m_Resources->texturePos8x4[0]+m_Graphics->m_Resources->texturePos8x4[18],false);
-	Eyes=new Model(GL_TRIANGLES,m_Graphics,false);
+	Eyes=new Model(m_Graphics,false);
+	lArm=new Model(m_Graphics);
+	lArm->addSphere(detalization,detalization,vec3(1,1,1),RenderSize/8,m_Graphics->m_Resources->texturePos8x4[6],false);
+	rArm=new Model(m_Graphics);
+	rArm->addSphere(detalization,detalization,vec3(1,1,1),RenderSize/8,m_Graphics->m_Resources->texturePos8x4[6],true);
+	lFoot=new Model(m_Graphics);
+	lFoot->addSphere(detalization,detalization,vec3(0.7f,1,0.5f),RenderSize/2.4f,m_Graphics->m_Resources->texturePos8x4[14]+m_Graphics->m_Resources->texturePos8x4[15],false);
+	rFoot=new Model(m_Graphics);
+	rFoot->addSphere(detalization,detalization,vec3(0.7f,1,0.5f),RenderSize/2.4f,m_Graphics->m_Resources->texturePos8x4[14]+m_Graphics->m_Resources->texturePos8x4[15],true);
+	Body=new Model(m_Graphics);
+	Body->addSphere(detalization,detalization,vec3(1,1,1),RenderSize/2,m_Graphics->m_Resources->texturePos8x4[0]+m_Graphics->m_Resources->texturePos8x4[18],false);
+	
 	
 	lArm->create();
 	rArm->create();

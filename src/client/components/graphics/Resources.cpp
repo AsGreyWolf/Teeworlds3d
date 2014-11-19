@@ -1,7 +1,6 @@
 #include "Resources.h"
 #include "../../Client.h"
 #include "Model.h"
-#include "ObjModel.h"
 #include "../Graphics.h"
 #include "../../../tools/system.h"
 #include "../../../../other/sdl/include/SDL_image.h"
@@ -542,7 +541,8 @@ void Resources::Load(){
 
 	for(int i=0;i<NUM_WEAPONS;i++){
 		Model* buffer;
-		buffer=new ObjModel(m_Graphics,true,weaponFiles[i]);
+		buffer=new Model(m_Graphics);
+		buffer->addObjModel(weaponFiles[i]);
 		buffer->create();
 		loadTexture(weaponTextureFiles[i],buffer->texture,true,false);
 		weaponModels.push_back(buffer);

@@ -13,7 +13,7 @@ void Map::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){}
 void Map::OnStateChange(STATE lastState){
 	if(!lastState.ingame && m_Client->state.ingame)
 	{
-		m_Model=new Model(GL_TRIANGLES,m_Client->m_Graphics,true);
+		m_Model=new Model(m_Client->m_Graphics);
 		Load("123");
 		return;
 	}

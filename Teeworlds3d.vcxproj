@@ -125,11 +125,8 @@
     <ClInclude Include="src\client\components\Graphics.h" />
     <ClInclude Include="src\client\components\graphics\Model.h" />
     <ClInclude Include="src\client\components\graphics\Model2d.h" />
-    <ClInclude Include="src\client\components\graphics\ObjModel.h" />
     <ClInclude Include="src\client\components\graphics\PlayerModel.h" />
-    <ClInclude Include="src\client\components\graphics\Rectangle.h" />
     <ClInclude Include="src\client\components\graphics\Resources.h" />
-    <ClInclude Include="src\client\components\graphics\Sphere.h" />
     <ClInclude Include="src\client\components\graphics\Text.h" />
     <ClInclude Include="src\client\components\GUI.h" />
     <ClInclude Include="src\client\components\Map.h" />
@@ -147,11 +144,8 @@
     <ClCompile Include="src\client\components\Graphics.cpp" />
     <ClCompile Include="src\client\components\graphics\Model.cpp" />
     <ClCompile Include="src\client\components\graphics\Model2d.cpp" />
-    <ClCompile Include="src\client\components\graphics\ObjModel.cpp" />
     <ClCompile Include="src\client\components\graphics\PlayerModel.cpp" />
-    <ClCompile Include="src\client\components\graphics\Rectangle.cpp" />
     <ClCompile Include="src\client\components\graphics\Resources.cpp" />
-    <ClCompile Include="src\client\components\graphics\Sphere.cpp" />
     <ClCompile Include="src\client\components\graphics\Text.cpp" />
     <ClCompile Include="src\client\components\GUI.cpp" />
     <ClCompile Include="src\client\components\Map.cpp" />
