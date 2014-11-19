@@ -32,6 +32,8 @@ bool Players::OnInit(){
 	cursor->create();
 	return true;
 }
+///TODO: debug only
+bool lastSpaceState=false;
 void Players::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){
 	if(wheel>0){
 		p[0]->weapon++;
@@ -57,6 +59,15 @@ void Players::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){
 	}
 	if(keys[SDL_SCANCODE_KP_9]){
 		p[0]->dir.y+=0.2f*m_Client->tickCoeff;
+	}
+	if(keys[SDL_SCANCODE_SPACE]){
+		if(!lastSpaceState){
+			for(int i=0;i<128;i++)
+				p[i]->vel.y=p[i]->vel.y>0?0:1;
+			lastSpaceState=true;
+		}
+	}else{
+		lastSpaceState=false;
 	}
 }
 void Players::OnStateChange(STATE lastState){}

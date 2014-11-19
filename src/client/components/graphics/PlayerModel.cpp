@@ -2,10 +2,12 @@
 #include "../Graphics.h"
 #include "Resources.h"
 #include "../../../tools/Player.h"
+#include "../../../tools/system.h"
 
 const int EyeScale = (int)(BaseSize*0.40);
 const float Separation=(0.075f*BaseSize)-EyeScale/2;
 const int detalization=16;
+const int animSpeed=300;
 vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(0,1,0),
 		vec3(0,1,0),
@@ -67,7 +69,11 @@ void PlayerModel::create(){
 	Body->texture=texture;
 	Body->rot=vec3(0,0,-M_PI_2);
 	Eyes->texture=texture;
+	rFoot->position=vec3(RenderSize/2,RenderSize/6,-RenderSize/2);
+	lFoot->position=vec3(-RenderSize/2,RenderSize/6,-RenderSize/2);
 	Eyes->position=vec3(0,(0.285f*BaseSize),((0.05f)*BaseSize)-EyeScale/2);
+
+	animState=ANIMSTATE_NONE;
 }
 void PlayerModel::remove(){
 	delete lArm;
@@ -101,8 +107,32 @@ void PlayerModel::update(Player* p){
 
 
 	rArm->position=weaponPos[p->weapon];
-	lFoot->position=vec3(-RenderSize/2,RenderSize/6,-RenderSize/2);
-	rFoot->position=vec3(RenderSize/2,RenderSize/6,-RenderSize/2);
+
+	bool anim=abs(p->vel.x)>=1 || abs(p->vel.y)>=1;
+	if(anim && animState==ANIMSTATE_NONE){
+		animState++;
+		animStart=System::GetTime();
+	}
+	float dd=System::GetTime()-animStart;
+	///TODO: animSpeed from velocity
+	dd/=(animSpeed);
+	if(animState==ANIMSTATE_LEFT_ONLY && dd>=0.5f)
+		animState++;
+	dd*=2*M_PI;
+	float faseA=RenderSize/2*sin(dd);
+	float faseB=RenderSize/6*cos(dd);
+	if(animState==ANIMSTATE_ALL && !anim && faseB>0 && abs(faseA)<5)
+		animState++;
+	if(animState==ANIMSTATE_RIGHT_ONLY && faseB<0 && abs(faseA)<5)
+		animState=ANIMSTATE_NONE;
+	if(animState==ANIMSTATE_ALL || animState==ANIMSTATE_RIGHT_ONLY)
+		rFoot->position=vec3(RenderSize/2,RenderSize/6+faseA,-RenderSize/2+max(0,faseB));
+	else
+		rFoot->position=vec3(RenderSize/2,RenderSize/6,-RenderSize/2);
+	if(animState==ANIMSTATE_ALL || animState==ANIMSTATE_LEFT_ONLY)
+		lFoot->position=vec3(-RenderSize/2,RenderSize/6-faseA,-RenderSize/2+max(0,-faseB));
+	else
+		lFoot->position=vec3(-RenderSize/2,RenderSize/6,-RenderSize/2);
 
 	
 	Eyes->clear();

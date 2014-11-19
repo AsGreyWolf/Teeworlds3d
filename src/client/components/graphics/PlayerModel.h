@@ -40,6 +40,15 @@ private:
 	void addVertex(std::vector<vec3> v,std::vector<vec3> n,std::vector<vec2> t,vec3 c){};
 	void addVertex(vec3 v,vec3 n,vec2 t,vec3 c){};
 	void clear(){};
+	
+	float animStart;
+	enum{
+		ANIMSTATE_NONE=0,
+		ANIMSTATE_LEFT_ONLY,
+		ANIMSTATE_ALL,
+		ANIMSTATE_RIGHT_ONLY,
+	};
+	int animState;
 
 	static vec3 weaponPos[NUM_WEAPONS];
 };

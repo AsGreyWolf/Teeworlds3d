@@ -19,7 +19,7 @@ public:
 		dir=glm::vec3(0,1,0);
 
 		color=glm::vec4(0,0,0,0);
-		//vel=vec3(0,0,0);
+		vel=glm::vec3(0,0,0);
 		weapon=WEAPON_HUMMER;
 		emote=EMOTE_NORMAL;
 		//texture=-1;
@@ -39,9 +39,9 @@ public:
 	//bool Hook;
 	glm::vec3 pos;
 	glm::vec3 dir;
+	glm::vec3 vel;
 
 	glm::vec4 color;
-	//vec3 vel;
 	int weapon;
 	int emote;
 	//unsigned int texture;
