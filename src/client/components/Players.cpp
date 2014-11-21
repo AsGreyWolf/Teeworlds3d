@@ -20,7 +20,7 @@ bool Players::OnInit(){
 		p[i]->pos=vec3(rand()%2048,rand()%2048,70);
 		p[i]->dir=vec3(rand()/ (static_cast <float> (RAND_MAX/(M_PI*2))),rand()/(static_cast <float> (RAND_MAX/(M_PI*2))),rand()/(static_cast <float> (RAND_MAX/(M_PI*2))));
 		p[i]->dir=vec3(0,0,0);
-		p[i]->weapon=WEAPON_SHOTGUN;
+		p[i]->weapon=rand()%NUM_WEAPONS;
 		p[i]->emote=EMOTE_SURPRISE;
 		p[i]->skin="default";
 		p[i]->color=vec4(static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),1);
@@ -36,11 +36,15 @@ bool Players::OnInit(){
 bool lastSpaceState=false;
 void Players::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){
 	if(wheel>0){
-		p[0]->weapon++;
-		p[0]->weapon=p[0]->weapon%NUM_WEAPONS;
+		for(int i=0;i<128;i++){
+			p[i]->weapon++;
+			p[i]->weapon=p[i]->weapon%NUM_WEAPONS;
+		}
 	}else if(wheel<0){
-		p[0]->weapon--;
-		if(p[0]->weapon==-1) p[0]->weapon+=NUM_WEAPONS;
+		for(int i=0;i<128;i++){
+			p[i]->weapon--;
+			if(p[i]->weapon==-1) p[i]->weapon+=NUM_WEAPONS;
+		}
 	}
 	if(keys[SDL_SCANCODE_KP_8]){
 		p[0]->dir.x+=0.2f*m_Client->tickCoeff;
@@ -76,7 +80,6 @@ void Players::OnQuit(){
 }
 void Players::OnRender(){
 	for(int i=0;i<128;i++){
-		p[i]->weapon=p[0]->weapon;
 		vec3 razn=normalize(m_Client->m_Camera->position-p[i]->pos);
 		vec2 xy=normalize(vec2(razn.x,razn.y));
 		p[i]->dir=vec3(asin(razn.z),0,xy.x>0.0?-acos(xy.y):acos(xy.y));

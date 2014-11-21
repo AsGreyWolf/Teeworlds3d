@@ -10,10 +10,10 @@ const int detalization=16;
 const int animSpeed=300;
 vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(0,1,0),
-		vec3(0,1,0),
 		vec3(17,3,-5),
 		vec3(17,3,-5),
-		vec3(0,1,0),
+		vec3(17,3,-5),
+		vec3(17,3,-5),
 		vec3(0,1,0),
 	};
 void PlayerModel::render(){
