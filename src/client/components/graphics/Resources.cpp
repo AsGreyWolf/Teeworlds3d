@@ -663,12 +663,16 @@ bool Resources::loadTextureFromSurface(SDL_Surface* &data, GLuint &tex,bool mipm
 {
 	m_Graphics->to_RGBA(data);
 	GLint maxTexSize;
-	if(data == NULL)
+	if(data == NULL){
+		tex=textureRGB;
 		return false;
+	}
 
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
-	if(data->w > maxTexSize)
+	if(data->w > maxTexSize){
+		tex=textureRGB;
 		return false;
+	}
 
 	glGenTextures(1, &tex);
 	glActiveTexture(GL_TEXTURE0);
