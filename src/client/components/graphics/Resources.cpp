@@ -6,12 +6,12 @@
 #include "../../../../other/sdl/include/SDL_image.h"
 
 const char* Resources::weaponFiles[NUM_WEAPONS]={
-	"models/hummer.obj",
-	"models/gun.obj",
-	"models/shotgun.obj",
-	"models/grenade.obj",
-	"models/rifle.obj",
-	"models/ninja.obj",
+	"models/hummer.model",
+	"models/gun.model",
+	"models/shotgun.model",
+	"models/grenade.model",
+	"models/rifle.model",
+	"models/ninja.model",
 };
 const char* Resources::weaponTextureFiles[NUM_WEAPONS]={
 	"models/hummer.png",

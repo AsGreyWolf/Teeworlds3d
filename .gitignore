@@ -58,7 +58,7 @@ build/
 *_p.c
 *.ilk
 *.meta
-# *.obj
+*.obj
 *.pch
 *.pdb
 *.pgc
@@ -215,7 +215,6 @@ pip-log.txt
 .mr.developer.cfg
 
 #custom
-*~
 Win32Project1/
 srcold/
 *.out
