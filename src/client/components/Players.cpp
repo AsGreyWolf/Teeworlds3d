@@ -8,23 +8,23 @@
 #include "graphics/Resources.h"
 
 // TODO just for debug
-Player* p[128];
-PlayerModel* n[128];
+PlayerModel* n[MAX_PLAYERS];
 Model2d* cursor;
 bool Players::OnInit(){
 	// TODO just for debug
-	for(int i=0;i<128;i++){
+	for(int i=0;i<MAX_PLAYERS;i++){
 		n[i]=new PlayerModel(m_Client->m_Graphics);
 		n[i]->create();
-		p[i]=new Player();
-		p[i]->pos=vec3(rand()%2048,rand()%2048,70);
-		p[i]->dir=vec3(rand()/ (static_cast <float> (RAND_MAX/(M_PI*2))),rand()/(static_cast <float> (RAND_MAX/(M_PI*2))),rand()/(static_cast <float> (RAND_MAX/(M_PI*2))));
-		p[i]->dir=vec3(0,0,0);
-		p[i]->weapon=rand()%NUM_WEAPONS;
-		p[i]->emote=EMOTE_SURPRISE;
-		p[i]->skin="default";
-		p[i]->color=vec4(static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),1);
-		n[i]->update(p[i]);
+		players[i]=new Player();
+		players[i]->pos=vec3(rand()%2048,rand()%2048,70);
+		players[i]->dir=vec3(rand()/ (static_cast <float> (RAND_MAX/(M_PI*2))),rand()/(static_cast <float> (RAND_MAX/(M_PI*2))),rand()/(static_cast <float> (RAND_MAX/(M_PI*2))));
+		players[i]->dir=vec3(0,0,0);
+		players[i]->weapon=rand()%NUM_WEAPONS;
+		players[i]->emote=EMOTE_SURPRISE;
+		players[i]->skin="default";
+		players[i]->color=vec4(static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),1);
+		players[i]->NickName="asdasdadas";
+		n[i]->update(players[i]);
 	}
 	cursor=new Model2d(m_Client->m_Graphics);
 	cursor->addQuad(quad2(-0.0625f,-0.0625f,0.125f,0.125f),m_Client->m_Graphics->m_Resources->gameCursor[0]);
@@ -36,38 +36,38 @@ bool Players::OnInit(){
 bool lastSpaceState=false;
 void Players::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){
 	if(wheel>0){
-		for(int i=0;i<128;i++){
-			p[i]->weapon++;
-			p[i]->weapon=p[i]->weapon%NUM_WEAPONS;
+		for(int i=0;i<MAX_PLAYERS;i++){
+			players[i]->weapon++;
+			players[i]->weapon=players[i]->weapon%NUM_WEAPONS;
 		}
 	}else if(wheel<0){
-		for(int i=0;i<128;i++){
-			p[i]->weapon--;
-			if(p[i]->weapon==-1) p[i]->weapon+=NUM_WEAPONS;
+		for(int i=0;i<MAX_PLAYERS;i++){
+			players[i]->weapon--;
+			if(players[i]->weapon==-1) players[i]->weapon+=NUM_WEAPONS;
 		}
 	}
 	if(keys[SDL_SCANCODE_KP_8]){
-		p[0]->dir.x+=0.2f*m_Client->tickCoeff;
+		players[0]->dir.x+=0.2f*m_Client->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_2]){
-		p[0]->dir.x-=0.2f*m_Client->tickCoeff;
+		players[0]->dir.x-=0.2f*m_Client->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_4]){
-		p[0]->dir.z+=0.2f*m_Client->tickCoeff;
+		players[0]->dir.z+=0.2f*m_Client->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_6]){
-		p[0]->dir.z-=0.2f*m_Client->tickCoeff;
+		players[0]->dir.z-=0.2f*m_Client->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_7]){
-		p[0]->dir.y-=0.2f*m_Client->tickCoeff;
+		players[0]->dir.y-=0.2f*m_Client->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_9]){
-		p[0]->dir.y+=0.2f*m_Client->tickCoeff;
+		players[0]->dir.y+=0.2f*m_Client->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_SPACE]){
 		if(!lastSpaceState){
-			for(int i=0;i<128;i++)
-				p[i]->vel.y=p[i]->vel.y>0?0:1;
+			for(int i=0;i<MAX_PLAYERS;i++)
+				players[i]->vel.y=players[i]->vel.y>0?0:1;
 			lastSpaceState=true;
 		}
 	}else{
@@ -79,12 +79,9 @@ void Players::OnQuit(){
 	delete cursor;
 }
 void Players::OnRender(){
-	for(int i=0;i<128;i++){
-		vec3 razn=normalize(m_Client->m_Camera->position-p[i]->pos);
-		vec2 xy=normalize(vec2(razn.x,razn.y));
-		p[i]->dir=vec3(asin(razn.z),0,xy.x>0.0?-acos(xy.y):acos(xy.y));
-		//m_Client->m_Camera->rotation=p[0]->dir;
-		n[i]->update(p[i]);
+	for(int i=0;i<MAX_PLAYERS;i++){
+		n[i]->update(players[i]);
+		n[i]->lookAt(m_Client->m_Camera->position);
 		n[i]->render();
 	}
 }

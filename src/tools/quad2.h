@@ -39,6 +39,18 @@ public:
 	quad2 reflectX(){
 		return quad2(p10,p00,p11,p01);
 	}
+	quad2 reflectY(){
+		return quad2(p01,p11,p00,p10);
+	}
+	quad2 operator*(float a){
+		return quad2(p00*a,p10*a,p01*a,p11*a);
+	}
+	static glm::vec3 vec2rot(glm::vec3 v){
+		glm::vec2 xy=glm::normalize(glm::vec2(v.x,v.y));
+		return glm::vec3(asin(v.z),0,xy.x>0.0?-acos(xy.y):acos(xy.y));
+	}
+	static glm::vec3 vec2vec3(glm::vec2 v){
+		return glm::vec3(-v.x,0,v.y);
+	}
 };
-
 #endif

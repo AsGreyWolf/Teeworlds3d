@@ -47,6 +47,7 @@ public:
 	//unsigned int texture;
 	//bool local;
 	std::string skin;
+	std::string NickName;
 	//bool inAir
 };
 

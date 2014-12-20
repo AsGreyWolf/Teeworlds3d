@@ -267,7 +267,13 @@
     <ClInclude Include="src\client\components\GUI.h">
       <Filter>client/\components/</Filter>
     </ClInclude>
+    <ClInclude Include="src\client\components\graphics\TextGenerator.h">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
     <ClInclude Include="src\client\components\graphics\Text.h">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\Text3d.h">
       <Filter>client/\components/\graphics/</Filter>
     </ClInclude>
   </ItemGroup>
@@ -302,7 +308,13 @@
     <ClCompile Include="src\client\components\GUI.cpp">
       <Filter>client/\components/</Filter>
     </ClCompile>
+    <ClCompile Include="src\client\components\graphics\TextGenerator.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
     <ClCompile Include="src\client\components\graphics\Text.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\Text3d.cpp">
       <Filter>client/\components/\graphics/</Filter>
     </ClCompile>
   </ItemGroup>

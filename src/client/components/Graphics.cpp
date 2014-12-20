@@ -160,9 +160,10 @@ void Graphics::SetViewMatrix(const vec3 &position, const vec3 &center, const vec
 }
 void Graphics::SetModelMatrix(const vec3 &position, const vec3 &rotation, const vec3 &size){
 	Translate(position);
-	RotateY(rotation);
-	RotateX(rotation);
 	RotateZ(rotation);
+	RotateX(rotation);
+	RotateY(rotation);
+	modelMatrix*=glm::scale(size);
 
 	normalMatrix=modelMatrix;
 	normalMatrix=glm::inverse(normalMatrix);

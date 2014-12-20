@@ -3,6 +3,10 @@
 #include "Resources.h"
 #include "../../../tools/Player.h"
 #include "../../../tools/system.h"
+#include "Text3d.h"
+#include "TextGenerator.h"
+#include "../../Client.h"
+#include "../../components/Camera.h"
 
 const int EyeScale = (int)(BaseSize*0.40);
 const float Separation=(0.075f*BaseSize)-EyeScale/2;
@@ -18,6 +22,15 @@ vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 	};
 void PlayerModel::render(){
 	m_Graphics->PushMatrix();
+
+	NickName->lookAt(m_Graphics->m_Client->m_Camera->position);
+	NickName->scaleAt(m_Graphics->m_Client->m_Camera->position,vec3(0),vec3(0.002f));
+	NickName->scale+=1;
+	NickName->render();
+	NickNameShadow->lookAt(m_Graphics->m_Client->m_Camera->position);
+	NickNameShadow->scaleAt(m_Graphics->m_Client->m_Camera->position,vec3(0),vec3(0.002f));
+	NickNameShadow->scale+=1;
+	NickNameShadow->render();
 
 	m_Graphics->Translate(position);
 	m_Graphics->RotateZ(rot);
@@ -39,7 +52,6 @@ void PlayerModel::render(){
 PlayerModel::PlayerModel(Graphics* g):Model(g){
 }
 void PlayerModel::create(){
-	Eyes=new Model(m_Graphics,false);
 	lArm=new Model(m_Graphics);
 	lArm->addSphere(detalization,detalization,vec3(1,1,1),RenderSize/8,m_Graphics->m_Resources->texturePos8x4[6],false);
 	rArm=new Model(m_Graphics);
@@ -50,13 +62,18 @@ void PlayerModel::create(){
 	rFoot->addSphere(detalization,detalization,vec3(0.7f,1,0.5f),RenderSize/2.4f,m_Graphics->m_Resources->texturePos8x4[14]+m_Graphics->m_Resources->texturePos8x4[15],true);
 	Body=new Model(m_Graphics);
 	Body->addSphere(detalization,detalization,vec3(1,1,1),RenderSize/2,m_Graphics->m_Resources->texturePos8x4[0]+m_Graphics->m_Resources->texturePos8x4[18],false);
-	
+	Eyes=new Model(m_Graphics,false);
+	NickName=new Text3d(m_Graphics);
+	NickNameShadow=new Model(m_Graphics,false);
 	
 	lArm->create();
 	rArm->create();
 	lFoot->create();
 	rFoot->create();
 	Body->create();
+	Eyes->create();
+	NickName->create();
+	NickNameShadow->create();
 
 	lFoot->rot=vec3(0,0,5.0f/180*M_PI);
 	rFoot->rot=vec3(0,0,-5.0f/180*M_PI);
@@ -72,6 +89,7 @@ void PlayerModel::create(){
 	rFoot->position=vec3(RenderSize/2,RenderSize/6,-RenderSize/2);
 	lFoot->position=vec3(-RenderSize/2,RenderSize/6,-RenderSize/2);
 	Eyes->position=vec3(0,(0.285f*BaseSize),((0.05f)*BaseSize)-EyeScale/2);
+	NickNameShadow->coloring=vec4(0,0,0,0.5f);
 
 	animState=ANIMSTATE_NONE;
 }
@@ -126,11 +144,11 @@ void PlayerModel::update(Player* p){
 	if(animState==ANIMSTATE_RIGHT_ONLY && faseB<0 && abs(faseA)<5)
 		animState=ANIMSTATE_NONE;
 	if(animState==ANIMSTATE_ALL || animState==ANIMSTATE_RIGHT_ONLY)
-		rFoot->position=vec3(RenderSize/2,RenderSize/6+faseA,-RenderSize/2+max(0,faseB));
+		rFoot->position=vec3(RenderSize/2,RenderSize/6+faseA,-RenderSize/2+glm::max(0.0f,faseB));
 	else
 		rFoot->position=vec3(RenderSize/2,RenderSize/6,-RenderSize/2);
 	if(animState==ANIMSTATE_ALL || animState==ANIMSTATE_LEFT_ONLY)
-		lFoot->position=vec3(-RenderSize/2,RenderSize/6-faseA,-RenderSize/2+max(0,-faseB));
+		lFoot->position=vec3(-RenderSize/2,RenderSize/6-faseA,-RenderSize/2+glm::max(0.0f,-faseB));
 	else
 		lFoot->position=vec3(-RenderSize/2,RenderSize/6,-RenderSize/2);
 
@@ -139,4 +157,18 @@ void PlayerModel::update(Player* p){
 	Eyes->addQuad(quad3(vec3(-EyeScale-Separation,0,EyeScale),vec3(0-Separation,0,EyeScale),vec3(0-Separation,0,0),vec3(-EyeScale-Separation,0,0)),vec3(0,1,0),m_Graphics->m_Resources->texturePos8x4[26+emote].reflectX());
 	Eyes->addQuad(quad3(vec3(0+Separation,0,EyeScale),vec3(EyeScale+Separation,0,EyeScale),vec3(EyeScale+Separation,0,0),vec3(Separation,0,0)),vec3(0,1,0),m_Graphics->m_Resources->texturePos8x4[26+emote]);
 	Eyes->create();
+	if(((Text3d*)NickName)->text!=p->NickName){
+		NickName->clear();
+		NickNameShadow->clear();
+
+		((Text3d*)NickName)->addText(p->NickName,Resources::FONT_NORMAL,TextGenerator::ALIGN_CENTER_BOTTOM,false);
+		quad2 geom=((Text3d*)NickName)->data->geometry*100;
+		NickNameShadow->addRectangle(geom,quad2(geom.p00+vec2(-1,-1),geom.p10+vec2(1,-1),geom.p01+vec2(-1,1),geom.p11+vec2(1,1)));
+		NickName->create();
+		NickNameShadow->create();
+	}
+	NickName->position=p->pos;
+	NickNameShadow->position=p->pos;
+	NickName->position.z+=RenderSize/2+2;
+	NickNameShadow->position.z+=RenderSize/2+2;
 }

@@ -19,6 +19,8 @@ public:
 	glm::vec3 position;
 	///<summary>Ratation of the model</summary>
 	glm::vec3 rot;
+	///<summary>Scale of the model</summary>
+	glm::vec3 scale;
 	///<summary>Link to the Graphics component</summary>
 	class Graphics* m_Graphics;
 	glm::vec4 coloring;
@@ -55,7 +57,6 @@ public:
 	///<param name="n">Vertex normal</param>
 	///<param name="t">Vertex UV coordinates</param>
 	void addQuad(quad3 v,glm::vec3 n,quad2 t);
-
 	///<summary>Add generated sphere data in the buffers</summary>
 	///<param name="rings">Number of rings</param>
 	///<param name="sectors">Number of sectors</param>
@@ -63,11 +64,23 @@ public:
 	///<param name="radius">Radius</param>
 	///<param name="texcoord">UV coordinates</param>
 	///<param name="backstart">Reverse generation</param>
-	void addSphere(int rings, int sectors,vec3 lengthiness,float radius,quad2 texcoord,bool backstart);
 
+	void addSphere(int rings, int sectors,vec3 lengthiness,float radius,quad2 texcoord,bool backstart);
 	///<summary>Add generated data in the buffers from the OBJ file</summary>
 	///<param name="filename">Path to the file from data folder</param>
 	void addObjModel(std::string filename);
+	///<summary>Add generated rounded-rectangle data in the buffers</summary>
+	///<param name="in">Inner space</param>
+	///<param name="out">Outer space</param>
+	void addRectangle(quad2 in,quad2 out);
+	///<summary>Rotates Model to the specific direction</summary>
+	///<param name="to">Position of object to look to</param>
+	void lookAt(vec3 to);
+	///<summary>Scale by vector</summary>
+	///<param name="to">Position of object to scale to</param>
+	///<param name="basic">Basic scale</param>
+	///<param name="additional">Scale per vector length</param>
+	void scaleAt(vec3 to,vec3 basic, vec3 additional);
 
 private:
 	///<summary>Vertex positions buffer in the RAM</summary>

@@ -1,19 +1,20 @@
-#ifndef TEXT_H
-#define TEXT_H
+#ifndef TEXT3D_H
+#define TEXT3D_H
 
 #include <string>
-#include "Model2d.h"
+#include "Model.h"
 
 class Graphics;
 class TextGenerator;
 
-///<summary>2d text model</summary>
-class Text : public Model2d
+///<summary>3d text model</summary>
+class Text3d : public Model
 {
 public:
-	///<summary>Creates the model and buffers in the GPU and fill the buffers in the CPU with generated text data</summary>
+	///<summary>Creates the model and buffers in the GPU</summary>
 	///<param name="g">Link to the Graphics component</param>
-	Text(Graphics* g);
+	///<param name="lighting">Use lighting?</param>
+	Text3d(Graphics* g,bool lighting=false);
 	///<summary>Deletes the buffers in the RAM</summary>
 	void clear();
 	TextGenerator* data;

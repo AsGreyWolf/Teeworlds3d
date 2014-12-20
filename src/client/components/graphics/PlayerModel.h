@@ -31,6 +31,8 @@ private:
 	Model* rFoot;
 	Model* Body;
 	Model* Eyes;
+	Model* NickName;
+	Model* NickNameShadow;
 	bool visible;
 	int weapon;
 	int emote;

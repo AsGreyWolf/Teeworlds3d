@@ -35,6 +35,6 @@ public:
 	void OnMessage(int type,char* value);
 
 	///<summary>Players array</summary>
-	Player players[MAX_PLAYERS];
+	Player* players[MAX_PLAYERS];
 };
 #endif
