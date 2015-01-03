@@ -70,13 +70,9 @@ bool Graphics::OnInit(){
 
 	glPolygonMode(GL_FRONT, GL_FILL);
 	glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
-
 	glHint( GL_FOG_HINT, GL_NICEST );
-
 	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST );
-
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST );
-
 	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST );
 
 
@@ -104,6 +100,7 @@ bool Graphics::OnInit(){
 	glUseProgram(m_Resources->shader3d);
 
 	glLineWidth(3);
+	glPointSize(3);
 
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	return true;
@@ -113,8 +110,8 @@ void Graphics::OnQuit(){
 	m_Resources->UnLoad();
 	delete m_Resources;
 }
-void Graphics::OnRender(){
-}
+void Graphics::OnRender(){}
+void Graphics::OnRenderBillboard(){}
 void Graphics::OnRender2d(){}
 void Graphics::OnTick(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -126,6 +123,8 @@ void Graphics::OnTick(){
 	m_Client->m_Camera->SetMatrix();
 
 	m_Client->OnRender();
+	glClear(GL_DEPTH_BUFFER_BIT);
+	m_Client->OnRenderBillboard();
 
 	glDisable(GL_CULL_FACE);
 	glClear(GL_DEPTH_BUFFER_BIT);

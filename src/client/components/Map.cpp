@@ -37,6 +37,7 @@ void Map::OnRender(){
 	if(m_Client->state.ingame)
 		m_Model->render();
 }
+void Map::OnRenderBillboard(){}
 void Map::OnRender2d(){}
 void Map::OnTick(){}
 void Map::OnMessage(int type,char* value){}

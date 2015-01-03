@@ -23,7 +23,7 @@ bool Players::OnInit(){
 		players[i]->emote=EMOTE_SURPRISE;
 		players[i]->skin="default";
 		players[i]->color=vec4(static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),1);
-		players[i]->NickName="asdasdadas";
+		players[i]->NickName="Happy New Year!";
 		n[i]->update(players[i]);
 	}
 	cursor=new Model2d(m_Client->m_Graphics);
@@ -87,6 +87,11 @@ void Players::OnRender(){
 }
 void Players::OnRender2d(){
 	cursor->render();
+}
+void Players::OnRenderBillboard(){
+	for(int i=0;i<MAX_PLAYERS;i++){
+		n[i]->renderBillboard();
+	}
 }
 void Players::OnTick(){}
 void Players::OnMessage(int type,char* value){}

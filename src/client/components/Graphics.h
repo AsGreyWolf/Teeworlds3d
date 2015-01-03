@@ -47,6 +47,8 @@ public:
 	void OnQuit();
 	///<summary>3d render callback</summary>
 	void OnRender();
+	///<summary>Render 3d Billboard</summary>
+	void OnRenderBillboard();
 	///<summary>2d render callback</summary>
 	void OnRender2d();
 	///<summary>Tick callback</summary>

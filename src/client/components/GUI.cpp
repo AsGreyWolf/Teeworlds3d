@@ -26,6 +26,7 @@ void GUI::OnQuit(){
 	delete fpsTitle;
 }
 void GUI::OnRender(){}
+void GUI::OnRenderBillboard(){}
 void GUI::OnRender2d(){
 	fpsObject->setText(std::to_string(m_Client->fps));
 	fpsObject->render();

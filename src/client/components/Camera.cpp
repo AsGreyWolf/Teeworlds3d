@@ -27,6 +27,7 @@ void Camera::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){
 }
 void Camera::OnQuit(){}
 void Camera::OnRender(){}
+void Camera::OnRenderBillboard(){}
 void Camera::OnRender2d(){}
 void Camera::OnTick(){}
 void Camera::OnMessage(int type,char* value){}

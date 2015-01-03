@@ -3,7 +3,7 @@
 #include "../tools/Protocol.h"
 #include "../../other/glm/glm.hpp"
 #include <string>
-#define MAX_PLAYERS 16
+#define MAX_PLAYERS 128
 class Player{
 public:
 	Player(){

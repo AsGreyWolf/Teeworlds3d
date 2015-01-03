@@ -145,6 +145,11 @@ void Client::OnRender(){
 		component->OnRender();
 	}
 }
+void Client::OnRenderBillboard(){
+	for(auto &component : m_Components){
+		component->OnRenderBillboard();
+	}
+}
 void Client::OnRender2d(){
 	for(auto &component : m_Components){
 		component->OnRender2d();

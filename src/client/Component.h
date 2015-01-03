@@ -31,6 +31,8 @@ public:
 	virtual void OnQuit(){};
 	///<summary>Render 3d</summary>
 	virtual void OnRender(){};
+	///<summary>Render 3d Billboard</summary>
+	virtual void OnRenderBillboard(){};
 	///<summary>Render 2d</summary>
 	virtual void OnRender2d(){};
 	///<summary>Tick the components</summary>

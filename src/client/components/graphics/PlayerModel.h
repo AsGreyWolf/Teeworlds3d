@@ -19,6 +19,8 @@ public:
 	void create();
 	///<summary>Pushes the subModels into the shader</summary>
 	void render();
+	///<summary>Pushes the billboards into the shader</summary>
+	void renderBillboard();
 	///<summary>Removes the subModels</summary>
 	void remove();
 	///<summary>Updates model with player info</summary>

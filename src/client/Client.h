@@ -30,6 +30,8 @@ public:
 	void OnQuit();
 	///<summary>Render 3d</summary>
 	void OnRender();
+	///<summary>Render 3d Billboard</summary>
+	void OnRenderBillboard();
 	///<summary>Render 2d</summary>
 	void OnRender2d();
 	///<summary>Tick the components</summary>

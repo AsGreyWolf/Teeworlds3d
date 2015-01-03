@@ -20,17 +20,22 @@ vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(17,3,-5),
 		vec3(0,1,0),
 	};
-void PlayerModel::render(){
+void PlayerModel::renderBillboard(){
 	m_Graphics->PushMatrix();
 
 	NickName->lookAt(m_Graphics->m_Client->m_Camera->position);
-	NickName->scaleAt(m_Graphics->m_Client->m_Camera->position,vec3(0),vec3(0.002f));
-	NickName->scale+=1;
-	NickName->render();
 	NickNameShadow->lookAt(m_Graphics->m_Client->m_Camera->position);
+	NickName->scaleAt(m_Graphics->m_Client->m_Camera->position,vec3(0),vec3(0.002f));
 	NickNameShadow->scaleAt(m_Graphics->m_Client->m_Camera->position,vec3(0),vec3(0.002f));
+	NickName->scale+=1;
 	NickNameShadow->scale+=1;
+	NickName->render();
 	NickNameShadow->render();
+
+	m_Graphics->PopMatrix();
+}
+void PlayerModel::render(){
+	m_Graphics->PushMatrix();
 
 	m_Graphics->Translate(position);
 	m_Graphics->RotateZ(rot);
