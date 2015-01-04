@@ -127,6 +127,7 @@
     <ClInclude Include="src\client\components\graphics\Model2d.h" />
     <ClInclude Include="src\client\components\graphics\PlayerModel.h" />
     <ClInclude Include="src\client\components\graphics\Resources.h" />
+	<ClInclude Include="src\client\components\graphics\Text.h" />
     <ClInclude Include="src\client\components\graphics\Text3d.h" />
     <ClInclude Include="src\client\components\graphics\TextGenerator.h" />
     <ClInclude Include="src\client\components\GUI.h" />
@@ -148,9 +149,6 @@
     <ClCompile Include="src\client\components\graphics\PlayerModel.cpp" />
     <ClCompile Include="src\client\components\graphics\Resources.cpp" />
     <ClCompile Include="src\client\components\graphics\Text.cpp" />
-    <ClInclude Include="src\client\components\graphics\Text.h">
-      <FileType>CppCode</FileType>
-    </ClInclude>
     <ClCompile Include="src\client\components\graphics\Text3d.cpp" />
     <ClCompile Include="src\client\components\graphics\TextGenerator.cpp" />
     <ClCompile Include="src\client\components\GUI.cpp" />
