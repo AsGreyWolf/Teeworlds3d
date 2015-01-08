@@ -144,9 +144,9 @@ void PlayerModel::update(Player* p){
 	dd*=2*M_PI;
 	float faseA=RenderSize/2*sin(dd);
 	float faseB=RenderSize/6*cos(dd);
-	if(animState==ANIMSTATE_ALL && !anim && faseB>0 && abs(faseA)<5)
+	if(animState==ANIMSTATE_ALL && !anim && faseB>0 && lastFaseA<0 && faseA>0)
 		animState++;
-	if(animState==ANIMSTATE_RIGHT_ONLY && faseB<0 && abs(faseA)<5)
+	if(animState==ANIMSTATE_RIGHT_ONLY && faseB<0 && lastFaseA>0 && faseA<0)
 		animState=ANIMSTATE_NONE;
 	if(animState==ANIMSTATE_ALL || animState==ANIMSTATE_RIGHT_ONLY)
 		rFoot->position=vec3(RenderSize/2,RenderSize/6+faseA,-RenderSize/2+glm::max(0.0f,faseB));
@@ -156,6 +156,7 @@ void PlayerModel::update(Player* p){
 		lFoot->position=vec3(-RenderSize/2,RenderSize/6-faseA,-RenderSize/2+glm::max(0.0f,-faseB));
 	else
 		lFoot->position=vec3(-RenderSize/2,RenderSize/6,-RenderSize/2);
+	lastFaseA=faseA;
 
 	
 	Eyes->clear();

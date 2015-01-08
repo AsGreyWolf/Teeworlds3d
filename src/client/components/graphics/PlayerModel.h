@@ -53,6 +53,7 @@ private:
 		ANIMSTATE_RIGHT_ONLY,
 	};
 	int animState;
+	float PlayerModel::lastFaseA;
 
 	static vec3 weaponPos[NUM_WEAPONS];
 };

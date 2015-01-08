@@ -24,7 +24,7 @@ public:
 	static void GetPath(string &path){
 		char pp[MAX_FILENAME];
 		GetCurrentDir(pp,MAX_FILENAME);
-		path=pp;
+		path=string(pp);
 	};
 	static long GetTime(){
 		/*

@@ -6,7 +6,7 @@
 #include "graphics/Model2d.h"
 #include "graphics/TextGenerator.h"
 Model2d* test;
-bool GUI::OnInit(){
+bool GUI::Init(){
 	fpsObject=new Text(m_Client->m_Graphics);
 	fpsObject->addText(std::to_string(m_Client->fps),Resources::FONT_BIG,TextGenerator::ALIGN_RIGHT_TOP,true);
 	fpsObject->create();
@@ -19,22 +19,22 @@ bool GUI::OnInit(){
 	fill(quad2(fpsTitle->data->geometry.p00+fpsTitle->position,fpsObject->data->geometry.p10+fpsObject->position,fpsTitle->data->geometry.p01+fpsTitle->position,fpsObject->data->geometry.p11+fpsObject->position),quad2(fpsTitle->data->geometry.p00+fpsTitle->position-vec2(round/2,round/2),fpsObject->data->geometry.p10+fpsObject->position-vec2(0,round/2),fpsTitle->data->geometry.p01+fpsTitle->position-vec2(round/2,0),fpsObject->data->geometry.p11+fpsObject->position));
 	return true;
 }
-void GUI::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){}
-void GUI::OnStateChange(STATE lastState){}
-void GUI::OnQuit(){
+void GUI::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
+void GUI::StateChange(STATE lastState){}
+void GUI::Quit(){
 	delete fpsObject;
 	delete fpsTitle;
 }
-void GUI::OnRender(){}
-void GUI::OnRenderBillboard(){}
-void GUI::OnRender2d(){
+void GUI::Render(){}
+void GUI::RenderBillboard(){}
+void GUI::Render2d(){
 	fpsObject->setText(std::to_string(m_Client->fps));
 	fpsObject->render();
 	fpsTitle->render();
 	test->render();
 }
-void GUI::OnTick(){}
-void GUI::OnMessage(int type,char* value){}
+void GUI::Tick(){}
+void GUI::Message(int type,char* value){}
 void GUI::fill(quad2 in,quad2 out){
 	test=new Model2d(m_Client->m_Graphics);
 	test->addRectangle(in,out);

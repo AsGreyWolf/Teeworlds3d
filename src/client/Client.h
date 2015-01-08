@@ -16,34 +16,33 @@ class GUI;
 class Client : public Component{
 public:
 	///<summary>Stores 'c' to 'm_Client', creates all the components and gamecycle</summary>
-	Client() : Component(this){ Constructor(); };
+	Client();
+	~Client();
 	///<summary>Tries to initialize components</summary>
 	///<returns>true if all right, false if error found</returns>
-	bool OnInit();
+	bool Init();
 	///<summary>Stores input to components</summary>
 	///<param name="keys">Keyboard state</param>
 	///<param name="xrel">Mouse X position change</param>
 	///<param name="yrel">Mouse Y position change</param>
 	///<param name="wheel">Mouse wheel state</param>
-	void OnInput(unsigned char* keys,int xrel,int yrel,int wheel);
+	void Input(unsigned char* keys,int xrel,int yrel,int wheel);
 	///<summary>Quit</summary>
-	void OnQuit();
+	void Quit();
 	///<summary>Render 3d</summary>
-	void OnRender();
+	void Render();
 	///<summary>Render 3d Billboard</summary>
-	void OnRenderBillboard();
+	void RenderBillboard();
 	///<summary>Render 2d</summary>
-	void OnRender2d();
+	void Render2d();
 	///<summary>Tick the components</summary>
-	void OnTick();
+	void Tick();
 	///<summary>Send message to the components</summary>
-	void OnMessage(int type,char* value);
+	void Message(int type,char* value);
 	///<summary>Send new state to the components</summary>
 	///<param name="lastState">Last state</param>
-	void OnStateChange(STATE lastState);
+	void StateChange(STATE lastState);
 
-	///<summary>creates all the components and gamecycle</summary>
-	void Constructor();
 	///<summary>Starts the gamecycle</summary>
 	void Start();
 	///<summary>Stops the gamecycle</summary>

@@ -30,7 +30,7 @@ void Graphics::to_RGBA(SDL_Surface* &src){
 	}
 }
 
-bool Graphics::OnInit(){
+bool Graphics::Init(){
 	SDL_GLContext context;
 
 	if ((context = SDL_GL_CreateContext(m_Client->screen)) == NULL)
@@ -41,8 +41,8 @@ bool Graphics::OnInit(){
 	}
 	glewInit();
 	m_Client->Info((char*)glGetString(GL_VERSION));
-	int w=1024;
-	int h=768;
+	int w=1280;
+	int h=1024;
 	if( h == 0 )
 	{
 		h = 1;
@@ -105,15 +105,15 @@ bool Graphics::OnInit(){
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	return true;
 }
-void Graphics::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){}
-void Graphics::OnQuit(){
+void Graphics::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
+void Graphics::Quit(){
 	m_Resources->UnLoad();
 	delete m_Resources;
 }
-void Graphics::OnRender(){}
-void Graphics::OnRenderBillboard(){}
-void Graphics::OnRender2d(){}
-void Graphics::OnTick(){
+void Graphics::Render(){}
+void Graphics::RenderBillboard(){}
+void Graphics::Render2d(){}
+void Graphics::Tick(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	//glLoadIdentity();
 	modelMatrix=mat4(1.0f);
@@ -122,24 +122,24 @@ void Graphics::OnTick(){
 
 	m_Client->m_Camera->SetMatrix();
 
-	m_Client->OnRender();
+	m_Client->Render();
 	glClear(GL_DEPTH_BUFFER_BIT);
-	m_Client->OnRenderBillboard();
+	m_Client->RenderBillboard();
 
 	glDisable(GL_CULL_FACE);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glUseProgram(m_Resources->shader2d);
 	glUniform1f(aspectUniform2d,aspect);
 
-	m_Client->OnRender2d();
+	m_Client->Render2d();
 
 	glUseProgram(m_Resources->shader3d);
 	glEnable(GL_CULL_FACE);
 
 	glFlush();
 }
-void Graphics::OnMessage(int type,char* value){}
-void Graphics::OnStateChange(STATE lastState){}
+void Graphics::Message(int type,char* value){}
+void Graphics::StateChange(STATE lastState){}
 void Graphics::SetColor(vec4 color){
 	glUniform4f(colorUniform3d,color.r,color.g,color.b,color.a);
 }

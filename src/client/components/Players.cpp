@@ -10,7 +10,7 @@
 // TODO just for debug
 PlayerModel* n[MAX_PLAYERS];
 Model2d* cursor;
-bool Players::OnInit(){
+bool Players::Init(){
 	// TODO just for debug
 	for(int i=0;i<MAX_PLAYERS;i++){
 		n[i]=new PlayerModel(m_Client->m_Graphics);
@@ -34,7 +34,7 @@ bool Players::OnInit(){
 }
 ///TODO: debug only
 bool lastSpaceState=false;
-void Players::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){
+void Players::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	if(wheel>0){
 		for(int i=0;i<MAX_PLAYERS;i++){
 			players[i]->weapon++;
@@ -74,24 +74,24 @@ void Players::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){
 		lastSpaceState=false;
 	}
 }
-void Players::OnStateChange(STATE lastState){}
-void Players::OnQuit(){
+void Players::StateChange(STATE lastState){}
+void Players::Quit(){
 	delete cursor;
 }
-void Players::OnRender(){
+void Players::Render(){
 	for(int i=0;i<MAX_PLAYERS;i++){
 		n[i]->update(players[i]);
 		n[i]->lookAt(m_Client->m_Camera->position);
 		n[i]->render();
 	}
 }
-void Players::OnRender2d(){
+void Players::Render2d(){
 	cursor->render();
 }
-void Players::OnRenderBillboard(){
+void Players::RenderBillboard(){
 	for(int i=0;i<MAX_PLAYERS;i++){
 		n[i]->renderBillboard();
 	}
 }
-void Players::OnTick(){}
-void Players::OnMessage(int type,char* value){}
+void Players::Tick(){}
+void Players::Message(int type,char* value){}

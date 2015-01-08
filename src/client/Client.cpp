@@ -14,7 +14,25 @@ bool Client::working=false;
 int Client::frames=0;
 int main(int argc, char *argv[])
 {
-	new Client();
+	instanse=new Client();
+	if(instanse->Init()){
+		instanse->Start();
+		STATE startstate;
+		startstate.ingame=false;
+		instanse->state.ingame=true;
+		instanse->StateChange(startstate);
+		while(instanse->isRunning()){
+			long tickTime=System::GetTime();
+			instanse->tickCoeff=(tickTime-instanse->lasttickTime)/16.6666666666666666667f;
+			instanse->lasttickTime=tickTime;
+			STATE oldstate=instanse->state;
+			instanse->Input(NULL,0,0,0);
+			instanse->Tick();
+			if(oldstate!=instanse->state) instanse->StateChange(oldstate);
+		}
+	}
+	instanse->Quit();
+	delete instanse;
 	return 0;
 }
 void Client::Start(){
@@ -26,11 +44,8 @@ void Client::Stop(){
 bool Client::isRunning(){
 	return working;
 }
-void Client::Constructor(){
-	instanse=this;
+Client::Client():Component(this){
 	System::Init();
-	PATH_CUR=new char[System::MAX_FILENAME];
-	PATH_DATA=new char[System::MAX_FILENAME];
 	System::GetPath(PATH_CUR);
 	PATH_DATA=PATH_CUR+"/data/";
 	fps=60;
@@ -44,25 +59,16 @@ void Client::Constructor(){
 	m_Components.push_back((Component*)m_Map);
 	m_Components.push_back((Component*)m_Players);
 	m_Components.push_back((Component*)m_GUI);
-	if(OnInit()){
-		Start();
-		STATE startstate;
-		startstate.ingame=false;
-		state.ingame=true;
-		OnStateChange(startstate);
-		while(isRunning()){
-			long tickTime=System::GetTime();
-			tickCoeff=(tickTime-lasttickTime)/16.6666666666666666667f;
-			lasttickTime=tickTime;
-			STATE oldstate=state;
-			OnInput(NULL,0,0,0);
-			OnTick();
-			if(oldstate!=state) OnStateChange(oldstate);
-		}
-	}
-	OnQuit();
 }
-bool Client::OnInit(){
+Client::~Client(){
+	m_Components.clear();
+	delete m_Graphics;
+	delete m_Camera;
+	delete m_Map;
+	delete m_Players;
+	delete m_GUI;
+}
+bool Client::Init(){
 	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER)!=0)
 	{
 		char c[256];
@@ -83,7 +89,7 @@ bool Client::OnInit(){
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	if ((screen = SDL_CreateWindow("",50, 50, 1024, 768, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN)) == NULL)
+	if ((screen = SDL_CreateWindow("",50, 50, 1280, 1024, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN)) == NULL)
 	{
 		char c[256];
 		sprintf(c,"Could not create window: %s",SDL_GetError());
@@ -99,7 +105,7 @@ bool Client::OnInit(){
 	}
 
 	for(auto &component : m_Components){
-		if(!component->OnInit()) return false;
+		if(!component->Init()) return false;
 	}
 
 	void* calcFPS_param;
@@ -107,7 +113,7 @@ bool Client::OnInit(){
 
 	return true;
 }
-void Client::OnInput(unsigned char* keyss,int xrels,int yrels,int wheels){
+void Client::Input(unsigned char* keyss,int xrels,int yrels,int wheels){
 	SDL_Event sdlevent;
 	const Uint8* keys = NULL;
 	int xrel=0;
@@ -130,41 +136,41 @@ void Client::OnInput(unsigned char* keyss,int xrels,int yrels,int wheels){
 	}
 	keys = SDL_GetKeyboardState(NULL);
 	for(auto &component : m_Components){
-		component->OnInput((unsigned char*)keys,xrel,yrel,wheel);
+		component->Input((unsigned char*)keys,xrel,yrel,wheel);
 	}
 }
-void Client::OnQuit(){
+void Client::Quit(){
 	for(auto &component : m_Components){
-		component->OnQuit();
+		component->Quit();
 	}
 	TTF_Quit();
 	SDL_Quit();
 }
-void Client::OnRender(){
+void Client::Render(){
 	for(auto &component : m_Components){
-		component->OnRender();
+		component->Render();
 	}
 }
-void Client::OnRenderBillboard(){
+void Client::RenderBillboard(){
 	for(auto &component : m_Components){
-		component->OnRenderBillboard();
+		component->RenderBillboard();
 	}
 }
-void Client::OnRender2d(){
+void Client::Render2d(){
 	for(auto &component : m_Components){
-		component->OnRender2d();
+		component->Render2d();
 	}
 }
-void Client::OnTick(){
+void Client::Tick(){
 	for(auto &component : m_Components){
-		component->OnTick();
+		component->Tick();
 	}
 	SDL_GL_SwapWindow(screen);
 	frames++;
 }
-void Client::OnMessage(int type,char* value){
+void Client::Message(int type,char* value){
 	for(auto &component : m_Components){
-		component->OnMessage(type,value);
+		component->Message(type,value);
 	}
 }
 void Client::Err(string c){
@@ -187,8 +193,8 @@ Uint32 calcFPS(Uint32 interval, void *param){
 string Client::GetDataFile(string str){
 	return PATH_DATA+str;
 }
-void Client::OnStateChange(STATE lastState){
+void Client::StateChange(STATE lastState){
 	for(auto &component : m_Components){
-		component->OnStateChange(lastState);
+		component->StateChange(lastState);
 	}
 }

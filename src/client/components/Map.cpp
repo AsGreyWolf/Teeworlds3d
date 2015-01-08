@@ -6,11 +6,11 @@
 #include "graphics/Resources.h"
 #include "graphics/Model.h"
 
-bool Map::OnInit(){
+bool Map::Init(){
 	return true;
 }
-void Map::OnInput(unsigned char* keys,int xrel,int yrel,int wheel){}
-void Map::OnStateChange(STATE lastState){
+void Map::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
+void Map::StateChange(STATE lastState){
 	if(!lastState.ingame && m_Client->state.ingame)
 	{
 		m_Model=new Model(m_Client->m_Graphics);
@@ -18,11 +18,11 @@ void Map::OnStateChange(STATE lastState){
 		return;
 	}
 	if(lastState.ingame && !m_Client->state.ingame){
-		OnQuit();
+		Quit();
 	}
 }
-void Map::OnQuit(){
-	if(m_Client->state.ingame){
+void Map::Quit(){
+	if(m_Model!=nullptr){
 		delete m_Model;
 		m_Client->m_Graphics->m_Resources->unLoadTexture(texture);
 		tilesById.clear();
@@ -33,14 +33,14 @@ void Map::OnQuit(){
 		}
 	}
 }
-void Map::OnRender(){
+void Map::Render(){
 	if(m_Client->state.ingame)
 		m_Model->render();
 }
-void Map::OnRenderBillboard(){}
-void Map::OnRender2d(){}
-void Map::OnTick(){}
-void Map::OnMessage(int type,char* value){}
+void Map::RenderBillboard(){}
+void Map::Render2d(){}
+void Map::Tick(){}
+void Map::Message(int type,char* value){}
 bool Map::Load(string name){
 	string pp="maps/"+name+".map";
 	string path=m_Client->GetDataFile(pp);
