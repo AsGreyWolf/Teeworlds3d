@@ -15,23 +15,20 @@ int Client::frames=0;
 int main(int argc, char *argv[])
 {
 	instanse=new Client();
-	if(instanse->Init()){
-		instanse->Start();
-		STATE startstate;
-		startstate.ingame=false;
-		instanse->state.ingame=true;
-		instanse->StateChange(startstate);
-		while(instanse->isRunning()){
-			long tickTime=System::GetTime();
-			instanse->tickCoeff=(tickTime-instanse->lasttickTime)/16.6666666666666666667f;
-			instanse->lasttickTime=tickTime;
-			STATE oldstate=instanse->state;
-			instanse->Input(NULL,0,0,0);
-			instanse->Tick();
-			if(oldstate!=instanse->state) instanse->StateChange(oldstate);
-		}
+	instanse->Start();
+	STATE startstate;
+	startstate.ingame=false;
+	instanse->state.ingame=true;
+	instanse->StateChange(startstate);
+	while(instanse->isRunning()){
+		long tickTime=System::GetTime();
+		instanse->tickCoeff=(tickTime-instanse->lasttickTime)/16.6666666666666666667f;
+		instanse->lasttickTime=tickTime;
+		STATE oldstate=instanse->state;
+		instanse->Input(NULL,0,0,0);
+		instanse->Tick();
+		if(oldstate!=instanse->state) instanse->StateChange(oldstate);
 	}
-	instanse->Quit();
 	delete instanse;
 	return 0;
 }
@@ -49,39 +46,20 @@ Client::Client():Component(this){
 	System::GetPath(PATH_CUR);
 	PATH_DATA=PATH_CUR+"/data/";
 	fps=60;
-	m_Graphics=new Graphics(this);
-	m_Camera=new Camera(this);
-	m_Map=new Map(this);
-	m_Players=new Players(this);
-	m_GUI=new GUI(this);
-	m_Components.push_back((Component*)m_Graphics);
-	m_Components.push_back((Component*)m_Camera);
-	m_Components.push_back((Component*)m_Map);
-	m_Components.push_back((Component*)m_Players);
-	m_Components.push_back((Component*)m_GUI);
-}
-Client::~Client(){
-	m_Components.clear();
-	delete m_Graphics;
-	delete m_Camera;
-	delete m_Map;
-	delete m_Players;
-	delete m_GUI;
-}
-bool Client::Init(){
+
 	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER)!=0)
 	{
 		char c[256];
 		sprintf(c,"Unable to initialize SDL: %s",SDL_GetError());
 		Err(c);
-		return false;
+		return; //TODO: need exceptions
 	}
 	if(TTF_Init()!=0)
 	{
 		char c[256];
 		sprintf(c,"Unable to initialize SDL_TTF: %s",TTF_GetError());
 		Err(c);
-		return false;
+		return; //TODO: TODO: need exceptions
 	}
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,2);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,4);
@@ -94,24 +72,39 @@ bool Client::Init(){
 		char c[256];
 		sprintf(c,"Could not create window: %s",SDL_GetError());
 		Err(c);
-		return false;
+		return; //need exceptions
 	}
 	if ((renderer = SDL_CreateRenderer(screen, -1, 0)) == NULL)
 	{
 		char c[256];
 		sprintf(c,"Could not get renderer: %s", SDL_GetError());
 		Err(c);
-		return false;
+		return; //TODO: need exceptions
 	}
 
-	for(auto &component : m_Components){
-		if(!component->Init()) return false;
-	}
+	m_Graphics=new Graphics(this);
+	m_Camera=new Camera(this);
+	m_Map=new Map(this);
+	m_Players=new Players(this);
+	m_GUI=new GUI(this);
+	m_Components.push_back((Component*)m_Graphics);
+	m_Components.push_back((Component*)m_Camera);
+	m_Components.push_back((Component*)m_Map);
+	m_Components.push_back((Component*)m_Players);
+	m_Components.push_back((Component*)m_GUI);
 
 	void* calcFPS_param;
 	SDL_TimerID my_timer_id = SDL_AddTimer(1000, calcFPS, calcFPS_param);
-
-	return true;
+}
+Client::~Client(){
+	m_Components.clear();
+	delete m_Graphics;
+	delete m_Camera;
+	delete m_Map;
+	delete m_Players;
+	delete m_GUI;
+	TTF_Quit();
+	SDL_Quit();
 }
 void Client::Input(unsigned char* keyss,int xrels,int yrels,int wheels){
 	SDL_Event sdlevent;
@@ -138,13 +131,6 @@ void Client::Input(unsigned char* keyss,int xrels,int yrels,int wheels){
 	for(auto &component : m_Components){
 		component->Input((unsigned char*)keys,xrel,yrel,wheel);
 	}
-}
-void Client::Quit(){
-	for(auto &component : m_Components){
-		component->Quit();
-	}
-	TTF_Quit();
-	SDL_Quit();
 }
 void Client::Render(){
 	for(auto &component : m_Components){

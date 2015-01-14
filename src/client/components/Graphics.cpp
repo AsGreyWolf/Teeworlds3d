@@ -30,14 +30,14 @@ void Graphics::to_RGBA(SDL_Surface* &src){
 	}
 }
 
-bool Graphics::Init(){
+Graphics::Graphics(Client* c) : Component(c){
 	SDL_GLContext context;
 
 	if ((context = SDL_GL_CreateContext(m_Client->screen)) == NULL)
 	{
 
 		m_Client->Err("Could not get context: "+string(SDL_GetError()));
-		return false;
+		return; //TODO: exceptions
 	}
 	glewInit();
 	m_Client->Info((char*)glGetString(GL_VERSION));
@@ -103,13 +103,12 @@ bool Graphics::Init(){
 	glPointSize(3);
 
 	SDL_SetRelativeMouseMode(SDL_TRUE);
-	return true;
 }
-void Graphics::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
-void Graphics::Quit(){
+Graphics::~Graphics(){
 	m_Resources->UnLoad();
 	delete m_Resources;
 }
+void Graphics::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
 void Graphics::Render(){}
 void Graphics::RenderBillboard(){}
 void Graphics::Render2d(){}

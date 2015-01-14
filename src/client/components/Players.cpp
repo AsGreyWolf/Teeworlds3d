@@ -10,7 +10,7 @@
 // TODO just for debug
 PlayerModel* n[MAX_PLAYERS];
 Model2d* cursor;
-bool Players::Init(){
+Players::Players(Client* c) : Component(c){
 	// TODO just for debug
 	for(int i=0;i<MAX_PLAYERS;i++){
 		n[i]=new PlayerModel(m_Client->m_Graphics);
@@ -30,7 +30,13 @@ bool Players::Init(){
 	cursor->addQuad(quad2(-0.0625f,-0.0625f,0.125f,0.125f),m_Client->m_Graphics->m_Resources->gameCursor[0]);
 	cursor->texture=m_Client->m_Graphics->m_Resources->textureGame;
 	cursor->create();
-	return true;
+}
+Players::~Players(){
+	for(int i=0;i<MAX_PLAYERS;i++){
+		delete n[i];
+		delete players[i];
+	}
+	delete cursor;
 }
 ///TODO: debug only
 bool lastSpaceState=false;
@@ -75,9 +81,6 @@ void Players::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	}
 }
 void Players::StateChange(STATE lastState){}
-void Players::Quit(){
-	delete cursor;
-}
 void Players::Render(){
 	for(int i=0;i<MAX_PLAYERS;i++){
 		n[i]->update(players[i]);

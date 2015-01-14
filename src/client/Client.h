@@ -18,17 +18,12 @@ public:
 	///<summary>Stores 'c' to 'm_Client', creates all the components and gamecycle</summary>
 	Client();
 	~Client();
-	///<summary>Tries to initialize components</summary>
-	///<returns>true if all right, false if error found</returns>
-	bool Init();
 	///<summary>Stores input to components</summary>
 	///<param name="keys">Keyboard state</param>
 	///<param name="xrel">Mouse X position change</param>
 	///<param name="yrel">Mouse Y position change</param>
 	///<param name="wheel">Mouse wheel state</param>
 	void Input(unsigned char* keys,int xrel,int yrel,int wheel);
-	///<summary>Quit</summary>
-	void Quit();
 	///<summary>Render 3d</summary>
 	void Render();
 	///<summary>Render 3d Billboard</summary>

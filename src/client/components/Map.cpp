@@ -6,8 +6,9 @@
 #include "graphics/Resources.h"
 #include "graphics/Model.h"
 
-bool Map::Init(){
-	return true;
+Map::Map(Client* c) : Component(c){}
+Map::~Map(){
+	UnLoad();
 }
 void Map::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
 void Map::StateChange(STATE lastState){
@@ -18,19 +19,7 @@ void Map::StateChange(STATE lastState){
 		return;
 	}
 	if(lastState.ingame && !m_Client->state.ingame){
-		Quit();
-	}
-}
-void Map::Quit(){
-	if(m_Model!=nullptr){
-		delete m_Model;
-		m_Client->m_Graphics->m_Resources->unLoadTexture(texture);
-		tilesById.clear();
-		for(int xi=0;xi<sizex;xi++){
-			for(int yi=0;yi<sizey;yi++)
-				delete[] tilesByPos[xi][yi];
-			delete[] tilesByPos[xi];
-		}
+		UnLoad();
 	}
 }
 void Map::Render(){
@@ -171,6 +160,18 @@ bool Map::Load(string name){
 	m_Model->texture=texture;
 	m_Model->create();
 	return true;
+}
+void Map::UnLoad(){
+	if(m_Model!=nullptr){
+		delete m_Model;
+		m_Client->m_Graphics->m_Resources->unLoadTexture(texture);
+		tilesById.clear();
+		for(int xi=0;xi<sizex;xi++){
+			for(int yi=0;yi<sizey;yi++)
+				delete[] tilesByPos[xi][yi];
+			delete[] tilesByPos[xi];
+		}
+	}
 }
 bool Map::hasTop(){
 	if(buffer->z<sizez-1){

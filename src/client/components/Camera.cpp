@@ -3,9 +3,8 @@
 #include "../Client.h"
 #include "Graphics.h"
 
-bool Camera::Init(){
-	return true;
-}
+Camera::Camera(Client* c) : Component(c){}
+Camera::~Camera(){}
 void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	RotateX(-yrel*0.02f*m_Client->tickCoeff);
 	RotateZ(-xrel*0.02f*m_Client->tickCoeff);
@@ -25,7 +24,6 @@ void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	if (keys[SDL_SCANCODE_R]) position+=up2;
 	if (keys[SDL_SCANCODE_F]) position-=up2;
 }
-void Camera::Quit(){}
 void Camera::Render(){}
 void Camera::RenderBillboard(){}
 void Camera::Render2d(){}

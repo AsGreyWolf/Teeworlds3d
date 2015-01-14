@@ -20,11 +20,9 @@ class Map : public Component{
 public:
 
 	///<summary>Stores 'c' to 'm_Client'</summary>
-	Map(Client* c) : Component(c){};
+	Map(Client* c);
+	~Map();
 
-	///<summary>Initialization callback</summary>
-	///<returns>true if all right, false if error found</returns>
-	bool Init();
 	///<summary>Input callback</summary>
 	///<param name="keys">Keyboard state</param>
 	///<param name="xrel">Mouse X position change</param>
@@ -34,8 +32,6 @@ public:
 	///<summary>State change callback</summary>
 	///<param name="lastState">Last state</param>
 	void StateChange(STATE lastState);
-	///<summary>Quit callback</summary>
-	void Quit();
 	///<summary>3d render callback</summary>
 	void Render();
 	///<summary>Render 3d Billboard</summary>
@@ -50,6 +46,7 @@ public:
 	///<summary>Loads the map</summary>
 	///<param name="name">Filename in data/maps folder</param>
 	bool Load(string name);
+	void UnLoad();
 	///<summary>Buffer tile has tile above it?</summary>
 	///<returns>true if has, false otherwise</param>
 	bool hasTop();
