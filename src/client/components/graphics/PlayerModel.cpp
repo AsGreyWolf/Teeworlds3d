@@ -37,13 +37,13 @@ void PlayerModel::renderBillboard(){
 void PlayerModel::render(){
 	m_Graphics->PushMatrix();
 
-	m_Graphics->Translate(position);
-	m_Graphics->RotateZ(rot);
+	m_Graphics->modelMatrix*=m_Graphics->Translate(position);
+	m_Graphics->modelMatrix*=m_Graphics->RotateZ(rot);
 	Body->render();
 	lFoot->render();
 	rFoot->render();
-	m_Graphics->RotateX(rot);
-	m_Graphics->RotateY(rot);
+	m_Graphics->modelMatrix*=m_Graphics->RotateX(rot);
+	m_Graphics->modelMatrix*=m_Graphics->RotateY(rot);
 
 	lArm->render();
 	rArm->render();

@@ -89,7 +89,7 @@ bool Client::Init(){
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	if ((screen = SDL_CreateWindow("",50, 50, 1280, 1024, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN)) == NULL)
+	if ((screen = SDL_CreateWindow("",50, 50, 1024, 768, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN)) == NULL)
 	{
 		char c[256];
 		sprintf(c,"Could not create window: %s",SDL_GetError());

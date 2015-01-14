@@ -41,7 +41,6 @@ void Camera::SetMatrix(){
 	glScalef(1,1,1);
 }
 void Camera::RotateX(float rad){
-	//m_Client->Err();
 	rotation.x+=rad;
 }
 void Camera::RotateY(float rad){

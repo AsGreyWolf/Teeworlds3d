@@ -41,8 +41,8 @@ bool Graphics::Init(){
 	}
 	glewInit();
 	m_Client->Info((char*)glGetString(GL_VERSION));
-	int w=1280;
-	int h=1024;
+	int w=1024;
+	int h=768;
 	if( h == 0 )
 	{
 		h = 1;
@@ -152,17 +152,13 @@ void Graphics::SetLight(bool light){
 void Graphics::SetPos2d(vec2 pos){
 	glUniform2f(posUniform2d,pos.x,pos.y);
 }
-void Graphics::SetViewMatrix(const vec3 &position, const vec3 &center, const vec3 &up){
+void Graphics::SetViewMatrix(const glm::vec3 &position, const glm::vec3 &center, const glm::vec3 &up){
 	viewMatrix=glm::lookAt(position, center, up);
 	viewProjectionMatrix=perspectiveMatrix*viewMatrix;
 	glUniformMatrix4fv(viewProjectionMatrixUniform,1,false,(const float*)glm::value_ptr(viewProjectionMatrix));
 }
 void Graphics::SetModelMatrix(const vec3 &position, const vec3 &rotation, const vec3 &size){
-	Translate(position);
-	RotateZ(rotation);
-	RotateX(rotation);
-	RotateY(rotation);
-	modelMatrix*=glm::scale(size);
+	modelMatrix*=Transform(position,rotation,size);
 
 	normalMatrix=modelMatrix;
 	normalMatrix=glm::inverse(normalMatrix);
@@ -177,15 +173,21 @@ void Graphics::PopMatrix(){
 	modelMatrix=ModelMatrixStack.top();
 	ModelMatrixStack.pop();
 }
-void Graphics::Translate(const glm::vec3 &position){
-	modelMatrix*=glm::translate(position);
+glm::mat4 Graphics::Translate(const glm::vec3 &position){
+	return glm::translate(position);
 }
-void Graphics::RotateX(const glm::vec3 &rotation){
-	modelMatrix*=glm::rotate(rotation.x,vec3(1,0,0));
+glm::mat4 Graphics::RotateX(const glm::vec3 &rotation){
+	return glm::rotate(rotation.x,vec3(1,0,0));
 }
-void Graphics::RotateY(const glm::vec3 &rotation){
-	modelMatrix*=glm::rotate(rotation.y,vec3(0,1,0));
+glm::mat4 Graphics::RotateY(const glm::vec3 &rotation){
+	return glm::rotate(rotation.y,vec3(0,1,0));
 }
-void Graphics::RotateZ(const glm::vec3 &rotation){
-	modelMatrix*=glm::rotate(rotation.z,vec3(0,0,1));
+glm::mat4 Graphics::RotateZ(const glm::vec3 &rotation){
+	return glm::rotate(rotation.z,vec3(0,0,1));
+}
+glm::mat4 Graphics::Scale(const glm::vec3 &scale){
+	return glm::scale(scale);
+}
+glm::mat4 Graphics::Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale){
+	return (((Translate(position)*RotateZ(rotation))*RotateX(rotation))*RotateY(rotation))*Scale(scale);
 }

@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\client\Client.h">
-      <Filter>client/</Filter>
-    </ClInclude>
     <ClInclude Include="src\client\Component.h">
       <Filter>client/</Filter>
     </ClInclude>
@@ -275,6 +272,9 @@
     </ClInclude>
     <ClInclude Include="src\client\components\graphics\Text3d.h">
       <Filter>client/\components/\graphics/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\Client.h">
+      <Filter>client/</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
