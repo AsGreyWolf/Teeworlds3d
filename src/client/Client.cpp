@@ -1,6 +1,5 @@
 #include "Client.h"
 #include <iostream>
-#include <cstring>
 #include "components/Graphics.h"
 #include "components/Camera.h"
 #include "components/Map.h"
@@ -22,7 +21,7 @@ int main(int argc, char *argv[])
 	instanse->StateChange(startstate);
 	while(instanse->isRunning()){
 		long tickTime=System::GetTime();
-		instanse->tickCoeff=(tickTime-instanse->lasttickTime)/16.6666666666666666667f;
+		instanse->tickCoeff=(tickTime-instanse->lasttickTime)*1.0f/1000;
 		instanse->lasttickTime=tickTime;
 		STATE oldstate=instanse->state;
 		instanse->Input(NULL,0,0,0);
@@ -49,36 +48,33 @@ Client::Client():Component(this){
 
 	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER)!=0)
 	{
-		char c[256];
-		sprintf(c,"Unable to initialize SDL: %s",SDL_GetError());
-		Err(c);
+		Err("Unable to initialize SDL: "+string(SDL_GetError()));
 		return; //TODO: need exceptions
 	}
+	SDL_version ver;
+	SDL_GetVersion(&ver);
+	Info("Initialized SDL "+to_string(ver.major)+"."+to_string(ver.minor)+"."+to_string(ver.patch));
 	if(TTF_Init()!=0)
 	{
-		char c[256];
-		sprintf(c,"Unable to initialize SDL_TTF: %s",TTF_GetError());
-		Err(c);
+		Err("Unable to initialize SDL_TTF: "+string(TTF_GetError()));
 		return; //TODO: TODO: need exceptions
 	}
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,2);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,4);
+	ver=*TTF_Linked_Version();
+	Info("Initialized SDL_TTF "+to_string(ver.major)+"."+to_string(ver.minor)+"."+to_string(ver.patch));
+	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,2);
+	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	if ((screen = SDL_CreateWindow("",50, 50, 1024, 768, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN)) == NULL)
 	{
-		char c[256];
-		sprintf(c,"Could not create window: %s",SDL_GetError());
-		Err(c);
+		Err("Could not create window: "+string(SDL_GetError()));
 		return; //need exceptions
 	}
 	if ((renderer = SDL_CreateRenderer(screen, -1, 0)) == NULL)
 	{
-		char c[256];
-		sprintf(c,"Could not get renderer: %s", SDL_GetError());
-		Err(c);
+		Err("Could not get renderer: "+string(SDL_GetError()));
 		return; //TODO: need exceptions
 	}
 
@@ -93,8 +89,7 @@ Client::Client():Component(this){
 	m_Components.push_back((Component*)m_Players);
 	m_Components.push_back((Component*)m_GUI);
 
-	void* calcFPS_param;
-	SDL_TimerID my_timer_id = SDL_AddTimer(1000, calcFPS, calcFPS_param);
+	SDL_AddTimer(1000, calcFPS, NULL);
 }
 Client::~Client(){
 	m_Components.clear();
@@ -168,9 +163,7 @@ void Client::Info(string c){
 
 Uint32 calcFPS(Uint32 interval, void *param){
 	if(!Client::isRunning()) return interval;
-	char c[256];
-	sprintf(c,"FPS = %d", Client::frames);
-	Client::Info(c);
+	Client::Info("FPS = "+to_string(Client::frames));
 	if(instanse!=NULL)
 		instanse->fps=Client::frames;
 	Client::frames=0;

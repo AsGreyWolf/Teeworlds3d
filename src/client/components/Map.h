@@ -8,6 +8,7 @@
 #include "../../tools/Tile.h"
 #include "../../../other/sdl/include/SDL.h"
 #include "../../../other/glew/include/glew.h"
+#define GLM_FORCE_RADIANS
 #include "../../../other/glm/gtc/matrix_transform.hpp"
 #include "../../../other/glm/gtc/type_ptr.hpp"
 
@@ -80,7 +81,7 @@ public:
 	Tile**** tilesByPos;
 	///<summary>Texture of the map</summary>
 	GLuint texture;
-	
+
 	///<summary>Buffer tile</summary>
 	Tile* buffer;
 };

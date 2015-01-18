@@ -40,7 +40,7 @@ Graphics::Graphics(Client* c) : Component(c){
 		return; //TODO: exceptions
 	}
 	glewInit();
-	m_Client->Info((char*)glGetString(GL_VERSION));
+	m_Client->Info("Initialized OpenGL "+string((char*)glGetString(GL_VERSION)));
 	int w=1024;
 	int h=768;
 	if( h == 0 )
@@ -114,7 +114,6 @@ void Graphics::RenderBillboard(){}
 void Graphics::Render2d(){}
 void Graphics::Tick(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	//glLoadIdentity();
 	modelMatrix=mat4(1.0f);
 	std::stack<glm::mat4> empty;
 	std::swap(ModelMatrixStack, empty);
@@ -189,4 +188,11 @@ glm::mat4 Graphics::Scale(const glm::vec3 &scale){
 }
 glm::mat4 Graphics::Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale){
 	return (((Translate(position)*RotateZ(rotation))*RotateX(rotation))*RotateY(rotation))*Scale(scale);
+}
+void Graphics::CheckGLError() throw(OpenGLException){
+	int glError = glGetError();
+	while(glError!=GL_NO_ERROR){
+		throw OpenGLException(glError);
+		glError = glGetError();
+	}
 }

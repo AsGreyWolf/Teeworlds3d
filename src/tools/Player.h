@@ -9,7 +9,7 @@ public:
 	Player(){
 		//Hook_Pos=vec3(0,0,0);
 		//Hook_Dir=vec3(0,1,0);
-		///HookState=HOOK_STATE.IDLE;
+		//HookState=HOOK_STATE.IDLE;
 		//HookedPlayer=-1;
 		//animwalking=false;
 		//Jumped=0;

@@ -18,6 +18,7 @@ public:
 	Component(Client* mClient){
 		m_Client=mClient;
 	};
+	~Component(){};
 	///<summary>Stores input to components</summary>
 	///<param name="keys">Keyboard state</param>
 	///<param name="xrel">Mouse X position change</param>

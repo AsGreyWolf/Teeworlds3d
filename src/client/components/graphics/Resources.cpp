@@ -33,7 +33,7 @@ void Resources::Load(){
 	loadTexture("game.png",textureGame,true,true);
 	vector<string> skins;
 	System::GetFilesInDirectory(skins,m_Graphics->m_Client->GetDataFile("skins"));
-	for(int i=0;i<skins.size();i++){
+	for(unsigned int i=0;i<skins.size();i++){
 		GLuint skintex=textureBlank;
 		loadTexture("skins/"+skins[i],skintex,true,true);
 		skins[i].resize(skins[i].size()-4);
@@ -551,7 +551,7 @@ void Resources::Load(){
 	//shaders
 	loadShader("shaders/shader",shader3d);
 	loadShader("shaders/shader2d",shader2d);
-	
+
 	//fonts
 	fontPath=m_Graphics->m_Client->GetDataFile(fontName);
 }
@@ -561,7 +561,7 @@ void Resources::UnLoad(){
 	unLoadTexture(textureBlank);
 	unLoadTexture(textureGame);
 	unLoadTexture(textureRGB);
-	
+
 	for(map<string,GLuint>::iterator key=skinTextures.begin();key!=skinTextures.end();key++){
 		unLoadTexture((*key).second);
 	}
@@ -605,6 +605,8 @@ void Resources::ClearBuffers(){
 	fonts.clear();
 }
 bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size,bool buffering){
+	tex=textureRGB;
+	aspect=1;
 	bool complete=false;
 	if(buffering){
 		map<int,map<string,GLuint>>::iterator key=stringBuffer.find(size);
@@ -617,26 +619,37 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 		if(datakey==(*key).second.end()){
 			GLuint texture=-1;
 			float aspect=1;
-			SDL_Surface* surface = TTF_RenderUTF8_Blended(m_Graphics->m_Resources->loadFont(size), data.c_str(), m_Graphics->m_Resources->SDLColorWhite);
+			TTF_Font* font=loadFont(size);
+			if(font!=NULL){
+				SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), m_Graphics->m_Resources->SDLColorWhite);
+				if(surface!=NULL){
+					m_Graphics->m_Resources->loadTextureFromSurface(surface,texture,true,false);
+					aspect=surface->w*1.0f/surface->h;
+					SDL_FreeSurface(surface);
+					complete=true;
+				}
+				(*key).second.insert((*key).second.begin(),pair<string,GLuint>(data,texture));
+				datakey=(*key).second.find(data);
+				aspectBuffer.at(size).insert(aspectBuffer.at(size).begin(),pair<string,float>(data,aspect));
+			}
+		}
+		else{
+			complete=true;
+		}
+		if(complete){
+			tex=(*datakey).second;
+			aspect=aspectBuffer.at(size).at(data);
+		}
+	}else{
+		TTF_Font* font=loadFont(size);
+		if(font!=NULL){
+			SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), m_Graphics->m_Resources->SDLColorWhite);
 			if(surface!=NULL){
-				m_Graphics->m_Resources->loadTextureFromSurface(surface,texture,true,false);
+				m_Graphics->m_Resources->loadTextureFromSurface(surface,tex,false,true);
 				aspect=surface->w*1.0f/surface->h;
 				SDL_FreeSurface(surface);
 				complete=true;
 			}
-			(*key).second.insert((*key).second.begin(),pair<string,GLuint>(data,texture));
-			datakey=(*key).second.find(data);
-			aspectBuffer.at(size).insert(aspectBuffer.at(size).begin(),pair<string,float>(data,aspect));
-		}
-		tex=(*datakey).second;
-		aspect=aspectBuffer.at(size).at(data);
-	}else{
-		SDL_Surface* surface = TTF_RenderUTF8_Blended(m_Graphics->m_Resources->loadFont(size), data.c_str(), m_Graphics->m_Resources->SDLColorWhite);
-		if(surface!=NULL){
-			m_Graphics->m_Resources->loadTextureFromSurface(surface,tex,false,true);
-			aspect=surface->w*1.0f/surface->h;
-			SDL_FreeSurface(surface);
-			complete=true;
 		}
 	}
 	return complete;
@@ -650,6 +663,7 @@ TTF_Font* Resources::loadFont(int size){
 		TTF_Font* font = TTF_OpenFont(fontPath.c_str(), size*2);
 		if(font==NULL){
 			m_Graphics->m_Client->Err("Error Loading Font: "+fontPath+"("+to_string(size)+") : "+string(TTF_GetError()));
+			return font;
 		}
 		fonts.insert(fonts.begin(),pair<int,TTF_Font*>(size,font));
 		m_Graphics->m_Client->Info("Font loaded "+fontPath);

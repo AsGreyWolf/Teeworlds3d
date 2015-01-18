@@ -6,16 +6,16 @@
 Camera::Camera(Client* c) : Component(c){}
 Camera::~Camera(){}
 void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
-	RotateX(-yrel*0.02f*m_Client->tickCoeff);
-	RotateZ(-xrel*0.02f*m_Client->tickCoeff);
+	RotateX(-yrel*m_Client->tickCoeff);
+	RotateZ(-xrel*m_Client->tickCoeff);
 	glm::vec3 look2=look;
-	look2*=4;
+	look2*=512;
 	look2*=m_Client->tickCoeff;
 	glm::vec3 right2=right;
-	right2*=4;
+	right2*=512;
 	right2*=m_Client->tickCoeff;
 	glm::vec3 up2=up;
-	up2*=4;
+	up2*=512;
 	up2*=m_Client->tickCoeff;
 	if (keys[SDL_SCANCODE_W]) position+=look2;
 	if (keys[SDL_SCANCODE_S]) position-=look2;
@@ -33,7 +33,7 @@ void Camera::Message(int type,char* value){}
 void Camera::SetMatrix(){
 	if(!m_Client->state.ingame) return;
 	updateVectors();
-	
+
 	m_Client->m_Graphics->SetViewMatrix(position, position+look,up);
 
 	glScalef(1,1,1);

@@ -5,7 +5,7 @@ if "%1"=="debug" SET DEBUG="true"
 
 
 @call SET SRCFILES="%BAT_PATH%src/client/*.cpp" "%BAT_PATH%src/client/components/*.cpp" "%BAT_PATH%src/client/components/graphics/*.cpp"
-@call SET LIBFILES= "glew32.lib" "SDL2_image.lib" "SDL2_ttf.lib" "SDL2main.lib" "SDL2.lib" "GLu32.lib" "OpenGL32.lib" "kernel32.lib" "user32.lib" "gdi32.lib"
+@call SET LIBFILES= "glew32s.lib" "SDL2_image.lib" "SDL2_ttf.lib" "SDL2main.lib" "SDL2.lib" "GLu32.lib" "OpenGL32.lib" "kernel32.lib" "user32.lib" "gdi32.lib"
 @call SET SDL_INC=%BAT_PATH%other\sdl\include
 @call SET SDL_LIB=%BAT_PATH%other\sdl\lib32
 @call SET OUTFILE=%BAT_PATH%teeworlds3d.exe

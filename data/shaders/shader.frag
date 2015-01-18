@@ -1,9 +1,7 @@
-#version 130
+#version 120
 
-precision highp float;
-
-in vec2 ex_TexMap;
-in vec3 ex_Normal;
+varying vec2 ex_TexMap;
+varying vec3 ex_Normal;
 
 uniform vec4 colorer;
 uniform sampler2D tex;

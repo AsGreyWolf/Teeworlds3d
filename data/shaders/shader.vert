@@ -1,10 +1,10 @@
-#version 130
-in vec3 in_Position;
-in vec2 in_TexMap;
-in vec3 in_Normal;
+#version 120
+attribute vec3 in_Position;
+attribute vec2 in_TexMap;
+attribute vec3 in_Normal;
 
-out vec2 ex_TexMap;
-out vec3 ex_Normal;
+varying vec2 ex_TexMap;
+varying vec3 ex_Normal;
 
 uniform mat4 viewProjectionMatrix;
 uniform mat4 modelMatrix;

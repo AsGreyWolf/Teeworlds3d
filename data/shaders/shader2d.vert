@@ -1,8 +1,8 @@
-#version 130
-in vec2 in_Position;
-in vec2 in_TexMap;
+#version 120
+attribute vec2 in_Position;
+attribute vec2 in_TexMap;
 
-out vec2 ex_TexMap;
+varying vec2 ex_TexMap;
 
 uniform vec2 pos;
 uniform float aspect;

@@ -2,11 +2,16 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#define M_PI 3.14159265359
-#define M_PI_2 1.57079632679489661923
-
+#define GLEW_STATIC
+#ifndef M_PI
+#define M_PI    3.14159265358979323846264338327950288   /* pi */
+#endif
+#ifndef M_PI_2
+#define M_PI_2    1.5707963267948966192313216916385   /* pi/2 */
+#endif
 #include <string>
 #include <stack>
+#include <exception>
 #include "../Component.h"
 #include "../../tools/quad2.h"
 #include "../../tools/quad3.h"
@@ -17,6 +22,17 @@
 
 using namespace std;
 class Resources;
+
+class OpenGLException{
+public:
+	GLuint error;
+	OpenGLException(GLuint e){
+		error=e;
+	};
+	virtual string what() const throw(){
+		return "OpenGL Error: "+string((const char*)gluErrorString(error));
+	};
+};
 
 ///<summary>Graphics component</summary>
 class Graphics : public Component{
@@ -52,6 +68,8 @@ public:
 	///<summary>System message callback</summary>
 	void Message(int type,char* value);
 
+	///<summary>Throwes exception on Opengl Error</summary>
+	void CheckGLError() throw(OpenGLException);
 	///<summary>Convertes SDL_Surface in RGBA mode</summary>
 	///<param name="src">Source</param>
 	void to_RGBA(SDL_Surface* &src);
@@ -150,4 +168,4 @@ public:
 	glm::mat4 viewProjectionMatrix;
 };
 
-#endif GRAPHICS_H
+#endif

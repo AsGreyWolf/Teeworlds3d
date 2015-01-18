@@ -9,6 +9,7 @@
 #include "../../../tools/quad3.h"
 #include "../../../tools/Protocol.h"
 #include "../../../../other/glew/include/glew.h"
+#define GLM_FORCE_RADIANS
 #include "../../../../other/glm/gtc/matrix_transform.hpp"
 #include "../../../../other/glm/gtc/type_ptr.hpp"
 
@@ -23,7 +24,7 @@ public:
 	///<summary>Stores 'g' to the 'm_Graphics'</summary>
 	///<param name="g">Link to the Graphics component</param>
 	Resources(Graphics* g){m_Graphics=g;};
-	
+
 	//textures
 
 	///<summary>Loads texture from the file</summary>

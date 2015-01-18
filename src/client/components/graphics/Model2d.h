@@ -7,6 +7,7 @@ class Graphics;
 #include "../../../tools/quad2.h"
 #include "../../../tools/quad3.h"
 #include "../../../../other/glew/include/glew.h"
+#define GLM_FORCE_RADIANS
 #include "../../../../other/glm/gtc/matrix_transform.hpp"
 #include "../../../../other/glm/gtc/type_ptr.hpp"
 

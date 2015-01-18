@@ -53,7 +53,7 @@ bool Map::Load(string name){
 	tilesById.clear();
 	tilesByPos=new Tile***[sizex];
 
-	int i=0;
+	unsigned int i=0;
 	for(int xi=0;xi<sizex;xi++){
 		tilesByPos[xi]=new Tile**[sizey];
 		for(int yi=0;yi<sizey;yi++){
@@ -94,7 +94,7 @@ bool Map::Load(string name){
 
 
 	fclose(file);
-	for(int i=0;i<tilesById.size();i++){
+	for(unsigned int i=0;i<tilesById.size();i++){
 
 		buffer=&tilesById[i];
 		if(buffer->type==0) continue;
