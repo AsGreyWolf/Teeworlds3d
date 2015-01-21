@@ -156,7 +156,7 @@ void Graphics::SetViewMatrix(const glm::vec3 &position, const glm::vec3 &center,
 	glUniformMatrix4fv(viewProjectionMatrixUniform,1,false,(const float*)glm::value_ptr(viewProjectionMatrix));
 }
 void Graphics::SetModelMatrix(const vec3 &position, const vec3 &rotation, const vec3 &size){
-	modelMatrix*=Transform(position,rotation,size);
+	Transform(position,rotation,size);
 
 	normalMatrix=modelMatrix;
 	normalMatrix=glm::inverse(normalMatrix);
@@ -171,23 +171,27 @@ void Graphics::PopMatrix(){
 	modelMatrix=ModelMatrixStack.top();
 	ModelMatrixStack.pop();
 }
-glm::mat4 Graphics::Translate(const glm::vec3 &position){
-	return glm::translate(position);
+void Graphics::Translate(const glm::vec3 &position){
+	modelMatrix=glm::translate(modelMatrix,position);
 }
-glm::mat4 Graphics::RotateX(const glm::vec3 &rotation){
-	return glm::rotate(rotation.x,vec3(1,0,0));
+void Graphics::RotateX(const glm::vec3 &rotation){
+	modelMatrix=glm::rotate(modelMatrix,rotation.x,vec3(1,0,0));
 }
-glm::mat4 Graphics::RotateY(const glm::vec3 &rotation){
-	return glm::rotate(rotation.y,vec3(0,1,0));
+void Graphics::RotateY(const glm::vec3 &rotation){
+	modelMatrix=glm::rotate(modelMatrix,rotation.y,vec3(0,1,0));
 }
-glm::mat4 Graphics::RotateZ(const glm::vec3 &rotation){
-	return glm::rotate(rotation.z,vec3(0,0,1));
+void Graphics::RotateZ(const glm::vec3 &rotation){
+	modelMatrix=glm::rotate(modelMatrix,rotation.z,vec3(0,0,1));
 }
-glm::mat4 Graphics::Scale(const glm::vec3 &scale){
-	return glm::scale(scale);
+void Graphics::Scale(const glm::vec3 &scale){
+	modelMatrix=glm::scale(modelMatrix,scale);
 }
-glm::mat4 Graphics::Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale){
-	return (((Translate(position)*RotateZ(rotation))*RotateX(rotation))*RotateY(rotation))*Scale(scale);
+void Graphics::Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale){
+	Translate(position);
+	RotateZ(rotation);
+	RotateX(rotation);
+	RotateY(rotation);
+	Scale(scale);
 }
 void Graphics::CheckGLError() throw(OpenGLException){
 	int glError = glGetError();

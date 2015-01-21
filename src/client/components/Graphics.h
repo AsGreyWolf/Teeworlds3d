@@ -103,24 +103,24 @@ public:
 	void SetModelMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &size);
 	///<summary>Translate matrix</summary>
 	///<param name="position">Position of the model</param>
-	glm::mat4 Translate(const glm::vec3 &position);
+	void Translate(const glm::vec3 &position);
 	///<summary>Rotate matrix</summary>
 	///<param name="rotation">Rotation of the model</param>
-	glm::mat4 RotateX(const glm::vec3 &rotation);
+	void RotateX(const glm::vec3 &rotation);
 	///<summary>Rotate matrix</summary>
 	///<param name="rotation">Rotation of the model</param>
-	glm::mat4 RotateY(const glm::vec3 &rotation);
+	void RotateY(const glm::vec3 &rotation);
 	///<summary>Rotate matrix</summary>
 	///<param name="rotation">Rotation of the model</param>
-	glm::mat4 RotateZ(const glm::vec3 &rotation);
+	void RotateZ(const glm::vec3 &rotation);
 	///<summary>Scale matrix</summary>
 	///<param name="scale">Scale of the model</param>
-	glm::mat4 Scale(const glm::vec3 &scale);
+	void Scale(const glm::vec3 &scale);
 	///<summary>Transform matrix</summary>
 	///<param name="position">Position of the model</param>
 	///<param name="rotation">Rotation of the model</param>
 	///<param name="scale">Scale of the model</param>
-	glm::mat4 Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale);
+	void Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale);
 	///<summary>Pushes current model matrix to the stack</summary>
 	void PushMatrix();
 	///<summary>Restores current model matrix from the stack</summary>
