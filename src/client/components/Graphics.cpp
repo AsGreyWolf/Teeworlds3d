@@ -189,6 +189,7 @@ void Graphics::SetPos2d(vec2 pos){
 void Graphics::SetViewMatrix(const glm::vec3 &position, const glm::vec3 &center, const glm::vec3 &up){
 	viewMatrix=glm::lookAt(position, center, up);
 	viewProjectionMatrix=perspectiveMatrix*viewMatrix;
+<<<<<<< HEAD
 	glUniformMatrix4fv(viewProjectionMatrixUniform3d,1,false,(const float*)glm::value_ptr(viewProjectionMatrix));
 }
 void Graphics::SetShadowMatrix(const glm::vec3 &position, const glm::vec3 &center, const glm::vec3 &up){
@@ -234,6 +235,43 @@ void Graphics::Transform(glm::mat4& matrix,const glm::vec3 &position,const glm::
 	RotateX(matrix,rotation);
 	RotateY(matrix,rotation);
 	Scale(matrix,scale);
+=======
+	glUniformMatrix4fv(viewProjectionMatrixUniform,1,false,(const float*)glm::value_ptr(viewProjectionMatrix));
+}
+void Graphics::SetModelMatrix(const vec3 &position, const vec3 &rotation, const vec3 &size){
+	modelMatrix*=Transform(position,rotation,size);
+
+	normalMatrix=modelMatrix;
+	normalMatrix=glm::inverse(normalMatrix);
+	normalMatrix=glm::transpose(normalMatrix);
+	glUniformMatrix4fv(normalMatrixUniform,1,false,(const float*)glm::value_ptr(normalMatrix));
+	glUniformMatrix4fv(modelMatrixUniform,1,false,(const float*)glm::value_ptr(modelMatrix));
+}
+void Graphics::PushMatrix(){
+	ModelMatrixStack.push(modelMatrix);
+}
+void Graphics::PopMatrix(){
+	modelMatrix=ModelMatrixStack.top();
+	ModelMatrixStack.pop();
+}
+glm::mat4 Graphics::Translate(const glm::vec3 &position){
+	return glm::translate(position);
+}
+glm::mat4 Graphics::RotateX(const glm::vec3 &rotation){
+	return glm::rotate(rotation.x,vec3(1,0,0));
+}
+glm::mat4 Graphics::RotateY(const glm::vec3 &rotation){
+	return glm::rotate(rotation.y,vec3(0,1,0));
+}
+glm::mat4 Graphics::RotateZ(const glm::vec3 &rotation){
+	return glm::rotate(rotation.z,vec3(0,0,1));
+}
+glm::mat4 Graphics::Scale(const glm::vec3 &scale){
+	return glm::scale(scale);
+}
+glm::mat4 Graphics::Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale){
+	return (((Translate(position)*RotateZ(rotation))*RotateX(rotation))*RotateY(rotation))*Scale(scale);
+>>>>>>> parent of f137aad... Fixes
 }
 void Graphics::CheckGLError() throw(OpenGLException){
 	int glError = glGetError();

@@ -30,6 +30,7 @@ void PlayerModel::renderBillboard(){
 	NickName->render();
 	NickNameShadow->render();
 }
+<<<<<<< HEAD
 void PlayerModel::render(const glm::mat4 &lastMatrix,bool buffered){
 	modelBuffer=lastMatrix;
 	if(!buffered){
@@ -43,6 +44,18 @@ void PlayerModel::render(const glm::mat4 &lastMatrix,bool buffered){
 		m_Graphics->RotateX(modelBuffer,rot);
 		m_Graphics->RotateY(modelBuffer,rot);
 	}
+=======
+void PlayerModel::render(){
+	m_Graphics->PushMatrix();
+
+	m_Graphics->modelMatrix*=m_Graphics->Translate(position);
+	m_Graphics->modelMatrix*=m_Graphics->RotateZ(rot);
+	Body->render();
+	lFoot->render();
+	rFoot->render();
+	m_Graphics->modelMatrix*=m_Graphics->RotateX(rot);
+	m_Graphics->modelMatrix*=m_Graphics->RotateY(rot);
+>>>>>>> parent of f137aad... Fixes
 
 	lArm->render(modelBuffer,buffered);
 	rArm->render(modelBuffer,buffered);

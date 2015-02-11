@@ -111,6 +111,7 @@ public:
 	void SetModelMatrix(const glm::mat4 &modelBuffer, const glm::mat4 &normalBuffer);
 	///<summary>Translate matrix</summary>
 	///<param name="position">Position of the model</param>
+<<<<<<< HEAD
 	void Translate(glm::mat4 & matrix,const glm::vec3 &position);
 	///<summary>Rotate matrix</summary>
 	///<param name="rotation">Rotation of the model</param>
@@ -124,11 +125,36 @@ public:
 	///<summary>Scale matrix</summary>
 	///<param name="scale">Scale of the model</param>
 	void Scale(glm::mat4 & matrix,const glm::vec3 &scale);
+=======
+	glm::mat4 Translate(const glm::vec3 &position);
+	///<summary>Rotate matrix</summary>
+	///<param name="rotation">Rotation of the model</param>
+	glm::mat4 RotateX(const glm::vec3 &rotation);
+	///<summary>Rotate matrix</summary>
+	///<param name="rotation">Rotation of the model</param>
+	glm::mat4 RotateY(const glm::vec3 &rotation);
+	///<summary>Rotate matrix</summary>
+	///<param name="rotation">Rotation of the model</param>
+	glm::mat4 RotateZ(const glm::vec3 &rotation);
+	///<summary>Scale matrix</summary>
+	///<param name="scale">Scale of the model</param>
+	glm::mat4 Scale(const glm::vec3 &scale);
+>>>>>>> parent of f137aad... Fixes
 	///<summary>Transform matrix</summary>
 	///<param name="position">Position of the model</param>
 	///<param name="rotation">Rotation of the model</param>
 	///<param name="scale">Scale of the model</param>
+<<<<<<< HEAD
 	void Transform(glm::mat4 & matrix,const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale);
+=======
+	glm::mat4 Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale);
+	///<summary>Pushes current model matrix to the stack</summary>
+	void PushMatrix();
+	///<summary>Restores current model matrix from the stack</summary>
+	void PopMatrix();
+	///<summary>Stack of the model matrix</summary>
+	stack<glm::mat4> ModelMatrixStack;
+>>>>>>> parent of f137aad... Fixes
 
 	///<summary>Light uniform in 3d shader</summary>
 	unsigned int lightUniform3d;

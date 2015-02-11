@@ -770,14 +770,13 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 {
 	string firstpath=m_Graphics->m_Client->GetDataFile(filepath);
 
-	GLchar *vertexsource, *fragmentsource,*geometrysource;
-	GLuint vertexshader, fragmentshader,geometryshader;
-	int IsCompiled_VS, IsCompiled_FS,IsCompiled_GS;
+	GLchar *vertexsource, *fragmentsource;
+	GLuint vertexshader, fragmentshader;
+	int IsCompiled_VS, IsCompiled_FS;
 	int IsLinked;
 	int maxLength;
 	char *vertexInfoLog;
 	char *fragmentInfoLog;
-	char *geometryInfoLog;
 	char *shaderProgramInfoLog;
 	string path=firstpath;
 	path.append(".vert");
@@ -785,9 +784,6 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 	path=firstpath;
 	path.append(".frag");
 	fragmentsource = filetobuf(path);
-	path=firstpath;
-	path.append(".geom");
-	geometrysource = filetobuf(path);
 
 	vertexshader = glCreateShader(GL_VERTEX_SHADER);
 
@@ -824,32 +820,11 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 		m_Graphics->m_Client->Err(string(fragmentInfoLog));
 		free(fragmentInfoLog);
 	}
-	if(geometrysource!=NULL){
-		geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
-
-		glShaderSource(geometryshader, 1, (const GLchar**)&geometrysource, 0);
-
-		glCompileShader(geometryshader);
-
-		glGetShaderiv(geometryshader, GL_COMPILE_STATUS, &IsCompiled_GS);
-		if(IsCompiled_GS == GL_FALSE)
-		{
-			glGetShaderiv(geometryshader, GL_INFO_LOG_LENGTH, &maxLength);
-
-			geometryInfoLog = (char *)malloc(maxLength);
-
-			glGetShaderInfoLog(geometryshader, maxLength, &maxLength, geometryInfoLog);
-			m_Graphics->m_Client->Err(string(geometryInfoLog));
-			free(geometryInfoLog);
-		}
-	}
 
 	shader = glCreateProgram();
 
 	glAttachShader(shader, vertexshader);
 	glAttachShader(shader, fragmentshader);
-	if(geometrysource!=NULL)
-		glAttachShader(shader, geometryshader);
 
 	glLinkProgram(shader);
 
@@ -868,7 +843,5 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 	}
 	free(vertexsource);
 	free(fragmentsource);
-	if(geometrysource!=NULL)
-		free(geometrysource);
 	return true;
 }
