@@ -25,7 +25,7 @@ public:
 	///<param name="wheel">Mouse wheel state</param>
 	void Input(unsigned char* keys,int xrel,int yrel,int wheel);
 	///<summary>Render 3d</summary>
-	void Render();
+	void Render(bool buffered=false);
 	///<summary>Render 3d Billboard</summary>
 	void RenderBillboard();
 	///<summary>Render 2d</summary>

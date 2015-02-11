@@ -21,8 +21,6 @@ vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(0,1,0),
 	};
 void PlayerModel::renderBillboard(){
-	m_Graphics->PushMatrix();
-
 	NickName->lookAt(m_Graphics->m_Client->m_Camera->position);
 	NickNameShadow->lookAt(m_Graphics->m_Client->m_Camera->position);
 	NickName->scaleAt(m_Graphics->m_Client->m_Camera->position,vec3(0),vec3(0.002f));
@@ -31,28 +29,36 @@ void PlayerModel::renderBillboard(){
 	NickNameShadow->scale+=1;
 	NickName->render();
 	NickNameShadow->render();
-
-	m_Graphics->PopMatrix();
 }
-void PlayerModel::render(){
-	m_Graphics->PushMatrix();
+void PlayerModel::render(const glm::mat4 &lastMatrix,bool buffered){
+	modelBuffer=lastMatrix;
+	if(!buffered){
+		m_Graphics->Translate(modelBuffer,position);
+		m_Graphics->RotateZ(modelBuffer,rot);
+	}
+	Body->render(modelBuffer,buffered);
+	lFoot->render(modelBuffer,buffered);
+	rFoot->render(modelBuffer,buffered);
+	if(!buffered){
+		m_Graphics->RotateX(modelBuffer,rot);
+		m_Graphics->RotateY(modelBuffer,rot);
+	}
 
-	m_Graphics->Translate(position);
-	m_Graphics->RotateZ(rot);
-	Body->render();
-	lFoot->render();
-	rFoot->render();
-	m_Graphics->RotateX(rot);
-	m_Graphics->RotateY(rot);
+	lArm->render(modelBuffer,buffered);
+	rArm->render(modelBuffer,buffered);
 
-	lArm->render();
-	rArm->render();
-
-	m_Graphics->m_Resources->weaponModels[weapon]->position=weaponPos[weapon];
-	m_Graphics->m_Resources->weaponModels[weapon]->render();
+	if(!buffered){
+		m_Graphics->m_Resources->weaponModels[weapon]->position=weaponPos[weapon];
+		m_Graphics->m_Resources->weaponModels[weapon]->render(modelBuffer,buffered);
+		weaponModelMatrix=m_Graphics->m_Resources->weaponModels[weapon]->modelBuffer;
+		weaponNormalMatrix=m_Graphics->m_Resources->weaponModels[weapon]->normalBuffer;
+	}else{
+		m_Graphics->m_Resources->weaponModels[weapon]->modelBuffer=weaponModelMatrix;
+		m_Graphics->m_Resources->weaponModels[weapon]->normalBuffer=weaponNormalMatrix;
+		m_Graphics->m_Resources->weaponModels[weapon]->render(modelBuffer,buffered);
+	}
 	
-	Eyes->render();
-	m_Graphics->PopMatrix();
+	Eyes->render(modelBuffer,buffered);
 }
 PlayerModel::PlayerModel(Graphics* g):Model(g){
 }

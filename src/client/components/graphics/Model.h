@@ -38,7 +38,10 @@ public:
 	///<summary>Fills the buffers in the GPU with values in the RAM</summary>
 	void create();
 	///<summary>Pushes the model into the shader</summary>
-	void render();
+	void render(const glm::mat4 &lastMatrix,bool buffered=false);
+	void render(bool buffered=false){
+		render(glm::mat4(1.0f),buffered);
+	}
 	///<summary>Deletes the buffers in the GPU and RAM</summary>
 	void remove();
 	///<summary>Deletes the buffers in the RAM</summary>
@@ -83,6 +86,8 @@ public:
 	///<param name="additional">Scale per vector length</param>
 	void scaleAt(vec3 to,vec3 basic, vec3 additional);
 
+	glm::mat4 modelBuffer;
+	glm::mat4 normalBuffer;
 private:
 	///<summary>Vertex positions buffer in the RAM</summary>
 	std::vector <glm::vec3> vertex;

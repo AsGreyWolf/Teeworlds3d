@@ -1,6 +1,7 @@
 #include "Resources.h"
 #include "../../Client.h"
 #include "Model.h"
+#include "Model2d.h"
 #include "../Graphics.h"
 #include "../../../tools/system.h"
 #include "../../../../other/sdl/include/SDL_image.h"
@@ -28,9 +29,11 @@ const SDL_Color Resources::SDLColorBlack = {0, 0, 0};
 
 void Resources::Load(){
 	//textures
-	loadTexture("blank.png",textureBlank,true,false);
-	loadTexture("rgb.png",textureRGB,true,false);
+	loadTexture("blank.png",textureBlank,true,true);
+	loadTexture("rgb.png",textureRGB,false,false);
 	loadTexture("game.png",textureGame,true,true);
+	genTexture(m_Graphics->WscreenSize*2,m_Graphics->screenSize*2,textureShadowColor,false,true,0);
+	genTexture(m_Graphics->WscreenSize*2,m_Graphics->screenSize*2,textureShadowDepth,false,true,0,true);
 	vector<string> skins;
 	System::GetFilesInDirectory(skins,m_Graphics->m_Client->GetDataFile("skins"));
 	for(unsigned int i=0;i<skins.size();i++){
@@ -539,6 +542,11 @@ void Resources::Load(){
 	coordsModel->addVertex(vec3(0,0,32),vec3(0,0,1),vec2(0,1));
 	coordsModel->create();
 
+	screenModel=new Model2d(m_Graphics);
+	screenModel->texture=textureRGB;
+	screenModel->addQuad(m_Graphics->screen,quad2(0,0,1,1));
+	screenModel->create();
+
 	for(int i=0;i<NUM_WEAPONS;i++){
 		Model* buffer;
 		buffer=new Model(m_Graphics);
@@ -551,6 +559,7 @@ void Resources::Load(){
 	//shaders
 	loadShader("shaders/shader",shader3d);
 	loadShader("shaders/shader2d",shader2d);
+	loadShader("shaders/shaderShadow",shaderShadow);
 
 	//fonts
 	fontPath=m_Graphics->m_Client->GetDataFile(fontName);
@@ -561,6 +570,8 @@ void Resources::UnLoad(){
 	unLoadTexture(textureBlank);
 	unLoadTexture(textureGame);
 	unLoadTexture(textureRGB);
+	removeTexture(textureShadowColor);
+	removeTexture(textureShadowDepth);
 
 	for(map<string,GLuint>::iterator key=skinTextures.begin();key!=skinTextures.end();key++){
 		unLoadTexture((*key).second);
@@ -576,6 +587,7 @@ void Resources::UnLoad(){
 
 	//models
 	delete coordsModel;
+	delete screenModel;
 
 	for(int i=0;i<NUM_WEAPONS;i++){
 		unLoadTexture(weaponModels[i]->texture);
@@ -586,6 +598,7 @@ void Resources::UnLoad(){
 	//shaders
 	unLoadShader(shader3d);
 	unLoadShader(shader2d);
+	unLoadShader(shaderShadow);
 }
 void Resources::ClearBuffers(){
 	for(map<int,map<string,GLuint>>::iterator key=stringBuffer.begin();key!=stringBuffer.end();key++){
@@ -670,24 +683,7 @@ TTF_Font* Resources::loadFont(int size){
 		return font;
 	}
 }
-void Resources::unLoadTexture(GLuint &tex){
-	glDeleteTextures(1,&tex);
-}
-bool Resources::loadTextureFromSurface(SDL_Surface* &data, GLuint &tex,bool mipmaps,bool filtering)
-{
-	m_Graphics->to_RGBA(data);
-	GLint maxTexSize;
-	if(data == NULL){
-		tex=textureRGB;
-		return false;
-	}
-
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
-	if(data->w > maxTexSize){
-		tex=textureRGB;
-		return false;
-	}
-
+void Resources::genTexture(int w,int h,GLuint &tex,bool mipmaps,bool filtering,GLvoid* pixels,bool depth){
 	glGenTextures(1, &tex);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
@@ -704,9 +700,33 @@ bool Resources::loadTextureFromSurface(SDL_Surface* &data, GLuint &tex,bool mipm
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 	if(mipmaps)
-		gluBuild2DMipmaps(GL_TEXTURE_2D, 4, data->w, data->h,GL_RGBA, GL_UNSIGNED_BYTE,  data->pixels);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 4, w, h,GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 	else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data->w, data->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data->pixels);
+		if(depth)glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT,GL_FLOAT, pixels);
+		else glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+}
+void Resources::removeTexture(GLuint &tex){
+	glDeleteTextures(1,&tex);
+}
+void Resources::unLoadTexture(GLuint &tex){
+	removeTexture(tex);
+}
+bool Resources::loadTextureFromSurface(SDL_Surface* &data, GLuint &tex,bool mipmaps,bool filtering)
+{
+	m_Graphics->to_RGBA(data);
+	GLint maxTexSize;
+	if(data == NULL){
+		tex=textureRGB;
+		return false;
+	}
+
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
+	if(data->w > maxTexSize){
+		tex=textureRGB;
+		return false;
+	}
+
+	genTexture(data->w,data->h,tex,mipmaps,filtering,data->pixels);
 	return true;
 }
 

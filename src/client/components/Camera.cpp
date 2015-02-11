@@ -24,7 +24,7 @@ void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	if (keys[SDL_SCANCODE_R]) position+=up2;
 	if (keys[SDL_SCANCODE_F]) position-=up2;
 }
-void Camera::Render(){}
+void Camera::Render(bool buffered){}
 void Camera::RenderBillboard(){}
 void Camera::Render2d(){}
 void Camera::Tick(){}
@@ -35,8 +35,6 @@ void Camera::SetMatrix(){
 	updateVectors();
 
 	m_Client->m_Graphics->SetViewMatrix(position, position+look,up);
-
-	glScalef(1,1,1);
 }
 void Camera::RotateX(float rad){
 	rotation.x+=rad;

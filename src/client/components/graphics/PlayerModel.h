@@ -18,7 +18,10 @@ public:
 	///<summary>Initializes subModels and creates them</summary>
 	void create();
 	///<summary>Pushes the subModels into the shader</summary>
-	void render();
+	void render(const glm::mat4 &lastMatrix,bool buffered);
+	void render(bool buffered=false){
+		render(glm::mat4(1.0f),buffered);
+	}
 	///<summary>Pushes the billboards into the shader</summary>
 	void renderBillboard();
 	///<summary>Removes the subModels</summary>
@@ -56,6 +59,8 @@ private:
 	float lastFaseA;
 
 	static vec3 weaponPos[NUM_WEAPONS];
+	mat4 weaponModelMatrix;
+	mat4 weaponNormalMatrix;
 };
 
 #endif

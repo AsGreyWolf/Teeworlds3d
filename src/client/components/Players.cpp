@@ -81,11 +81,13 @@ void Players::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	}
 }
 void Players::StateChange(STATE lastState){}
-void Players::Render(){
+void Players::Render(bool buffered){
 	for(int i=0;i<MAX_PLAYERS;i++){
-		n[i]->update(players[i]);
-		n[i]->lookAt(m_Client->m_Camera->position);
-		n[i]->render();
+		if(!buffered){
+			n[i]->update(players[i]);
+			n[i]->lookAt(m_Client->m_Camera->position);
+		}
+		n[i]->render(buffered);
 	}
 }
 void Players::Render2d(){
