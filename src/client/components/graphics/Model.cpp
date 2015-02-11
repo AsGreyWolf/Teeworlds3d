@@ -11,12 +11,10 @@
 
 
 	
-void Model::render(const glm::mat4 &lastMatrix,bool buffered){
-	if(buffered){
-		m_Graphics->SetModelMatrix(modelBuffer,normalBuffer);
-	}else{
-		m_Graphics->SetModelMatrix(modelBuffer,normalBuffer,position,rot,scale,lastMatrix);
-	}
+void Model::render(){
+	m_Graphics->PushMatrix();
+
+	m_Graphics->SetModelMatrix(position,rot,scale);
 	m_Graphics->SetColor(coloring);
 
 	//if(this!=m_Graphics->m_Resources->coordsModel)
@@ -26,21 +24,38 @@ void Model::render(const glm::mat4 &lastMatrix,bool buffered){
 	glBindVertexArray(VAO);
 	m_Graphics->SetLight(lighting);
 	glDrawArrays(type , 0, vertex.size());
+	m_Graphics->PopMatrix();
 }
 
-Model::Model(int t,Graphics* g,bool l):type(t),m_Graphics(g),lighting(l),position(vec3()),rot(vec3()),coloring(vec4()),scale(vec3(1)),texture(g->m_Resources->textureBlank){
+Model::Model(int type,Graphics* g,bool lighting){
+	this->lighting=lighting;
+	m_Graphics=g;
+	this->type=type;
+	position=vec3(0,0,0);
+	rot=vec3(0,0,0);
+	coloring=vec4(0,0,0,0);
+	scale=vec3(1,1,1);
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	glGenBuffers(1,&vbuffer);
 	glGenBuffers(1,&nbuffer);
 	glGenBuffers(1,&tbuffer);
+	texture=g->m_Resources->textureBlank;
 }
-Model::Model(Graphics* g,bool l):type(GL_TRIANGLES),m_Graphics(g),lighting(l),position(vec3()),rot(vec3()),coloring(vec4()),scale(vec3(1)),texture(g->m_Resources->textureBlank){
+Model::Model(Graphics* g,bool lighting){
+	this->lighting=lighting;
+	m_Graphics=g;
+	type=GL_TRIANGLES;
+	position=vec3(0,0,0);
+	rot=vec3(0,0,0);
+	coloring=vec4(0,0,0,0);
+	scale=vec3(1,1,1);
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	glGenBuffers(1,&vbuffer);
 	glGenBuffers(1,&nbuffer);
 	glGenBuffers(1,&tbuffer);
+	texture=g->m_Resources->textureBlank;
 }
 void Model::create(){
 	glBindVertexArray(VAO);

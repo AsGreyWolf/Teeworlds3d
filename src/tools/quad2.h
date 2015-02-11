@@ -45,9 +45,6 @@ public:
 	quad2 operator*(float a){
 		return quad2(p00*a,p10*a,p01*a,p11*a);
 	}
-	quad2 operator/(float a){
-		return quad2(p00*(1.0f/a),p10*(1.0f/a),p01*(1.0f/a),p11*(1.0f/a));
-	}
 	static glm::vec3 vec2rot(glm::vec3 v){
 		glm::vec2 xy=glm::normalize(glm::vec2(v.x,v.y));
 		return glm::vec3(asin(v.z),0,xy.x>0.0?-acos(xy.y):acos(xy.y));

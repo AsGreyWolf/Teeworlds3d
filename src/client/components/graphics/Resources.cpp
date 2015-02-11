@@ -1,7 +1,6 @@
 #include "Resources.h"
 #include "../../Client.h"
 #include "Model.h"
-#include "Model2d.h"
 #include "../Graphics.h"
 #include "../../../tools/system.h"
 #include "../../../../other/sdl/include/SDL_image.h"
@@ -29,11 +28,9 @@ const SDL_Color Resources::SDLColorBlack = {0, 0, 0};
 
 void Resources::Load(){
 	//textures
-	loadTexture("blank.png",textureBlank,true,true);
-	loadTexture("rgb.png",textureRGB,false,false);
+	loadTexture("blank.png",textureBlank,true,false);
+	loadTexture("rgb.png",textureRGB,true,false);
 	loadTexture("game.png",textureGame,true,true);
-	genTexture(m_Graphics->WscreenSize*2,m_Graphics->screenSize*2,textureShadowColor,false,true,0);
-	genTexture(m_Graphics->WscreenSize*2,m_Graphics->screenSize*2,textureShadowDepth,false,true,0,true);
 	vector<string> skins;
 	System::GetFilesInDirectory(skins,m_Graphics->m_Client->GetDataFile("skins"));
 	for(unsigned int i=0;i<skins.size();i++){
@@ -542,11 +539,6 @@ void Resources::Load(){
 	coordsModel->addVertex(vec3(0,0,32),vec3(0,0,1),vec2(0,1));
 	coordsModel->create();
 
-	screenModel=new Model2d(m_Graphics);
-	screenModel->texture=textureRGB;
-	screenModel->addQuad(m_Graphics->screen,quad2(0,0,1,1));
-	screenModel->create();
-
 	for(int i=0;i<NUM_WEAPONS;i++){
 		Model* buffer;
 		buffer=new Model(m_Graphics);
@@ -559,7 +551,6 @@ void Resources::Load(){
 	//shaders
 	loadShader("shaders/shader",shader3d);
 	loadShader("shaders/shader2d",shader2d);
-	loadShader("shaders/shaderShadow",shaderShadow);
 
 	//fonts
 	fontPath=m_Graphics->m_Client->GetDataFile(fontName);
@@ -570,8 +561,6 @@ void Resources::UnLoad(){
 	unLoadTexture(textureBlank);
 	unLoadTexture(textureGame);
 	unLoadTexture(textureRGB);
-	removeTexture(textureShadowColor);
-	removeTexture(textureShadowDepth);
 
 	for(map<string,GLuint>::iterator key=skinTextures.begin();key!=skinTextures.end();key++){
 		unLoadTexture((*key).second);
@@ -587,7 +576,6 @@ void Resources::UnLoad(){
 
 	//models
 	delete coordsModel;
-	delete screenModel;
 
 	for(int i=0;i<NUM_WEAPONS;i++){
 		unLoadTexture(weaponModels[i]->texture);
@@ -598,7 +586,6 @@ void Resources::UnLoad(){
 	//shaders
 	unLoadShader(shader3d);
 	unLoadShader(shader2d);
-	unLoadShader(shaderShadow);
 }
 void Resources::ClearBuffers(){
 	for(map<int,map<string,GLuint>>::iterator key=stringBuffer.begin();key!=stringBuffer.end();key++){
@@ -683,33 +670,8 @@ TTF_Font* Resources::loadFont(int size){
 		return font;
 	}
 }
-void Resources::genTexture(int w,int h,GLuint &tex,bool mipmaps,bool filtering,GLvoid* pixels,bool depth){
-	glGenTextures(1, &tex);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex);
-	glEnable(GL_TEXTURE_2D);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
-	if(!filtering){
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	}else{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	}
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-
-	if(mipmaps)
-		gluBuild2DMipmaps(GL_TEXTURE_2D, 4, w, h,GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-	else
-		if(depth)glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT,GL_FLOAT, pixels);
-		else glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-}
-void Resources::removeTexture(GLuint &tex){
-	glDeleteTextures(1,&tex);
-}
 void Resources::unLoadTexture(GLuint &tex){
-	removeTexture(tex);
+	glDeleteTextures(1,&tex);
 }
 bool Resources::loadTextureFromSurface(SDL_Surface* &data, GLuint &tex,bool mipmaps,bool filtering)
 {
@@ -726,7 +688,25 @@ bool Resources::loadTextureFromSurface(SDL_Surface* &data, GLuint &tex,bool mipm
 		return false;
 	}
 
-	genTexture(data->w,data->h,tex,mipmaps,filtering,data->pixels);
+	glGenTextures(1, &tex);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glEnable(GL_TEXTURE_2D);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
+	if(!filtering){
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	}else{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	}
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+
+	if(mipmaps)
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 4, data->w, data->h,GL_RGBA, GL_UNSIGNED_BYTE,  data->pixels);
+	else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data->w, data->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data->pixels);
 	return true;
 }
 
@@ -770,13 +750,14 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 {
 	string firstpath=m_Graphics->m_Client->GetDataFile(filepath);
 
-	GLchar *vertexsource, *fragmentsource;
-	GLuint vertexshader, fragmentshader;
-	int IsCompiled_VS, IsCompiled_FS;
+	GLchar *vertexsource, *fragmentsource,*geometrysource;
+	GLuint vertexshader, fragmentshader,geometryshader;
+	int IsCompiled_VS, IsCompiled_FS,IsCompiled_GS;
 	int IsLinked;
 	int maxLength;
 	char *vertexInfoLog;
 	char *fragmentInfoLog;
+	char *geometryInfoLog;
 	char *shaderProgramInfoLog;
 	string path=firstpath;
 	path.append(".vert");
@@ -784,6 +765,9 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 	path=firstpath;
 	path.append(".frag");
 	fragmentsource = filetobuf(path);
+	path=firstpath;
+	path.append(".geom");
+	geometrysource = filetobuf(path);
 
 	vertexshader = glCreateShader(GL_VERTEX_SHADER);
 
@@ -820,11 +804,32 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 		m_Graphics->m_Client->Err(string(fragmentInfoLog));
 		free(fragmentInfoLog);
 	}
+	if(geometrysource!=NULL){
+		geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
+
+		glShaderSource(geometryshader, 1, (const GLchar**)&geometrysource, 0);
+
+		glCompileShader(geometryshader);
+
+		glGetShaderiv(geometryshader, GL_COMPILE_STATUS, &IsCompiled_GS);
+		if(IsCompiled_GS == GL_FALSE)
+		{
+			glGetShaderiv(geometryshader, GL_INFO_LOG_LENGTH, &maxLength);
+
+			geometryInfoLog = (char *)malloc(maxLength);
+
+			glGetShaderInfoLog(geometryshader, maxLength, &maxLength, geometryInfoLog);
+			m_Graphics->m_Client->Err(string(geometryInfoLog));
+			free(geometryInfoLog);
+		}
+	}
 
 	shader = glCreateProgram();
 
 	glAttachShader(shader, vertexshader);
 	glAttachShader(shader, fragmentshader);
+	if(geometrysource!=NULL)
+		glAttachShader(shader, geometryshader);
 
 	glLinkProgram(shader);
 
@@ -843,5 +848,7 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 	}
 	free(vertexsource);
 	free(fragmentsource);
+	if(geometrysource!=NULL)
+		free(geometrysource);
 	return true;
 }

@@ -16,7 +16,6 @@
 using namespace std;
 class Graphics;
 class Model;
-class Model2d;
 
 class Resources{
 public:
@@ -34,24 +33,17 @@ public:
 	///<param name="mipmaps">Use mipmaps?</param>
 	///<param name="filtering">Use filtering?</param>
 	///<returns>true if all right, false if error found</returns>
-	bool loadTexture(string filepath,GLuint &tex,bool mipmaps,bool filtering);
+	bool loadTexture(string filepath, GLuint &tex,bool mipmaps,bool filtering);
 	///<summary>Loads texture from the SDL_Surface</summary>
 	///<param name="data">SDL_Surface</param>
 	///<param name="tex">Texture id</param>
 	///<param name="mipmaps">Use mipmaps?</param>
 	///<param name="filtering">Use filtering?</param>
 	///<returns>true if all right, false if error found</returns>
-	bool loadTextureFromSurface(SDL_Surface* &data,GLuint &tex,bool mipmaps,bool filtering);
-	void unLoadTexture(GLuint &tex);
-	///<summary>Loads texture from the file</summary>
-	///<param name="w">Width</param>
-	///<param name="h">Height</param>
+	bool loadTextureFromSurface(SDL_Surface* &data, GLuint &tex,bool mipmaps,bool filtering);
+	///<summary>UnLoads texture</summary>
 	///<param name="tex">Texture id</param>
-	///<param name="mipmaps">Use mipmaps?</param>
-	///<param name="filtering">Use filtering?</param>
-	///<param name="pixels">Texture data</param>
-	void genTexture(int w,int h,GLuint &tex,bool mipmaps,bool filtering,GLvoid* pixels,bool depth=false);
-	void removeTexture(GLuint &tex);
+	void unLoadTexture(GLuint &tex);
 	///<summary>Quades for the 8x8-tile texture</summary>
 	vector<quad2> texturePos8;
 	///<summary>Quades for the 8x4-tile texture</summary>
@@ -68,10 +60,6 @@ public:
 	GLuint textureRGB;
 	///<summary>InGame HUD texture</summary>
 	GLuint textureGame;
-	///<summary>Shadow texture(Color)</summary>
-	GLuint textureShadowColor;
-	///<summary>Shadow texture(Depth)</summary>
-	GLuint textureShadowDepth;
 	///<summary>InGame cursor quads</summary>
 	vector<quad2> gameCursor;
 
@@ -85,8 +73,6 @@ public:
 	vector<Model*> weaponModels;
 	///<summary>3-axis coords model</summary>
 	class Model* coordsModel;
-	///<summary>Screen Model</summary>
-	class Model2d* screenModel;
 
 	//shaders
 
@@ -102,8 +88,6 @@ public:
 	GLuint shader3d;
 	///<summary>2d shader</summary>
 	GLuint shader2d;
-	///<summary>Shadow shader</summary>
-	GLuint shaderShadow;
 
 	//fonts
 	///<summary>Font name</summary>

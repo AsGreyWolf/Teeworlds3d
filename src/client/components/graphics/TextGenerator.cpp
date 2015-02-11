@@ -2,12 +2,14 @@
 #include "../Graphics.h"
 #include "Resources.h"
 
-TextGenerator::TextGenerator(Graphics* g,string text,int size,int align,bool buf):m_Graphics(g),buffering(buf){
+TextGenerator::TextGenerator(Graphics* g,string text,int size,int align,bool buffering){
+	m_Graphics=g;
 	float aspect=1;
 	float cursize=size*1.0f/m_Graphics->m_Resources->FONT_DIVIDER;
 	pixels=1;
 	while(pixels<m_Graphics->to_pixels(cursize))
 		pixels<<=1;
+	this->buffering=buffering;
 	m_Graphics->m_Resources->loadStringTexture(texture,aspect,text,pixels,buffering);
 	switch(align){
 	case ALIGN_LEFT_TOP:

@@ -42,6 +42,7 @@ public:
 		SHADER_POS=0,
 		SHADER_TEXMAP,
 		SHADER_NORMAL
+		//SHADER_COLOR
 	};
 
 	///<summary>Stores 'c' to 'm_Client'</summary>
@@ -57,7 +58,7 @@ public:
 	///<param name="lastState">Last state</param>
 	void StateChange(STATE lastState);
 	///<summary>3d render callback</summary>
-	void Render(bool buffered=false);
+	void Render();
 	///<summary>Render 3d Billboard</summary>
 	void RenderBillboard();
 	///<summary>2d render callback</summary>
@@ -95,88 +96,48 @@ public:
 	///<param name="center">Vector directed forward the camera</param>
 	///<param name="up">Vector directed upforwards the camera</param>
 	void SetViewMatrix(const glm::vec3 &position, const glm::vec3 &center, const glm::vec3 &up);
-	///<summary>Updates viewProjectionMatrix uniform in 3d shader</summary>
-	///<param name="position">Position of the camera</param>
-	///<param name="center">Vector directed forward the camera</param>
-	///<param name="up">Vector directed upforwards the camera</param>
-	void SetShadowMatrix(const glm::vec3 &position, const glm::vec3 &center, const glm::vec3 &up);
 	///<summary>Updates modelMatrix uniform in 3d shader</summary>
 	///<param name="position">Position of the model</param>
 	///<param name="rotation">Rotation of the model</param>
 	///<param name="size">Size of the model</param>
-	void SetModelMatrix(glm::mat4 &modelBuffer, glm::mat4 &normalBuffer,const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &size,const glm::mat4 &lastMatrix);
-	///<summary>Updates modelMatrix uniform in 3d shader</summary>
-	///<param name="modelBuffer">Model matrix</param>
-	///<param name="normalBuffer">normal Matrix</param>
-	void SetModelMatrix(const glm::mat4 &modelBuffer, const glm::mat4 &normalBuffer);
+	void SetModelMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &size);
 	///<summary>Translate matrix</summary>
 	///<param name="position">Position of the model</param>
-<<<<<<< HEAD
-	void Translate(glm::mat4 & matrix,const glm::vec3 &position);
+	void Translate(const glm::vec3 &position);
 	///<summary>Rotate matrix</summary>
 	///<param name="rotation">Rotation of the model</param>
-	void RotateX(glm::mat4 & matrix,const glm::vec3 &rotation);
+	void RotateX(const glm::vec3 &rotation);
 	///<summary>Rotate matrix</summary>
 	///<param name="rotation">Rotation of the model</param>
-	void RotateY(glm::mat4 & matrix,const glm::vec3 &rotation);
+	void RotateY(const glm::vec3 &rotation);
 	///<summary>Rotate matrix</summary>
 	///<param name="rotation">Rotation of the model</param>
-	void RotateZ(glm::mat4 & matrix,const glm::vec3 &rotation);
+	void RotateZ(const glm::vec3 &rotation);
 	///<summary>Scale matrix</summary>
 	///<param name="scale">Scale of the model</param>
-	void Scale(glm::mat4 & matrix,const glm::vec3 &scale);
-=======
-	glm::mat4 Translate(const glm::vec3 &position);
-	///<summary>Rotate matrix</summary>
-	///<param name="rotation">Rotation of the model</param>
-	glm::mat4 RotateX(const glm::vec3 &rotation);
-	///<summary>Rotate matrix</summary>
-	///<param name="rotation">Rotation of the model</param>
-	glm::mat4 RotateY(const glm::vec3 &rotation);
-	///<summary>Rotate matrix</summary>
-	///<param name="rotation">Rotation of the model</param>
-	glm::mat4 RotateZ(const glm::vec3 &rotation);
-	///<summary>Scale matrix</summary>
-	///<param name="scale">Scale of the model</param>
-	glm::mat4 Scale(const glm::vec3 &scale);
->>>>>>> parent of f137aad... Fixes
+	void Scale(const glm::vec3 &scale);
 	///<summary>Transform matrix</summary>
 	///<param name="position">Position of the model</param>
 	///<param name="rotation">Rotation of the model</param>
 	///<param name="scale">Scale of the model</param>
-<<<<<<< HEAD
-	void Transform(glm::mat4 & matrix,const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale);
-=======
-	glm::mat4 Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale);
+	void Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale);
 	///<summary>Pushes current model matrix to the stack</summary>
 	void PushMatrix();
 	///<summary>Restores current model matrix from the stack</summary>
 	void PopMatrix();
 	///<summary>Stack of the model matrix</summary>
 	stack<glm::mat4> ModelMatrixStack;
->>>>>>> parent of f137aad... Fixes
 
 	///<summary>Light uniform in 3d shader</summary>
-	unsigned int lightUniform3d;
+	unsigned int lightUniform;
 	///<summary>Color uniform in 3d shader</summary>
 	unsigned int colorUniform3d;
 	///<summary>viewProjectionMatrix uniform in 3d shader</summary>
-	unsigned int viewProjectionMatrixUniform3d;
+	unsigned int viewProjectionMatrixUniform;
 	///<summary>modelMatrix uniform in 3d shader</summary>
-	unsigned int modelMatrixUniform3d;
+	unsigned int modelMatrixUniform;
 	///<summary>normalMatrix uniform in 3d shader</summary>
-	unsigned int normalMatrixUniform3d;
-	///<summary>viewProjectionMatrix uniform in 3d shader for shadow</summary>
-	unsigned int shadowViewProjectionMatrixUniform3d;
-	///<summary>Texture uniform in 3d shader</summary>
-	unsigned int textureUniform3d;
-	///<summary>Shadow uniform in 3d shader</summary>
-	unsigned int shadowUniform3d;
-
-	///<summary>viewProjectionMatrix uniform in shadow shader</summary>
-	unsigned int viewProjectionMatrixUniformShadow;
-	///<summary>modelMatrix uniform in shadow shader</summary>
-	unsigned int modelMatrixUniformShadow;
+	unsigned int normalMatrixUniform;
 
 	///<summary>Color uniform in 2d shader</summary>
 	unsigned int colorUniform2d;
@@ -190,28 +151,21 @@ public:
 	///<summary>Screen quad</summary>
 	quad2 screen;
 	///<summary>Height in pixels</summary>
-	int screenSize;
-	///<summary>Width in pixels</summary>
-	int WscreenSize;
+	float screenSize;
 
 	///<summary>Data loader</summary>
 	class Resources* m_Resources;
-	
-	///<summary>Framebuffer</summary>
-	GLuint frameBuffer;
-	GLuint frameBillboardBuffer;
-	GLuint frameShadowBuffer;
 
 	///<summary>3d projection matrix</summary>
 	glm::mat4 perspectiveMatrix;
-	///<summary>Shadow matrix</summary>
-	glm::mat4 orthoMatrix;
 	///<summary>3d view matrix</summary>
 	glm::mat4 viewMatrix;
+	///<summary>3d model matrix</summary>
+	glm::mat4 modelMatrix;
+	///<summary>3d normal matrix</summary>
+	glm::mat4 normalMatrix;
 	///<summary>3d viewProjection matrix</summary>
 	glm::mat4 viewProjectionMatrix;
-	///<summary>3d viewProjection matrix</summary>
-	glm::mat4 viewProjectionMatrixShadow;
 };
 
 #endif

@@ -15,16 +15,16 @@ void Map::StateChange(STATE lastState){
 	if(!lastState.ingame && m_Client->state.ingame)
 	{
 		m_Model=new Model(m_Client->m_Graphics);
-		Load("1234");
+		Load("123");
 		return;
 	}
 	if(lastState.ingame && !m_Client->state.ingame){
 		UnLoad();
 	}
 }
-void Map::Render(bool buffered){
+void Map::Render(){
 	if(m_Client->state.ingame)
-		m_Model->render(buffered);
+		m_Model->render();
 }
 void Map::RenderBillboard(){}
 void Map::Render2d(){}

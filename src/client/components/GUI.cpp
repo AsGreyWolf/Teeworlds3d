@@ -24,7 +24,7 @@ GUI::~GUI(){
 }
 void GUI::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
 void GUI::StateChange(STATE lastState){}
-void GUI::Render(bool buffered){}
+void GUI::Render(){}
 void GUI::RenderBillboard(){}
 void GUI::Render2d(){
 	fpsObject->setText(std::to_string(m_Client->fps));

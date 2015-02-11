@@ -127,9 +127,9 @@ void Client::Input(unsigned char* keyss,int xrels,int yrels,int wheels){
 		component->Input((unsigned char*)keys,xrel,yrel,wheel);
 	}
 }
-void Client::Render(bool buffered){
+void Client::Render(){
 	for(auto &component : m_Components){
-		component->Render(buffered);
+		component->Render();
 	}
 }
 void Client::RenderBillboard(){

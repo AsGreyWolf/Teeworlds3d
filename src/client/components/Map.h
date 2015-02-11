@@ -34,7 +34,7 @@ public:
 	///<param name="lastState">Last state</param>
 	void StateChange(STATE lastState);
 	///<summary>3d render callback</summary>
-	void Render(bool buffered=false);
+	void Render();
 	///<summary>Render 3d Billboard</summary>
 	void RenderBillboard();
 	///<summary>2d render callback</summary>
