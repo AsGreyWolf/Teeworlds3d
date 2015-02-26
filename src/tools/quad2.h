@@ -29,7 +29,7 @@ public:
 		p10=glm::vec2(0,0);
 		p11=glm::vec2(0,0);
 	}
-	quad2 operator+(const quad2& c){
+	quad2 operator>>(const quad2& c){
 		float x=std::min(p00.x,c.p00.x);
 		float y=std::min(p00.y,c.p00.y);
 		float x1=std::max(p11.x,c.p11.x);
@@ -44,6 +44,18 @@ public:
 	}
 	quad2 operator*(float a){
 		return quad2(p00*a,p10*a,p01*a,p11*a);
+	}
+	quad2 operator/(float a){
+		return operator*(1.0f/a);
+	}
+	quad2 operator+(const glm::vec2& c){
+		return quad2(p00+c,p10+c,p01+c,p11+c);
+	}
+	quad2 operator-(const glm::vec2& c){
+		return operator+(-c);
+	}
+	quad2 operator>>(const glm::vec2& c){
+		return operator>>(operator+(c));
 	}
 	static glm::vec3 vec2rot(glm::vec3 v){
 		glm::vec2 xy=glm::normalize(glm::vec2(v.x,v.y));

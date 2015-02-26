@@ -20,12 +20,12 @@ exit errorlevel
 @call cd "%BAT_PATH%obj"
 @call echo --------------------------COMPILING--------------------------
 if "%DEBUG%"=="" (
-@call cl /c /O2 /Gm /MD /MP /DPLATFORM_WIN -D WIN32 -I%SDL_INC% /analyze /fp:precise /EHsc %SRCFILES%
+@call cl /c /Ox /GL /MD /MP /DPLATFORM_WIN /DWIN32 /D_USING_V110_SDK71_ -I%SDL_INC% /fp:fast /EHsc %SRCFILES%
 ) else (
 @call mkdir debug
 @call cd debug
 @call echo --------------------------DEBUG--------------------------
-@call cl /c /Od /ZI /Gm /MD /MP /DPLATFORM_WIN -D WIN32 -I%SDL_INC% /analyze /fp:precise /EHsc %SRCFILES%
+@call cl /c /Od /ZI /Gm /MD /MP /DPLATFORM_WIN /DWIN32 -I%SDL_INC% /analyze /fp:precise /EHsc %SRCFILES%
 )
 if errorlevel 1 GOTO err
 @call echo --------------------------LINKING--------------------------

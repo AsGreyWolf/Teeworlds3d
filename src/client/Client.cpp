@@ -116,6 +116,8 @@ void Client::Input(unsigned char* keyss,int xrels,int yrels,int wheels){
 			case SDL_MOUSEMOTION:
 				xrel=sdlevent.motion.xrel;
 				yrel=sdlevent.motion.yrel;
+				if(xrel>100000)xrel=0;
+				if(yrel>100000)yrel=0;
 				break;
 			case SDL_MOUSEWHEEL:
 				wheel=sdlevent.wheel.y;

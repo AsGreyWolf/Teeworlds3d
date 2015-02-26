@@ -33,17 +33,19 @@ public:
 	///<param name="mipmaps">Use mipmaps?</param>
 	///<param name="filtering">Use filtering?</param>
 	///<returns>true if all right, false if error found</returns>
-	bool loadTexture(string filepath, GLuint &tex,bool mipmaps,bool filtering);
+	bool loadTexture(GLuint &tex,bool mipmaps,bool filtering,string filepath);
 	///<summary>Loads texture from the SDL_Surface</summary>
 	///<param name="data">SDL_Surface</param>
 	///<param name="tex">Texture id</param>
 	///<param name="mipmaps">Use mipmaps?</param>
 	///<param name="filtering">Use filtering?</param>
 	///<returns>true if all right, false if error found</returns>
-	bool loadTextureFromSurface(SDL_Surface* &data, GLuint &tex,bool mipmaps,bool filtering);
+	bool loadTextureFromSurface(GLuint &tex,bool mipmaps,bool filtering,SDL_Surface* &data);
 	///<summary>UnLoads texture</summary>
 	///<param name="tex">Texture id</param>
 	void unLoadTexture(GLuint &tex);
+	void genTexture(GLuint &tex,int w,int h,bool isDepth,bool mipmaps,bool filtering,const GLvoid* pixels);
+	void removeTexture(GLuint &tex);
 	///<summary>Quades for the 8x8-tile texture</summary>
 	vector<quad2> texturePos8;
 	///<summary>Quades for the 8x4-tile texture</summary>
@@ -60,6 +62,10 @@ public:
 	GLuint textureRGB;
 	///<summary>InGame HUD texture</summary>
 	GLuint textureGame;
+	///<summary>Shadow texture(Color)</summary>
+	GLuint textureShadowColor;
+	///<summary>Shadow texture(Depth)</summary>
+	GLuint textureShadowDepth;
 	///<summary>InGame cursor quads</summary>
 	vector<quad2> gameCursor;
 
@@ -86,6 +92,8 @@ public:
 	void unLoadShader(GLuint &shader);
 	///<summary>3d shader</summary>
 	GLuint shader3d;
+	///<summary>Shadow shader</summary>
+	GLuint shaderShadow;
 	///<summary>2d shader</summary>
 	GLuint shader2d;
 

@@ -10,7 +10,6 @@
 #define M_PI_2    1.5707963267948966192313216916385   /* pi/2 */
 #endif
 #include <string>
-#include <stack>
 #include <exception>
 #include "../Component.h"
 #include "../../tools/quad2.h"
@@ -100,44 +99,45 @@ public:
 	///<param name="position">Position of the model</param>
 	///<param name="rotation">Rotation of the model</param>
 	///<param name="size">Size of the model</param>
-	void SetModelMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &size);
+	void SetModelMatrix(glm::mat4 &modelMatrix,glm::mat4 &normalMatrix,const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &size);
 	///<summary>Translate matrix</summary>
 	///<param name="position">Position of the model</param>
-	void Translate(const glm::vec3 &position);
+	void Translate(glm::mat4 &modelMatrix,const glm::vec3 &position);
 	///<summary>Rotate matrix</summary>
 	///<param name="rotation">Rotation of the model</param>
-	void RotateX(const glm::vec3 &rotation);
+	void RotateX(glm::mat4 &modelMatrix,const glm::vec3 &rotation);
 	///<summary>Rotate matrix</summary>
 	///<param name="rotation">Rotation of the model</param>
-	void RotateY(const glm::vec3 &rotation);
+	void RotateY(glm::mat4 &modelMatrix,const glm::vec3 &rotation);
 	///<summary>Rotate matrix</summary>
 	///<param name="rotation">Rotation of the model</param>
-	void RotateZ(const glm::vec3 &rotation);
+	void RotateZ(glm::mat4 &modelMatrix,const glm::vec3 &rotation);
 	///<summary>Scale matrix</summary>
 	///<param name="scale">Scale of the model</param>
-	void Scale(const glm::vec3 &scale);
+	void Scale(glm::mat4 &modelMatrix,const glm::vec3 &scale);
 	///<summary>Transform matrix</summary>
 	///<param name="position">Position of the model</param>
 	///<param name="rotation">Rotation of the model</param>
 	///<param name="scale">Scale of the model</param>
-	void Transform(const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale);
-	///<summary>Pushes current model matrix to the stack</summary>
-	void PushMatrix();
-	///<summary>Restores current model matrix from the stack</summary>
-	void PopMatrix();
-	///<summary>Stack of the model matrix</summary>
-	stack<glm::mat4> ModelMatrixStack;
+	void Transform(glm::mat4 &modelMatrix,const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale);
 
 	///<summary>Light uniform in 3d shader</summary>
-	unsigned int lightUniform;
+	unsigned int lightUniform3d;
 	///<summary>Color uniform in 3d shader</summary>
 	unsigned int colorUniform3d;
 	///<summary>viewProjectionMatrix uniform in 3d shader</summary>
-	unsigned int viewProjectionMatrixUniform;
+	unsigned int viewProjectionMatrixUniform3d;
+	///<summary>shadowProjectionMatrix uniform in 3d shader</summary>
+	unsigned int shadowProjectionMatrixUniform3d;
 	///<summary>modelMatrix uniform in 3d shader</summary>
-	unsigned int modelMatrixUniform;
+	unsigned int modelMatrixUniform3d;
 	///<summary>normalMatrix uniform in 3d shader</summary>
-	unsigned int normalMatrixUniform;
+	unsigned int normalMatrixUniform3d;
+
+	///<summary>viewProjectionMatrix uniform in shadow shader</summary>
+	unsigned int viewProjectionMatrixUniformShadow;
+	///<summary>modelMatrix uniform in shadow shader</summary>
+	unsigned int modelMatrixUniformShadow;
 
 	///<summary>Color uniform in 2d shader</summary>
 	unsigned int colorUniform2d;
@@ -151,21 +151,20 @@ public:
 	///<summary>Screen quad</summary>
 	quad2 screen;
 	///<summary>Height in pixels</summary>
-	float screenSize;
+	int screenSize;
 
 	///<summary>Data loader</summary>
 	class Resources* m_Resources;
 
 	///<summary>3d projection matrix</summary>
 	glm::mat4 perspectiveMatrix;
-	///<summary>3d view matrix</summary>
-	glm::mat4 viewMatrix;
-	///<summary>3d model matrix</summary>
-	glm::mat4 modelMatrix;
-	///<summary>3d normal matrix</summary>
-	glm::mat4 normalMatrix;
-	///<summary>3d viewProjection matrix</summary>
-	glm::mat4 viewProjectionMatrix;
+	///<summary>ortho projection matrix</summary>
+	glm::mat4 orthoMatrix;
+
+	GLuint shadowFBO;
+
+	///<summary>If we are rendering scene second time(not to calc matrix)</summary>
+	bool restoreMatrix;
 };
 
 #endif

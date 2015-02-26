@@ -21,8 +21,6 @@ vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(0,1,0),
 	};
 void PlayerModel::renderBillboard(){
-	m_Graphics->PushMatrix();
-
 	NickName->lookAt(m_Graphics->m_Client->m_Camera->position);
 	NickNameShadow->lookAt(m_Graphics->m_Client->m_Camera->position);
 	NickName->scaleAt(m_Graphics->m_Client->m_Camera->position,vec3(0),vec3(0.002f));
@@ -31,28 +29,30 @@ void PlayerModel::renderBillboard(){
 	NickNameShadow->scale+=1;
 	NickName->render();
 	NickNameShadow->render();
-
-	m_Graphics->PopMatrix();
 }
-void PlayerModel::render(){
-	m_Graphics->PushMatrix();
+void PlayerModel::render(const glm::mat4 &parentMatrix){
+	if(!m_Graphics->restoreMatrix)
+		modelMatrix=parentMatrix;
 
-	m_Graphics->Translate(position);
-	m_Graphics->RotateZ(rot);
-	Body->render();
-	lFoot->render();
-	rFoot->render();
-	m_Graphics->RotateX(rot);
-	m_Graphics->RotateY(rot);
+	m_Graphics->Translate(modelMatrix,position);
+	m_Graphics->RotateZ(modelMatrix,rot);
+	Body->render(modelMatrix);
+	lFoot->render(modelMatrix);
+	rFoot->render(modelMatrix);
+	m_Graphics->RotateX(modelMatrix,rot);
+	m_Graphics->RotateY(modelMatrix,rot);
 
-	lArm->render();
-	rArm->render();
+	lArm->render(modelMatrix);
+	rArm->render(modelMatrix);
 
 	m_Graphics->m_Resources->weaponModels[weapon]->position=weaponPos[weapon];
-	m_Graphics->m_Resources->weaponModels[weapon]->render();
+	m_Graphics->m_Resources->weaponModels[weapon]->modelMatrix=gunModelMatrix;
+	m_Graphics->m_Resources->weaponModels[weapon]->normalMatrix=gunNormalMatrix;
+	m_Graphics->m_Resources->weaponModels[weapon]->render(modelMatrix);
+	gunModelMatrix=m_Graphics->m_Resources->weaponModels[weapon]->modelMatrix;
+	gunNormalMatrix=m_Graphics->m_Resources->weaponModels[weapon]->normalMatrix;
 	
-	Eyes->render();
-	m_Graphics->PopMatrix();
+	Eyes->render(modelMatrix);
 }
 PlayerModel::PlayerModel(Graphics* g):Model(g){
 }
@@ -62,11 +62,11 @@ void PlayerModel::create(){
 	rArm=new Model(m_Graphics);
 	rArm->addSphere(detalization,detalization,vec3(1,1,1),RenderSize/8,m_Graphics->m_Resources->texturePos8x4[6],true);
 	lFoot=new Model(m_Graphics);
-	lFoot->addSphere(detalization,detalization,vec3(0.7f,1,0.5f),RenderSize/2.4f,m_Graphics->m_Resources->texturePos8x4[14]+m_Graphics->m_Resources->texturePos8x4[15],false);
+	lFoot->addSphere(detalization,detalization,vec3(0.7f,1,0.5f),RenderSize/2.4f,m_Graphics->m_Resources->texturePos8x4[14]>>m_Graphics->m_Resources->texturePos8x4[15],false);
 	rFoot=new Model(m_Graphics);
-	rFoot->addSphere(detalization,detalization,vec3(0.7f,1,0.5f),RenderSize/2.4f,m_Graphics->m_Resources->texturePos8x4[14]+m_Graphics->m_Resources->texturePos8x4[15],true);
+	rFoot->addSphere(detalization,detalization,vec3(0.7f,1,0.5f),RenderSize/2.4f,m_Graphics->m_Resources->texturePos8x4[14]>>m_Graphics->m_Resources->texturePos8x4[15],true);
 	Body=new Model(m_Graphics);
-	Body->addSphere(detalization,detalization,vec3(1,1,1),RenderSize/2,m_Graphics->m_Resources->texturePos8x4[0]+m_Graphics->m_Resources->texturePos8x4[18],false);
+	Body->addSphere(detalization,detalization,vec3(1,1,1),RenderSize/2,m_Graphics->m_Resources->texturePos8x4[0]>>m_Graphics->m_Resources->texturePos8x4[18],false);
 	Eyes=new Model(m_Graphics,false);
 	NickName=new Text3d(m_Graphics);
 	NickNameShadow=new Model(m_Graphics,false);

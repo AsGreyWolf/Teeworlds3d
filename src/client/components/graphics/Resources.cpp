@@ -28,14 +28,16 @@ const SDL_Color Resources::SDLColorBlack = {0, 0, 0};
 
 void Resources::Load(){
 	//textures
-	loadTexture("blank.png",textureBlank,true,false);
-	loadTexture("rgb.png",textureRGB,true,false);
-	loadTexture("game.png",textureGame,true,true);
+	loadTexture(textureBlank,true,false,"blank.png");
+	loadTexture(textureRGB,true,false,"rgb.png");
+	loadTexture(textureGame,true,true,"game.png");
+	genTexture(textureShadowColor,m_Graphics->screenSize*m_Graphics->aspect*2,m_Graphics->screenSize*m_Graphics->aspect*2,false,false,false,NULL);
+	genTexture(textureShadowDepth,m_Graphics->screenSize*m_Graphics->aspect*2,m_Graphics->screenSize*m_Graphics->aspect*2,true,false,true,NULL);
 	vector<string> skins;
 	System::GetFilesInDirectory(skins,m_Graphics->m_Client->GetDataFile("skins"));
 	for(unsigned int i=0;i<skins.size();i++){
 		GLuint skintex=textureBlank;
-		loadTexture("skins/"+skins[i],skintex,true,true);
+		loadTexture(skintex,true,true,"skins/"+skins[i]);
 		skins[i].resize(skins[i].size()-4);
 		skinTextures.insert(skinTextures.begin(),pair<string,GLuint>(skins[i],skintex));
 	}
@@ -544,13 +546,14 @@ void Resources::Load(){
 		buffer=new Model(m_Graphics);
 		buffer->addObjModel(weaponFiles[i]);
 		buffer->create();
-		loadTexture(weaponTextureFiles[i],buffer->texture,true,false);
+		loadTexture(buffer->texture,true,false,weaponTextureFiles[i]);
 		weaponModels.push_back(buffer);
 	}
 
 	//shaders
 	loadShader("shaders/shader",shader3d);
 	loadShader("shaders/shader2d",shader2d);
+	loadShader("shaders/shaderShadow",shaderShadow);
 
 	//fonts
 	fontPath=m_Graphics->m_Client->GetDataFile(fontName);
@@ -561,6 +564,8 @@ void Resources::UnLoad(){
 	unLoadTexture(textureBlank);
 	unLoadTexture(textureGame);
 	unLoadTexture(textureRGB);
+	removeTexture(textureShadowColor);
+	removeTexture(textureShadowDepth);
 
 	for(map<string,GLuint>::iterator key=skinTextures.begin();key!=skinTextures.end();key++){
 		unLoadTexture((*key).second);
@@ -623,7 +628,7 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 			if(font!=NULL){
 				SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), m_Graphics->m_Resources->SDLColorWhite);
 				if(surface!=NULL){
-					m_Graphics->m_Resources->loadTextureFromSurface(surface,texture,true,false);
+					m_Graphics->m_Resources->loadTextureFromSurface(texture,true,false,surface);
 					aspect=surface->w*1.0f/surface->h;
 					SDL_FreeSurface(surface);
 					complete=true;
@@ -645,7 +650,7 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 		if(font!=NULL){
 			SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), m_Graphics->m_Resources->SDLColorWhite);
 			if(surface!=NULL){
-				m_Graphics->m_Resources->loadTextureFromSurface(surface,tex,false,true);
+				m_Graphics->m_Resources->loadTextureFromSurface(tex,false,true,surface);
 				aspect=surface->w*1.0f/surface->h;
 				SDL_FreeSurface(surface);
 				complete=true;
@@ -670,24 +675,7 @@ TTF_Font* Resources::loadFont(int size){
 		return font;
 	}
 }
-void Resources::unLoadTexture(GLuint &tex){
-	glDeleteTextures(1,&tex);
-}
-bool Resources::loadTextureFromSurface(SDL_Surface* &data, GLuint &tex,bool mipmaps,bool filtering)
-{
-	m_Graphics->to_RGBA(data);
-	GLint maxTexSize;
-	if(data == NULL){
-		tex=textureRGB;
-		return false;
-	}
-
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
-	if(data->w > maxTexSize){
-		tex=textureRGB;
-		return false;
-	}
-
+void Resources::genTexture(GLuint &tex,int w,int h,bool isDepth,bool mipmaps,bool filtering,const GLvoid* pixels){
 	glGenTextures(1, &tex);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
@@ -704,18 +692,40 @@ bool Resources::loadTextureFromSurface(SDL_Surface* &data, GLuint &tex,bool mipm
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 	if(mipmaps)
-		gluBuild2DMipmaps(GL_TEXTURE_2D, 4, data->w, data->h,GL_RGBA, GL_UNSIGNED_BYTE,  data->pixels);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 4, w, h,GL_RGBA, GL_UNSIGNED_BYTE,  pixels);
 	else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data->w, data->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data->pixels);
+		if(isDepth) glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, pixels);
+		else glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+}
+void Resources::removeTexture(GLuint &tex){
+	glDeleteTextures(1,&tex);
+}
+void Resources::unLoadTexture(GLuint &tex){
+	removeTexture(tex);
+}
+bool Resources::loadTextureFromSurface(GLuint &tex,bool mipmaps,bool filtering,SDL_Surface* &data)
+{
+	m_Graphics->to_RGBA(data);
+	GLint maxTexSize;
+	if(data == NULL){
+		tex=textureRGB;
+		return false;
+	}
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
+	if(data->w > maxTexSize){
+		tex=textureRGB;
+		return false;
+	}
+	genTexture(tex,data->w,data->h,false,mipmaps,filtering,data->pixels);
 	return true;
 }
 
-bool Resources::loadTexture(string filepath, GLuint &tex,bool mipmaps,bool filtering)
+bool Resources::loadTexture(GLuint &tex,bool mipmaps,bool filtering,string filepath)
 {
 	string path=m_Graphics->m_Client->GetDataFile(filepath);
 	SDL_Surface *temp = NULL;
 	temp = IMG_Load(path.c_str());
-	if(!loadTextureFromSurface(temp,tex,mipmaps,filtering)){
+	if(!loadTextureFromSurface(tex,mipmaps,filtering,temp)){
 		m_Graphics->m_Client->Err("Error Loading Texture: "+filepath+" : "+string(SDL_GetError()));
 		SDL_FreeSurface(temp);
 		return false;

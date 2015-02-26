@@ -13,6 +13,6 @@ void main(void) {
 	gl_Position=modelMatrix*vec4(in_Position, 1.0);
 	gl_Position.z*=0.0005f;
 	gl_Position=viewProjectionMatrix*gl_Position;
-	gl_Position.x=gl_Position.x/(abs(gl_Position.x)+1.0f);
-	gl_Position.y=gl_Position.y/(abs(gl_Position.y)+1.0f);
+	gl_Position.x=gl_Position.x/(abs(gl_Position.x)+2);
+	gl_Position.y=gl_Position.y/(abs(gl_Position.y)+2);
 }

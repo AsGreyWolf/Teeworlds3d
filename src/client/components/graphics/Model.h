@@ -25,6 +25,9 @@ public:
 	///<summary>Link to the Graphics component</summary>
 	class Graphics* m_Graphics;
 	glm::vec4 coloring;
+	
+	glm::mat4 modelMatrix;
+	glm::mat4 normalMatrix;
 
 	///<summary>Creates the model and buffers in the GPU</summary>
 	///<param name="type">Type of the verts (GL_TRIANGLES)</param>
@@ -38,7 +41,10 @@ public:
 	///<summary>Fills the buffers in the GPU with values in the RAM</summary>
 	void create();
 	///<summary>Pushes the model into the shader</summary>
-	void render();
+	void render(const glm::mat4 &parentMatrix);
+	void render(){
+		render(glm::mat4(1.0f));
+	}
 	///<summary>Deletes the buffers in the GPU and RAM</summary>
 	void remove();
 	///<summary>Deletes the buffers in the RAM</summary>
@@ -83,7 +89,7 @@ public:
 	///<param name="additional">Scale per vector length</param>
 	void scaleAt(vec3 to,vec3 basic, vec3 additional);
 
-private:
+protected:
 	///<summary>Vertex positions buffer in the RAM</summary>
 	std::vector <glm::vec3> vertex;
 	///<summary>Vertex normals buffer in the RAM</summary>

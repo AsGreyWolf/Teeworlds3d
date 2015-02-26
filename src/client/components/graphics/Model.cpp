@@ -11,20 +11,20 @@
 
 
 	
-void Model::render(){
-	m_Graphics->PushMatrix();
+void Model::render(const glm::mat4 &parentMatrix){
+	if(!m_Graphics->restoreMatrix)
+		modelMatrix=parentMatrix;
 
-	m_Graphics->SetModelMatrix(position,rot,scale);
+	m_Graphics->SetModelMatrix(modelMatrix,normalMatrix,position,rot,scale);
 	m_Graphics->SetColor(coloring);
 
 	//if(this!=m_Graphics->m_Resources->coordsModel)
-	//m_Graphics->m_Resources->coordsModel->render();
+	//m_Graphics->m_Resources->coordsModel->render(modelMatrix);
 
 	glBindTexture(GL_TEXTURE_2D,texture);
 	glBindVertexArray(VAO);
 	m_Graphics->SetLight(lighting);
 	glDrawArrays(type , 0, vertex.size());
-	m_Graphics->PopMatrix();
 }
 
 Model::Model(int type,Graphics* g,bool lighting){

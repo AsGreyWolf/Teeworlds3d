@@ -15,7 +15,7 @@ void Map::StateChange(STATE lastState){
 	if(!lastState.ingame && m_Client->state.ingame)
 	{
 		m_Model=new Model(m_Client->m_Graphics);
-		Load("123");
+		Load("1234");
 		return;
 	}
 	if(lastState.ingame && !m_Client->state.ingame){
@@ -90,7 +90,7 @@ bool Map::Load(string name){
 	}
 	string p="mapres/"+string(s)+".png";
 	texture=-1;
-	m_Client->m_Graphics->m_Resources->loadTexture(p,texture,true,false);
+	m_Client->m_Graphics->m_Resources->loadTexture(texture,true,false,p);
 
 
 	fclose(file);

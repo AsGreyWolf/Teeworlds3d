@@ -73,12 +73,12 @@ void Model2d::addVertex(std::vector<vec2> v,std::vector<vec2> t){
 	texcoord.insert(texcoord.end(),t.begin(),t.end());
 }
 void Model2d::addQuad(quad2 v,quad2 t){
-			addVertex(v.p10,t.p10);
 			addVertex(v.p00,t.p00);
+			addVertex(v.p10,t.p10);
 			addVertex(v.p01,t.p01);
 
-			addVertex(v.p10,t.p10);
 			addVertex(v.p01,t.p01);
+			addVertex(v.p10,t.p10);
 			addVertex(v.p11,t.p11);
 }
 
@@ -98,8 +98,8 @@ void Model2d::addRectangle(quad2 in,quad2 out){
 		int quality=m_Graphics->to_pixels(glm::max(roundedright,roundedtop))/4;
 
 		for(int i=0;i<quality;i++){
-			addVertex(in.p11+vec2(cos(i*M_PI_2/quality)*roundedright,sin(i*M_PI_2/quality)*roundedtop),vec2(0,0));
 			addVertex(in.p11,vec2(0,0));
+			addVertex(in.p11+vec2(cos(i*M_PI_2/quality)*roundedright,sin(i*M_PI_2/quality)*roundedtop),vec2(0,0));
 			addVertex(in.p11+vec2(cos((i+1)*M_PI_2/quality)*roundedright,sin((i+1)*M_PI_2/quality)*roundedtop),vec2(0,0));
 		}
 	}
@@ -114,8 +114,8 @@ void Model2d::addRectangle(quad2 in,quad2 out){
 	if(glm::min(roundedleft,roundedbottom)!=0){
 		int quality=m_Graphics->to_pixels(glm::max(roundedleft,roundedbottom))/4;
 		for(int i=0;i<quality;i++){
-			addVertex(in.p00+vec2(-cos(i*M_PI_2/quality)*roundedleft,-sin(i*M_PI_2/quality)*roundedbottom),vec2(0,0));
 			addVertex(in.p00,vec2(0,0));
+			addVertex(in.p00+vec2(-cos(i*M_PI_2/quality)*roundedleft,-sin(i*M_PI_2/quality)*roundedbottom),vec2(0,0));
 			addVertex(in.p00+vec2(-cos((i+1)*M_PI_2/quality)*roundedleft,-sin((i+1)*M_PI_2/quality)*roundedbottom),vec2(0,0));
 		}
 	}
