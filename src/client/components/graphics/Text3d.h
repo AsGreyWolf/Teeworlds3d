@@ -12,9 +12,8 @@ class Text3d : public Model
 {
 public:
 	///<summary>Creates the model and buffers in the GPU</summary>
-	///<param name="g">Link to the Graphics component</param>
 	///<param name="lighting">Use lighting?</param>
-	Text3d(Graphics* g,bool lighting=false);
+	Text3d(bool lighting=false);
 	///<summary>Deletes the buffers in the RAM</summary>
 	void clear();
 	TextGenerator* data;

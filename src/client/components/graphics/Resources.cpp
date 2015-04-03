@@ -31,10 +31,10 @@ void Resources::Load(){
 	loadTexture(textureBlank,true,false,"blank.png");
 	loadTexture(textureRGB,true,false,"rgb.png");
 	loadTexture(textureGame,true,true,"game.png");
-	genTexture(textureShadowColor,m_Graphics->screenSize*m_Graphics->aspect*2,m_Graphics->screenSize*m_Graphics->aspect*2,false,false,false,NULL);
-	genTexture(textureShadowDepth,m_Graphics->screenSize*m_Graphics->aspect*2,m_Graphics->screenSize*m_Graphics->aspect*2,true,false,true,NULL);
+	genTexture(textureShadowColor, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, false, false, false, NULL);
+	genTexture(textureShadowDepth, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, true, false, true, NULL);
 	vector<string> skins;
-	System::GetFilesInDirectory(skins,m_Graphics->m_Client->GetDataFile("skins"));
+	System::GetFilesInDirectory(skins, Client::m_Client()->GetDataFile("skins"));
 	for(unsigned int i=0;i<skins.size();i++){
 		GLuint skintex=textureBlank;
 		loadTexture(skintex,true,true,"skins/"+skins[i]);
@@ -531,7 +531,7 @@ void Resources::Load(){
 	gameCursor.push_back(texturePos16x8[80]);
 
 	//models
-	coordsModel=new Model(GL_LINES,m_Graphics,false);
+	coordsModel=new Model(GL_LINES,false);
 	coordsModel->texture=textureRGB;
 	coordsModel->addVertex(vec3(0,0,0),vec3(0,0,1),vec2(0.5f,0.5f));
 	coordsModel->addVertex(vec3(32,0,0),vec3(0,0,1),vec2(0,0));
@@ -543,7 +543,7 @@ void Resources::Load(){
 
 	for(int i=0;i<NUM_WEAPONS;i++){
 		Model* buffer;
-		buffer=new Model(m_Graphics);
+		buffer=new Model();
 		buffer->addObjModel(weaponFiles[i]);
 		buffer->create();
 		loadTexture(buffer->texture,true,false,weaponTextureFiles[i]);
@@ -556,7 +556,7 @@ void Resources::Load(){
 	loadShader("shaders/shaderShadow",shaderShadow);
 
 	//fonts
-	fontPath=m_Graphics->m_Client->GetDataFile(fontName);
+	fontPath = Client::m_Client()->GetDataFile(fontName);
 }
 void Resources::UnLoad(){
 	ClearBuffers();
@@ -626,9 +626,9 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 			float aspect=1;
 			TTF_Font* font=loadFont(size);
 			if(font!=NULL){
-				SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), m_Graphics->m_Resources->SDLColorWhite);
+				SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), SDLColorWhite);
 				if(surface!=NULL){
-					m_Graphics->m_Resources->loadTextureFromSurface(texture,true,false,surface);
+					loadTextureFromSurface(texture,true,false,surface);
 					aspect=surface->w*1.0f/surface->h;
 					SDL_FreeSurface(surface);
 					complete=true;
@@ -648,9 +648,9 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 	}else{
 		TTF_Font* font=loadFont(size);
 		if(font!=NULL){
-			SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), m_Graphics->m_Resources->SDLColorWhite);
+			SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), SDLColorWhite);
 			if(surface!=NULL){
-				m_Graphics->m_Resources->loadTextureFromSurface(tex,false,true,surface);
+				loadTextureFromSurface(tex,false,true,surface);
 				aspect=surface->w*1.0f/surface->h;
 				SDL_FreeSurface(surface);
 				complete=true;
@@ -667,11 +667,11 @@ TTF_Font* Resources::loadFont(int size){
 	else{
 		TTF_Font* font = TTF_OpenFont(fontPath.c_str(), size*2);
 		if(font==NULL){
-			m_Graphics->m_Client->Err("Error Loading Font: "+fontPath+"("+to_string(size)+") : "+string(TTF_GetError()));
+			Client::Err("Error Loading Font: " + fontPath + "(" + to_string(size) + ") : " + string(TTF_GetError()));
 			return font;
 		}
 		fonts.insert(fonts.begin(),pair<int,TTF_Font*>(size,font));
-		m_Graphics->m_Client->Info("Font loaded "+fontPath);
+		Client::Info("Font loaded " + fontPath);
 		return font;
 	}
 }
@@ -705,7 +705,7 @@ void Resources::unLoadTexture(GLuint &tex){
 }
 bool Resources::loadTextureFromSurface(GLuint &tex,bool mipmaps,bool filtering,SDL_Surface* &data)
 {
-	m_Graphics->to_RGBA(data);
+	Client::m_Graphics()->to_RGBA(data);
 	GLint maxTexSize;
 	if(data == NULL){
 		tex=textureRGB;
@@ -722,16 +722,16 @@ bool Resources::loadTextureFromSurface(GLuint &tex,bool mipmaps,bool filtering,S
 
 bool Resources::loadTexture(GLuint &tex,bool mipmaps,bool filtering,string filepath)
 {
-	string path=m_Graphics->m_Client->GetDataFile(filepath);
+	string path = Client::m_Client()->GetDataFile(filepath);
 	SDL_Surface *temp = NULL;
 	temp = IMG_Load(path.c_str());
 	if(!loadTextureFromSurface(tex,mipmaps,filtering,temp)){
-		m_Graphics->m_Client->Err("Error Loading Texture: "+filepath+" : "+string(SDL_GetError()));
+		Client::Err("Error Loading Texture: " + filepath + " : " + string(SDL_GetError()));
 		SDL_FreeSurface(temp);
 		return false;
 	}
 	SDL_FreeSurface(temp);
-	m_Graphics->m_Client->Info("Texture loaded "+filepath);
+	Client::Info("Texture loaded " + filepath);
 	return true;
 }
 char* filetobuf(string file)
@@ -758,7 +758,7 @@ void Resources::unLoadShader(GLuint &shader)
 }
 bool Resources::loadShader(string filepath, GLuint &shader)
 {
-	string firstpath=m_Graphics->m_Client->GetDataFile(filepath);
+	string firstpath = Client::m_Client()->GetDataFile(filepath);
 
 	GLchar *vertexsource, *fragmentsource,*geometrysource;
 	GLuint vertexshader, fragmentshader,geometryshader;
@@ -793,7 +793,7 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 		vertexInfoLog = (char *)malloc(maxLength);
 
 		glGetShaderInfoLog(vertexshader, maxLength, &maxLength, vertexInfoLog);
-		m_Graphics->m_Client->Err(string(vertexInfoLog));
+		Client::Err(string(vertexInfoLog));
 		free(vertexInfoLog);
 	}
 
@@ -811,7 +811,7 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 		fragmentInfoLog = (char *)malloc(maxLength);
 
 		glGetShaderInfoLog(fragmentshader, maxLength, &maxLength, fragmentInfoLog);
-		m_Graphics->m_Client->Err(string(fragmentInfoLog));
+		Client::Err(string(fragmentInfoLog));
 		free(fragmentInfoLog);
 	}
 	if(geometrysource!=NULL){
@@ -829,7 +829,7 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 			geometryInfoLog = (char *)malloc(maxLength);
 
 			glGetShaderInfoLog(geometryshader, maxLength, &maxLength, geometryInfoLog);
-			m_Graphics->m_Client->Err(string(geometryInfoLog));
+			Client::Err(string(geometryInfoLog));
 			free(geometryInfoLog);
 		}
 	}
@@ -853,7 +853,7 @@ bool Resources::loadShader(string filepath, GLuint &shader)
 
 		glGetProgramInfoLog(shader, maxLength, &maxLength, shaderProgramInfoLog);
 
-		m_Graphics->m_Client->Err(string(shaderProgramInfoLog));
+		Client::Err(string(shaderProgramInfoLog));
 		free(shaderProgramInfoLog);
 	}
 	free(vertexsource);

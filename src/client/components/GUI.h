@@ -14,8 +14,7 @@ class Text;
 
 class GUI : Component{
 public:
-	///<summary>Stores 'c' to 'm_Client'</summary>
-	GUI(Client* c);
+	GUI();
 	~GUI();
 	///<summary>Input callback</summary>
 	///<param name="keys">Keyboard state</param>

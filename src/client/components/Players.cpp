@@ -10,10 +10,11 @@
 // TODO just for debug
 PlayerModel* n[MAX_PLAYERS];
 Model2d* cursor;
-Players::Players(Client* c) : Component(c){
+Players::Players() : Component(){
+	Component::mp_Players = this;
 	// TODO just for debug
 	for(int i=0;i<MAX_PLAYERS;i++){
-		n[i]=new PlayerModel(m_Client->m_Graphics);
+		n[i]=new PlayerModel();
 		n[i]->create();
 		players[i]=new Player();
 		players[i]->pos=vec3(rand()%2048,rand()%2048,70);
@@ -26,9 +27,9 @@ Players::Players(Client* c) : Component(c){
 		players[i]->NickName="Happy New Year!";
 		n[i]->update(players[i]);
 	}
-	cursor=new Model2d(m_Client->m_Graphics);
-	cursor->addQuad(quad2(-0.0625f,-0.0625f,0.125f,0.125f),m_Client->m_Graphics->m_Resources->gameCursor[0]);
-	cursor->texture=m_Client->m_Graphics->m_Resources->textureGame;
+	cursor=new Model2d();
+	cursor->addQuad(quad2(-0.0625f, -0.0625f, 0.125f, 0.125f), m_Graphics()->m_Resources->gameCursor[0]);
+	cursor->texture = m_Graphics()->m_Resources->textureGame;
 	cursor->create();
 }
 Players::~Players(){
@@ -37,6 +38,7 @@ Players::~Players(){
 		delete players[i];
 	}
 	delete cursor;
+	Component::mp_Players = NULL;
 }
 ///TODO: debug only
 bool lastSpaceState=false;
@@ -53,22 +55,22 @@ void Players::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 		}
 	}
 	if(keys[SDL_SCANCODE_KP_8]){
-		players[0]->dir.x+=0.2f*m_Client->tickCoeff;
+		players[0]->dir.x += 0.2f*m_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_2]){
-		players[0]->dir.x-=0.2f*m_Client->tickCoeff;
+		players[0]->dir.x -= 0.2f*m_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_4]){
-		players[0]->dir.z+=0.2f*m_Client->tickCoeff;
+		players[0]->dir.z += 0.2f*m_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_6]){
-		players[0]->dir.z-=0.2f*m_Client->tickCoeff;
+		players[0]->dir.z -= 0.2f*m_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_7]){
-		players[0]->dir.y-=0.2f*m_Client->tickCoeff;
+		players[0]->dir.y -= 0.2f*m_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_9]){
-		players[0]->dir.y+=0.2f*m_Client->tickCoeff;
+		players[0]->dir.y += 0.2f*m_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_SPACE]){
 		if(!lastSpaceState){
@@ -84,7 +86,7 @@ void Players::StateChange(STATE lastState){}
 void Players::Render(){
 	for(int i=0;i<MAX_PLAYERS;i++){
 		n[i]->update(players[i]);
-		n[i]->lookAt(m_Client->m_Camera->position);
+		n[i]->lookAt(m_Camera()->position);
 		n[i]->render();
 	}
 }

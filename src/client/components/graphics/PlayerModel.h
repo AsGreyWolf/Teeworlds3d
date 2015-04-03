@@ -12,9 +12,7 @@ class Player;
 class PlayerModel : public Model
 {
 public:
-	///<summary>Stores 'g' to the 'm_Graphics'</summary>
-	///<param name="g">Link to the Graphics component</param>
-	PlayerModel(Graphics* g);
+	PlayerModel();
 	///<summary>Initializes subModels and creates them</summary>
 	void create();
 	///<summary>Pushes the subModels into the shader</summary>

@@ -22,8 +22,6 @@ public:
 	glm::vec3 rot;
 	///<summary>Scale of the model</summary>
 	glm::vec3 scale;
-	///<summary>Link to the Graphics component</summary>
-	class Graphics* m_Graphics;
 	glm::vec4 coloring;
 	
 	glm::mat4 modelMatrix;
@@ -31,12 +29,10 @@ public:
 
 	///<summary>Creates the model and buffers in the GPU</summary>
 	///<param name="type">Type of the verts (GL_TRIANGLES)</param>
-	///<param name="g">Link to the Graphics component</param>
 	///<param name="lighting">Use lighting?</param>
-	Model(int type,Graphics* g,bool lighting=true);
+	Model(int type,bool lighting=true);
 	///<summary>Creates the model and buffers in the GPU</summary>
-	///<param name="g">Link to the Graphics component</param>
-	Model(Graphics* g,bool lighting=true);
+	Model(bool lighting=true);
 	~Model();
 	///<summary>Fills the buffers in the GPU with values in the RAM</summary>
 	void create();

@@ -18,17 +18,13 @@ public:
 	GLuint texture;
 	///<summary>Position of the model</summary>
 	glm::vec2 position;
-	///<summary>Link to the Graphics component</summary>
-	class Graphics* m_Graphics;
 	glm::vec4 coloring;
 
 	///<summary>Creates the model and buffers in the GPU</summary>
 	///<param name="type">Type of the verts (GL_TRIANGLES)</param>
-	///<param name="g">Link to the Graphics component</param>
-	Model2d(int type,Graphics* g);
+	Model2d(int type);
 	///<summary>Creates the model and buffers in the GPU</summary>
-	///<param name="g">Link to the Graphics component</param>
-	Model2d(Graphics* g);
+	Model2d();
 	~Model2d();
 	///<summary>Fills the buffers in the GPU with values in the RAM</summary>
 	void create();

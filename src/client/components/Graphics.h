@@ -11,6 +11,7 @@
 #endif
 #include <string>
 #include <exception>
+
 #include "../Component.h"
 #include "../../tools/quad2.h"
 #include "../../tools/quad3.h"
@@ -44,8 +45,7 @@ public:
 		//SHADER_COLOR
 	};
 
-	///<summary>Stores 'c' to 'm_Client'</summary>
-	Graphics(Client* c);
+	Graphics();
 	~Graphics();
 	///<summary>Input callback</summary>
 	///<param name="keys">Keyboard state</param>

@@ -6,24 +6,27 @@
 #include "graphics/Resources.h"
 #include "graphics/Model.h"
 
-Map::Map(Client* c) : Component(c){}
+Map::Map() : Component(){
+	Component::mp_Map = this;
+}
 Map::~Map(){
 	UnLoad();
+	Component::mp_Map = NULL;
 }
 void Map::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
 void Map::StateChange(STATE lastState){
-	if(!lastState.ingame && m_Client->state.ingame)
+	if(!lastState.ingame && m_Client()->state.ingame)
 	{
-		m_Model=new Model(m_Client->m_Graphics);
+		m_Model=new Model(m_Graphics());
 		Load("1234");
 		return;
 	}
-	if(lastState.ingame && !m_Client->state.ingame){
+	if(lastState.ingame && !m_Client()->state.ingame){
 		UnLoad();
 	}
 }
 void Map::Render(){
-	if(m_Client->state.ingame)
+	if(m_Client()->state.ingame)
 		m_Model->render();
 }
 void Map::RenderBillboard(){}
@@ -32,14 +35,14 @@ void Map::Tick(){}
 void Map::Message(int type,char* value){}
 bool Map::Load(string name){
 	string pp="maps/"+name+".map";
-	string path=m_Client->GetDataFile(pp);
+	string path=m_Client()->GetDataFile(pp);
 
-	m_Client->Info("Loading "+name);
+	Client::Info("Loading "+name);
 
 
 	FILE* file=fopen(path.c_str(),"rb");
 	if(file == 0){
-		m_Client->Err("File not found");
+		Client::Err("File not found");
 		return false;
 	}
 	unsigned char buf;
@@ -90,7 +93,7 @@ bool Map::Load(string name){
 	}
 	string p="mapres/"+string(s)+".png";
 	texture=-1;
-	m_Client->m_Graphics->m_Resources->loadTexture(texture,true,false,p);
+	m_Graphics()->m_Resources->loadTexture(texture,true,false,p);
 
 
 	fclose(file);
@@ -112,7 +115,7 @@ bool Map::Load(string name){
 				vec3(buffer->x*32-16,buffer->y*32+16,buffer->z*32+16),
 				vec3(buffer->x*32-16,buffer->y*32+16,buffer->z*32-16),
 				vec3(buffer->x*32-16,buffer->y*32-16,buffer->z*32-16)
-				),vec3(-1,0,0),m_Client->m_Graphics->m_Resources->texturePos16[buffer->texOther]);
+				),vec3(-1,0,0),m_Graphics()->m_Resources->texturePos16[buffer->texOther]);
 
 		}
 		if(!buffer->hasX){
@@ -121,7 +124,7 @@ bool Map::Load(string name){
 				vec3(buffer->x*32+16,buffer->y*32-16,buffer->z*32+16),
 				vec3(buffer->x*32+16,buffer->y*32-16,buffer->z*32-16),
 				vec3(buffer->x*32+16,buffer->y*32+16,buffer->z*32-16)
-				),vec3(1,0,0),m_Client->m_Graphics->m_Resources->texturePos16[buffer->texOther]);
+				),vec3(1,0,0),m_Graphics()->m_Resources->texturePos16[buffer->texOther]);
 		}
 
 		if(!buffer->hasy){
@@ -130,7 +133,7 @@ bool Map::Load(string name){
 				vec3(buffer->x*32-16,buffer->y*32-16,buffer->z*32+16),
 				vec3(buffer->x*32-16,buffer->y*32-16,buffer->z*32-16),
 				vec3(buffer->x*32+16,buffer->y*32-16,buffer->z*32-16)
-				),vec3(0,-1,0),m_Client->m_Graphics->m_Resources->texturePos16[buffer->texOther]);
+				),vec3(0,-1,0),m_Graphics()->m_Resources->texturePos16[buffer->texOther]);
 		}
 		if(!buffer->hasY){
 			m_Model->addQuad(quad3(
@@ -138,7 +141,7 @@ bool Map::Load(string name){
 				vec3(buffer->x*32+16,buffer->y*32+16,buffer->z*32+16),
 				vec3(buffer->x*32+16,buffer->y*32+16,buffer->z*32-16),
 				vec3(buffer->x*32-16,buffer->y*32+16,buffer->z*32-16)
-				),vec3(0,1,0),m_Client->m_Graphics->m_Resources->texturePos16[buffer->texOther]);
+				),vec3(0,1,0),m_Graphics()->m_Resources->texturePos16[buffer->texOther]);
 		}
 		if(!buffer->hasZ){
 			m_Model->addQuad(quad3(
@@ -146,7 +149,7 @@ bool Map::Load(string name){
 				vec3(buffer->x*32-16,buffer->y*32+16,buffer->z*32+16),
 				vec3(buffer->x*32-16,buffer->y*32-16,buffer->z*32+16),
 				vec3(buffer->x*32+16,buffer->y*32-16,buffer->z*32+16)
-				),vec3(0,0,1),m_Client->m_Graphics->m_Resources->texturePos16[buffer->texTop]);
+				),vec3(0,0,1),m_Graphics()->m_Resources->texturePos16[buffer->texTop]);
 		}
 		if(!buffer->hasz){
 			m_Model->addQuad(quad3(
@@ -154,7 +157,7 @@ bool Map::Load(string name){
 				vec3(buffer->x*32-16,buffer->y*32-16,buffer->z*32-16),
 				vec3(buffer->x*32-16,buffer->y*32+16,buffer->z*32-16),
 				vec3(buffer->x*32+16,buffer->y*32+16,buffer->z*32-16)
-				),vec3(0,0,-1),m_Client->m_Graphics->m_Resources->texturePos16[buffer->texBottom]);
+				),vec3(0,0,-1),m_Graphics()->m_Resources->texturePos16[buffer->texBottom]);
 		}
 	}
 	m_Model->texture=texture;
@@ -164,7 +167,7 @@ bool Map::Load(string name){
 void Map::UnLoad(){
 	if(m_Model!=nullptr){
 		delete m_Model;
-		m_Client->m_Graphics->m_Resources->unLoadTexture(texture);
+		m_Graphics()->m_Resources->unLoadTexture(texture);
 		tilesById.clear();
 		for(int xi=0;xi<sizex;xi++){
 			for(int yi=0;yi<sizey;yi++)

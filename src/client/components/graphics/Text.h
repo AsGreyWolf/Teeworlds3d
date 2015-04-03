@@ -12,8 +12,7 @@ class Text : public Model2d
 {
 public:
 	///<summary>Creates the model and buffers in the GPU and fill the buffers in the CPU with generated text data</summary>
-	///<param name="g">Link to the Graphics component</param>
-	Text(Graphics* g);
+	Text();
 	///<summary>Deletes the buffers in the RAM</summary>
 	void clear();
 	TextGenerator* data;

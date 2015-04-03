@@ -1,5 +1,7 @@
 #include "Client.h"
 #include <iostream>
+#include <locale>
+#include <clocale>
 #include "components/Graphics.h"
 #include "components/Camera.h"
 #include "components/Map.h"
@@ -8,27 +10,45 @@
 #include "../tools/system.h"
 #include "../../other/sdl/include/SDL_ttf.h"
 
-class Client* instanse;
 bool Client::working=false;
 int Client::frames=0;
+
+class Graphics* Component::mp_Graphics;
+class Camera* Component::mp_Camera;
+class Map* Component::mp_Map;
+class Players* Component::mp_Players;
+class GUI* Component::mp_GUI;
+class Client* Component::mp_Client;
+
 int main(int argc, char *argv[])
 {
-	instanse=new Client();
-	instanse->Start();
+	/*std::setlocale(LC_ALL, "");
+	std::locale l("");
+	std::locale::global(l);
+	std::cout.imbue(l);
+	std::cerr.imbue(l);
+	std::clog.imbue(l);
+
+	std::wcout.imbue(l);
+	std::wcerr.imbue(l);
+	std::wclog.imbue(l);
+	std::ios::sync_with_stdio(false);*/
+	Component::mp_Client = new Client();
+	Component::m_Client()->Start();
 	STATE startstate;
 	startstate.ingame=false;
-	instanse->state.ingame=true;
-	instanse->StateChange(startstate);
-	while(instanse->isRunning()){
+	Component::m_Client()->state.ingame = true;
+	Component::m_Client()->StateChange(startstate);
+	while (Component::m_Client()->isRunning()){
 		long tickTime=System::GetTime();
-		instanse->tickCoeff=(tickTime-instanse->lasttickTime)*1.0f/1000;
-		instanse->lasttickTime=tickTime;
-		STATE oldstate=instanse->state;
-		instanse->Input(NULL,0,0,0);
-		instanse->Tick();
-		if(oldstate!=instanse->state) instanse->StateChange(oldstate);
+		Component::m_Client()->tickCoeff = (tickTime - Component::m_Client()->lasttickTime)*1.0 / 1000;
+		Component::m_Client()->lasttickTime = tickTime;
+		STATE oldstate = Component::m_Client()->state;
+		Component::m_Client()->Input(NULL, 0, 0, 0);
+		Component::m_Client()->Tick();
+		if (oldstate != Component::m_Client()->state) Component::m_Client()->StateChange(oldstate);
 	}
-	delete instanse;
+	delete Component::m_Client();
 	return 0;
 }
 void Client::Start(){
@@ -40,13 +60,14 @@ void Client::Stop(){
 bool Client::isRunning(){
 	return working;
 }
-Client::Client():Component(this){
+Client::Client():Component(){
+	Component::mp_Client = this;
 	System::Init();
 	System::GetPath(PATH_CUR);
-	PATH_DATA=PATH_CUR+"/data/";
+	PATH_DATA=PATH_CUR+"data/";
 	fps=60;
 
-	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER)!=0)
+	if(SDL_Init(SDL_INIT_EVERYTHING)!=0)
 	{
 		Err("Unable to initialize SDL: "+string(SDL_GetError()));
 		return; //TODO: need exceptions
@@ -77,27 +98,20 @@ Client::Client():Component(this){
 		Err("Could not get renderer: "+string(SDL_GetError()));
 		return; //TODO: need exceptions
 	}
-
-	m_Graphics=new Graphics(this);
-	m_Camera=new Camera(this);
-	m_Map=new Map(this);
-	m_Players=new Players(this);
-	m_GUI=new GUI(this);
-	m_Components.push_back((Component*)m_Graphics);
-	m_Components.push_back((Component*)m_Camera);
-	m_Components.push_back((Component*)m_Map);
-	m_Components.push_back((Component*)m_Players);
-	m_Components.push_back((Component*)m_GUI);
+	m_Components.push_back((Component*)new Graphics());
+	m_Components.push_back((Component*)new Camera());
+	m_Components.push_back((Component*)new Map());
+	m_Components.push_back((Component*)new Players());
+	m_Components.push_back((Component*)new GUI());
 
 	SDL_AddTimer(1000, calcFPS, NULL);
 }
 Client::~Client(){
+	reverse(m_Components.begin(), m_Components.end());
+	for (auto &component : m_Components){
+		delete component;
+	}
 	m_Components.clear();
-	delete m_Graphics;
-	delete m_Camera;
-	delete m_Map;
-	delete m_Players;
-	delete m_GUI;
 	TTF_Quit();
 	SDL_Quit();
 }
@@ -166,8 +180,8 @@ void Client::Info(string c){
 Uint32 calcFPS(Uint32 interval, void *param){
 	if(!Client::isRunning()) return interval;
 	Client::Info("FPS = "+to_string(Client::frames));
-	if(instanse!=NULL)
-		instanse->fps=Client::frames;
+	if (Component::m_Client() != NULL)
+		Component::m_Client()->fps = Client::frames;
 	Client::frames=0;
 	return interval;
 }

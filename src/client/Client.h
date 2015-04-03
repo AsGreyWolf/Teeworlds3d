@@ -15,7 +15,7 @@ class GUI;
 
 class Client : public Component{
 public:
-	///<summary>Stores 'c' to 'm_Client', creates all the components and gamecycle</summary>
+	///<summary>Creates all the components and gamecycle</summary>
 	Client();
 	~Client();
 	///<summary>Stores input to components</summary>
@@ -57,20 +57,10 @@ public:
 
 	///<summary>All the components</summary>
 	std::vector <Component*> m_Components;
-	///<summary>Graphics component</summary>
-	class Graphics* m_Graphics;
-	///<summary>Camera component</summary>
-	class Camera* m_Camera;
-	///<summary>Map component</summary>
-	class Map* m_Map;
-	///<summary>Players component</summary>
-	class Players* m_Players;
-	///<summary>GUI component</summary>
-	class GUI* m_GUI;
 	///<summary>Current frames</summary>
 	static int frames;
 	int fps;
-	float tickCoeff;
+	double tickCoeff;
 	long lasttickTime;
 	///<summary>Current State</summary>
 	STATE state;

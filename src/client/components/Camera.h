@@ -20,8 +20,7 @@ public:
 	///<summary>Rotation of the camera</summary>
 	glm::vec3 rotation;
 
-	///<summary>Stores 'c' to 'm_Client'</summary>
-	Camera(Client* c);
+	Camera();
 	~Camera();
 	///<summary>Input callback</summary>
 	///<param name="keys">Keyboard state</param>

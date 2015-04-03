@@ -9,8 +9,7 @@ class Player;
 
 class Players : Component{
 public:
-	///<summary>Stores 'c' to 'm_Client'</summary>
-	Players(Client* c);
+	Players();
 	~Players();
 	///<summary>Input callback</summary>
 	///<param name="keys">Keyboard state</param>

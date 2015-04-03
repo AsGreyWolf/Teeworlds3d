@@ -3,10 +3,10 @@
 #include "Resources.h"
 #include "TextGenerator.h"
 
-Text::Text(Graphics* g):Model2d(g){}
+Text::Text():Model2d(){}
 void Text::addText(std::string text,int size,int align,bool buffering){
 	this->text=text;
-	data=new TextGenerator(m_Graphics,text,size,align,buffering);
+	data=new TextGenerator(text,size,align,buffering);
 	addQuad(data->geometry,quad2(0,1,1,-1));
 	texture=data->texture;
 }

@@ -19,9 +19,7 @@ class Tile;
 ///<summary>Map component</summary>
 class Map : public Component{
 public:
-
-	///<summary>Stores 'c' to 'm_Client'</summary>
-	Map(Client* c);
+	Map();
 	~Map();
 
 	///<summary>Input callback</summary>

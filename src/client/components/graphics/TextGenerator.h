@@ -10,18 +10,15 @@ class Graphics;
 class TextGenerator{
 public:
 	///<summary>Creates generated text data</summary>
-	///<param name="g">Link to the Graphics component</param>
 	///<param name="text">Text</param>
 	///<param name="size">Text size</param>
 	///<param name="align">Align</param>
 	///<param name="buffering">Buffering</param>
-	TextGenerator(Graphics* g,std::string text,int size=1,int align=0,bool buffering=true);
+	TextGenerator(std::string text,int size=1,int align=0,bool buffering=true);
 	~TextGenerator();
 	///<summary>Updates generated text with current text</summary>
 	///<param name="text">Text</param>
 	void setText(std::string text);
-	///<summary>Link to the Graphics component</summary>
-	class Graphics* m_Graphics;
 
 	enum{
 		ALIGN_LEFT_TOP=0,

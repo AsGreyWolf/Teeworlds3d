@@ -9,7 +9,7 @@
 #include "graphics/Model2d.h"
 #include "graphics/Resources.h"
 #include "../../tools/Protocol.h"
-#undef USE_SHADOWS
+#define USE_SHADOWS
 
 float renderSize=1;
 const float LightPos[4]={0, 0, 500, 1};
@@ -31,18 +31,20 @@ void Graphics::to_RGBA(SDL_Surface* &src){
 		src=ret;
 	}
 }
-Graphics::Graphics(Client* c) : Component(c){
+Model2d* shadowPreview;
+Graphics::Graphics() : Component(){
+	Component::mp_Graphics = this;
 	SDL_GLContext context;
 
-	if ((context = SDL_GL_CreateContext(m_Client->screen)) == NULL)
+	if ((context = SDL_GL_CreateContext(m_Client()->screen)) == NULL)
 	{
 
-		m_Client->Err("Could not get context: "+string(SDL_GetError()));
+		Client::Err("Could not get context: " + string(SDL_GetError()));
 		return; //TODO: exceptions
 	}
 	SDL_GL_SetSwapInterval(1);
 	glewInit();
-	m_Client->Info("Initialized OpenGL "+string((char*)glGetString(GL_VERSION)));
+	Client::Info("Initialized OpenGL " + string((char*)glGetString(GL_VERSION)));
 	int w=1024;
 	int h=768;
 	if( h == 0 )
@@ -55,7 +57,7 @@ Graphics::Graphics(Client* c) : Component(c){
 	perspectiveMatrix=glm::perspective(1.0471975512f, aspect, 1.0f,10000.0f);
 	orthoMatrix=glm::ortho(-320.0f,320.0f,-320.0f,320.0f,0.0f,1.0f);
 
-	glEnable( GL_BLEND );
+	glEnable(GL_BLEND);
 	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -68,17 +70,17 @@ Graphics::Graphics(Client* c) : Component(c){
 	glCullFace(GL_BACK);
 	glClearColor(0, 0.75f, 1, 1);
 
-	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	glPolygonMode(GL_FRONT, GL_FILL);
-	glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
-	glHint( GL_FOG_HINT, GL_NICEST );
-	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST );
-	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST );
-	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST );
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glHint(GL_FOG_HINT, GL_NICEST);
+	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
 
-	m_Resources=new Resources(this);
+	m_Resources=new Resources();
 	m_Resources->Load();
 
 	glBindAttribLocation(m_Resources->shader3d, SHADER_POS, "in_Position");
@@ -118,37 +120,45 @@ Graphics::Graphics(Client* c) : Component(c){
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,GL_TEXTURE_2D,m_Resources->textureShadowColor,0);
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D,m_Resources->textureShadowDepth,0);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
+	shadowPreview = new Model2d();
+	shadowPreview->texture = m_Resources->textureShadowColor;
+	shadowPreview->addQuad(screen / 4 + screen.p00*3.0f/4.0f, quad2(0, 0, 1, 1));
+	shadowPreview->create();
 }
 Graphics::~Graphics(){
 	m_Resources->UnLoad();
 	glDeleteFramebuffers(1,&shadowFBO);
 	delete m_Resources;
+	Component::mp_Graphics = NULL;
 }
 void Graphics::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
 void Graphics::Render(){}
 void Graphics::RenderBillboard(){}
 void Graphics::Render2d(){}
+int currentShader;
 void Graphics::Tick(){
 #ifdef USE_SHADOWS
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);
 	glUseProgram(m_Resources->shaderShadow);
+	currentShader = m_Resources->shaderShadow;
 	glViewport(0,0,screenSize*aspect*2,screenSize*aspect*2);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	vec3 pos=m_Client->m_Camera->position;
+	vec3 pos = m_Camera()->position;
 	pos.z=1;
 	mat4 shadowMatrix=orthoMatrix*glm::lookAt(pos, pos+vec3(0,0,-1), vec3(0,1,0));
 	glUniformMatrix4fv(viewProjectionMatrixUniformShadow,1,false,(const float*)glm::value_ptr(shadowMatrix));
 	glCullFace(GL_FRONT);
-	m_Client->Render();
+	m_Client()->Render();
 #endif
 	glCullFace(GL_BACK);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	glUseProgram(m_Resources->shader3d);
+	currentShader = m_Resources->shader3d;
 	glViewport(0,0,screenSize*aspect,screenSize);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glUniform1i(glGetUniformLocation(m_Resources->shader3d,"tex"),0);
 	glUniform1i(glGetUniformLocation(m_Resources->shader3d,"shadow"),1);
-	m_Client->m_Camera->SetMatrix();
+	m_Camera()->SetMatrix();
 #ifdef USE_SHADOWS
 	glUniformMatrix4fv(shadowProjectionMatrixUniform3d,1,false,(const float*)glm::value_ptr(shadowMatrix));
 	glActiveTexture(GL_TEXTURE1);
@@ -157,7 +167,7 @@ void Graphics::Tick(){
 	glActiveTexture(GL_TEXTURE0);
 	restoreMatrix=true;
 #endif
-	m_Client->Render();
+	m_Client()->Render();
 	restoreMatrix=false;
 #ifdef USE_SHADOWS
 	glActiveTexture(GL_TEXTURE1);
@@ -167,22 +177,26 @@ void Graphics::Tick(){
 #endif
 
 	glClear(GL_DEPTH_BUFFER_BIT);
-	m_Client->RenderBillboard();
+	m_Client()->RenderBillboard();
 
 	glUseProgram(m_Resources->shader2d);
+	currentShader = m_Resources->shader2d;
 	glClear(GL_DEPTH_BUFFER_BIT);
+	shadowPreview->render();
 	glUniform1f(aspectUniform2d,aspect);
-	m_Client->Render2d();
+	m_Client()->Render2d();
 }
 void Graphics::Message(int type,char* value){}
 void Graphics::StateChange(STATE lastState){}
 void Graphics::SetColor(vec4 color){
+	if (currentShader == m_Resources->shader3d)
 	glUniform4f(colorUniform3d,color.r,color.g,color.b,color.a);
 }
 void Graphics::SetColor2d(vec4 color){
 	glUniform4f(colorUniform2d,color.r,color.g,color.b,color.a);
 }
 void Graphics::SetLight(bool light){
+	if (currentShader == m_Resources->shader3d)
 	glUniform1f(lightUniform3d, light?1.0f:0.0f);
 }
 void Graphics::SetPos2d(vec2 pos){
@@ -199,8 +213,10 @@ void Graphics::SetModelMatrix(glm::mat4 &modelMatrix,glm::mat4 &normalMatrix,con
 		normalMatrix=glm::inverse(normalMatrix);
 		normalMatrix=glm::transpose(normalMatrix);
 	}
+	if (currentShader == m_Resources->shader3d)
 	glUniformMatrix4fv(normalMatrixUniform3d,1,false,(const float*)glm::value_ptr(normalMatrix));
 	glUniformMatrix4fv(modelMatrixUniform3d,1,false,(const float*)glm::value_ptr(modelMatrix));
+	if (currentShader == m_Resources->shaderShadow)
 	glUniformMatrix4fv(modelMatrixUniformShadow,1,false,(const float*)glm::value_ptr(modelMatrix));
 }
 void Graphics::Translate(glm::mat4 &modelMatrix,const glm::vec3 &position){

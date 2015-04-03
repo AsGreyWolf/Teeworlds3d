@@ -19,11 +19,7 @@ class Model;
 
 class Resources{
 public:
-	///<summary>Link to the Graphics component</summary>
-	class Graphics* m_Graphics;
-	///<summary>Stores 'g' to the 'm_Graphics'</summary>
-	///<param name="g">Link to the Graphics component</param>
-	Resources(Graphics* g){m_Graphics=g;};
+	Resources(){};
 
 	//textures
 

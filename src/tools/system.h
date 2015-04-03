@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <ctime>
 #include <locale>
+#include "../../other/sdl/include/SDL.h"
 #ifdef WIN32
 #include <codecvt>
 #include <Windows.h>
@@ -22,9 +23,10 @@ public:
 		srand(time(NULL));
 	};
 	static void GetPath(string &path){
-		char pp[MAX_FILENAME];
-		GetCurrentDir(pp,MAX_FILENAME);
-		path=string(pp);
+		//char pp[MAX_FILENAME];
+		//GetCurrentDir(pp,MAX_FILENAME);
+		//path=string(pp);
+		path = string(SDL_GetBasePath());
 	};
 	static long GetTime(){
 		/*
