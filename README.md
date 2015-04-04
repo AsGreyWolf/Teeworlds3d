@@ -14,3 +14,5 @@ You should:
 > - **On windows:** have VisualStudio(cl.exe) installed, check compile.bat for variables.
 
 - **On windows:** copy the DLLs from other folders in current folder
+
+More on [WIKI][https://github.com/AsGreyWolf/Teeworlds3d/wiki/Building]
