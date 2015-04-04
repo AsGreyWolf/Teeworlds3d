@@ -27,10 +27,10 @@ Players::Players() : Component(){
 		players[i]->weapon=rand()%NUM_WEAPONS;
 		players[i]->emote=EMOTE_NORMAL;
 		players[i]->skin = (*skinName).first;
+		players[i]->NickName = (*skinName).first;
+		n[i]->update(players[i]);
 		skinName++;
 		if (skinName == m_Graphics()->m_Resources->skinTextures.end()) skinName = m_Graphics()->m_Resources->skinTextures.begin();
-		players[i]->NickName="Happy New Year!";
-		n[i]->update(players[i]);
 	}
 	cursor=new Model2d();
 	cursor->addQuad(quad2(-0.0625f, -0.0625f, 0.125f, 0.125f), m_Graphics()->m_Resources->gameCursor[0]);

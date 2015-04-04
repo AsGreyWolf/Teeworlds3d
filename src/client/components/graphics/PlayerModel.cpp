@@ -10,7 +10,7 @@
 
 const int EyeScale = (int)(BaseSize*0.40);
 const float Separation=(0.075f*BaseSize)-EyeScale/2;
-const int detalization=16;
+const int detalization=32;
 const int animSpeed=300;
 vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(0,1,0),
@@ -66,7 +66,7 @@ void PlayerModel::create(){
 	rFoot=new Model();
 	rFoot->addSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), RenderSize / 2.4f, Client::m_Graphics()->m_Resources->texturePos8x4[14] >> Client::m_Graphics()->m_Resources->texturePos8x4[15], true);
 	Body=new Model();
-	Body->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 2, Client::m_Graphics()->m_Resources->texturePos8x4[0] >> Client::m_Graphics()->m_Resources->texturePos8x4[18], false);
+	Body->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 2, Client::m_Graphics()->m_Resources->texturePos8x4[0] >> Client::m_Graphics()->m_Resources->texturePos8x4[21], false);
 	Eyes=new Model(false);
 	NickName=new Text3d();
 	NickNameShadow=new Model(false);

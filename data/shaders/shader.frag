@@ -11,7 +11,7 @@ uniform float lighting;
 
 float calcShadow(float z,vec2 pos,vec2 dx){
 	vec4 shadowMap=texture2D(shadow, pos+dx);
-	if (shadowMap.z  <  z+0.03){
+	if (shadowMap.z  <  z+0.0006){
 		return 1.0;
 	}
 	return 0.0;

@@ -8,6 +8,9 @@ Camera* Component::m_Camera(){ return mp_Camera; }
 
 Camera::Camera() : Component(){
 	mp_Camera = this;
+	position = vec3(0, 0, 0);
+	rotation = vec3(0, 0, 0);
+	SetMatrix();
 }
 Camera::~Camera(){
 	mp_Camera = NULL;

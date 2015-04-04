@@ -16,6 +16,7 @@ class Model{
 public:
 	///<summary>Texture used in shaders</summary>
 	GLuint texture;
+	GLuint normalTexture;
 	///<summary>Position of the model</summary>
 	glm::vec3 position;
 	///<summary>Ratation of the model</summary>
