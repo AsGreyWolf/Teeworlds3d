@@ -19,6 +19,7 @@ public:
 	///<summary>Position of the model</summary>
 	glm::vec2 position;
 	glm::vec4 coloring;
+	float depth;
 
 	///<summary>Creates the model and buffers in the GPU</summary>
 	///<param name="type">Type of the verts (GL_TRIANGLES)</param>

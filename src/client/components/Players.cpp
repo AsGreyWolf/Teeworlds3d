@@ -16,6 +16,7 @@ Model2d* cursor;
 Players::Players() : Component(){
 	mp_Players = this;
 	// TODO just for debug
+	auto skinName = m_Graphics()->m_Resources->skinTextures.begin();
 	for(int i=0;i<MAX_PLAYERS;i++){
 		n[i]=new PlayerModel();
 		n[i]->create();
@@ -24,9 +25,10 @@ Players::Players() : Component(){
 		players[i]->dir=vec3(rand()/ (static_cast <float> (RAND_MAX/(M_PI*2))),rand()/(static_cast <float> (RAND_MAX/(M_PI*2))),rand()/(static_cast <float> (RAND_MAX/(M_PI*2))));
 		players[i]->dir=vec3(0,0,0);
 		players[i]->weapon=rand()%NUM_WEAPONS;
-		players[i]->emote=EMOTE_SURPRISE;
-		players[i]->skin="default";
-		players[i]->color=vec4(static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),static_cast <float> (rand()) / static_cast <float> (RAND_MAX),1);
+		players[i]->emote=EMOTE_NORMAL;
+		players[i]->skin = (*skinName).first;
+		skinName++;
+		if (skinName == m_Graphics()->m_Resources->skinTextures.end()) skinName = m_Graphics()->m_Resources->skinTextures.begin();
 		players[i]->NickName="Happy New Year!";
 		n[i]->update(players[i]);
 	}
@@ -89,7 +91,7 @@ void Players::StateChange(STATE lastState){}
 void Players::Render(){
 	for(int i=0;i<MAX_PLAYERS;i++){
 		n[i]->update(players[i]);
-		n[i]->lookAt(m_Camera()->position);
+		//n[i]->lookAt(m_Camera()->position);
 		n[i]->render();
 	}
 }

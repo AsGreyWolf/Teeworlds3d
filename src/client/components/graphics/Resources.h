@@ -29,18 +29,18 @@ public:
 	///<param name="mipmaps">Use mipmaps?</param>
 	///<param name="filtering">Use filtering?</param>
 	///<returns>true if all right, false if error found</returns>
-	bool loadTexture(GLuint &tex,bool mipmaps,bool filtering,string filepath);
+	bool loadTexture(GLuint &tex, bool anisotropy, bool filtering, string filepath);
 	///<summary>Loads texture from the SDL_Surface</summary>
 	///<param name="data">SDL_Surface</param>
 	///<param name="tex">Texture id</param>
 	///<param name="mipmaps">Use mipmaps?</param>
 	///<param name="filtering">Use filtering?</param>
 	///<returns>true if all right, false if error found</returns>
-	bool loadTextureFromSurface(GLuint &tex,bool mipmaps,bool filtering,SDL_Surface* &data);
+	bool loadTextureFromSurface(GLuint &tex, bool anisotropy, bool filtering, SDL_Surface* &data);
 	///<summary>UnLoads texture</summary>
 	///<param name="tex">Texture id</param>
 	void unLoadTexture(GLuint &tex);
-	void genTexture(GLuint &tex,int w,int h,bool isDepth,bool mipmaps,bool filtering,const GLvoid* pixels);
+	void genTexture(GLuint &tex, int w, int h, bool isDepth, bool anisotropy, bool filtering, const GLvoid* pixels);
 	void removeTexture(GLuint &tex);
 	///<summary>Quades for the 8x8-tile texture</summary>
 	vector<quad2> texturePos8;

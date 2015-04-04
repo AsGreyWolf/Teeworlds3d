@@ -251,50 +251,50 @@ void Model::addObjModel(string filename){
 	}
 	file.close();
 }
-void Model::addRectangle(quad2 in,quad2 out){
+void Model::addRectangle(quad2 in, quad2 out, float depth){
 	quad2 tex(0,0,1,1);
 	vec3 n=vec3(0,1,0);
-	addQuad(quad3(in),n,tex);
+	addQuad(quad3(in, depth), n, tex);
 	float roundedleft=(in.p00-out.p00).x;
 	float roundedbottom=(in.p00-out.p00).y;
 	float roundedright=(out.p11-in.p11).x;
 	float roundedtop=(out.p11-in.p11).y;
-	addQuad(quad3(quad2(in.p01,in.p11,out.p01+vec2(roundedleft,0),out.p11-vec2(roundedright,0))),n,tex);
-	addQuad(quad3(quad2(out.p00+vec2(roundedleft,0),out.p10-vec2(roundedright,0),in.p00,in.p10)),n,tex);
-	addQuad(quad3(quad2(out.p00+vec2(0,roundedbottom),in.p00,out.p01-vec2(0,roundedtop),in.p01)),n,tex);
-	addQuad(quad3(quad2(in.p10,out.p10+vec2(0,roundedbottom),in.p11,out.p11-vec2(0,roundedtop))),n,tex);
+	addQuad(quad3(quad2(in.p01, in.p11, out.p01 + vec2(roundedleft, 0), out.p11 - vec2(roundedright, 0)), depth), n, tex);
+	addQuad(quad3(quad2(out.p00 + vec2(roundedleft, 0), out.p10 - vec2(roundedright, 0), in.p00, in.p10), depth), n, tex);
+	addQuad(quad3(quad2(out.p00 + vec2(0, roundedbottom), in.p00, out.p01 - vec2(0, roundedtop), in.p01), depth), n, tex);
+	addQuad(quad3(quad2(in.p10, out.p10 + vec2(0, roundedbottom), in.p11, out.p11 - vec2(0, roundedtop)), depth), n, tex);
 
 	if(glm::min(roundedright,roundedtop)!=0){
 		int quality=Client::m_Graphics()->to_pixels(glm::max(roundedright,roundedtop))/4;
 
 		for(int i=0;i<quality;i++){
-			addVertex(quad2::vec2vec3(in.p11+vec2(cos((i+1)*M_PI_2/quality)*roundedright,sin((i+1)*M_PI_2/quality)*roundedtop)),n,vec2(0,0));
-			addVertex(quad2::vec2vec3(in.p11),n,vec2(0,0));
-			addVertex(quad2::vec2vec3(in.p11+vec2(cos(i*M_PI_2/quality)*roundedright,sin(i*M_PI_2/quality)*roundedtop)),n,vec2(0,0));
+			addVertex(quad2::vec2vec3(in.p11 + vec2(cos((i + 1)*M_PI_2 / quality)*roundedright, sin((i + 1)*M_PI_2 / quality)*roundedtop), depth), n, vec2(0, 0));
+			addVertex(quad2::vec2vec3(in.p11, depth), n, vec2(0, 0));
+			addVertex(quad2::vec2vec3(in.p11 + vec2(cos(i*M_PI_2 / quality)*roundedright, sin(i*M_PI_2 / quality)*roundedtop), depth), n, vec2(0, 0));
 		}
 	}
 	if(glm::min(roundedright,roundedbottom)!=0){
 		int quality=Client::m_Graphics()->to_pixels(glm::max(roundedright,roundedbottom))/4;
 		for(int i=0;i<quality;i++){
-			addVertex(quad2::vec2vec3(in.p10+vec2(cos(i*M_PI_2/quality)*roundedright,-sin(i*M_PI_2/quality)*roundedbottom)),n,vec2(0,0));
-			addVertex(quad2::vec2vec3(in.p10),n,vec2(0,0));
-			addVertex(quad2::vec2vec3(in.p10+vec2(cos((i+1)*M_PI_2/quality)*roundedright,-sin((i+1)*M_PI_2/quality)*roundedbottom)),n,vec2(0,0));
+			addVertex(quad2::vec2vec3(in.p10 + vec2(cos(i*M_PI_2 / quality)*roundedright, -sin(i*M_PI_2 / quality)*roundedbottom), depth), n, vec2(0, 0));
+			addVertex(quad2::vec2vec3(in.p10, depth), n, vec2(0, 0));
+			addVertex(quad2::vec2vec3(in.p10 + vec2(cos((i + 1)*M_PI_2 / quality)*roundedright, -sin((i + 1)*M_PI_2 / quality)*roundedbottom), depth), n, vec2(0, 0));
 		}
 	}
 	if(glm::min(roundedleft,roundedbottom)!=0){
 		int quality=Client::m_Graphics()->to_pixels(glm::max(roundedleft,roundedbottom))/4;
 		for(int i=0;i<quality;i++){
-			addVertex(quad2::vec2vec3(in.p00+vec2(-cos((i+1)*M_PI_2/quality)*roundedleft,-sin((i+1)*M_PI_2/quality)*roundedbottom)),n,vec2(0,0));
-			addVertex(quad2::vec2vec3(in.p00),n,vec2(0,0));
-			addVertex(quad2::vec2vec3(in.p00+vec2(-cos(i*M_PI_2/quality)*roundedleft,-sin(i*M_PI_2/quality)*roundedbottom)),n,vec2(0,0));
+			addVertex(quad2::vec2vec3(in.p00 + vec2(-cos((i + 1)*M_PI_2 / quality)*roundedleft, -sin((i + 1)*M_PI_2 / quality)*roundedbottom), depth), n, vec2(0, 0));
+			addVertex(quad2::vec2vec3(in.p00, depth), n, vec2(0, 0));
+			addVertex(quad2::vec2vec3(in.p00 + vec2(-cos(i*M_PI_2 / quality)*roundedleft, -sin(i*M_PI_2 / quality)*roundedbottom), depth), n, vec2(0, 0));
 		}
 	}
 	if(glm::min(roundedleft,roundedtop)!=0){
 		int quality=Client::m_Graphics()->to_pixels(glm::max(roundedleft,roundedtop))/4;
 		for(int i=0;i<quality;i++){
-			addVertex(quad2::vec2vec3(in.p01+vec2(-cos(i*M_PI_2/quality)*roundedleft,sin(i*M_PI_2/quality)*roundedtop)),n,vec2(0,0));
-			addVertex(quad2::vec2vec3(in.p01),n,vec2(0,0));
-			addVertex(quad2::vec2vec3(in.p01+vec2(-cos((i+1)*M_PI_2/quality)*roundedleft,sin((i+1)*M_PI_2/quality)*roundedtop)),n,vec2(0,0));
+			addVertex(quad2::vec2vec3(in.p01 + vec2(-cos(i*M_PI_2 / quality)*roundedleft, sin(i*M_PI_2 / quality)*roundedtop), depth), n, vec2(0, 0));
+			addVertex(quad2::vec2vec3(in.p01, depth), n, vec2(0, 0));
+			addVertex(quad2::vec2vec3(in.p01 + vec2(-cos((i + 1)*M_PI_2 / quality)*roundedleft, sin((i + 1)*M_PI_2 / quality)*roundedtop), depth), n, vec2(0, 0));
 		}
 	}
 }

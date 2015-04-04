@@ -75,7 +75,7 @@ public:
 	///<summary>Add generated rounded-rectangle data in the buffers</summary>
 	///<param name="in">Inner space</param>
 	///<param name="out">Outer space</param>
-	void addRectangle(quad2 in,quad2 out);
+	void addRectangle(quad2 in, quad2 out, float depth = 0);
 	///<summary>Rotates Model to the specific direction</summary>
 	///<param name="to">Position of object to look to</param>
 	void lookAt(vec3 to);

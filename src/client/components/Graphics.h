@@ -89,7 +89,7 @@ public:
 	void SetColor2d(vec4 color);
 	///<summary>Updates position uniform in 2d shader</summary>
 	///<param name="pos">Position</param>
-	void SetPos2d(glm::vec2 pos);
+	void SetPos2d(glm::vec2 pos, float depth);
 	///<summary>Updates viewProjectionMatrix uniform in 3d shader</summary>
 	///<param name="position">Position of the camera</param>
 	///<param name="center">Vector directed forward the camera</param>

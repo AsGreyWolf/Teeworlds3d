@@ -32,12 +32,12 @@ void Resources::Load(){
 	loadTexture(textureRGB,true,false,"rgb.png");
 	loadTexture(textureGame,true,true,"game.png");
 	genTexture(textureShadowColor, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, false, false, false, NULL);// TODO remove it
-	genTexture(textureShadowDepth, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, true, false, true, NULL);
+	genTexture(textureShadowDepth, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, true, true, true, NULL);
 	vector<string> skins;
 	System::GetFilesInDirectory(skins, Client::m_Client()->GetDataFile("skins"));
 	for(unsigned int i=0;i<skins.size();i++){
 		GLuint skintex=textureBlank;
-		loadTexture(skintex,true,true,"skins/"+skins[i]);
+		loadTexture(skintex,true,false,"skins/"+skins[i]);
 		skins[i].resize(skins[i].size()-4);
 		skinTextures.insert(skinTextures.begin(),pair<string,GLuint>(skins[i],skintex));
 	}
@@ -522,7 +522,6 @@ void Resources::Load(){
 	texturePos16x8.push_back(quad2(14.0f/16,7.0f/8,1.0f/16,1.0f/8));
 	texturePos16x8.push_back(quad2(15.0f/16,7.0f/8,1.0f/16,1.0f/8));
 
-
 	gameCursor.push_back(texturePos16x8[0]);
 	gameCursor.push_back(texturePos16x8[32]);
 	gameCursor.push_back(texturePos16x8[48]);
@@ -650,7 +649,7 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 		if(font!=NULL){
 			SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), SDLColorWhite);
 			if(surface!=NULL){
-				loadTextureFromSurface(tex, false, true, surface);
+				loadTextureFromSurface(tex, true, true, surface);
 				aspect=surface->w*1.0f/surface->h;
 				SDL_FreeSurface(surface);
 				complete=true;
@@ -675,29 +674,27 @@ TTF_Font* Resources::loadFont(int size){
 		return font;
 	}
 }
-void Resources::genTexture(GLuint &tex,int w,int h,bool isDepth,bool mipmaps,bool filtering,const GLvoid* pixels){
+void Resources::genTexture(GLuint &tex, int w, int h, bool isDepth, bool anisotropy, bool filtering, const GLvoid* pixels){
 	glGenTextures(1, &tex);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glEnable(GL_TEXTURE_2D);
-	int anisotropy;
-	glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &anisotropy);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
+	int anisotropyI;
+	glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &anisotropyI);
+	if (anisotropy)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyI);//TODO anisotropy filterring
 	if(!filtering){
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipmaps?GL_NEAREST_MIPMAP_NEAREST:GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	}else{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipmaps?GL_LINEAR_MIPMAP_LINEAR:GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	}
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
-	if(mipmaps)
-		gluBuild2DMipmaps(GL_TEXTURE_2D, 4, w, h,GL_RGBA, GL_UNSIGNED_BYTE,  pixels);
-	else
-		if(isDepth) glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, pixels);
-		else glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+	if(isDepth) glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, pixels);
+	else glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 }
 void Resources::removeTexture(GLuint &tex){
 	glDeleteTextures(1,&tex);
@@ -705,7 +702,7 @@ void Resources::removeTexture(GLuint &tex){
 void Resources::unLoadTexture(GLuint &tex){
 	removeTexture(tex);
 }
-bool Resources::loadTextureFromSurface(GLuint &tex,bool mipmaps,bool filtering,SDL_Surface* &data)
+bool Resources::loadTextureFromSurface(GLuint &tex, bool anisotropy, bool filtering, SDL_Surface* &data)
 {
 	Client::m_Graphics()->to_RGBA(data);
 	GLint maxTexSize;
@@ -718,16 +715,16 @@ bool Resources::loadTextureFromSurface(GLuint &tex,bool mipmaps,bool filtering,S
 		tex=textureRGB;
 		return false;
 	}
-	genTexture(tex,data->w,data->h,false,mipmaps,filtering,data->pixels);
+	genTexture(tex, data->w, data->h, false, anisotropy, filtering, data->pixels);
 	return true;
 }
 
-bool Resources::loadTexture(GLuint &tex,bool mipmaps,bool filtering,string filepath)
+bool Resources::loadTexture(GLuint &tex, bool anisotropy, bool filtering, string filepath)
 {
 	string path = Client::m_Client()->GetDataFile(filepath);
 	SDL_Surface *temp = NULL;
 	temp = IMG_Load(path.c_str());
-	if(!loadTextureFromSurface(tex,mipmaps,filtering,temp)){
+	if (!loadTextureFromSurface(tex, anisotropy, filtering, temp)){
 		Client::Err("Error Loading Texture: " + filepath + " : " + string(SDL_GetError()));
 		SDL_FreeSurface(temp);
 		return false;

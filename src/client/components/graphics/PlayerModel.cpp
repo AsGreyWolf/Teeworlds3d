@@ -27,8 +27,8 @@ void PlayerModel::renderBillboard(){
 	NickNameShadow->scaleAt(Client::m_Camera()->position, vec3(0), vec3(0.002f));
 	NickName->scale+=1;
 	NickNameShadow->scale+=1;
-	NickName->render();
 	NickNameShadow->render();
+	NickName->render();
 }
 void PlayerModel::render(const glm::mat4 &parentMatrix){
 	if (!Client::m_Graphics()->restoreMatrix)
@@ -169,7 +169,7 @@ void PlayerModel::update(Player* p){
 
 		((Text3d*)NickName)->addText(p->NickName,Resources::FONT_NORMAL,TextGenerator::ALIGN_CENTER_BOTTOM,false);
 		quad2 geom=((Text3d*)NickName)->data->geometry*100;
-		NickNameShadow->addRectangle(geom,quad2(geom.p00+vec2(-1,-1),geom.p10+vec2(1,-1),geom.p01+vec2(-1,1),geom.p11+vec2(1,1)));
+		NickNameShadow->addRectangle(geom,quad2(geom.p00+vec2(-1,-1),geom.p10+vec2(1,-1),geom.p01+vec2(-1,1),geom.p11+vec2(1,1)),-1);
 		NickName->create();
 		NickNameShadow->create();
 	}

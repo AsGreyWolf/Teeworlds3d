@@ -8,7 +8,7 @@
 #include "Resources.h"
 
 void Model2d::render(){
-	Client::m_Graphics()->SetPos2d(position);
+	Client::m_Graphics()->SetPos2d(position, depth);
 	Client::m_Graphics()->SetColor2d(coloring);
 
 	glBindTexture(GL_TEXTURE_2D,texture);
@@ -24,6 +24,7 @@ Model2d::Model2d(int type){
 	glGenBuffers(1,&vbuffer);
 	glGenBuffers(1,&tbuffer);
 	texture = Client::m_Graphics()->m_Resources->textureBlank;
+	depth = 0;
 }
 Model2d::Model2d(){
 	type=GL_TRIANGLES;
@@ -34,6 +35,7 @@ Model2d::Model2d(){
 	glGenBuffers(1,&vbuffer);
 	glGenBuffers(1,&tbuffer);
 	texture = Client::m_Graphics()->m_Resources->textureBlank;
+	depth = 0;
 }
 void Model2d::create(){
 	glBindVertexArray(VAO);

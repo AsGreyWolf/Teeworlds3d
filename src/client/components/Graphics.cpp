@@ -60,7 +60,7 @@ Graphics::Graphics() : Component(){
 	orthoMatrix=glm::ortho(-320.0f,320.0f,-320.0f,320.0f,0.0f,1.0f);
 
 	glEnable(GL_BLEND);
-	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+	glBlendEquation(GL_FUNC_ADD);
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_MULTISAMPLE);
@@ -196,8 +196,8 @@ void Graphics::SetLight(bool light){
 	if (currentShader == m_Resources->shader3d)
 	glUniform1f(lightUniform3d, light?1.0f:0.0f);
 }
-void Graphics::SetPos2d(vec2 pos){
-	glUniform2f(posUniform2d,pos.x,pos.y);
+void Graphics::SetPos2d(vec2 pos, float depth){
+	glUniform3f(posUniform2d, pos.x, pos.y, depth);
 }
 void Graphics::SetViewMatrix(const glm::vec3 &position, const glm::vec3 &center, const glm::vec3 &up){
 	glUniformMatrix4fv(viewProjectionMatrixUniform3d,1,false,(const float*)glm::value_ptr(perspectiveMatrix*glm::lookAt(position, center, up)));

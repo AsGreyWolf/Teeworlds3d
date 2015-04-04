@@ -13,10 +13,12 @@ Model2d* test;
 GUI::GUI() : Component(){
 	mp_GUI = this;
 	fpsObject=new Text();
+	fpsObject->depth = 1;
 	fpsObject->addText(std::to_string(m_Client()->fps), Resources::FONT_BIG, TextGenerator::ALIGN_RIGHT_TOP, true);
 	fpsObject->create();
 	fpsObject->position = m_Graphics()->screen.p11;
 	fpsTitle=new Text();
+	fpsTitle->depth = 1;
 	fpsTitle->addText("FPS=",Resources::FONT_BIG,TextGenerator::ALIGN_RIGHT_TOP,false);
 	fpsTitle->create();
 	fpsTitle->position=fpsObject->data->geometry.p01+fpsObject->position;
@@ -33,10 +35,10 @@ void GUI::StateChange(STATE lastState){}
 void GUI::Render(){}
 void GUI::RenderBillboard(){}
 void GUI::Render2d(){
+	test->render();
 	fpsObject->setText(std::to_string(m_Client()->fps));
 	fpsObject->render();
 	fpsTitle->render();
-	test->render();
 }
 void GUI::Tick(){}
 void GUI::Message(int type,char* value){}

@@ -61,8 +61,8 @@ public:
 		glm::vec2 xy=glm::normalize(glm::vec2(v.x,v.y));
 		return glm::vec3(asin(v.z),0,xy.x>0.0?-acos(xy.y):acos(xy.y));
 	}
-	static glm::vec3 vec2vec3(glm::vec2 v){
-		return glm::vec3(-v.x,0,v.y);
+	static glm::vec3 vec2vec3(glm::vec2 v, float depth=0){
+		return glm::vec3(-v.x, depth, v.y);
 	}
 };
 #endif
