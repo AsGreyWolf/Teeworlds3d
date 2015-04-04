@@ -15,4 +15,4 @@ You should:
 
 - **On windows:** copy the DLLs from other folders in current folder
 
-More on [WIKI][https://github.com/AsGreyWolf/Teeworlds3d/wiki/Building]
+More on [WIKI](https://github.com/AsGreyWolf/Teeworlds3d/wiki/Building)
