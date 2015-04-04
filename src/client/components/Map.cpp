@@ -6,12 +6,15 @@
 #include "graphics/Resources.h"
 #include "graphics/Model.h"
 
+class Map* mp_Map;
+Map* Component::m_Map(){ return mp_Map; }
+
 Map::Map() : Component(){
-	Component::mp_Map = this;
+	mp_Map = this;
 }
 Map::~Map(){
 	UnLoad();
-	Component::mp_Map = NULL;
+	mp_Map = NULL;
 }
 void Map::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
 void Map::StateChange(STATE lastState){
@@ -93,7 +96,7 @@ bool Map::Load(string name){
 	}
 	string p="mapres/"+string(s)+".png";
 	texture=-1;
-	m_Graphics()->m_Resources->loadTexture(texture,true,false,p);
+	m_Graphics()->m_Resources->loadTexture(texture,false,false,p);
 
 
 	fclose(file);

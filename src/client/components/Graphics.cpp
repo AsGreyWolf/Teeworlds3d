@@ -11,6 +11,9 @@
 #include "../../tools/Protocol.h"
 #define USE_SHADOWS
 
+class Graphics* mp_Graphics;
+Graphics* Component::m_Graphics(){ return mp_Graphics; }
+
 float renderSize=1;
 const float LightPos[4]={0, 0, 500, 1};
 const float LightColorDif[4]={1*renderSize, 1*renderSize, 1*renderSize, 1};
@@ -31,9 +34,8 @@ void Graphics::to_RGBA(SDL_Surface* &src){
 		src=ret;
 	}
 }
-Model2d* shadowPreview;
 Graphics::Graphics() : Component(){
-	Component::mp_Graphics = this;
+	mp_Graphics = this;
 	SDL_GLContext context;
 
 	if ((context = SDL_GL_CreateContext(m_Client()->screen)) == NULL)
@@ -100,36 +102,29 @@ Graphics::Graphics() : Component(){
 	normalMatrixUniform3d=glGetUniformLocation(m_Resources->shader3d,"normalMatrix");
 	shadowProjectionMatrixUniform3d=glGetUniformLocation(m_Resources->shader3d,"shadowProjectionMatrix");
 
+	modelMatrixUniformShadow = glGetUniformLocation(m_Resources->shaderShadow, "modelMatrix");
 	viewProjectionMatrixUniformShadow=glGetUniformLocation(m_Resources->shaderShadow,"viewProjectionMatrix");
-	modelMatrixUniformShadow=glGetUniformLocation(m_Resources->shaderShadow,"modelMatrix");
 
 	colorUniform2d=glGetUniformLocation(m_Resources->shader2d,"colorer");
 	aspectUniform2d=glGetUniformLocation(m_Resources->shader2d,"aspect");
 	posUniform2d=glGetUniformLocation(m_Resources->shader2d,"pos");
-
-
-	glUseProgram(m_Resources->shader3d);
 
 	glLineWidth(3);
 	glPointSize(3);
 
 	glGenFramebuffersEXT(1, &shadowFBO);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);
-	//glDrawBuffer(GL_NONE);
-	//glReadBuffer(GL_NONE);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,GL_TEXTURE_2D,m_Resources->textureShadowColor,0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	//glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,GL_TEXTURE_2D,m_Resources->textureShadowColor,0);
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D,m_Resources->textureShadowDepth,0);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
-	shadowPreview = new Model2d();
-	shadowPreview->texture = m_Resources->textureShadowColor;
-	shadowPreview->addQuad(screen / 4 + screen.p00*3.0f/4.0f, quad2(0, 0, 1, 1));
-	shadowPreview->create();
 }
 Graphics::~Graphics(){
 	m_Resources->UnLoad();
 	glDeleteFramebuffers(1,&shadowFBO);
 	delete m_Resources;
-	Component::mp_Graphics = NULL;
+	mp_Graphics = NULL;
 }
 void Graphics::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
 void Graphics::Render(){}
@@ -148,10 +143,13 @@ void Graphics::Tick(){
 	mat4 shadowMatrix=orthoMatrix*glm::lookAt(pos, pos+vec3(0,0,-1), vec3(0,1,0));
 	glUniformMatrix4fv(viewProjectionMatrixUniformShadow,1,false,(const float*)glm::value_ptr(shadowMatrix));
 	glCullFace(GL_FRONT);
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	glDepthMask(GL_TRUE);
 	m_Client()->Render();
 #endif
-	glCullFace(GL_BACK);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	glCullFace(GL_BACK);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glUseProgram(m_Resources->shader3d);
 	currentShader = m_Resources->shader3d;
 	glViewport(0,0,screenSize*aspect,screenSize);
@@ -182,7 +180,6 @@ void Graphics::Tick(){
 	glUseProgram(m_Resources->shader2d);
 	currentShader = m_Resources->shader2d;
 	glClear(GL_DEPTH_BUFFER_BIT);
-	shadowPreview->render();
 	glUniform1f(aspectUniform2d,aspect);
 	m_Client()->Render2d();
 }
@@ -213,11 +210,12 @@ void Graphics::SetModelMatrix(glm::mat4 &modelMatrix,glm::mat4 &normalMatrix,con
 		normalMatrix=glm::inverse(normalMatrix);
 		normalMatrix=glm::transpose(normalMatrix);
 	}
-	if (currentShader == m_Resources->shader3d)
-	glUniformMatrix4fv(normalMatrixUniform3d,1,false,(const float*)glm::value_ptr(normalMatrix));
-	glUniformMatrix4fv(modelMatrixUniform3d,1,false,(const float*)glm::value_ptr(modelMatrix));
+	if (currentShader == m_Resources->shader3d){
+		glUniformMatrix4fv(normalMatrixUniform3d, 1, false, (const float*)glm::value_ptr(normalMatrix));
+		glUniformMatrix4fv(modelMatrixUniform3d, 1, false, (const float*)glm::value_ptr(modelMatrix));
+	}
 	if (currentShader == m_Resources->shaderShadow)
-	glUniformMatrix4fv(modelMatrixUniformShadow,1,false,(const float*)glm::value_ptr(modelMatrix));
+		glUniformMatrix4fv(modelMatrixUniformShadow,1,false,(const float*)glm::value_ptr(modelMatrix));
 }
 void Graphics::Translate(glm::mat4 &modelMatrix,const glm::vec3 &position){
 	if(!restoreMatrix)

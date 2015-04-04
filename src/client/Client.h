@@ -7,11 +7,6 @@
 #include "Component.h"
 
 using namespace std;
-class Graphics;
-class Camera;
-class Map;
-class Players;
-class GUI;
 
 class Client : public Component{
 public:

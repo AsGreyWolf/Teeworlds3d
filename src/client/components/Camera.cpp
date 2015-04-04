@@ -3,11 +3,14 @@
 #include "../Client.h"
 #include "Graphics.h"
 
+class Camera* mp_Camera;
+Camera* Component::m_Camera(){ return mp_Camera; }
+
 Camera::Camera() : Component(){
-	Component::mp_Camera = this;
+	mp_Camera = this;
 }
 Camera::~Camera(){
-	Component::mp_Camera = NULL;
+	mp_Camera = NULL;
 }
 void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	RotateX(-yrel*m_Client()->tickCoeff);

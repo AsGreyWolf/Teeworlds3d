@@ -10,15 +10,11 @@
 #include "../tools/system.h"
 #include "../../other/sdl/include/SDL_ttf.h"
 
+class Client* mp_Client;
+Client* Component::m_Client(){ return mp_Client; }
+
 bool Client::working=false;
 int Client::frames=0;
-
-class Graphics* Component::mp_Graphics;
-class Camera* Component::mp_Camera;
-class Map* Component::mp_Map;
-class Players* Component::mp_Players;
-class GUI* Component::mp_GUI;
-class Client* Component::mp_Client;
 
 int main(int argc, char *argv[])
 {
@@ -33,22 +29,22 @@ int main(int argc, char *argv[])
 	std::wcerr.imbue(l);
 	std::wclog.imbue(l);
 	std::ios::sync_with_stdio(false);*/
-	Component::mp_Client = new Client();
-	Component::m_Client()->Start();
+	mp_Client = new Client();
+	mp_Client->Start();
 	STATE startstate;
 	startstate.ingame=false;
-	Component::m_Client()->state.ingame = true;
-	Component::m_Client()->StateChange(startstate);
-	while (Component::m_Client()->isRunning()){
+	mp_Client->state.ingame = true;
+	mp_Client->StateChange(startstate);
+	while (mp_Client->isRunning()){
 		long tickTime=System::GetTime();
-		Component::m_Client()->tickCoeff = (tickTime - Component::m_Client()->lasttickTime)*1.0 / 1000;
-		Component::m_Client()->lasttickTime = tickTime;
-		STATE oldstate = Component::m_Client()->state;
-		Component::m_Client()->Input(NULL, 0, 0, 0);
-		Component::m_Client()->Tick();
-		if (oldstate != Component::m_Client()->state) Component::m_Client()->StateChange(oldstate);
+		mp_Client->tickCoeff = (tickTime - mp_Client->lasttickTime)*1.0 / 1000;
+		mp_Client->lasttickTime = tickTime;
+		STATE oldstate = mp_Client->state;
+		mp_Client->Input(NULL, 0, 0, 0);
+		mp_Client->Tick();
+		if (oldstate != mp_Client->state) mp_Client->StateChange(oldstate);
 	}
-	delete Component::m_Client();
+	delete mp_Client;
 	return 0;
 }
 void Client::Start(){
@@ -61,7 +57,7 @@ bool Client::isRunning(){
 	return working;
 }
 Client::Client():Component(){
-	Component::mp_Client = this;
+	mp_Client = this;
 	System::Init();
 	System::GetPath(PATH_CUR);
 	PATH_DATA=PATH_CUR+"data/";
@@ -180,8 +176,8 @@ void Client::Info(string c){
 Uint32 calcFPS(Uint32 interval, void *param){
 	if(!Client::isRunning()) return interval;
 	Client::Info("FPS = "+to_string(Client::frames));
-	if (Component::m_Client() != NULL)
-		Component::m_Client()->fps = Client::frames;
+	if (mp_Client != NULL)
+		mp_Client->fps = Client::frames;
 	Client::frames=0;
 	return interval;
 }

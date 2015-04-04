@@ -4,6 +4,11 @@
 #include <stdint.h>
 
 class Client;
+class Graphics;
+class Camera;
+class Map;
+class Players;
+class GUI;
 struct STATE{
 	const  bool operator!=(const STATE s){
 		return ingame!=s.ingame;
@@ -34,18 +39,12 @@ public:
 	///<param name="lastState">Last state</param>
 	virtual void StateChange(STATE lastState){};
 
-	static class Graphics* mp_Graphics;
-	static class Camera* mp_Camera;
-	static class Map* mp_Map;
-	static class Players* mp_Players;
-	static class GUI* mp_GUI;
-	static class Client* mp_Client;
-	static Graphics* m_Graphics(){ return mp_Graphics; }
-	static Camera* m_Camera(){ return mp_Camera; }
-	static Map* m_Map(){ return mp_Map; }
-	static Players* m_Players(){ return mp_Players; }
-	static GUI* m_GUI(){ return mp_GUI; }
-	static Client* m_Client(){ return mp_Client; }
+	static Graphics* m_Graphics();
+	static Camera* m_Camera();
+	static Map* m_Map();
+	static Players* m_Players();
+	static GUI* m_GUI();
+	static Client* m_Client();
 };
 
 #endif

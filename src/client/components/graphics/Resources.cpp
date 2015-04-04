@@ -31,7 +31,7 @@ void Resources::Load(){
 	loadTexture(textureBlank,true,false,"blank.png");
 	loadTexture(textureRGB,true,false,"rgb.png");
 	loadTexture(textureGame,true,true,"game.png");
-	genTexture(textureShadowColor, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, false, false, false, NULL);
+	genTexture(textureShadowColor, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, false, false, false, NULL);// TODO remove it
 	genTexture(textureShadowDepth, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, Client::m_Graphics()->screenSize*Client::m_Graphics()->aspect * 2, true, false, true, NULL);
 	vector<string> skins;
 	System::GetFilesInDirectory(skins, Client::m_Client()->GetDataFile("skins"));
@@ -628,7 +628,7 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 			if(font!=NULL){
 				SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), SDLColorWhite);
 				if(surface!=NULL){
-					loadTextureFromSurface(texture,true,false,surface);
+					loadTextureFromSurface(texture, true, true, surface);
 					aspect=surface->w*1.0f/surface->h;
 					SDL_FreeSurface(surface);
 					complete=true;
@@ -650,7 +650,7 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 		if(font!=NULL){
 			SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), SDLColorWhite);
 			if(surface!=NULL){
-				loadTextureFromSurface(tex,false,true,surface);
+				loadTextureFromSurface(tex, false, true, surface);
 				aspect=surface->w*1.0f/surface->h;
 				SDL_FreeSurface(surface);
 				complete=true;
@@ -680,13 +680,15 @@ void Resources::genTexture(GLuint &tex,int w,int h,bool isDepth,bool mipmaps,boo
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glEnable(GL_TEXTURE_2D);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
+	int anisotropy;
+	glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &anisotropy);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 	if(!filtering){
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipmaps?GL_NEAREST_MIPMAP_NEAREST:GL_NEAREST);
 	}else{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipmaps?GL_LINEAR_MIPMAP_LINEAR:GL_LINEAR);
 	}
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );

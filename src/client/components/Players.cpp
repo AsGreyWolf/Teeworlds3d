@@ -7,11 +7,14 @@
 #include "graphics/PlayerModel.h"
 #include "graphics/Resources.h"
 
+class Players* mp_Players;
+Players* Component::m_Players(){ return mp_Players; }
+
 // TODO just for debug
 PlayerModel* n[MAX_PLAYERS];
 Model2d* cursor;
 Players::Players() : Component(){
-	Component::mp_Players = this;
+	mp_Players = this;
 	// TODO just for debug
 	for(int i=0;i<MAX_PLAYERS;i++){
 		n[i]=new PlayerModel();
@@ -38,7 +41,7 @@ Players::~Players(){
 		delete players[i];
 	}
 	delete cursor;
-	Component::mp_Players = NULL;
+	mp_Players = NULL;
 }
 ///TODO: debug only
 bool lastSpaceState=false;

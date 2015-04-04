@@ -5,9 +5,13 @@
 #include "graphics/Text.h"
 #include "graphics/Model2d.h"
 #include "graphics/TextGenerator.h"
+
+class GUI* mp_GUI;
+GUI* Component::m_GUI(){ return mp_GUI; }
+
 Model2d* test;
 GUI::GUI() : Component(){
-	Component::mp_GUI = this;
+	mp_GUI = this;
 	fpsObject=new Text();
 	fpsObject->addText(std::to_string(m_Client()->fps), Resources::FONT_BIG, TextGenerator::ALIGN_RIGHT_TOP, true);
 	fpsObject->create();
@@ -22,7 +26,7 @@ GUI::GUI() : Component(){
 GUI::~GUI(){
 	delete fpsObject;
 	delete fpsTitle;
-	Component::mp_GUI = NULL;
+	mp_GUI = NULL;
 }
 void GUI::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
 void GUI::StateChange(STATE lastState){}

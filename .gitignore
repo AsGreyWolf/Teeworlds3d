@@ -222,3 +222,5 @@ srcold/
 math/
 *.zip
 *.exe
+*.dll
+!other/*.dll
