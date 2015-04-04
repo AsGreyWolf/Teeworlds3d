@@ -11,7 +11,7 @@ uniform float lighting;
 
 float calcShadow(float z,vec2 pos,vec2 dx){
 	vec4 shadowMap=texture2D(shadow, pos+dx);
-	if (shadowMap.z  <  z+0.0006){
+	if (shadowMap.z  <  z){
 		return 1.0;
 	}
 	return 0.0;
@@ -29,7 +29,7 @@ void main(void) {
 		float lightIntensity =dot(ex_Normal, L)/2;
 /* shadow calc*/
 		if(ex_ShadowTexMap.x>=0.0 && ex_ShadowTexMap.x<=1.0 && ex_ShadowTexMap.y>=0.0 && ex_ShadowTexMap.y<=1.0){
-				vec2 shadowPos=ex_ShadowTexMap.xy+vec2(0.001*rand(ex_ShadowTexMap.yx),0.001*rand(ex_ShadowTexMap.xy));
+				vec2 shadowPos=ex_ShadowTexMap.xy+vec2(0.0005*rand(ex_ShadowTexMap.yx),0.0005*rand(ex_ShadowTexMap.xy));
 				vec2 dx=vec2(0.0005,0.0f);
 				vec2 dy=vec2(0.0f,0.0005);
 				float shadowIntensity=calcShadow(ex_ShadowTexMap.z, shadowPos,dx);

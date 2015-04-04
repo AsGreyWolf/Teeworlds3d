@@ -111,6 +111,7 @@ Graphics::Graphics() : Component(){
 
 	glLineWidth(3);
 	glPointSize(3);
+	glPolygonOffset(0, -1);
 
 	glGenFramebuffersEXT(1, &shadowFBO);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);
@@ -137,6 +138,7 @@ void Graphics::Tick(){
 	glUseProgram(m_Resources->shaderShadow);
 	currentShader = m_Resources->shaderShadow;
 	glViewport(0,0,screenSize*aspect*2,screenSize*aspect*2);
+	glEnable(GL_POLYGON_OFFSET_FILL);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	vec3 pos = m_Camera()->position;
 	pos.z=1;
@@ -153,6 +155,7 @@ void Graphics::Tick(){
 	glUseProgram(m_Resources->shader3d);
 	currentShader = m_Resources->shader3d;
 	glViewport(0,0,screenSize*aspect,screenSize);
+	glDisable(GL_POLYGON_OFFSET_FILL);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glUniform1i(glGetUniformLocation(m_Resources->shader3d,"tex"),0);
 	glUniform1i(glGetUniformLocation(m_Resources->shader3d,"shadow"),1);

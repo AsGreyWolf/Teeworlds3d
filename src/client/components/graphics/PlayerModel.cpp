@@ -36,10 +36,10 @@ void PlayerModel::render(const glm::mat4 &parentMatrix){
 
 	Client::m_Graphics()->Translate(modelMatrix, position);
 	Client::m_Graphics()->RotateZ(modelMatrix, rot);
-	Body->render(modelMatrix);
 	lFoot->render(modelMatrix);
 	rFoot->render(modelMatrix);
 	Client::m_Graphics()->RotateX(modelMatrix, rot);
+	Body->render(modelMatrix);
 	Client::m_Graphics()->RotateY(modelMatrix, rot);
 
 	lArm->render(modelMatrix);
@@ -108,7 +108,7 @@ void PlayerModel::remove(){
 }
 void PlayerModel::update(Player* p){
 	position=p->pos;
-	rot=p->dir;
+	rot = quad2::vec2rot(p->dir);
 	weapon=p->weapon;
 	emote=p->emote;
 	if (Client::m_Graphics()->m_Resources->skinTextures.find(p->skin) != Client::m_Graphics()->m_Resources->skinTextures.end())

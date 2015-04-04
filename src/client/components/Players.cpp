@@ -23,7 +23,7 @@ Players::Players() : Component(){
 		players[i]=new Player();
 		players[i]->pos=vec3(rand()%2048,rand()%2048,70);
 		players[i]->dir=vec3(rand()/ (static_cast <float> (RAND_MAX/(M_PI*2))),rand()/(static_cast <float> (RAND_MAX/(M_PI*2))),rand()/(static_cast <float> (RAND_MAX/(M_PI*2))));
-		players[i]->dir=vec3(0,0,0);
+		players[i]->dir = glm::rotateZ(glm::rotateX(glm::rotateY(vec3(0, 1, 0), players[i]->dir.y), players[i]->dir.x), players[i]->dir.x);
 		players[i]->weapon=rand()%NUM_WEAPONS;
 		players[i]->emote=EMOTE_NORMAL;
 		players[i]->skin = (*skinName).first;

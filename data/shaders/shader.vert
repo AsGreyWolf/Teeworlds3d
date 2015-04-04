@@ -23,7 +23,7 @@ void main(void) {
     ex_TexMap = in_TexMap;
 	ex_Normal = normalize((normalMatrix*vec4(in_Normal, 1.0)).xyz);
 	vec4 shadowmap=(modelMatrix*vec4(in_Position, 1.0));
-	shadowmap.z*=0.00001;
+	shadowmap.z*=0.000005;
 	shadowmap=shadowProjectionMatrix*shadowmap;
 	shadowmap.x=shadowmap.x/(abs(shadowmap.x)+2);
 	shadowmap.y=shadowmap.y/(abs(shadowmap.y)+2);
