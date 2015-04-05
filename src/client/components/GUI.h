@@ -36,11 +36,11 @@ public:
 	///<summary>System message callback</summary>
 	void Message(int type,char* value);
 
-	void fill(quad2 in,quad2 out);
+	void Fill(quad2 in,quad2 out);
 
 	class Text* fpsObject;
 	class Text* fpsTitle;
 };
-GUI* m_GUI();
+GUI* g_GUI();
 
 #endif

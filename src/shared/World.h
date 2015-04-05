@@ -17,6 +17,6 @@ public:
 	///<summary>Players array</summary>
 	Player* players[MAX_PLAYERS];
 };
-World* m_World();
+World* g_World();
 
 #endif

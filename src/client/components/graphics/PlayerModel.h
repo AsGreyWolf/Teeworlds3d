@@ -4,8 +4,8 @@
 #include "Model.h"
 #include "../../../tools/Protocol.h"
 
-const float RenderSize = 36.0f;
-const float BaseSize = 64.0f;
+const float renderSize = 36.0f;
+const float baseSize = 64.0f;
 class Player;
 
 ///<summary>Visual player object</summary>
@@ -14,28 +14,28 @@ class PlayerModel : public Model
 public:
 	PlayerModel();
 	///<summary>Initializes subModels and creates them</summary>
-	void create();
+	void Create();
 	///<summary>Pushes the subModels into the shader</summary>
-	void render(const glm::mat4 &parentMatrix);
-	void render(){
-		render(glm::mat4(1.0f));
+	void Render(const glm::mat4 &parentMatrix);
+	void Render(){
+		Render(glm::mat4(1.0f));
 	}
 	///<summary>Pushes the billboards into the shader</summary>
-	void renderBillboard();
+	void RenderBillboard();
 	///<summary>Removes the subModels</summary>
-	void remove();
+	void Remove();
 	///<summary>Updates model with player info</summary>
 	///<param name="p">Player info</param>
-	void update(Player* p);
+	void Update(Player* p);
 private:
 	Model* lArm;
 	Model* rArm;
 	Model* lFoot;
 	Model* rFoot;
-	Model* Body;
-	Model* Eyes;
-	Model* NickName;
-	Model* NickNameShadow;
+	Model* body;
+	Model* eyes;
+	Model* nickName;
+	Model* nickNameShadow;
 	bool visible;
 	int weapon;
 	int emote;

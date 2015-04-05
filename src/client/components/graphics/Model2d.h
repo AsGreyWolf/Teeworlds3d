@@ -28,30 +28,30 @@ public:
 	Model2d();
 	~Model2d();
 	///<summary>Fills the buffers in the GPU with values in the RAM</summary>
-	void create();
+	void Create();
 	///<summary>Pushes the model into the shader</summary>
-	void render();
+	void Render();
 	///<summary>Deletes the buffers in the GPU and RAM</summary>
-	void remove();
+	void Remove();
 	///<summary>Deletes the buffers in the RAM</summary>
-	void clear();
+	void Clear();
 	///<summary>Appends vector of vertex to the buffers in the RAM</summary>
 	///<param name="v">Vertex positions</param>
 	///<param name="t">Vertex UV coordinates</param>
-	void addVertex(std::vector<glm::vec2> v,std::vector<glm::vec2> t);
+	void AddVertex(std::vector<glm::vec2> v,std::vector<glm::vec2> t);
 	///<summary>Appends 1 vertex to the buffers in the RAM</summary>
 	///<param name="v">Vertex position</param>
 	///<param name="t">Vertex UV coordinates</param>
-	void addVertex(glm::vec2 v,glm::vec2 t);
+	void AddVertex(glm::vec2 v,glm::vec2 t);
 	///<summary>Appends 1 quad to the buffers in the RAM</summary>
 	///<param name="v">Vertex positions</param>
 	///<param name="t">Vertex UV coordinates</param>
-	void addQuad(quad2 v,quad2 t);
+	void AddQuad(quad2 v,quad2 t);
 
 	///<summary>Add generated rounded-rectangle data in the buffers</summary>
 	///<param name="in">Inner space</param>
 	///<param name="out">Outer space</param>
-	void addRectangle(quad2 in,quad2 out);
+	void AddRectangle(quad2 in,quad2 out);
 
 private:
 	///<summary>Vertex positions buffer in the RAM</summary>
@@ -59,7 +59,7 @@ private:
 	///<summary>Vertex UV coordinates buffer in the RAM</summary>
 	std::vector <glm::vec2> texcoord;
 	///<summary>Vertex array object</summary>
-	GLuint VAO;
+	GLuint vao;
 	///<summary>Vertex positions buffer in the GPU</summary>
 	GLuint vbuffer;
 	///<summary>Vertex UV coordinates buffer in the GPU</summary>

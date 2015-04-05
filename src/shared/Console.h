@@ -19,6 +19,6 @@ public:
 	///<param name="c">Message</param>
 	static void Info(string c);
 };
-Console* m_Console();
+Console* g_Console();
 
 #endif

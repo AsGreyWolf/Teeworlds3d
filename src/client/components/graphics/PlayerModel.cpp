@@ -8,77 +8,77 @@
 #include "../../Client.h"
 #include "../../components/Camera.h"
 
-const int EyeScale = (int)(BaseSize*0.40);
-const float Separation=(0.075f*BaseSize)-EyeScale/2;
+const int eyescale = (int)(baseSize*0.40);
+const float separation=(0.075f*baseSize)-eyescale/2;
 const int detalization=32;
 const int animSpeed=300;
 vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
-		vec3(0,1,0),
+		vec3(17, 2, 20),
 		vec3(17,3,-5),
 		vec3(17,3,-5),
 		vec3(17,3,-5),
 		vec3(17,3,-5),
 		vec3(0,1,0),
 	};
-void PlayerModel::renderBillboard(){
-	NickName->lookAt(m_Camera()->position);
-	NickNameShadow->lookAt(m_Camera()->position);
-	NickName->scaleAt(m_Camera()->position, vec3(0), vec3(0.002f));
-	NickNameShadow->scaleAt(m_Camera()->position, vec3(0), vec3(0.002f));
-	NickName->scale+=1;
-	NickNameShadow->scale+=1;
-	NickNameShadow->render();
-	NickName->render();
+void PlayerModel::RenderBillboard(){
+	nickName->LookAt(g_Camera()->position);
+	nickNameShadow->LookAt(g_Camera()->position);
+	nickName->ScaleAt(g_Camera()->position, vec3(0), vec3(0.002f));
+	nickNameShadow->ScaleAt(g_Camera()->position, vec3(0), vec3(0.002f));
+	nickName->scale+=1;
+	nickNameShadow->scale+=1;
+	nickNameShadow->Render();
+	nickName->Render();
 }
-void PlayerModel::render(const glm::mat4 &parentMatrix){
-	if (!m_Graphics()->restoreMatrix)
+void PlayerModel::Render(const glm::mat4 &parentMatrix){
+	if (!g_Graphics()->restoreMatrix)
 		modelMatrix=parentMatrix;
 
-	m_Graphics()->Translate(modelMatrix, position);
-	m_Graphics()->RotateZ(modelMatrix, rot);
-	lFoot->render(modelMatrix);
-	rFoot->render(modelMatrix);
-	m_Graphics()->RotateX(modelMatrix, rot);
-	Body->render(modelMatrix);
-	m_Graphics()->RotateY(modelMatrix, rot);
+	g_Graphics()->Translate(modelMatrix, position);
+	g_Graphics()->RotateZ(modelMatrix, rot);
+	lFoot->Render(modelMatrix);
+	rFoot->Render(modelMatrix);
+	g_Graphics()->RotateX(modelMatrix, rot);
+	body->Render(modelMatrix);
+	g_Graphics()->RotateY(modelMatrix, rot);
 
-	lArm->render(modelMatrix);
-	rArm->render(modelMatrix);
+	lArm->Render(modelMatrix);
+	rArm->Render(modelMatrix);
 
-	m_Graphics()->m_Resources->weaponModels[weapon]->position = weaponPos[weapon];
-	m_Graphics()->m_Resources->weaponModels[weapon]->modelMatrix = gunModelMatrix;
-	m_Graphics()->m_Resources->weaponModels[weapon]->normalMatrix = gunNormalMatrix;
-	m_Graphics()->m_Resources->weaponModels[weapon]->render(modelMatrix);
-	gunModelMatrix = m_Graphics()->m_Resources->weaponModels[weapon]->modelMatrix;
-	gunNormalMatrix = m_Graphics()->m_Resources->weaponModels[weapon]->normalMatrix;
+	g_Graphics()->m_Resources->weaponModels[weapon]->position = weaponPos[weapon];
+	g_Graphics()->m_Resources->weaponModels[weapon]->modelMatrix = gunModelMatrix;
+	g_Graphics()->m_Resources->weaponModels[weapon]->normalMatrix = gunNormalMatrix;
+	g_Graphics()->m_Resources->weaponModels[weapon]->Render(modelMatrix);
+	gunModelMatrix = g_Graphics()->m_Resources->weaponModels[weapon]->modelMatrix;
+	gunNormalMatrix = g_Graphics()->m_Resources->weaponModels[weapon]->normalMatrix;
 	
-	Eyes->render(modelMatrix);
+	eyes->Render(modelMatrix);
 }
 PlayerModel::PlayerModel():Model(){
 }
-void PlayerModel::create(){
+void PlayerModel::Create(){
 	lArm=new Model();
-	lArm->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 8, m_Graphics()->m_Resources->texturePos8x4[6], false);
+	lArm->AddSphere(detalization, detalization, vec3(1, 1, 1), renderSize / 8, g_Graphics()->m_Resources->texturePos8x4[6], false);
 	rArm=new Model();
-	rArm->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 8, m_Graphics()->m_Resources->texturePos8x4[6], true);
+	rArm->AddSphere(detalization, detalization, vec3(1, 1, 1), renderSize / 8, g_Graphics()->m_Resources->texturePos8x4[6], true);
 	lFoot=new Model();
-	lFoot->addSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), RenderSize / 2.4f, m_Graphics()->m_Resources->texturePos8x4[14] >> m_Graphics()->m_Resources->texturePos8x4[15], false);
+	lFoot->AddSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), renderSize / 2.4f, g_Graphics()->m_Resources->texturePos8x4[14] >> g_Graphics()->m_Resources->texturePos8x4[15], false);
 	rFoot=new Model();
-	rFoot->addSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), RenderSize / 2.4f, m_Graphics()->m_Resources->texturePos8x4[14] >> m_Graphics()->m_Resources->texturePos8x4[15], true);
-	Body=new Model();
-	Body->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 2, m_Graphics()->m_Resources->texturePos8x4[0] >> m_Graphics()->m_Resources->texturePos8x4[21], false);
-	Eyes=new Model(false);
-	NickName=new Text3d();
-	NickNameShadow=new Model(false);
+	rFoot->AddSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), renderSize / 2.4f, g_Graphics()->m_Resources->texturePos8x4[14] >> g_Graphics()->m_Resources->texturePos8x4[15], true);
+	body=new Model();
+	body->AddSphere(detalization, detalization, vec3(1, 1, 1), renderSize / 2, g_Graphics()->m_Resources->texturePos8x4[0] >> g_Graphics()->m_Resources->texturePos8x4[21], false);
+	eyes=new Model(false);
+	nickName=new Text3d();
+	nickNameShadow=new Model(false);
 	
-	lArm->create();
-	rArm->create();
-	lFoot->create();
-	rFoot->create();
-	Body->create();
-	Eyes->create();
-	NickName->create();
-	NickNameShadow->create();
+	lArm->Create();
+	rArm->Create();
+	lFoot->Create();
+	rFoot->Create();
+	body->Create();
+	eyes->Create();
+	nickName->Create();
+	nickNameShadow->Create();
 
 	lFoot->rot=vec3(0,0,5.0f/180*M_PI);
 	rFoot->rot=vec3(0,0,-5.0f/180*M_PI);
@@ -88,45 +88,45 @@ void PlayerModel::create(){
 	rArm->rot=vec3(0,0,M_PI_2);
 	lFoot->texture=texture;
 	rFoot->texture=texture;
-	Body->texture=texture;
-	Body->rot=vec3(0,0,-M_PI_2);
-	Eyes->texture=texture;
-	rFoot->position=vec3(RenderSize/2,RenderSize/6,-RenderSize/2);
-	lFoot->position=vec3(-RenderSize/2,RenderSize/6,-RenderSize/2);
-	Eyes->position=vec3(0,(0.285f*BaseSize),((0.05f)*BaseSize)-EyeScale/2);
-	NickNameShadow->coloring=vec4(0,0,0,0.5f);
+	body->texture=texture;
+	body->rot=vec3(0,0,-M_PI_2);
+	eyes->texture=texture;
+	rFoot->position=vec3(renderSize/2,renderSize/6,-renderSize/2);
+	lFoot->position=vec3(-renderSize/2,renderSize/6,-renderSize/2);
+	eyes->position=vec3(0,(0.285f*baseSize),((0.05f)*baseSize)-eyescale/2);
+	nickNameShadow->coloring=vec4(0,0,0,0.5f);
 
 	animState=ANIMSTATE_NONE;
 }
-void PlayerModel::remove(){
+void PlayerModel::Remove(){
 	delete lArm;
 	delete rArm;
 	delete lFoot;
 	delete rFoot;
-	delete Body;
-	delete Eyes;
+	delete body;
+	delete eyes;
 }
-void PlayerModel::update(Player* p){
+void PlayerModel::Update(Player* p){
 	position=p->pos;
 	rot = quad2::vec2rot(p->dir);
 	weapon=p->weapon;
 	emote=p->emote;
-	if (m_Graphics()->m_Resources->skinTextures.find(p->skin) != m_Graphics()->m_Resources->skinTextures.end())
-		texture = m_Graphics()->m_Resources->skinTextures[p->skin];
+	if (g_Graphics()->m_Resources->skinTextures.find(p->skin) != g_Graphics()->m_Resources->skinTextures.end())
+		texture = g_Graphics()->m_Resources->skinTextures[p->skin];
 	else
-		texture = m_Graphics()->m_Resources->skinTextures["default"];
+		texture = g_Graphics()->m_Resources->skinTextures["default"];
 	lFoot->texture=texture;
 	rFoot->texture=texture;
 	lArm->texture=texture;
 	rArm->texture=texture;
-	Eyes->texture=texture;
-	Body->texture=texture;
+	eyes->texture=texture;
+	body->texture=texture;
 
 	lFoot->coloring=p->color;
 	rFoot->coloring=p->color;
 	lArm->coloring=p->color;
 	rArm->coloring=p->color;
-	Body->coloring=p->color;
+	body->coloring=p->color;
 
 
 	rArm->position=weaponPos[p->weapon];
@@ -142,39 +142,39 @@ void PlayerModel::update(Player* p){
 	if(animState==ANIMSTATE_LEFT_ONLY && dd>=0.5f)
 		animState++;
 	dd*=2*M_PI;
-	float faseA=RenderSize/2*sin(dd);
-	float faseB=RenderSize/6*cos(dd);
+	float faseA=renderSize/2*sin(dd);
+	float faseB=renderSize/6*cos(dd);
 	if(animState==ANIMSTATE_ALL && !anim && faseB>0 && lastFaseA<0 && faseA>0)
 		animState++;
 	if(animState==ANIMSTATE_RIGHT_ONLY && faseB<0 && lastFaseA>0 && faseA<0)
 		animState=ANIMSTATE_NONE;
 	if(animState==ANIMSTATE_ALL || animState==ANIMSTATE_RIGHT_ONLY)
-		rFoot->position=vec3(RenderSize/2,RenderSize/6+faseA,-RenderSize/2+glm::max(0.0f,faseB));
+		rFoot->position=vec3(renderSize/2,renderSize/6+faseA,-renderSize/2+glm::max(0.0f,faseB));
 	else
-		rFoot->position=vec3(RenderSize/2,RenderSize/6,-RenderSize/2);
+		rFoot->position=vec3(renderSize/2,renderSize/6,-renderSize/2);
 	if(animState==ANIMSTATE_ALL || animState==ANIMSTATE_LEFT_ONLY)
-		lFoot->position=vec3(-RenderSize/2,RenderSize/6-faseA,-RenderSize/2+glm::max(0.0f,-faseB));
+		lFoot->position=vec3(-renderSize/2,renderSize/6-faseA,-renderSize/2+glm::max(0.0f,-faseB));
 	else
-		lFoot->position=vec3(-RenderSize/2,RenderSize/6,-RenderSize/2);
+		lFoot->position=vec3(-renderSize/2,renderSize/6,-renderSize/2);
 	lastFaseA=faseA;
 
 	
-	Eyes->clear();
-	Eyes->addQuad(quad3(vec3(-EyeScale - Separation, 0, EyeScale), vec3(0 - Separation, 0, EyeScale), vec3(0 - Separation, 0, 0), vec3(-EyeScale - Separation, 0, 0)), vec3(0, 1, 0), m_Graphics()->m_Resources->texturePos8x4[26 + emote].reflectX());
-	Eyes->addQuad(quad3(vec3(0 + Separation, 0, EyeScale), vec3(EyeScale + Separation, 0, EyeScale), vec3(EyeScale + Separation, 0, 0), vec3(Separation, 0, 0)), vec3(0, 1, 0), m_Graphics()->m_Resources->texturePos8x4[26 + emote]);
-	Eyes->create();
-	if(((Text3d*)NickName)->text!=p->NickName){
-		NickName->clear();
-		NickNameShadow->clear();
+	eyes->Clear();
+	eyes->AddQuad(quad3(vec3(-eyescale - separation, 0, eyescale), vec3(0 - separation, 0, eyescale), vec3(0 - separation, 0, 0), vec3(-eyescale - separation, 0, 0)), vec3(0, 1, 0), g_Graphics()->m_Resources->texturePos8x4[26 + emote].reflectX());
+	eyes->AddQuad(quad3(vec3(0 + separation, 0, eyescale), vec3(eyescale + separation, 0, eyescale), vec3(eyescale + separation, 0, 0), vec3(separation, 0, 0)), vec3(0, 1, 0), g_Graphics()->m_Resources->texturePos8x4[26 + emote]);
+	eyes->Create();
+	if(((Text3d*)nickName)->text!=p->nickname){
+		nickName->Clear();
+		nickNameShadow->Clear();
 
-		((Text3d*)NickName)->addText(p->NickName,Resources::FONT_NORMAL,TextGenerator::ALIGN_CENTER_BOTTOM,false);
-		quad2 geom=((Text3d*)NickName)->data->geometry*100;
-		NickNameShadow->addRectangle(geom,quad2(geom.p00+vec2(-1,-1),geom.p10+vec2(1,-1),geom.p01+vec2(-1,1),geom.p11+vec2(1,1)),-1);
-		NickName->create();
-		NickNameShadow->create();
+		((Text3d*)nickName)->AddText(p->nickname,Resources::FONT_NORMAL,TextGenerator::ALIGN_CENTER_BOTTOM,false);
+		quad2 geom=((Text3d*)nickName)->data->geometry*100;
+		nickNameShadow->AddRectangle(geom,quad2(geom.p00+vec2(-1,-1),geom.p10+vec2(1,-1),geom.p01+vec2(-1,1),geom.p11+vec2(1,1)),-1);
+		nickName->Create();
+		nickNameShadow->Create();
 	}
-	NickName->position=p->pos;
-	NickNameShadow->position=p->pos;
-	NickName->position.z+=RenderSize/2+2;
-	NickNameShadow->position.z+=RenderSize/2+2;
+	nickName->position=p->pos;
+	nickNameShadow->position=p->pos;
+	nickName->position.z+=renderSize/2+2;
+	nickNameShadow->position.z+=renderSize/2+2;
 }

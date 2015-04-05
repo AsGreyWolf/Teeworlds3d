@@ -29,19 +29,19 @@ public:
 	///<param name="mipmaps">Use mipmaps?</param>
 	///<param name="filtering">Use filtering?</param>
 	///<returns>true if all right, false if error found</returns>
-	bool loadTexture(GLuint &tex, bool anisotropy, bool filtering, string filepath);
+	bool LoadTexture(GLuint &tex, bool anisotropy, bool filtering, string filepath);
 	///<summary>Loads texture from the SDL_Surface</summary>
 	///<param name="data">SDL_Surface</param>
 	///<param name="tex">Texture id</param>
 	///<param name="mipmaps">Use mipmaps?</param>
 	///<param name="filtering">Use filtering?</param>
 	///<returns>true if all right, false if error found</returns>
-	bool loadTextureFromSurface(GLuint &tex, bool anisotropy, bool filtering, SDL_Surface* &data);
+	bool LoadTextureFromSurface(GLuint &tex, bool anisotropy, bool filtering, SDL_Surface* &data);
 	///<summary>UnLoads texture</summary>
 	///<param name="tex">Texture id</param>
-	void unLoadTexture(GLuint &tex);
-	void genTexture(GLuint &tex, int w, int h, bool isDepth, bool anisotropy, bool filtering, const GLvoid* pixels);
-	void removeTexture(GLuint &tex);
+	void UnLoadTexture(GLuint &tex);
+	void GenTexture(GLuint &tex, int w, int h, bool isDepth, bool anisotropy, bool filtering, const GLvoid* pixels);
+	void RemoveTexture(GLuint &tex);
 	///<summary>Quades for the 8x8-tile texture</summary>
 	vector<quad2> texturePos8;
 	///<summary>Quades for the 8x4-tile texture</summary>
@@ -82,10 +82,10 @@ public:
 	///<param name="filepath">File name in data directory</param>
 	///<param name="shader">Shader id</param>
 	///<returns>true if all right, false if error found</returns>
-	bool loadShader(string filepath, GLuint &shader);
+	bool LoadShader(string filepath, GLuint &shader);
 	///<summary>UnLoads shader</summary>
 	///<param name="shader">Shader id</param>
-	void unLoadShader(GLuint &shader);
+	void UnLoadShader(GLuint &shader);
 	///<summary>3d shader</summary>
 	GLuint shader3d;
 	///<summary>Shadow shader</summary>
@@ -110,13 +110,13 @@ public:
 	map<int,map<string,float>> aspectBuffer;
 	///<summary>Get font</summary>
 	///<param name="size">Text size</param>
-	TTF_Font* loadFont(int size);
+	TTF_Font* LoadFont(int size);
 	///<summary>Get text texture</summary>
 	///<param name="tex">Where store texture</param>
 	///<param name="aspect">Where store aspect</param>
 	///<param name="data">Text</param>
 	///<param name="size">Text size</param>
-	bool loadStringTexture(GLuint& tex,float &aspect,string data,int size,bool buffering);
+	bool LoadStringTexture(GLuint& tex,float &aspect,string data,int size,bool buffering);
 
 	//colors
 	///<summary>White for sdl</summary>

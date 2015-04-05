@@ -34,6 +34,6 @@ private:
 	///<summary>Players array</summary>
 	PlayerModel* playerModels[MAX_PLAYERS];
 };
-Players* m_Players();
+Players* g_Players();
 
 #endif

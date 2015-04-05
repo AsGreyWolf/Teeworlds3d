@@ -12,41 +12,30 @@
 #include "../tools/system.h"
 #include "../../other/sdl/include/SDL_ttf.h"
 
-class Client* mp_Client;
-Client* m_Client(){ return mp_Client; }
+class Client* pClient;
+Client* g_Client(){ return pClient; }
 
 bool Client::working=false;
 int Client::frames=0;
 
 int main(int argc, char *argv[])
 {
-	/*std::setlocale(LC_ALL, "");
-	std::locale l("");
-	std::locale::global(l);
-	std::cout.imbue(l);
-	std::cerr.imbue(l);
-	std::clog.imbue(l);
-
-	std::wcout.imbue(l);
-	std::wcerr.imbue(l);
-	std::wclog.imbue(l);
-	std::ios::sync_with_stdio(false);*/
-	mp_Client = new Client();
-	mp_Client->Start();
+	pClient = new Client();
+	pClient->Start();
 	STATE startstate;
 	startstate.ingame=false;
-	mp_Client->state.ingame = true;
-	mp_Client->StateChange(startstate);
-	while (mp_Client->isRunning()){
+	pClient->state.ingame = true;
+	pClient->StateChange(startstate);
+	while (pClient->isRunning()){
 		long tickTime=System::GetTime();
-		mp_Client->tickCoeff = (tickTime - mp_Client->lasttickTime)*1.0 / 1000;
-		mp_Client->lasttickTime = tickTime;
-		STATE oldstate = mp_Client->state;
-		mp_Client->Input(NULL, 0, 0, 0);
-		mp_Client->Tick();
-		if (oldstate != mp_Client->state) mp_Client->StateChange(oldstate);
+		pClient->tickCoeff = (tickTime - pClient->lasttickTime)*1.0 / 1000;
+		pClient->lasttickTime = tickTime;
+		STATE oldstate = pClient->state;
+		pClient->Input(NULL, 0, 0, 0);
+		pClient->Tick();
+		if (oldstate != pClient->state) pClient->StateChange(oldstate);
 	}
-	delete mp_Client;
+	delete pClient;
 	return 0;
 }
 void Client::Start(){
@@ -59,7 +48,7 @@ bool Client::isRunning(){
 	return working;
 }
 Client::Client():Component(){
-	mp_Client = this;
+	pClient = this;
 	System::Init();
 	System::GetPath(PATH_CUR);
 	PATH_DATA=PATH_CUR+"data/";
@@ -185,8 +174,8 @@ void Client::Message(int type,char* value){
 Uint32 calcFPS(Uint32 interval, void *param){
 	if(!Client::isRunning()) return interval;
 	Console::Info("FPS = " + to_string(Client::frames));
-	if (mp_Client != NULL)
-		mp_Client->fps = Client::frames;
+	if (pClient != NULL)
+		pClient->fps = Client::frames;
 	Client::frames=0;
 	return interval;
 }

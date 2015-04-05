@@ -7,7 +7,7 @@
 #include "../../../../other/sdl/include/SDL_image.h"
 
 const char* Resources::weaponFiles[NUM_WEAPONS]={
-	"models/hummer.model",
+	"models/hammer.model",
 	"models/gun.model",
 	"models/shotgun.model",
 	"models/grenade.model",
@@ -15,7 +15,7 @@ const char* Resources::weaponFiles[NUM_WEAPONS]={
 	"models/ninja.model",
 };
 const char* Resources::weaponTextureFiles[NUM_WEAPONS]={
-	"models/hummer.png",
+	"models/hammer.png",
 	"models/gun.png",
 	"models/shotgun.png",
 	"models/grenade.png",
@@ -29,16 +29,16 @@ const SDL_Color Resources::SDLColorBlack = {0, 0, 0};
 
 void Resources::Load(){
 	//textures
-	loadTexture(textureBlank,true,false,"blank.png");
-	loadTexture(textureRGB,true,false,"rgb.png");
-	loadTexture(textureGame,true,true,"game.png");
-	genTexture(textureShadowColor, m_Graphics()->screenSize*m_Graphics()->aspect * 2, m_Graphics()->screenSize*m_Graphics()->aspect * 2, false, false, false, NULL);// TODO remove it
-	genTexture(textureShadowDepth, m_Graphics()->screenSize*m_Graphics()->aspect * 2, m_Graphics()->screenSize*m_Graphics()->aspect * 2, true, true, true, NULL);
+	LoadTexture(textureBlank,true,false,"blank.png");
+	LoadTexture(textureRGB,true,false,"rgb.png");
+	LoadTexture(textureGame,true,true,"game.png");
+	GenTexture(textureShadowColor, g_Graphics()->screenSize*g_Graphics()->aspect * 2, g_Graphics()->screenSize*g_Graphics()->aspect * 2, false, false, false, NULL);// TODO remove it
+	GenTexture(textureShadowDepth, g_Graphics()->screenSize*g_Graphics()->aspect * 2, g_Graphics()->screenSize*g_Graphics()->aspect * 2, true, true, true, NULL);
 	vector<string> skins;
-	System::GetFilesInDirectory(skins, m_Client()->GetDataFile("skins"));
+	System::GetFilesInDirectory(skins, g_Client()->GetDataFile("skins"));
 	for(unsigned int i=0;i<skins.size();i++){
 		GLuint skintex=textureBlank;
-		loadTexture(skintex,true,false,"skins/"+skins[i]);
+		LoadTexture(skintex,true,false,"skins/"+skins[i]);
 		skins[i].resize(skins[i].size()-4);
 		skinTextures.insert(skinTextures.begin(),pair<string,GLuint>(skins[i],skintex));
 	}
@@ -533,42 +533,42 @@ void Resources::Load(){
 	//models
 	coordsModel=new Model(GL_LINES,false);
 	coordsModel->texture=textureRGB;
-	coordsModel->addVertex(vec3(0,0,0),vec3(0,0,1),vec2(0.5f,0.5f));
-	coordsModel->addVertex(vec3(32,0,0),vec3(0,0,1),vec2(0,0));
-	coordsModel->addVertex(vec3(0,0,0),vec3(0,0,1),vec2(0.5f,0.5f));
-	coordsModel->addVertex(vec3(0,32,0),vec3(0,0,1),vec2(1,0));
-	coordsModel->addVertex(vec3(0,0,0),vec3(0,0,1),vec2(0.5f,0.5f));
-	coordsModel->addVertex(vec3(0,0,32),vec3(0,0,1),vec2(0,1));
-	coordsModel->create();
+	coordsModel->AddVertex(vec3(0,0,0),vec3(0,0,1),vec2(0.5f,0.5f));
+	coordsModel->AddVertex(vec3(32,0,0),vec3(0,0,1),vec2(0,0));
+	coordsModel->AddVertex(vec3(0,0,0),vec3(0,0,1),vec2(0.5f,0.5f));
+	coordsModel->AddVertex(vec3(0,32,0),vec3(0,0,1),vec2(1,0));
+	coordsModel->AddVertex(vec3(0,0,0),vec3(0,0,1),vec2(0.5f,0.5f));
+	coordsModel->AddVertex(vec3(0,0,32),vec3(0,0,1),vec2(0,1));
+	coordsModel->Create();
 
 	for(int i=0;i<NUM_WEAPONS;i++){
 		Model* buffer;
 		buffer=new Model();
-		buffer->addObjModel(weaponFiles[i]);
-		buffer->create();
-		loadTexture(buffer->texture,true,false,weaponTextureFiles[i]);
+		buffer->AddObjModel(weaponFiles[i]);
+		buffer->Create();
+		LoadTexture(buffer->texture,true,false,weaponTextureFiles[i]);
 		weaponModels.push_back(buffer);
 	}
 
 	//shaders
-	loadShader("shaders/shader",shader3d);
-	loadShader("shaders/shader2d",shader2d);
-	loadShader("shaders/shaderShadow",shaderShadow);
+	LoadShader("shaders/shader",shader3d);
+	LoadShader("shaders/shader2d",shader2d);
+	LoadShader("shaders/shaderShadow",shaderShadow);
 
 	//fonts
-	fontPath = m_Client()->GetDataFile(fontName);
+	fontPath = g_Client()->GetDataFile(fontName);
 }
 void Resources::UnLoad(){
 	ClearBuffers();
 	//textures
-	unLoadTexture(textureBlank);
-	unLoadTexture(textureGame);
-	unLoadTexture(textureRGB);
-	removeTexture(textureShadowColor);
-	removeTexture(textureShadowDepth);
+	UnLoadTexture(textureBlank);
+	UnLoadTexture(textureGame);
+	UnLoadTexture(textureRGB);
+	RemoveTexture(textureShadowColor);
+	RemoveTexture(textureShadowDepth);
 
 	for(map<string,GLuint>::iterator key=skinTextures.begin();key!=skinTextures.end();key++){
-		unLoadTexture((*key).second);
+		UnLoadTexture((*key).second);
 	}
 	skinTextures.clear();
 
@@ -583,19 +583,19 @@ void Resources::UnLoad(){
 	delete coordsModel;
 
 	for(int i=0;i<NUM_WEAPONS;i++){
-		unLoadTexture(weaponModels[i]->texture);
+		UnLoadTexture(weaponModels[i]->texture);
 		delete weaponModels[i];
 	}
 	weaponModels.clear();
 
 	//shaders
-	unLoadShader(shader3d);
-	unLoadShader(shader2d);
+	UnLoadShader(shader3d);
+	UnLoadShader(shader2d);
 }
 void Resources::ClearBuffers(){
 	for(map<int,map<string,GLuint>>::iterator key=stringBuffer.begin();key!=stringBuffer.end();key++){
 		for(map<string,GLuint>::iterator datakey=(*key).second.begin();datakey!=(*key).second.end();datakey++){
-			unLoadTexture((*datakey).second);
+			UnLoadTexture((*datakey).second);
 		}
 		(*key).second.clear();
 	}
@@ -609,7 +609,7 @@ void Resources::ClearBuffers(){
 	}
 	fonts.clear();
 }
-bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size,bool buffering){
+bool Resources::LoadStringTexture(GLuint& tex,float &aspect,string data,int size,bool buffering){
 	tex=textureRGB;
 	aspect=1;
 	bool complete=false;
@@ -624,11 +624,11 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 		if(datakey==(*key).second.end()){
 			GLuint texture=-1;
 			float aspect=1;
-			TTF_Font* font=loadFont(size);
+			TTF_Font* font=LoadFont(size);
 			if(font!=NULL){
 				SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), SDLColorWhite);
 				if(surface!=NULL){
-					loadTextureFromSurface(texture, true, true, surface);
+					LoadTextureFromSurface(texture, true, true, surface);
 					aspect=surface->w*1.0f/surface->h;
 					SDL_FreeSurface(surface);
 					complete=true;
@@ -646,11 +646,11 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 			aspect=aspectBuffer.at(size).at(data);
 		}
 	}else{
-		TTF_Font* font=loadFont(size);
+		TTF_Font* font=LoadFont(size);
 		if(font!=NULL){
 			SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), SDLColorWhite);
 			if(surface!=NULL){
-				loadTextureFromSurface(tex, true, true, surface);
+				LoadTextureFromSurface(tex, true, true, surface);
 				aspect=surface->w*1.0f/surface->h;
 				SDL_FreeSurface(surface);
 				complete=true;
@@ -659,7 +659,7 @@ bool Resources::loadStringTexture(GLuint& tex,float &aspect,string data,int size
 	}
 	return complete;
 }
-TTF_Font* Resources::loadFont(int size){
+TTF_Font* Resources::LoadFont(int size){
 	map<int,TTF_Font*>::iterator key=fonts.find(size);
 	if(key!=fonts.end()){
 		return key->second;
@@ -675,7 +675,7 @@ TTF_Font* Resources::loadFont(int size){
 		return font;
 	}
 }
-void Resources::genTexture(GLuint &tex, int w, int h, bool isDepth, bool anisotropy, bool filtering, const GLvoid* pixels){
+void Resources::GenTexture(GLuint &tex, int w, int h, bool isDepth, bool anisotropy, bool filtering, const GLvoid* pixels){
 	glGenTextures(1, &tex);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
@@ -697,15 +697,15 @@ void Resources::genTexture(GLuint &tex, int w, int h, bool isDepth, bool anisotr
 	if(isDepth) glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, pixels);
 	else glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 }
-void Resources::removeTexture(GLuint &tex){
+void Resources::RemoveTexture(GLuint &tex){
 	glDeleteTextures(1,&tex);
 }
-void Resources::unLoadTexture(GLuint &tex){
-	removeTexture(tex);
+void Resources::UnLoadTexture(GLuint &tex){
+	RemoveTexture(tex);
 }
-bool Resources::loadTextureFromSurface(GLuint &tex, bool anisotropy, bool filtering, SDL_Surface* &data)
+bool Resources::LoadTextureFromSurface(GLuint &tex, bool anisotropy, bool filtering, SDL_Surface* &data)
 {
-	m_Graphics()->to_RGBA(data);
+	g_Graphics()->to_RGBA(data);
 	GLint maxTexSize;
 	if(data == NULL){
 		tex=textureRGB;
@@ -716,16 +716,16 @@ bool Resources::loadTextureFromSurface(GLuint &tex, bool anisotropy, bool filter
 		tex=textureRGB;
 		return false;
 	}
-	genTexture(tex, data->w, data->h, false, anisotropy, filtering, data->pixels);
+	GenTexture(tex, data->w, data->h, false, anisotropy, filtering, data->pixels);
 	return true;
 }
 
-bool Resources::loadTexture(GLuint &tex, bool anisotropy, bool filtering, string filepath)
+bool Resources::LoadTexture(GLuint &tex, bool anisotropy, bool filtering, string filepath)
 {
-	string path = m_Client()->GetDataFile(filepath);
+	string path = g_Client()->GetDataFile(filepath);
 	SDL_Surface *temp = NULL;
 	temp = IMG_Load(path.c_str());
-	if (!loadTextureFromSurface(tex, anisotropy, filtering, temp)){
+	if (!LoadTextureFromSurface(tex, anisotropy, filtering, temp)){
 		Console::Err("Error Loading Texture: " + filepath + " : " + string(SDL_GetError()));
 		SDL_FreeSurface(temp);
 		return false;
@@ -752,13 +752,13 @@ char* filetobuf(string file)
 
 	return buf;
 }
-void Resources::unLoadShader(GLuint &shader)
+void Resources::UnLoadShader(GLuint &shader)
 {
 	// TODO unload shaders
 }
-bool Resources::loadShader(string filepath, GLuint &shader)
+bool Resources::LoadShader(string filepath, GLuint &shader)
 {
-	string firstpath = m_Client()->GetDataFile(filepath);
+	string firstpath = g_Client()->GetDataFile(filepath);
 
 	GLchar *vertexsource, *fragmentsource,*geometrysource;
 	GLuint vertexshader, fragmentshader,geometryshader;

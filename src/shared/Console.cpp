@@ -1,14 +1,14 @@
 #include "Console.h"
 #include <iostream>
 
-class Console* mp_Console;
-Console* m_Console(){	return mp_Console;	}
+class Console* pConsole;
+Console* g_Console(){	return pConsole;	}
 
 Console::Console(){
-	mp_Console = this;
+	pConsole = this;
 };
 Console::~Console(){
-	mp_Console = 0;
+	pConsole = 0;
 };
 void Console::Tick(){}
 void Console::Err(string c){

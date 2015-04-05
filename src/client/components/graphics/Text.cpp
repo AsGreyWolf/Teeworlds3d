@@ -4,19 +4,19 @@
 #include "TextGenerator.h"
 
 Text::Text():Model2d(){}
-void Text::addText(std::string text,int size,int align,bool buffering){
+void Text::AddText(std::string text,int size,int align,bool buffering){
 	this->text=text;
 	data=new TextGenerator(text,size,align,buffering);
-	addQuad(data->geometry,quad2(0,1,1,-1));
+	AddQuad(data->geometry,quad2(0,1,1,-1));
 	texture=data->texture;
 }
-void Text::setText(string text){
+void Text::SetText(string text){
 	if(text==this->text) return;
 	this->text=text;
-	data->setText(text);
+	data->SetText(text);
 	texture=data->texture;
 }
-void Text::clear(){
+void Text::Clear(){
 	delete data;
-	Model2d::clear();
+	Model2d::Clear();
 }

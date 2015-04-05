@@ -5,13 +5,13 @@
 #include "../client/components/Graphics.h"
 #include "../client/components/graphics/Resources.h"
 
-class World* mp_World;
-World* m_World(){ return mp_World; }
+class World* pWorld;
+World* g_World(){ return pWorld; }
 
 World::World(){
-	mp_World = this;
+	pWorld = this;
 	//TODO: only debug
-	auto skinName = m_Graphics()->m_Resources->skinTextures.begin();
+	auto skinName = g_Graphics()->m_Resources->skinTextures.begin();
 	for (int i = 0; i<MAX_PLAYERS; i++){
 		players[i] = new Player();
 		players[i]->pos = vec3(rand() % 2048, rand() % 2048, 70);
@@ -20,15 +20,15 @@ World::World(){
 		players[i]->weapon = rand() % NUM_WEAPONS;
 		players[i]->emote = EMOTE_NORMAL;
 		players[i]->skin = (*skinName).first;
-		players[i]->NickName = (*skinName).first;
+		players[i]->nickname = (*skinName).first;
 		skinName++;
-		if (skinName == m_Graphics()->m_Resources->skinTextures.end()) skinName = m_Graphics()->m_Resources->skinTextures.begin();
+		if (skinName == g_Graphics()->m_Resources->skinTextures.end()) skinName = g_Graphics()->m_Resources->skinTextures.begin();
 	}
 };
 World::~World(){
 	for (int i = 0; i < MAX_PLAYERS; i++){
 		delete players[i];
 	}
-	mp_World = 0;
+	pWorld = 0;
 };
 void World::Tick(){}

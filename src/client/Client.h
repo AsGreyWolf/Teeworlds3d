@@ -61,7 +61,7 @@ private:
 	string PATH_CUR;
 	string PATH_DATA;
 };
-Client* m_Client();
+Client* g_Client();
 Uint32 calcFPS(Uint32 interval, void *param);
 
 #endif

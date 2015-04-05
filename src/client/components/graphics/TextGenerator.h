@@ -18,7 +18,7 @@ public:
 	~TextGenerator();
 	///<summary>Updates generated text with current text</summary>
 	///<param name="text">Text</param>
-	void setText(std::string text);
+	void SetText(std::string text);
 
 	enum{
 		ALIGN_LEFT_TOP=0,

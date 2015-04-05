@@ -9,66 +9,66 @@
 #include "../../shared/World.h"
 #include "../../tools/Player.h"
 
-class Players* mp_Players;
-Players* m_Players(){ return mp_Players; }
+class Players* pPlayers;
+Players* g_Players(){ return pPlayers; }
 
 // TODO just for debug
 Model2d* cursor;
 Players::Players() : Component(){
-	mp_Players = this;
+	pPlayers = this;
 	// TODO just for debug
 	for (int i = 0; i < MAX_PLAYERS; i++){
 		playerModels[i] = new PlayerModel();
-		playerModels[i]->create();
+		playerModels[i]->Create();
 	}
 	cursor=new Model2d();
-	cursor->addQuad(quad2(-0.0625f, -0.0625f, 0.125f, 0.125f), m_Graphics()->m_Resources->gameCursor[0]);
-	cursor->texture = m_Graphics()->m_Resources->textureGame;
-	cursor->create();
+	cursor->AddQuad(quad2(-0.0625f, -0.0625f, 0.125f, 0.125f), g_Graphics()->m_Resources->gameCursor[0]);
+	cursor->texture = g_Graphics()->m_Resources->textureGame;
+	cursor->Create();
 }
 Players::~Players(){
 	for(int i=0;i<MAX_PLAYERS;i++){
 		delete playerModels[i];
 	}
 	delete cursor;
-	mp_Players = NULL;
+	pPlayers = NULL;
 }
 ///TODO: debug only
 bool lastSpaceState=false;
 void Players::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	if(wheel>0){
 		for(int i=0;i<MAX_PLAYERS;i++){
-			m_World()->players[i]->weapon++;
-			m_World()->players[i]->weapon = m_World()->players[i]->weapon%NUM_WEAPONS;
+			g_World()->players[i]->weapon++;
+			g_World()->players[i]->weapon = g_World()->players[i]->weapon%NUM_WEAPONS;
 		}
 	}else if(wheel<0){
 		for(int i=0;i<MAX_PLAYERS;i++){
-			m_World()->players[i]->weapon--;
-			if(m_World()->players[i]->weapon==-1) m_World()->players[i]->weapon+=NUM_WEAPONS;
+			g_World()->players[i]->weapon--;
+			if(g_World()->players[i]->weapon==-1) g_World()->players[i]->weapon+=NUM_WEAPONS;
 		}
 	}
 	if(keys[SDL_SCANCODE_KP_8]){
-		m_World()->players[0]->dir.x += 0.2f*m_Client()->tickCoeff;
+		g_World()->players[0]->dir.x += 0.2f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_2]){
-		m_World()->players[0]->dir.x -= 0.2f*m_Client()->tickCoeff;
+		g_World()->players[0]->dir.x -= 0.2f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_4]){
-		m_World()->players[0]->dir.z += 0.2f*m_Client()->tickCoeff;
+		g_World()->players[0]->dir.z += 0.2f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_6]){
-		m_World()->players[0]->dir.z -= 0.2f*m_Client()->tickCoeff;
+		g_World()->players[0]->dir.z -= 0.2f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_7]){
-		m_World()->players[0]->dir.y -= 0.2f*m_Client()->tickCoeff;
+		g_World()->players[0]->dir.y -= 0.2f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_9]){
-		m_World()->players[0]->dir.y += 0.2f*m_Client()->tickCoeff;
+		g_World()->players[0]->dir.y += 0.2f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_SPACE]){
 		if(!lastSpaceState){
 			for(int i=0;i<MAX_PLAYERS;i++)
-				m_World()->players[i]->vel.y=m_World()->players[i]->vel.y>0?0:1;
+				g_World()->players[i]->vel.y=g_World()->players[i]->vel.y>0?0:1;
 			lastSpaceState=true;
 		}
 	}else{
@@ -78,16 +78,16 @@ void Players::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 void Players::StateChange(STATE lastState){}
 void Players::Render(){
 	for(int i=0;i<MAX_PLAYERS;i++){
-		playerModels[i]->update(m_World()->players[i]);
-		playerModels[i]->render();
+		playerModels[i]->Update(g_World()->players[i]);
+		playerModels[i]->Render();
 	}
 }
 void Players::Render2d(){
-	cursor->render();
+	cursor->Render();
 }
 void Players::RenderBillboard(){
 	for(int i=0;i<MAX_PLAYERS;i++){
-		playerModels[i]->renderBillboard();
+		playerModels[i]->RenderBillboard();
 	}
 }
 void Players::Tick(){}

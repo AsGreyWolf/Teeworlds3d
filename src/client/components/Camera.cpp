@@ -3,30 +3,30 @@
 #include "../Client.h"
 #include "Graphics.h"
 
-class Camera* mp_Camera;
-Camera* m_Camera(){ return mp_Camera; }
+class Camera* pCamera;
+Camera* g_Camera(){ return pCamera; }
 
 Camera::Camera() : Component(){
-	mp_Camera = this;
+	pCamera = this;
 	position = vec3(0, 0, 0);
 	rotation = vec3(0, 0, 0);
 	SetMatrix();
 }
 Camera::~Camera(){
-	mp_Camera = NULL;
+	pCamera = NULL;
 }
 void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
-	RotateX(-yrel*m_Client()->tickCoeff);
-	RotateZ(-xrel*m_Client()->tickCoeff);
+	RotateX(-yrel*g_Client()->tickCoeff);
+	RotateZ(-xrel*g_Client()->tickCoeff);
 	glm::vec3 look2=look;
 	look2*=512;
-	look2 *= m_Client()->tickCoeff;
+	look2 *= g_Client()->tickCoeff;
 	glm::vec3 right2=right;
 	right2*=512;
-	right2 *= m_Client()->tickCoeff;
+	right2 *= g_Client()->tickCoeff;
 	glm::vec3 up2=up;
 	up2*=512;
-	up2 *= m_Client()->tickCoeff;
+	up2 *= g_Client()->tickCoeff;
 	if (keys[SDL_SCANCODE_W]) position+=look2;
 	if (keys[SDL_SCANCODE_S]) position-=look2;
 	if (keys[SDL_SCANCODE_D]) position+=right2;
@@ -41,10 +41,10 @@ void Camera::Tick(){}
 void Camera::Message(int type,char* value){}
 
 void Camera::SetMatrix(){
-	if (!m_Client()->state.ingame) return;
+	if (!g_Client()->state.ingame) return;
 	updateVectors();
 
-	m_Graphics()->SetViewMatrix(position, position + look, up);
+	g_Graphics()->SetViewMatrix(position, position + look, up);
 
 	glScalef(1,1,1);
 }
@@ -74,7 +74,7 @@ void Camera::updateVectors(){
 	right=glm::rotateZ(right, rotation.z);
 }
 void Camera::StateChange(STATE lastState){
-	if (!lastState.ingame && m_Client()->state.ingame){
+	if (!lastState.ingame && g_Client()->state.ingame){
 		rotation=vec3(0,0,0);
 		look=vec3(0,1,0);
 		up=vec3(0,0,1);

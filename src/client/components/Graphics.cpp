@@ -12,14 +12,8 @@
 #include "../../tools/Protocol.h"
 #define USE_SHADOWS
 
-class Graphics* mp_Graphics;
-Graphics* m_Graphics(){ return mp_Graphics; }
-
-float renderSize=1;
-const float LightPos[4]={0, 0, 500, 1};
-const float LightColorDif[4]={1*renderSize, 1*renderSize, 1*renderSize, 1};
-const float LightColorAmb[4]={0.5f, 0.5f, 0.5f, 1};
-const float LightColorSpec[4]={0.001f, 0.001f, 0.001f, 1};
+class Graphics* pGraphics;
+Graphics* g_Graphics(){ return pGraphics; }
 
 int Graphics::to_pixels(float coord){
 	return coord*screenSize/2;
@@ -36,10 +30,10 @@ void Graphics::to_RGBA(SDL_Surface* &src){
 	}
 }
 Graphics::Graphics() : Component(){
-	mp_Graphics = this;
+	pGraphics = this;
 	SDL_GLContext context;
 
-	if ((context = SDL_GL_CreateContext(m_Client()->screen)) == NULL)
+	if ((context = SDL_GL_CreateContext(g_Client()->screen)) == NULL)
 	{
 
 		Console::Err("Could not get context: " + string(SDL_GetError()));
@@ -126,7 +120,7 @@ Graphics::~Graphics(){
 	m_Resources->UnLoad();
 	glDeleteFramebuffers(1,&shadowFBO);
 	delete m_Resources;
-	mp_Graphics = NULL;
+	pGraphics = NULL;
 }
 void Graphics::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
 void Graphics::Render(){}
@@ -141,14 +135,14 @@ void Graphics::Tick(){
 	glViewport(0,0,screenSize*aspect*2,screenSize*aspect*2);
 	glEnable(GL_POLYGON_OFFSET_FILL);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	vec3 pos = m_Camera()->position;
+	vec3 pos = g_Camera()->position;
 	pos.z=1;
 	mat4 shadowMatrix=orthoMatrix*glm::lookAt(pos, pos+vec3(0,0,-1), vec3(0,1,0));
 	glUniformMatrix4fv(viewProjectionMatrixUniformShadow,1,false,(const float*)glm::value_ptr(shadowMatrix));
 	glCullFace(GL_FRONT);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glDepthMask(GL_TRUE);
-	m_Client()->Render();
+	g_Client()->Render();
 #endif
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	glCullFace(GL_BACK);
@@ -160,7 +154,7 @@ void Graphics::Tick(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glUniform1i(glGetUniformLocation(m_Resources->shader3d,"tex"),0);
 	glUniform1i(glGetUniformLocation(m_Resources->shader3d,"shadow"),1);
-	m_Camera()->SetMatrix();
+	g_Camera()->SetMatrix();
 #ifdef USE_SHADOWS
 	glUniformMatrix4fv(shadowProjectionMatrixUniform3d,1,false,(const float*)glm::value_ptr(shadowMatrix));
 	glActiveTexture(GL_TEXTURE1);
@@ -169,7 +163,7 @@ void Graphics::Tick(){
 	glActiveTexture(GL_TEXTURE0);
 	restoreMatrix=true;
 #endif
-	m_Client()->Render();
+	g_Client()->Render();
 	restoreMatrix=false;
 #ifdef USE_SHADOWS
 	glActiveTexture(GL_TEXTURE1);
@@ -179,13 +173,13 @@ void Graphics::Tick(){
 #endif
 
 	glClear(GL_DEPTH_BUFFER_BIT);
-	m_Client()->RenderBillboard();
+	g_Client()->RenderBillboard();
 
 	glUseProgram(m_Resources->shader2d);
 	currentShader = m_Resources->shader2d;
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glUniform1f(aspectUniform2d,aspect);
-	m_Client()->Render2d();
+	g_Client()->Render2d();
 }
 void Graphics::Message(int type,char* value){}
 void Graphics::StateChange(STATE lastState){}

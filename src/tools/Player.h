@@ -19,7 +19,7 @@ public:
 
 		color=glm::vec4(0,0,0,0);
 		vel=glm::vec3(0,0,0);
-		weapon=WEAPON_HUMMER;
+		weapon=WEAPON_HAMMER;
 		emote=EMOTE_NORMAL;
 		//texture=-1;
 		//local=false;
@@ -46,7 +46,7 @@ public:
 	//unsigned int texture;
 	//bool local;
 	std::string skin;
-	std::string NickName;
+	std::string nickname;
 	//bool inAir
 };
 

@@ -166,6 +166,6 @@ public:
 	///<summary>If we are rendering scene second time(not to calc matrix)</summary>
 	bool restoreMatrix;
 };
-Graphics* m_Graphics();
+Graphics* g_Graphics();
 
 #endif
