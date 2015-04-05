@@ -12,18 +12,18 @@
 
 	
 void Model::render(const glm::mat4 &parentMatrix){
-	if(!Client::m_Graphics()->restoreMatrix)
+	if(!m_Graphics()->restoreMatrix)
 		modelMatrix=parentMatrix;
 
-	Client::m_Graphics()->SetModelMatrix(modelMatrix,normalMatrix,position,rot,scale);
-	Client::m_Graphics()->SetColor(coloring);
+	m_Graphics()->SetModelMatrix(modelMatrix,normalMatrix,position,rot,scale);
+	m_Graphics()->SetColor(coloring);
 
-	//if(this!=Client::m_Graphics()->m_Resources->coordsModel)
-	//Client::m_Graphics()->m_Resources->coordsModel->render(modelMatrix);
+	//if(this!=m_Graphics()->m_Resources->coordsModel)
+	//m_Graphics()->m_Resources->coordsModel->render(modelMatrix);
 
 	glBindTexture(GL_TEXTURE_2D,texture);
 	glBindVertexArray(VAO);
-	Client::m_Graphics()->SetLight(lighting);
+	m_Graphics()->SetLight(lighting);
 	glDrawArrays(type , 0, vertex.size());
 }
 
@@ -39,7 +39,7 @@ Model::Model(int type,bool lighting){
 	glGenBuffers(1,&vbuffer);
 	glGenBuffers(1,&nbuffer);
 	glGenBuffers(1,&tbuffer);
-	texture = Client::m_Graphics()->m_Resources->textureBlank;
+	texture = m_Graphics()->m_Resources->textureBlank;
 }
 Model::Model(bool lighting){
 	this->lighting=lighting;
@@ -53,7 +53,7 @@ Model::Model(bool lighting){
 	glGenBuffers(1,&vbuffer);
 	glGenBuffers(1,&nbuffer);
 	glGenBuffers(1,&tbuffer);
-	texture = Client::m_Graphics()->m_Resources->textureBlank;
+	texture = m_Graphics()->m_Resources->textureBlank;
 }
 void Model::create(){
 	glBindVertexArray(VAO);
@@ -183,7 +183,7 @@ void Model::addSphere(int rings, int sectors,vec3 lengthiness,float radius,quad2
 }
 
 void Model::addObjModel(string filename){
-	std::ifstream file(Client::m_Client()->GetDataFile(filename));
+	std::ifstream file(m_Client()->GetDataFile(filename));
 	if(!file.good()) {
 		file.close();
 		return;
@@ -265,7 +265,7 @@ void Model::addRectangle(quad2 in, quad2 out, float depth){
 	addQuad(quad3(quad2(in.p10, out.p10 + vec2(0, roundedbottom), in.p11, out.p11 - vec2(0, roundedtop)), depth), n, tex);
 
 	if(glm::min(roundedright,roundedtop)!=0){
-		int quality=Client::m_Graphics()->to_pixels(glm::max(roundedright,roundedtop))/4;
+		int quality=m_Graphics()->to_pixels(glm::max(roundedright,roundedtop))/4;
 
 		for(int i=0;i<quality;i++){
 			addVertex(quad2::vec2vec3(in.p11 + vec2(cos((i + 1)*M_PI_2 / quality)*roundedright, sin((i + 1)*M_PI_2 / quality)*roundedtop), depth), n, vec2(0, 0));
@@ -274,7 +274,7 @@ void Model::addRectangle(quad2 in, quad2 out, float depth){
 		}
 	}
 	if(glm::min(roundedright,roundedbottom)!=0){
-		int quality=Client::m_Graphics()->to_pixels(glm::max(roundedright,roundedbottom))/4;
+		int quality=m_Graphics()->to_pixels(glm::max(roundedright,roundedbottom))/4;
 		for(int i=0;i<quality;i++){
 			addVertex(quad2::vec2vec3(in.p10 + vec2(cos(i*M_PI_2 / quality)*roundedright, -sin(i*M_PI_2 / quality)*roundedbottom), depth), n, vec2(0, 0));
 			addVertex(quad2::vec2vec3(in.p10, depth), n, vec2(0, 0));
@@ -282,7 +282,7 @@ void Model::addRectangle(quad2 in, quad2 out, float depth){
 		}
 	}
 	if(glm::min(roundedleft,roundedbottom)!=0){
-		int quality=Client::m_Graphics()->to_pixels(glm::max(roundedleft,roundedbottom))/4;
+		int quality=m_Graphics()->to_pixels(glm::max(roundedleft,roundedbottom))/4;
 		for(int i=0;i<quality;i++){
 			addVertex(quad2::vec2vec3(in.p00 + vec2(-cos((i + 1)*M_PI_2 / quality)*roundedleft, -sin((i + 1)*M_PI_2 / quality)*roundedbottom), depth), n, vec2(0, 0));
 			addVertex(quad2::vec2vec3(in.p00, depth), n, vec2(0, 0));
@@ -290,7 +290,7 @@ void Model::addRectangle(quad2 in, quad2 out, float depth){
 		}
 	}
 	if(glm::min(roundedleft,roundedtop)!=0){
-		int quality=Client::m_Graphics()->to_pixels(glm::max(roundedleft,roundedtop))/4;
+		int quality=m_Graphics()->to_pixels(glm::max(roundedleft,roundedtop))/4;
 		for(int i=0;i<quality;i++){
 			addVertex(quad2::vec2vec3(in.p01 + vec2(-cos(i*M_PI_2 / quality)*roundedleft, sin(i*M_PI_2 / quality)*roundedtop), depth), n, vec2(0, 0));
 			addVertex(quad2::vec2vec3(in.p01, depth), n, vec2(0, 0));

@@ -40,18 +40,13 @@ public:
 	///<summary>Is gamecycle running?</summary>
 	///<returns>true if it is, false otherwise</returns>
 	static bool isRunning();
-	///<summary>Send error message</summary>
-	///<param name="c">Message</param>
-	static void Err(string c);
-	///<summary>Send info message</summary>
-	///<param name="c">Message</param>
-	static void Info(string c);
 	///<summary>Get filename in data folder</summary>
 	///<param name="str">Filename</param>
 	string GetDataFile(string str);
 
 	///<summary>All the components</summary>
 	std::vector <Component*> m_Components;
+	std::vector <SharedComponent*> m_SharedComponents;
 	///<summary>Current frames</summary>
 	static int frames;
 	int fps;
@@ -66,6 +61,7 @@ private:
 	string PATH_CUR;
 	string PATH_DATA;
 };
+Client* m_Client();
 Uint32 calcFPS(Uint32 interval, void *param);
 
 #endif

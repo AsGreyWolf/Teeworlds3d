@@ -21,36 +21,36 @@ vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(0,1,0),
 	};
 void PlayerModel::renderBillboard(){
-	NickName->lookAt(Client::m_Camera()->position);
-	NickNameShadow->lookAt(Client::m_Camera()->position);
-	NickName->scaleAt(Client::m_Camera()->position, vec3(0), vec3(0.002f));
-	NickNameShadow->scaleAt(Client::m_Camera()->position, vec3(0), vec3(0.002f));
+	NickName->lookAt(m_Camera()->position);
+	NickNameShadow->lookAt(m_Camera()->position);
+	NickName->scaleAt(m_Camera()->position, vec3(0), vec3(0.002f));
+	NickNameShadow->scaleAt(m_Camera()->position, vec3(0), vec3(0.002f));
 	NickName->scale+=1;
 	NickNameShadow->scale+=1;
 	NickNameShadow->render();
 	NickName->render();
 }
 void PlayerModel::render(const glm::mat4 &parentMatrix){
-	if (!Client::m_Graphics()->restoreMatrix)
+	if (!m_Graphics()->restoreMatrix)
 		modelMatrix=parentMatrix;
 
-	Client::m_Graphics()->Translate(modelMatrix, position);
-	Client::m_Graphics()->RotateZ(modelMatrix, rot);
+	m_Graphics()->Translate(modelMatrix, position);
+	m_Graphics()->RotateZ(modelMatrix, rot);
 	lFoot->render(modelMatrix);
 	rFoot->render(modelMatrix);
-	Client::m_Graphics()->RotateX(modelMatrix, rot);
+	m_Graphics()->RotateX(modelMatrix, rot);
 	Body->render(modelMatrix);
-	Client::m_Graphics()->RotateY(modelMatrix, rot);
+	m_Graphics()->RotateY(modelMatrix, rot);
 
 	lArm->render(modelMatrix);
 	rArm->render(modelMatrix);
 
-	Client::m_Graphics()->m_Resources->weaponModels[weapon]->position = weaponPos[weapon];
-	Client::m_Graphics()->m_Resources->weaponModels[weapon]->modelMatrix = gunModelMatrix;
-	Client::m_Graphics()->m_Resources->weaponModels[weapon]->normalMatrix = gunNormalMatrix;
-	Client::m_Graphics()->m_Resources->weaponModels[weapon]->render(modelMatrix);
-	gunModelMatrix = Client::m_Graphics()->m_Resources->weaponModels[weapon]->modelMatrix;
-	gunNormalMatrix = Client::m_Graphics()->m_Resources->weaponModels[weapon]->normalMatrix;
+	m_Graphics()->m_Resources->weaponModels[weapon]->position = weaponPos[weapon];
+	m_Graphics()->m_Resources->weaponModels[weapon]->modelMatrix = gunModelMatrix;
+	m_Graphics()->m_Resources->weaponModels[weapon]->normalMatrix = gunNormalMatrix;
+	m_Graphics()->m_Resources->weaponModels[weapon]->render(modelMatrix);
+	gunModelMatrix = m_Graphics()->m_Resources->weaponModels[weapon]->modelMatrix;
+	gunNormalMatrix = m_Graphics()->m_Resources->weaponModels[weapon]->normalMatrix;
 	
 	Eyes->render(modelMatrix);
 }
@@ -58,15 +58,15 @@ PlayerModel::PlayerModel():Model(){
 }
 void PlayerModel::create(){
 	lArm=new Model();
-	lArm->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 8, Client::m_Graphics()->m_Resources->texturePos8x4[6], false);
+	lArm->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 8, m_Graphics()->m_Resources->texturePos8x4[6], false);
 	rArm=new Model();
-	rArm->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 8, Client::m_Graphics()->m_Resources->texturePos8x4[6], true);
+	rArm->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 8, m_Graphics()->m_Resources->texturePos8x4[6], true);
 	lFoot=new Model();
-	lFoot->addSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), RenderSize / 2.4f, Client::m_Graphics()->m_Resources->texturePos8x4[14] >> Client::m_Graphics()->m_Resources->texturePos8x4[15], false);
+	lFoot->addSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), RenderSize / 2.4f, m_Graphics()->m_Resources->texturePos8x4[14] >> m_Graphics()->m_Resources->texturePos8x4[15], false);
 	rFoot=new Model();
-	rFoot->addSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), RenderSize / 2.4f, Client::m_Graphics()->m_Resources->texturePos8x4[14] >> Client::m_Graphics()->m_Resources->texturePos8x4[15], true);
+	rFoot->addSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), RenderSize / 2.4f, m_Graphics()->m_Resources->texturePos8x4[14] >> m_Graphics()->m_Resources->texturePos8x4[15], true);
 	Body=new Model();
-	Body->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 2, Client::m_Graphics()->m_Resources->texturePos8x4[0] >> Client::m_Graphics()->m_Resources->texturePos8x4[21], false);
+	Body->addSphere(detalization, detalization, vec3(1, 1, 1), RenderSize / 2, m_Graphics()->m_Resources->texturePos8x4[0] >> m_Graphics()->m_Resources->texturePos8x4[21], false);
 	Eyes=new Model(false);
 	NickName=new Text3d();
 	NickNameShadow=new Model(false);
@@ -111,10 +111,10 @@ void PlayerModel::update(Player* p){
 	rot = quad2::vec2rot(p->dir);
 	weapon=p->weapon;
 	emote=p->emote;
-	if (Client::m_Graphics()->m_Resources->skinTextures.find(p->skin) != Client::m_Graphics()->m_Resources->skinTextures.end())
-		texture = Client::m_Graphics()->m_Resources->skinTextures[p->skin];
+	if (m_Graphics()->m_Resources->skinTextures.find(p->skin) != m_Graphics()->m_Resources->skinTextures.end())
+		texture = m_Graphics()->m_Resources->skinTextures[p->skin];
 	else
-		texture = Client::m_Graphics()->m_Resources->skinTextures["default"];
+		texture = m_Graphics()->m_Resources->skinTextures["default"];
 	lFoot->texture=texture;
 	rFoot->texture=texture;
 	lArm->texture=texture;
@@ -160,8 +160,8 @@ void PlayerModel::update(Player* p){
 
 	
 	Eyes->clear();
-	Eyes->addQuad(quad3(vec3(-EyeScale - Separation, 0, EyeScale), vec3(0 - Separation, 0, EyeScale), vec3(0 - Separation, 0, 0), vec3(-EyeScale - Separation, 0, 0)), vec3(0, 1, 0), Client::m_Graphics()->m_Resources->texturePos8x4[26 + emote].reflectX());
-	Eyes->addQuad(quad3(vec3(0 + Separation, 0, EyeScale), vec3(EyeScale + Separation, 0, EyeScale), vec3(EyeScale + Separation, 0, 0), vec3(Separation, 0, 0)), vec3(0, 1, 0), Client::m_Graphics()->m_Resources->texturePos8x4[26 + emote]);
+	Eyes->addQuad(quad3(vec3(-EyeScale - Separation, 0, EyeScale), vec3(0 - Separation, 0, EyeScale), vec3(0 - Separation, 0, 0), vec3(-EyeScale - Separation, 0, 0)), vec3(0, 1, 0), m_Graphics()->m_Resources->texturePos8x4[26 + emote].reflectX());
+	Eyes->addQuad(quad3(vec3(0 + Separation, 0, EyeScale), vec3(EyeScale + Separation, 0, EyeScale), vec3(EyeScale + Separation, 0, 0), vec3(Separation, 0, 0)), vec3(0, 1, 0), m_Graphics()->m_Resources->texturePos8x4[26 + emote]);
 	Eyes->create();
 	if(((Text3d*)NickName)->text!=p->NickName){
 		NickName->clear();

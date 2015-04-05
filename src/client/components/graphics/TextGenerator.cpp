@@ -5,12 +5,12 @@
 
 TextGenerator::TextGenerator(string text,int size,int align,bool buffering){
 	float aspect=1;
-	float cursize=size*1.0f/Client::m_Graphics()->m_Resources->FONT_DIVIDER;
+	float cursize=size*1.0f/m_Graphics()->m_Resources->FONT_DIVIDER;
 	pixels=1;
-	while (pixels<Client::m_Graphics()->to_pixels(cursize))
+	while (pixels<m_Graphics()->to_pixels(cursize))
 		pixels<<=1;
 	this->buffering=buffering;
-	Client::m_Graphics()->m_Resources->loadStringTexture(texture, aspect, text, pixels, buffering);
+	m_Graphics()->m_Resources->loadStringTexture(texture, aspect, text, pixels, buffering);
 	switch(align){
 	case ALIGN_LEFT_TOP:
 		geometry=quad2(0,-cursize,cursize*aspect,cursize);
@@ -44,10 +44,10 @@ TextGenerator::TextGenerator(string text,int size,int align,bool buffering){
 void TextGenerator::setText(string text){
 	float aspect=1;
 	if(!buffering)
-		Client::m_Graphics()->m_Resources->unLoadTexture(texture);
-	Client::m_Graphics()->m_Resources->loadStringTexture(texture, aspect, text, pixels, buffering);
+		m_Graphics()->m_Resources->unLoadTexture(texture);
+	m_Graphics()->m_Resources->loadStringTexture(texture, aspect, text, pixels, buffering);
 }
 TextGenerator::~TextGenerator(){
 	if(!buffering)
-		Client::m_Graphics()->m_Resources->unLoadTexture(texture);
+		m_Graphics()->m_Resources->unLoadTexture(texture);
 }

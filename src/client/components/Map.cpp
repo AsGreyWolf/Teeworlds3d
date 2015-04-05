@@ -1,13 +1,14 @@
 #include "Map.h"
 #include <stdio.h>
 #include <cstring>
+#include "../../shared/Console.h"
 #include "../Client.h"
 #include "Graphics.h"
 #include "graphics/Resources.h"
 #include "graphics/Model.h"
 
 class Map* mp_Map;
-Map* Component::m_Map(){ return mp_Map; }
+Map* m_Map(){ return mp_Map; }
 
 Map::Map() : Component(){
 	mp_Map = this;
@@ -40,12 +41,12 @@ bool Map::Load(string name){
 	string pp="maps/"+name+".map";
 	string path=m_Client()->GetDataFile(pp);
 
-	Client::Info("Loading "+name);
+	Console::Info("Loading " + name);
 
 
 	FILE* file=fopen(path.c_str(),"rb");
 	if(file == 0){
-		Client::Err("File not found");
+		Console::Err("File not found");
 		return false;
 	}
 	unsigned char buf;

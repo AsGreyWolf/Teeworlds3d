@@ -1,7 +1,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include <stdint.h>
+#include "../shared/SharedComponent.h"
 
 class Client;
 class Graphics;
@@ -15,9 +15,9 @@ struct STATE{
 	}
 	bool ingame;
 };
-class Component{
+class Component : public SharedComponent{
 public:
-	Component(){};
+	Component():SharedComponent(){};
 	virtual ~Component(){};
 	///<summary>Stores input to components</summary>
 	///<param name="keys">Keyboard state</param>
@@ -38,13 +38,6 @@ public:
 	///<summary>Send new state to the components</summary>
 	///<param name="lastState">Last state</param>
 	virtual void StateChange(STATE lastState){};
-
-	static Graphics* m_Graphics();
-	static Camera* m_Camera();
-	static Map* m_Map();
-	static Players* m_Players();
-	static GUI* m_GUI();
-	static Client* m_Client();
 };
 
 #endif

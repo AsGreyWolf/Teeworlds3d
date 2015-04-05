@@ -56,5 +56,6 @@ public:
 	///<summary>Updates the vectors</summary>
 	void updateVectors();
 };
+Camera* m_Camera();
 
 #endif

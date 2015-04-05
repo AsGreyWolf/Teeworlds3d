@@ -83,5 +83,6 @@ public:
 	///<summary>Buffer tile</summary>
 	Tile* buffer;
 };
+Map* m_Map();
 
 #endif

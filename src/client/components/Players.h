@@ -3,9 +3,9 @@
 
 #include <vector>
 #include "../Component.h"
-#include "../../tools/Player.h"
+#include "../../tools/Protocol.h"
 
-class Player;
+class PlayerModel;
 
 class Players : Component{
 public:
@@ -30,8 +30,10 @@ public:
 	void Tick();
 	///<summary>System message callback</summary>
 	void Message(int type,char* value);
-
+private:
 	///<summary>Players array</summary>
-	Player* players[MAX_PLAYERS];
+	PlayerModel* playerModels[MAX_PLAYERS];
 };
+Players* m_Players();
+
 #endif

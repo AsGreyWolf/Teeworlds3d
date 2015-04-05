@@ -127,12 +127,15 @@
     <ClInclude Include="src\client\components\graphics\Model2d.h" />
     <ClInclude Include="src\client\components\graphics\PlayerModel.h" />
     <ClInclude Include="src\client\components\graphics\Resources.h" />
-	<ClInclude Include="src\client\components\graphics\Text.h" />
+    <ClInclude Include="src\client\components\graphics\Text.h" />
     <ClInclude Include="src\client\components\graphics\Text3d.h" />
     <ClInclude Include="src\client\components\graphics\TextGenerator.h" />
     <ClInclude Include="src\client\components\GUI.h" />
     <ClInclude Include="src\client\components\Map.h" />
     <ClInclude Include="src\client\components\Players.h" />
+    <ClInclude Include="src\shared\Console.h" />
+    <ClInclude Include="src\shared\SharedComponent.h" />
+    <ClInclude Include="src\shared\World.h" />
     <ClInclude Include="src\tools\Player.h" />
     <ClInclude Include="src\tools\Protocol.h" />
     <ClInclude Include="src\tools\quad2.h" />
@@ -154,6 +157,8 @@
     <ClCompile Include="src\client\components\GUI.cpp" />
     <ClCompile Include="src\client\components\Map.cpp" />
     <ClCompile Include="src\client\components\Players.cpp" />
+    <ClCompile Include="src\shared\Console.cpp" />
+    <ClCompile Include="src\shared\World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

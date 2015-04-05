@@ -7,7 +7,7 @@
 #include "graphics/TextGenerator.h"
 
 class GUI* mp_GUI;
-GUI* Component::m_GUI(){ return mp_GUI; }
+GUI* m_GUI(){ return mp_GUI; }
 
 Model2d* test;
 GUI::GUI() : Component(){

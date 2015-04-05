@@ -41,4 +41,6 @@ public:
 	class Text* fpsObject;
 	class Text* fpsTitle;
 };
+GUI* m_GUI();
+
 #endif

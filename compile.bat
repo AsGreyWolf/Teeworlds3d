@@ -1,10 +1,10 @@
 @ECHO OFF
 @call SET BAT_PATH=%~dp0
 if "%1"=="debug" SET DEBUG="true"
-@call "C:\Program Files\Microsoft Visual Studio 11.0\Common7\Tools\vsvars32.bat"
+@call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\vsvars32.bat"
 
 
-@call SET SRCFILES="%BAT_PATH%src/client/*.cpp" "%BAT_PATH%src/client/components/*.cpp" "%BAT_PATH%src/client/components/graphics/*.cpp"
+@call SET SRCFILES="%BAT_PATH%src/shared/*.cpp" "%BAT_PATH%src/client/*.cpp" "%BAT_PATH%src/client/components/*.cpp" "%BAT_PATH%src/client/components/graphics/*.cpp"
 @call SET LIBFILES= "glew32s.lib" "SDL2_image.lib" "SDL2_ttf.lib" "SDL2main.lib" "SDL2.lib" "GLu32.lib" "OpenGL32.lib" "kernel32.lib" "user32.lib" "gdi32.lib"
 @call SET SDL_INC=%BAT_PATH%other\sdl\include
 @call SET SDL_LIB=%BAT_PATH%other\sdl\lib32

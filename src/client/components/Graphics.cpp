@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <cstdio>
+#include "../../shared/Console.h"
 #include "../Client.h"
 #include "Camera.h"
 #include "graphics/PlayerModel.h"
@@ -12,7 +13,7 @@
 #define USE_SHADOWS
 
 class Graphics* mp_Graphics;
-Graphics* Component::m_Graphics(){ return mp_Graphics; }
+Graphics* m_Graphics(){ return mp_Graphics; }
 
 float renderSize=1;
 const float LightPos[4]={0, 0, 500, 1};
@@ -41,12 +42,12 @@ Graphics::Graphics() : Component(){
 	if ((context = SDL_GL_CreateContext(m_Client()->screen)) == NULL)
 	{
 
-		Client::Err("Could not get context: " + string(SDL_GetError()));
+		Console::Err("Could not get context: " + string(SDL_GetError()));
 		return; //TODO: exceptions
 	}
 	SDL_GL_SetSwapInterval(1);
 	glewInit();
-	Client::Info("Initialized OpenGL " + string((char*)glGetString(GL_VERSION)));
+	Console::Info("Initialized OpenGL " + string((char*)glGetString(GL_VERSION)));
 	int w=1024;
 	int h=768;
 	if( h == 0 )
@@ -111,7 +112,7 @@ Graphics::Graphics() : Component(){
 
 	glLineWidth(3);
 	glPointSize(3);
-	glPolygonOffset(0, -1);
+	glPolygonOffset(1, -1);
 
 	glGenFramebuffersEXT(1, &shadowFBO);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);

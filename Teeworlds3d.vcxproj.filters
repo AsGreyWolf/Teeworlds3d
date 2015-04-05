@@ -19,6 +19,9 @@
     <Filter Include="tools">
       <UniqueIdentifier>{3b3e2d06-40a9-42a9-8ef1-876da95907ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shared">
+      <UniqueIdentifier>{5296d9a1-3622-430f-84b4-d6f558e7d7b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\client\Component.h">
@@ -276,6 +279,15 @@
     <ClInclude Include="src\client\Client.h">
       <Filter>client/</Filter>
     </ClInclude>
+    <ClInclude Include="src\shared\SharedComponent.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shared\Console.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shared\World.h">
+      <Filter>shared</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\client\Client.cpp">
@@ -316,6 +328,12 @@
     </ClCompile>
     <ClCompile Include="src\client\components\graphics\Text3d.cpp">
       <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shared\Console.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shared\World.cpp">
+      <Filter>shared</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <locale>
 #include <clocale>
+#include "../shared/Console.h"
+#include "../shared/World.h"
 #include "components/Graphics.h"
 #include "components/Camera.h"
 #include "components/Map.h"
@@ -11,7 +13,7 @@
 #include "../../other/sdl/include/SDL_ttf.h"
 
 class Client* mp_Client;
-Client* Component::m_Client(){ return mp_Client; }
+Client* m_Client(){ return mp_Client; }
 
 bool Client::working=false;
 int Client::frames=0;
@@ -65,19 +67,19 @@ Client::Client():Component(){
 
 	if(SDL_Init(SDL_INIT_EVERYTHING)!=0)
 	{
-		Err("Unable to initialize SDL: "+string(SDL_GetError()));
+		Console::Err("Unable to initialize SDL: " + string(SDL_GetError()));
 		return; //TODO: need exceptions
 	}
 	SDL_version ver;
 	SDL_GetVersion(&ver);
-	Info("Initialized SDL "+to_string(ver.major)+"."+to_string(ver.minor)+"."+to_string(ver.patch));
+	Console::Info("Initialized SDL " + to_string(ver.major) + "." + to_string(ver.minor) + "." + to_string(ver.patch));
 	if(TTF_Init()!=0)
 	{
-		Err("Unable to initialize SDL_TTF: "+string(TTF_GetError()));
+		Console::Err("Unable to initialize SDL_TTF: " + string(TTF_GetError()));
 		return; //TODO: TODO: need exceptions
 	}
 	ver=*TTF_Linked_Version();
-	Info("Initialized SDL_TTF "+to_string(ver.major)+"."+to_string(ver.minor)+"."+to_string(ver.patch));
+	Console::Info("Initialized SDL_TTF " + to_string(ver.major) + "." + to_string(ver.minor) + "." + to_string(ver.patch));
 	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,2);
 	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -86,15 +88,20 @@ Client::Client():Component(){
 
 	if ((screen = SDL_CreateWindow("",50, 50, 1024, 768, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN)) == NULL)
 	{
-		Err("Could not create window: "+string(SDL_GetError()));
+		Console::Err("Could not create window: " + string(SDL_GetError()));
 		return; //need exceptions
 	}
 	if ((renderer = SDL_CreateRenderer(screen, -1, 0)) == NULL)
 	{
-		Err("Could not get renderer: "+string(SDL_GetError()));
+		Console::Err("Could not get renderer: " + string(SDL_GetError()));
 		return; //TODO: need exceptions
 	}
+
+	m_SharedComponents.push_back((SharedComponent*)new Console());
+	
+
 	m_Components.push_back((Component*)new Graphics());
+	m_SharedComponents.push_back((SharedComponent*)new World());//TODO debug only
 	m_Components.push_back((Component*)new Camera());
 	m_Components.push_back((Component*)new Map());
 	m_Components.push_back((Component*)new Players());
@@ -108,6 +115,11 @@ Client::~Client(){
 		delete component;
 	}
 	m_Components.clear();
+	reverse(m_SharedComponents.begin(), m_SharedComponents.end());
+	for (auto &component : m_SharedComponents){
+		delete component;
+	}
+	m_SharedComponents.clear();
 	TTF_Quit();
 	SDL_Quit();
 }
@@ -155,6 +167,9 @@ void Client::Render2d(){
 	}
 }
 void Client::Tick(){
+	for (auto &component : m_SharedComponents){
+		component->Tick();
+	}
 	for(auto &component : m_Components){
 		component->Tick();
 	}
@@ -166,16 +181,10 @@ void Client::Message(int type,char* value){
 		component->Message(type,value);
 	}
 }
-void Client::Err(string c){
-	std::cerr << "[ERROR] " << c << std::endl;
-};
-void Client::Info(string c){
-	std::cout << "[INFO] " << c << std::endl;
-};
 
 Uint32 calcFPS(Uint32 interval, void *param){
 	if(!Client::isRunning()) return interval;
-	Client::Info("FPS = "+to_string(Client::frames));
+	Console::Info("FPS = " + to_string(Client::frames));
 	if (mp_Client != NULL)
 		mp_Client->fps = Client::frames;
 	Client::frames=0;

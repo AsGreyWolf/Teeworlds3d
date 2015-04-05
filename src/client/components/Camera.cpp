@@ -4,7 +4,7 @@
 #include "Graphics.h"
 
 class Camera* mp_Camera;
-Camera* Component::m_Camera(){ return mp_Camera; }
+Camera* m_Camera(){ return mp_Camera; }
 
 Camera::Camera() : Component(){
 	mp_Camera = this;
