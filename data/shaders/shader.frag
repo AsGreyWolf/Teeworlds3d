@@ -3,6 +3,7 @@
 varying vec2 ex_TexMap;
 varying vec3 ex_Normal;
 varying vec3 ex_ShadowTexMap;
+varying float ex_logDepth;
 
 uniform vec4 colorer;
 uniform sampler2D tex;
@@ -29,9 +30,10 @@ void main(void) {
 		float lightIntensity =dot(ex_Normal, L)/2;
 /* shadow calc*/
 		if(ex_ShadowTexMap.x>=0.0 && ex_ShadowTexMap.x<=1.0 && ex_ShadowTexMap.y>=0.0 && ex_ShadowTexMap.y<=1.0){
-				vec2 shadowPos=ex_ShadowTexMap.xy+vec2(0.0005*rand(ex_ShadowTexMap.yx),0.0005*rand(ex_ShadowTexMap.xy));
-				vec2 dx=vec2(0.0005,0.0f);
-				vec2 dy=vec2(0.0f,0.0005);
+				float r=rand(ex_TexMap.xy);
+				vec2 shadowPos=ex_ShadowTexMap.xy+0.001*vec2(r,r);
+				vec2 dx=vec2(0.0005*r,0.0f);
+				vec2 dy=vec2(0.0f,0.0005*r);
 				float shadowIntensity=calcShadow(ex_ShadowTexMap.z, shadowPos,dx);
 				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-dx);
 				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,dy);
@@ -53,4 +55,5 @@ void main(void) {
 		max/=3;
 		gl_FragColor=vec4(max,max,max,gl_FragColor.a)*colorer;
 	}
+	gl_FragDepth = log2(ex_logDepth) / log2(10000 + 1.0);
 }

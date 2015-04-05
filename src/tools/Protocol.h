@@ -1,7 +1,7 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 #include "quad2.h"
-#define MAX_PLAYERS 16
+#define MAX_PLAYERS 256
 enum WEAPONS{
 	WEAPON_HAMMER,
 	WEAPON_GUN,

@@ -106,7 +106,7 @@ Graphics::Graphics() : Component(){
 
 	glLineWidth(3);
 	glPointSize(3);
-	glPolygonOffset(1, -1);
+	glPolygonOffset(1, 1);
 
 	glGenFramebuffersEXT(1, &shadowFBO);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);
