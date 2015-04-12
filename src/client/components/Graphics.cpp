@@ -106,7 +106,7 @@ Graphics::Graphics() : Component(){
 
 	glLineWidth(3);
 	glPointSize(3);
-	glPolygonOffset(1, 1);
+	//glPolygonOffset(-1, -1);
 
 	glGenFramebuffersEXT(1, &shadowFBO);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);
@@ -132,8 +132,8 @@ void Graphics::Tick(){
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);
 	glUseProgram(m_Resources->shaderShadow);
 	currentShader = m_Resources->shaderShadow;
-	glViewport(0,0,screenSize*aspect*2,screenSize*aspect*2);
-	glEnable(GL_POLYGON_OFFSET_FILL);
+	glViewport(0,0,screenSize*aspect*4,screenSize*aspect*4);
+	//glEnable(GL_POLYGON_OFFSET_FILL);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	vec3 pos = g_Camera()->position;
 	pos.z=1;

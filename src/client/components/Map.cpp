@@ -1,6 +1,7 @@
 #include "Map.h"
 #include <stdio.h>
 #include <cstring>
+#include "../../shared/System.h"
 #include "../../shared/Console.h"
 #include "../Client.h"
 #include "Graphics.h"
@@ -39,7 +40,7 @@ void Map::Tick(){}
 void Map::Message(int type,char* value){}
 bool Map::Load(string name){
 	string pp="maps/"+name+".map";
-	string path=g_Client()->GetDataFile(pp);
+	string path = g_System()->GetDataFile(pp);
 
 	Console::Info("Loading " + name);
 
