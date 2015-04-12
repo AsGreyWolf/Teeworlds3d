@@ -40,6 +40,9 @@ public:
 	///<summary>Is gamecycle running?</summary>
 	///<returns>true if it is, false otherwise</returns>
 	static bool isRunning();
+	///<summary>Get filename in data folder</summary>
+	///<param name="str">Filename</param>
+	string GetDataFile(string str);
 
 	///<summary>All the components</summary>
 	std::vector <Component*> m_Components;
@@ -55,6 +58,8 @@ public:
 private:
 	static bool working;
 	SDL_Renderer* renderer;
+	string PATH_CUR;
+	string PATH_DATA;
 };
 Client* g_Client();
 Uint32 calcFPS(Uint32 interval, void *param);

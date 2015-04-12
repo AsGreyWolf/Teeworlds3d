@@ -1,12 +1,12 @@
 #include "PlayerModel.h"
+#include "../Graphics.h"
 #include "Resources.h"
+#include "../../../tools/Player.h"
+#include "../../../tools/system.h"
 #include "Text3d.h"
 #include "TextGenerator.h"
-#include "../Graphics.h"
 #include "../../Client.h"
 #include "../../components/Camera.h"
-#include "../../../shared/System.h"
-#include "../../../tools/Player.h"
 
 const int eyescale = (int)(baseSize*0.40);
 const float separation=(0.075f*baseSize)-eyescale/2;
@@ -134,9 +134,9 @@ void PlayerModel::Update(Player* p){
 	bool anim=abs(p->vel.x)>=1 || abs(p->vel.y)>=1;
 	if(anim && animState==ANIMSTATE_NONE){
 		animState++;
-		animStart=g_System()->GetTime();
+		animStart=System::GetTime();
 	}
-	float dd = g_System()->GetTime() - animStart;
+	float dd=System::GetTime()-animStart;
 	///TODO: animSpeed from velocity
 	dd/=(animSpeed);
 	if(animState==ANIMSTATE_LEFT_ONLY && dd>=0.5f)

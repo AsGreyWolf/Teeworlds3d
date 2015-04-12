@@ -31,9 +31,9 @@ void main(void) {
 /* shadow calc*/
 		if(ex_ShadowTexMap.x>=0.0 && ex_ShadowTexMap.x<=1.0 && ex_ShadowTexMap.y>=0.0 && ex_ShadowTexMap.y<=1.0){
 				float r=rand(ex_TexMap.xy);
-				vec2 shadowPos=ex_ShadowTexMap.xy+0.0005*vec2(r,r);
-				vec2 dx=vec2(0.0005*r,0.0);
-				vec2 dy=vec2(0.0,0.0005*r);
+				vec2 shadowPos=ex_ShadowTexMap.xy+0.001*vec2(r,r);
+				vec2 dx=vec2(0.0005*r,0.0f);
+				vec2 dy=vec2(0.0f,0.0005*r);
 				float shadowIntensity=calcShadow(ex_ShadowTexMap.z, shadowPos,dx);
 				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-dx);
 				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,dy);

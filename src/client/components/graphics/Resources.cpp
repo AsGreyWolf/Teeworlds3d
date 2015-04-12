@@ -1,9 +1,9 @@
 #include "Resources.h"
 #include "../../../shared/Console.h"
-#include "../../../shared/System.h"
 #include "../../Client.h"
 #include "Model.h"
 #include "../Graphics.h"
+#include "../../../tools/system.h"
 #include "../../../../other/sdl/include/SDL_image.h"
 
 const char* Resources::weaponFiles[NUM_WEAPONS]={
@@ -32,10 +32,10 @@ void Resources::Load(){
 	LoadTexture(textureBlank,true,false,"blank.png");
 	LoadTexture(textureRGB,true,false,"rgb.png");
 	LoadTexture(textureGame,true,true,"game.png");
-	GenTexture(textureShadowColor, g_Graphics()->screenSize*g_Graphics()->aspect * 4, g_Graphics()->screenSize*g_Graphics()->aspect * 4, false, false, false, NULL);// TODO remove it
-	GenTexture(textureShadowDepth, g_Graphics()->screenSize*g_Graphics()->aspect * 4, g_Graphics()->screenSize*g_Graphics()->aspect * 4, true, true, true, NULL);
+	GenTexture(textureShadowColor, g_Graphics()->screenSize*g_Graphics()->aspect * 2, g_Graphics()->screenSize*g_Graphics()->aspect * 2, false, false, false, NULL);// TODO remove it
+	GenTexture(textureShadowDepth, g_Graphics()->screenSize*g_Graphics()->aspect * 2, g_Graphics()->screenSize*g_Graphics()->aspect * 2, true, true, true, NULL);
 	vector<string> skins;
-	g_System()->GetFilesInDirectory(skins, g_System()->GetDataFile("skins"));
+	System::GetFilesInDirectory(skins, g_Client()->GetDataFile("skins"));
 	for(unsigned int i=0;i<skins.size();i++){
 		GLuint skintex=textureBlank;
 		LoadTexture(skintex,true,false,"skins/"+skins[i]);
@@ -556,7 +556,7 @@ void Resources::Load(){
 	LoadShader("shaders/shaderShadow",shaderShadow);
 
 	//fonts
-	fontPath = g_System()->GetDataFile(fontName);
+	fontPath = g_Client()->GetDataFile(fontName);
 }
 void Resources::UnLoad(){
 	ClearBuffers();
@@ -722,7 +722,7 @@ bool Resources::LoadTextureFromSurface(GLuint &tex, bool anisotropy, bool filter
 
 bool Resources::LoadTexture(GLuint &tex, bool anisotropy, bool filtering, string filepath)
 {
-	string path = g_System()->GetDataFile(filepath);
+	string path = g_Client()->GetDataFile(filepath);
 	SDL_Surface *temp = NULL;
 	temp = IMG_Load(path.c_str());
 	if (!LoadTextureFromSurface(tex, anisotropy, filtering, temp)){
@@ -758,7 +758,7 @@ void Resources::UnLoadShader(GLuint &shader)
 }
 bool Resources::LoadShader(string filepath, GLuint &shader)
 {
-	string firstpath = g_System()->GetDataFile(filepath);
+	string firstpath = g_Client()->GetDataFile(filepath);
 
 	GLchar *vertexsource, *fragmentsource,*geometrysource;
 	GLuint vertexshader, fragmentshader,geometryshader;

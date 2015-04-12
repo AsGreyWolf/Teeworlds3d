@@ -2,7 +2,6 @@
 #include <iostream>
 #include <locale>
 #include <clocale>
-#include "../shared/System.h"
 #include "../shared/Console.h"
 #include "../shared/World.h"
 #include "components/Graphics.h"
@@ -10,6 +9,7 @@
 #include "components/Map.h"
 #include "components/Players.h"
 #include "components/GUI.h"
+#include "../tools/system.h"
 #include "../../other/sdl/include/SDL_ttf.h"
 
 class Client* pClient;
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 	pClient->state.ingame = true;
 	pClient->StateChange(startstate);
 	while (pClient->isRunning()){
-		long tickTime = g_System()->GetTime();
+		long tickTime=System::GetTime();
 		pClient->tickCoeff = (tickTime - pClient->lasttickTime)*1.0 / 1000;
 		pClient->lasttickTime = tickTime;
 		STATE oldstate = pClient->state;
@@ -49,7 +49,10 @@ bool Client::isRunning(){
 }
 Client::Client():Component(){
 	pClient = this;
-	fps = 60;
+	System::Init();
+	System::GetPath(PATH_CUR);
+	PATH_DATA=PATH_CUR+"data/";
+	fps=60;
 
 	if(SDL_Init(SDL_INIT_EVERYTHING)!=0)
 	{
@@ -82,10 +85,10 @@ Client::Client():Component(){
 		Console::Err("Could not get renderer: " + string(SDL_GetError()));
 		return; //TODO: need exceptions
 	}
-	
-	m_SharedComponents.push_back((SharedComponent*)new System());
+
 	m_SharedComponents.push_back((SharedComponent*)new Console());
 	
+
 	m_Components.push_back((Component*)new Graphics());
 	m_SharedComponents.push_back((SharedComponent*)new World());//TODO debug only
 	m_Components.push_back((Component*)new Camera());
@@ -175,6 +178,9 @@ Uint32 calcFPS(Uint32 interval, void *param){
 		pClient->fps = Client::frames;
 	Client::frames=0;
 	return interval;
+}
+string Client::GetDataFile(string str){
+	return PATH_DATA+str;
 }
 void Client::StateChange(STATE lastState){
 	for(auto &component : m_Components){
