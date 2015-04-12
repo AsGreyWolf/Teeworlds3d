@@ -7,6 +7,7 @@
 #include <sstream>
 #include "../Graphics.h"
 #include "../../Client.h"
+#include "../../../shared/System.h"
 #include "Resources.h"
 
 
@@ -183,7 +184,7 @@ void Model::AddSphere(int rings, int sectors,vec3 lengthiness,float radius,quad2
 }
 
 void Model::AddObjModel(string filename){
-	std::ifstream file(g_Client()->GetDataFile(filename));
+	std::ifstream file(g_System()->GetDataFile(filename));
 	if(!file.good()) {
 		file.close();
 		return;
