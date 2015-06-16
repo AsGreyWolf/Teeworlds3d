@@ -1,5 +1,6 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
+//TODO: move to shared
 #include "quad2.h"
 #define MAX_PLAYERS 256
 enum WEAPONS{

@@ -9,12 +9,14 @@ class Camera;
 class Map;
 class Players;
 class GUI;
+///<summary>Client state</summary>
 struct STATE{
 	const  bool operator!=(const STATE s){
 		return ingame!=s.ingame;
 	}
 	bool ingame;
 };
+///<summary>Component which may be used only on Client side</summary>
 class Component : public SharedComponent{
 public:
 	Component():SharedComponent(){};

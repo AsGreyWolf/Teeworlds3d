@@ -8,6 +8,7 @@
 
 using namespace std;
 
+///<summary>Main loop component</summary>
 class Client : public Component{
 public:
 	///<summary>Creates all the components and gamecycle</summary>

@@ -7,6 +7,7 @@
 
 class PlayerModel;
 
+///<summary>Players as game objects</summary>
 class Players : Component{
 public:
 	Players();

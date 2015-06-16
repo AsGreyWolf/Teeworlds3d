@@ -12,6 +12,7 @@
 
 class Text;
 
+///<summary>GUI renderer</summary>
 class GUI : Component{
 public:
 	GUI();

@@ -4,6 +4,7 @@
 #include "SharedComponent.h"
 #include <string>
 
+///<summary>Text I/O interaction with player</summary>
 class Console : public SharedComponent{
 public:
 	Console();

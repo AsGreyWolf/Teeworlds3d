@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+///<summary>Interaction with OS</summary>
 class System : public SharedComponent{
 public:
 	System();

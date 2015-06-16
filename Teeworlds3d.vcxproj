@@ -137,7 +137,7 @@
     <ClInclude Include="src\shared\SharedComponent.h" />
     <ClInclude Include="src\shared\System.h" />
     <ClInclude Include="src\shared\World.h" />
-    <ClInclude Include="src\tools\Player.h" />
+    <ClInclude Include="src\shared\world\Player.h" />
     <ClInclude Include="src\tools\Protocol.h" />
     <ClInclude Include="src\tools\quad2.h" />
     <ClInclude Include="src\tools\quad3.h" />
@@ -160,6 +160,7 @@
     <ClCompile Include="src\shared\Console.cpp" />
     <ClCompile Include="src\shared\System.cpp" />
     <ClCompile Include="src\shared\World.cpp" />
+    <ClCompile Include="src\shared\world\Player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

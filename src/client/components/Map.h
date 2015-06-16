@@ -16,7 +16,7 @@ using namespace std;
 class Model;
 class Tile;
 
-///<summary>Map component</summary>
+///<summary>Map as game object</summary>
 class Map : public Component{
 public:
 	Map();

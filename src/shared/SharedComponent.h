@@ -4,6 +4,7 @@
 #include <stdint.h>
 using namespace std;
 
+///<summary>Component which may be used on both(Client/Server) sides</summary>
 class SharedComponent{
 public:
 	SharedComponent(){};

@@ -22,6 +22,9 @@
     <Filter Include="shared">
       <UniqueIdentifier>{5296d9a1-3622-430f-84b4-d6f558e7d7b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shared\world">
+      <UniqueIdentifier>{6a4a2818-2485-4ce8-999f-30095901f24b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\client\Component.h">
@@ -237,9 +240,6 @@
     <ClInclude Include="src\tools\Tile.h">
       <Filter>tools</Filter>
     </ClInclude>
-    <ClInclude Include="src\tools\Player.h">
-      <Filter>tools</Filter>
-    </ClInclude>
     <ClInclude Include="src\tools\Protocol.h">
       <Filter>tools</Filter>
     </ClInclude>
@@ -287,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="src\shared\System.h">
       <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shared\world\Player.h">
+      <Filter>shared\world</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="src\shared\System.cpp">
       <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shared\world\Player.cpp">
+      <Filter>shared\world</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

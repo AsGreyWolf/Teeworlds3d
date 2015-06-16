@@ -242,6 +242,7 @@ void Graphics::Transform(glm::mat4 &modelMatrix,const glm::vec3 &position,const 
 	RotateY(modelMatrix,rotation);
 	Scale(modelMatrix,scale);
 }
+//TODO: Exceptions support
 void Graphics::CheckGLError() throw(OpenGLException){
 	int glError = glGetError();
 	while(glError!=GL_NO_ERROR){

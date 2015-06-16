@@ -23,6 +23,7 @@
 using namespace std;
 class Resources;
 
+///<summary>Something was wrong</summary>
 class OpenGLException{
 public:
 	GLuint error;

@@ -6,7 +6,7 @@
 #include "../../Client.h"
 #include "../../components/Camera.h"
 #include "../../../shared/System.h"
-#include "../../../tools/Player.h"
+#include "../../../shared/world/Player.h"
 
 const int eyescale = (int)(baseSize*0.40);
 const float separation=(0.075f*baseSize)-eyescale/2;
@@ -108,7 +108,7 @@ void PlayerModel::Remove(){
 }
 void PlayerModel::Update(Player* p){
 	position=p->pos;
-	rot = quad2::vec2rot(p->dir);
+	rot = p->rot;
 	weapon=p->weapon;
 	emote=p->emote;
 	if (g_Graphics()->m_Resources->skinTextures.find(p->skin) != g_Graphics()->m_Resources->skinTextures.end())

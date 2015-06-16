@@ -7,7 +7,7 @@
 #include "graphics/PlayerModel.h"
 #include "graphics/Resources.h"
 #include "../../shared/World.h"
-#include "../../tools/Player.h"
+#include "../../shared/world/Player.h"
 
 class Players* pPlayers;
 Players* g_Players(){ return pPlayers; }
@@ -48,22 +48,22 @@ void Players::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 		}
 	}
 	if(keys[SDL_SCANCODE_KP_8]){
-		g_World()->players[0]->dir.x += 0.2f*g_Client()->tickCoeff;
+		g_World()->players[0]->rot.x += 0.4f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_2]){
-		g_World()->players[0]->dir.x -= 0.2f*g_Client()->tickCoeff;
+		g_World()->players[0]->rot.x -= 0.4f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_4]){
-		g_World()->players[0]->dir.z += 0.2f*g_Client()->tickCoeff;
+		g_World()->players[0]->rot.z += 0.4f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_6]){
-		g_World()->players[0]->dir.z -= 0.2f*g_Client()->tickCoeff;
+		g_World()->players[0]->rot.z -= 0.4f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_7]){
-		g_World()->players[0]->dir.y -= 0.2f*g_Client()->tickCoeff;
+		g_World()->players[0]->rot.y -= 0.4f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_KP_9]){
-		g_World()->players[0]->dir.y += 0.2f*g_Client()->tickCoeff;
+		g_World()->players[0]->rot.y += 0.4f*g_Client()->tickCoeff;
 	}
 	if(keys[SDL_SCANCODE_SPACE]){
 		if(!lastSpaceState){

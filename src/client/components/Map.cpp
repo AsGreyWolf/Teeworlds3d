@@ -7,6 +7,7 @@
 #include "Graphics.h"
 #include "graphics/Resources.h"
 #include "graphics/Model.h"
+//TODO: move physical object to shared
 
 class Map* pMap;
 Map* g_Map(){ return pMap; }

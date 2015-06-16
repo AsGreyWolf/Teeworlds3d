@@ -13,10 +13,10 @@ public:
 	glm::vec3 up;
 	///<summary>Vector directed forward the camera</summary>
 	glm::vec3 look;
-	///<summary>Position of the camera</summary>
-	glm::vec3 position;
 	///<summary>Vector directed to the right of the camera</summary>
 	glm::vec3 right;
+	///<summary>Position of the camera</summary>
+	glm::vec3 position;
 	///<summary>Rotation of the camera</summary>
 	glm::vec3 rotation;
 

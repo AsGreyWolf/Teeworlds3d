@@ -6,6 +6,7 @@
 
 class Player;
 
+///<summary>World and all physical objects</summary>
 class World : public SharedComponent{
 public:
 	World();
