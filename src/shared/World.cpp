@@ -1,9 +1,9 @@
 #include "World.h"
 #include <iostream>
-#include "../tools/Player.h"
+#include "world/Player.h"
 //TODO debug
 #include "../client/components/Graphics.h"
-#include "../client/components/graphics/Resources.h"
+#include "../client/components/graphics/Resources.h"//TODO: REMOVE IT, NOW!
 
 class World* pWorld;
 World* g_World(){ return pWorld; }
@@ -13,10 +13,10 @@ World::World(){
 	//TODO: only debug
 	auto skinName = g_Graphics()->m_Resources->skinTextures.begin();
 	for (int i = 0; i<MAX_PLAYERS; i++){
-		players[i] = new Player();
+		players[i] = new Player(i);
 		players[i]->pos = vec3(rand() % 2048, rand() % 2048, rand() % 2048);
-		players[i]->dir = vec3(rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))), rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))), rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))));
-		players[i]->dir = glm::normalize(players[i]->dir);
+		players[i]->rot = vec3(rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))), rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))), rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))));
+		players[i]->rot = glm::normalize(players[i]->rot);
 		players[i]->weapon = rand() % NUM_WEAPONS;
 		players[i]->emote = EMOTE_NORMAL;
 		players[i]->skin = (*skinName).first;
