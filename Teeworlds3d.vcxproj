@@ -138,10 +138,10 @@
     <ClInclude Include="src\shared\System.h" />
     <ClInclude Include="src\shared\World.h" />
     <ClInclude Include="src\shared\world\Player.h" />
+    <ClInclude Include="src\shared\world\Tile.h" />
     <ClInclude Include="src\tools\Protocol.h" />
     <ClInclude Include="src\tools\quad2.h" />
     <ClInclude Include="src\tools\quad3.h" />
-    <ClInclude Include="src\tools\Tile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\client\Client.cpp" />

@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <cstring>
 #include "../../shared/System.h"
-#include "../../shared/Console.h"
+#include "../../shared/World.h"
+#include "../../shared/world/Tile.h"
 #include "../Client.h"
 #include "Graphics.h"
 #include "graphics/Resources.h"
@@ -39,73 +40,77 @@ void Map::RenderBillboard(){}
 void Map::Render2d(){}
 void Map::Tick(){}
 void Map::Message(int type,char* value){}
+
+Tile* buffer;
+bool hasTop(){
+	if (buffer->z<g_World()->worldSize.z - 1){
+		if (!g_World()->tilesByPos[buffer->x][buffer->y][buffer->z + 1]->isPhysTile()){
+			return false;
+		}
+	}
+	else return false;
+
+	return true;
+}
+bool hasBot(){
+	if (buffer->z>0){
+		if (!g_World()->tilesByPos[buffer->x][buffer->y][buffer->z - 1]->isPhysTile()){
+			return false;
+		}
+	}
+	else return false;
+
+	return true;
+}
+bool hasLeft(){
+	if (buffer->x>0){
+		if (!g_World()->tilesByPos[buffer->x - 1][buffer->y][buffer->z]->isPhysTile()){
+			return false;
+		}
+	}
+	else return false;
+
+	return true;
+}
+bool hasRight(){
+	if (buffer->x<g_World()->worldSize.x - 1){
+		if (!g_World()->tilesByPos[buffer->x + 1][buffer->y][buffer->z]->isPhysTile()){
+			return false;
+		}
+	}
+	else return false;
+
+	return true;
+}
+bool hasY(){
+	if (buffer->y<g_World()->worldSize.y - 1){
+		if (!g_World()->tilesByPos[buffer->x][buffer->y + 1][buffer->z]->isPhysTile()){
+			return false;
+		}
+	}
+	else return false;
+
+	return true;
+}
+bool hasy(){
+	if (buffer->y>0){
+		if (!g_World()->tilesByPos[buffer->x][buffer->y - 1][buffer->z]->isPhysTile()){
+			return false;
+		}
+	}
+	else return false;
+
+	return true;
+}
 bool Map::Load(string name){
-	string pp="maps/"+name+".map";
-	string path = g_System()->GetDataFile(pp);
-
-	Console::Info("Loading " + name);
-
-
-	FILE* file=fopen(path.c_str(),"rb");
-	if(file == 0){
-		Console::Err("File not found");
-		return false;
-	}
-	unsigned char buf;
-	buf=fgetc(file);
-	sizex=(int)(buf);
-	buf=fgetc(file);
-	sizey=(int)(buf);
-	buf=fgetc(file);
-	sizez=(int)(buf);
-
-	tilesById.clear();
-	tilesByPos=new Tile***[sizex];
-
-	unsigned int i=0;
-	for(int xi=0;xi<sizex;xi++){
-		tilesByPos[xi]=new Tile**[sizey];
-		for(int yi=0;yi<sizey;yi++){
-			tilesByPos[xi][yi]=new Tile*[sizez];
-			for(int zi=0;zi<sizez;zi++){
-				Tile tile;
-				tilesById.push_back(tile);
-				tilesById[i].id=i;
-				tilesById[i].x=xi;
-				tilesById[i].y=yi;
-				tilesById[i].z=zi;
-				buf=fgetc(file);
-				tilesById[i].type=(int)(buf);
-				buf=fgetc(file);
-				tilesById[i].texTop=(int)(buf);
-				buf=fgetc(file);
-				tilesById[i].texBottom=(int)(buf);
-				buf=fgetc(file);
-				tilesById[i].texOther=(int)(buf);
-				i++;
-			}
-		}
-	}
-	for(i=0;i<tilesById.size();i++){
-		tilesByPos[tilesById[i].x][tilesById[i].y][tilesById[i].z]=&tilesById[i];
-	}
-	char s[50];
-	fgets(s,sizeof(s),file);
-	for(int j=0;j<50;j++){
-		if(s[j]=='\n') {
-			s[j]='\0';
-			break;
-		}
-	}
-	string p="mapres/"+string(s)+".png";
+	g_World()->Load(name);
+	string p = "mapres/" + string(g_World()->tileset) + ".png";
 	texture=-1;
 	g_Graphics()->m_Resources->LoadTexture(texture,false,false,p);
 
+	for (unsigned int i = 0; i<g_World()->tilesById.size(); i++){
 
-	fclose(file);
-	for(unsigned int i=0;i<tilesById.size();i++){
-
-		buffer=&tilesById[i];
+		buffer = &g_World()->tilesById[i];
 		if(buffer->type==0) continue;
 		if(!hasLeft()) buffer->hasx=false;
 		if(!hasRight()) buffer->hasX=false;
@@ -174,64 +179,6 @@ void Map::UnLoad(){
 	if(m_Model!=nullptr){
 		delete m_Model;
 		g_Graphics()->m_Resources->UnLoadTexture(texture);
-		tilesById.clear();
-		for(int xi=0;xi<sizex;xi++){
-			for(int yi=0;yi<sizey;yi++)
-				delete[] tilesByPos[xi][yi];
-			delete[] tilesByPos[xi];
-		}
 	}
-}
-bool Map::hasTop(){
-	if(buffer->z<sizez-1){
-		if(!tilesByPos[buffer->x][buffer->y][buffer->z+1]->isPhysTile()){
-			return false;
-		}
-	}else return false;
-
-	return true;
-}
-bool Map::hasBot(){
-	if(buffer->z>0){
-		if(!tilesByPos[buffer->x][buffer->y][buffer->z-1]->isPhysTile()){
-			return false;
-		}
-	}else return false;
-
-	return true;
-}
-bool Map::hasLeft(){
-	if(buffer->x>0){
-		if(!tilesByPos[buffer->x-1][buffer->y][buffer->z]->isPhysTile()){
-			return false;
-		}
-	}else return false;
-
-	return true;
-}
-bool Map::hasRight(){
-	if(buffer->x<sizex-1){
-		if(!tilesByPos[buffer->x+1][buffer->y][buffer->z]->isPhysTile()){
-			return false;
-		}
-	}else return false;
-
-	return true;
-}
-bool Map::hasY(){
-	if(buffer->y<sizey-1){
-		if(!tilesByPos[buffer->x][buffer->y+1][buffer->z]->isPhysTile()){
-			return false;
-		}
-	}else return false;
-
-	return true;
-}bool Map::hasy(){
-	if(buffer->y>0){
-		if(!tilesByPos[buffer->x][buffer->y-1][buffer->z]->isPhysTile()){
-			return false;
-		}
-	}else return false;
-
-	return true;
+	g_World()->UnLoad();
 }

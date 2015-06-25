@@ -1,7 +1,10 @@
 @ECHO OFF
 @call SET BAT_PATH=%~dp0
 if "%1"=="debug" SET DEBUG="true"
-@call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\vsvars32.bat"
+@call "%ProgramFiles(x86)%\Microsoft Visual Studio 12.0\Common7\Tools\vsvars32.bat"
+set INCLUDE=%ProgramFiles(x86)%\Microsoft SDKs\Windows\7.1A\Include;%INCLUDE%
+set PATH=%ProgramFiles(x86)%\Microsoft SDKs\Windows\7.1A\Bin;%PATH%
+set LIB=%ProgramFiles(x86)%\Microsoft SDKs\Windows\7.1A\Lib;%LIB%
 
 
 @call SET SRCFILES="%BAT_PATH%src/shared/*.cpp" "%BAT_PATH%src/shared/world/*.cpp" "%BAT_PATH%src/client/*.cpp" "%BAT_PATH%src/client/components/*.cpp" "%BAT_PATH%src/client/components/graphics/*.cpp"
@@ -30,9 +33,9 @@ if "%DEBUG%"=="" (
 if errorlevel 1 GOTO err
 @call echo --------------------------LINKING--------------------------
 if "%DEBUG%"=="" (
-@call link /OPT:REF /verbose:lib /OUT:"%OUTFILE%" /SUBSYSTEM:CONSOLE /MACHINE:X86 /NOLOGO /LIBPATH:"%SDL_LIB%" "*.obj" %LIBFILES%
+@call link /OPT:REF /verbose:lib /OUT:"%OUTFILE%" /SUBSYSTEM:CONSOLE,5.01 /MACHINE:X86 /NOLOGO /LIBPATH:"%SDL_LIB%" "*.obj" %LIBFILES%
 ) else (
-@call link /DEBUG /verbose:lib /OUT:"%OUTFILE%" /SUBSYSTEM:CONSOLE /MACHINE:X86 /NOLOGO /LIBPATH:"%SDL_LIB%" "*.obj" %LIBFILES%
+@call link /DEBUG /verbose:lib /OUT:"%OUTFILE%" /SUBSYSTEM:CONSOLE,5.01 /MACHINE:X86 /NOLOGO /LIBPATH:"%SDL_LIB%" "*.obj" %LIBFILES%
 )
 if errorlevel 1 GOTO err
 @call cd "%BAT_PATH%"

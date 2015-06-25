@@ -1,8 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
-//TODO: move to shared
 #include <vector>
-#include "../../other/glm/glm.hpp"
+#include "../../../other/glm/glm.hpp"
 
 class Tile
 {
@@ -22,24 +21,24 @@ public:
 	bool hasz;
 	bool hasZ;
 	Tile(){
-	 hasx=true;
-	 hasX=true;
-	 hasy=true;
-	 hasY=true;
-	 hasz=true;
-	 hasZ=true;
+		hasx = true;
+		hasX = true;
+		hasy = true;
+		hasY = true;
+		hasz = true;
+		hasZ = true;
 	}
 	bool isPhysTile(){
 		return isPhys(type);
 	}
-	 bool isNoHook(){
+	bool isNoHook(){
 		return isNoHook(type);
 	}
-	 static bool isPhys(int type3){
-		return (type3==1 || type3==2);
+	static bool isPhys(int type3){
+		return (type3 == 1 || type3 == 2);
 	}
-	 static bool isNoHook(int type3){
-		return type3==2;
+	static bool isNoHook(int type3){
+		return type3 == 2;
 	}
 };
 
