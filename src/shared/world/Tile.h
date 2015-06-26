@@ -28,17 +28,23 @@ public:
 		hasz = true;
 		hasZ = true;
 	}
-	bool isPhysTile(){
+	bool isPhys(){
 		return isPhys(type);
 	}
 	bool isNoHook(){
 		return isNoHook(type);
 	}
-	static bool isPhys(int type3){
-		return (type3 == 1 || type3 == 2);
+	bool isVisible(){
+		return isVisible(type);
 	}
-	static bool isNoHook(int type3){
-		return type3 == 2;
+	static bool isPhys(int type){
+		return (type == 1 || type == 2);
+	}
+	static bool isNoHook(int type){
+		return type == 2;
+	}
+	static bool isVisible(int type){
+		return isPhys(type);
 	}
 };
 
