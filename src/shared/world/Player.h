@@ -8,6 +8,9 @@
 class Player{
 public:
 	Player(int id);
+
+	void Tick();
+
 	int id;
 	///<summary>Position on map</summary>
 	glm::vec3 pos;
