@@ -44,7 +44,7 @@ void Map::Message(int type,char* value){}
 Tile* buffer;
 bool hasTop(){
 	if (buffer->z<g_World()->worldSize.z - 1){
-		if (!g_World()->tilesByPos[buffer->x][buffer->y][buffer->z + 1]->isPhysTile()){
+		if (!g_World()->tilesByPos[buffer->x][buffer->y][buffer->z + 1]->isVisible()){
 			return false;
 		}
 	}
@@ -54,7 +54,7 @@ bool hasTop(){
 }
 bool hasBot(){
 	if (buffer->z>0){
-		if (!g_World()->tilesByPos[buffer->x][buffer->y][buffer->z - 1]->isPhysTile()){
+		if (!g_World()->tilesByPos[buffer->x][buffer->y][buffer->z - 1]->isVisible()){
 			return false;
 		}
 	}
@@ -64,7 +64,7 @@ bool hasBot(){
 }
 bool hasLeft(){
 	if (buffer->x>0){
-		if (!g_World()->tilesByPos[buffer->x - 1][buffer->y][buffer->z]->isPhysTile()){
+		if (!g_World()->tilesByPos[buffer->x - 1][buffer->y][buffer->z]->isVisible()){
 			return false;
 		}
 	}
@@ -74,7 +74,7 @@ bool hasLeft(){
 }
 bool hasRight(){
 	if (buffer->x<g_World()->worldSize.x - 1){
-		if (!g_World()->tilesByPos[buffer->x + 1][buffer->y][buffer->z]->isPhysTile()){
+		if (!g_World()->tilesByPos[buffer->x + 1][buffer->y][buffer->z]->isVisible()){
 			return false;
 		}
 	}
@@ -84,7 +84,7 @@ bool hasRight(){
 }
 bool hasY(){
 	if (buffer->y<g_World()->worldSize.y - 1){
-		if (!g_World()->tilesByPos[buffer->x][buffer->y + 1][buffer->z]->isPhysTile()){
+		if (!g_World()->tilesByPos[buffer->x][buffer->y + 1][buffer->z]->isVisible()){
 			return false;
 		}
 	}
@@ -94,7 +94,7 @@ bool hasY(){
 }
 bool hasy(){
 	if (buffer->y>0){
-		if (!g_World()->tilesByPos[buffer->x][buffer->y - 1][buffer->z]->isPhysTile()){
+		if (!g_World()->tilesByPos[buffer->x][buffer->y - 1][buffer->z]->isVisible()){
 			return false;
 		}
 	}
