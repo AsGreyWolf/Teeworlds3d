@@ -91,8 +91,8 @@ void PlayerModel::Create(){
 	body->texture=texture;
 	body->rot=vec3(0,0,-M_PI_2);
 	eyes->texture=texture;
-	rFoot->position=vec3(renderSize/2,renderSize/6,-renderSize/2);
-	lFoot->position=vec3(-renderSize/2,renderSize/6,-renderSize/2);
+	rFoot->position = vec3(renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
+	lFoot->position = vec3(-renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
 	eyes->position=vec3(0,(0.285f*baseSize),((0.05f)*baseSize)-eyescale/2);
 	nickNameShadow->coloring=vec4(0,0,0,0.5f);
 
@@ -149,13 +149,13 @@ void PlayerModel::Update(Player* p){
 	if(animState==ANIMSTATE_RIGHT_ONLY && faseB<0 && lastFaseA>0 && faseA<0)
 		animState=ANIMSTATE_NONE;
 	if(animState==ANIMSTATE_ALL || animState==ANIMSTATE_RIGHT_ONLY)
-		rFoot->position=vec3(renderSize/2,renderSize/6+faseA,-renderSize/2+glm::max(0.0f,faseB));
+		rFoot->position = vec3(renderSize / 2, renderSize / 6 + faseA, -renderSize / 1.5f + renderSize / 4.8f + glm::max(0.0f, faseB) - 5);
 	else
-		rFoot->position=vec3(renderSize/2,renderSize/6,-renderSize/2);
+		rFoot->position = vec3(renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
 	if(animState==ANIMSTATE_ALL || animState==ANIMSTATE_LEFT_ONLY)
-		lFoot->position=vec3(-renderSize/2,renderSize/6-faseA,-renderSize/2+glm::max(0.0f,-faseB));
+		lFoot->position = vec3(-renderSize / 2, renderSize / 6 - faseA, -renderSize / 1.5f + renderSize / 4.8f + glm::max(0.0f, -faseB) - 5);
 	else
-		lFoot->position=vec3(-renderSize/2,renderSize/6,-renderSize/2);
+		lFoot->position = vec3(-renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
 	lastFaseA=faseA;
 
 	
