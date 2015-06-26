@@ -22,6 +22,18 @@ public:
 	///<param name="name">Filename in data/maps folder</param>
 	bool Load(std::string name);
 	void UnLoad();
+	///<summary>Returns tile by point</summary>
+	///<param name="pos">Coords of point</param>
+	Tile* GetTile(glm::vec3 pos);
+	///<summary>Returns null if no colision, Tile otherwise</summary>
+	///<param name="pos0">start point</param>
+	///<param name="pos1">end point</param>
+	///<param name="pOutCollision">colision point</param>
+	///<param name="pOutBeforeCollision">last point before colision</param>
+	Tile* World::IntersectLine(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision);
+	void MovePoint(glm::vec3 *pInoutPos, glm::vec3 *pInoutVel, float Elasticity, int *pBounces);
+	bool TestBox(glm::vec3 Pos, glm::vec3 Size);
+	void MoveBox(glm::vec3 *pInoutPos, glm::vec3 *pInoutVel, glm::vec3 Size, float Elasticity);
 	
 	///<summary>Size in blocks</summary>
 	glm::vec3 worldSize;
