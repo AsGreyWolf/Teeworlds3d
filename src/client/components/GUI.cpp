@@ -5,6 +5,7 @@
 #include "graphics/Text.h"
 #include "graphics/Model2d.h"
 #include "graphics/TextGenerator.h"
+#include "../../shared/System.h"
 
 class GUI* pGUI;
 GUI* g_GUI(){ return pGUI; }
@@ -14,7 +15,7 @@ GUI::GUI() : Component(){
 	pGUI = this;
 	fpsObject=new Text();
 	fpsObject->depth = 1;
-	fpsObject->AddText(std::to_string(g_Client()->fps), Resources::FONT_BIG, TextGenerator::ALIGN_RIGHT_TOP, true);
+	fpsObject->AddText(std::to_string(g_System()->fps), Resources::FONT_BIG, TextGenerator::ALIGN_RIGHT_TOP, true);
 	fpsObject->Create();
 	fpsObject->position = g_Graphics()->screen.p11;
 	fpsTitle=new Text();
@@ -36,7 +37,7 @@ void GUI::Render(){}
 void GUI::RenderBillboard(){}
 void GUI::Render2d(){
 	test->Render();
-	fpsObject->SetText(std::to_string(g_Client()->fps));
+	fpsObject->SetText(std::to_string(g_System()->fps));
 	fpsObject->Render();
 	fpsTitle->Render();
 }

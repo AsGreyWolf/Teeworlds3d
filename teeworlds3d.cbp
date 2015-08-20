@@ -389,6 +389,16 @@
 		<Unit filename="src/client/components/graphics/Text3d.h" />
 		<Unit filename="src/client/components/graphics/TextGenerator.cpp" />
 		<Unit filename="src/client/components/graphics/TextGenerator.h" />
+		<Unit filename="src/shared/Console.cpp" />
+		<Unit filename="src/shared/Console.h" />
+		<Unit filename="src/shared/SharedComponent.h" />
+		<Unit filename="src/shared/System.cpp" />
+		<Unit filename="src/shared/System.h" />
+		<Unit filename="src/shared/World.cpp" />
+		<Unit filename="src/shared/World.h" />
+		<Unit filename="src/shared/world/Player.cpp" />
+		<Unit filename="src/shared/world/Player.h" />
+		<Unit filename="src/shared/world/Tile.h" />
 		<Unit filename="src/tools/Player.h" />
 		<Unit filename="src/tools/Protocol.h" />
 		<Unit filename="src/tools/Tile.h" />

@@ -16,7 +16,6 @@ class Client* pClient;
 Client* g_Client(){ return pClient; }
 
 bool Client::working=false;
-int Client::frames=0;
 
 int main(int argc, char *argv[])
 {
@@ -27,9 +26,6 @@ int main(int argc, char *argv[])
 	pClient->state.ingame = true;
 	pClient->StateChange(startstate);
 	while (pClient->isRunning()){
-		long tickTime = g_System()->GetTime();
-		pClient->tickCoeff = (tickTime - pClient->lasttickTime)*1.0 / 1000;
-		pClient->lasttickTime = tickTime;
 		STATE oldstate = pClient->state;
 		pClient->Input(NULL, 0, 0, 0);
 		pClient->Tick();
@@ -48,17 +44,16 @@ bool Client::isRunning(){
 	return working;
 }
 Client::Client():Component(){
+	m_SharedComponents.push_back((SharedComponent*)new System());
+	m_SharedComponents.push_back((SharedComponent*)new Console());
 	pClient = this;
-	fps = 60;
 
-	if(SDL_Init(SDL_INIT_EVERYTHING)!=0)
+	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_EVENTS)!=0)
 	{
-		Console::Err("Unable to initialize SDL: " + string(SDL_GetError()));
+		Console::Err("Unable to initialize SDL Client components: " + string(SDL_GetError()));
 		return; //TODO: need exceptions
 	}
 	SDL_version ver;
-	SDL_GetVersion(&ver);
-	Console::Info("Initialized SDL " + to_string(ver.major) + "." + to_string(ver.minor) + "." + to_string(ver.patch));
 	if(TTF_Init()!=0)
 	{
 		Console::Err("Unable to initialize SDL_TTF: " + string(TTF_GetError()));
@@ -83,17 +78,12 @@ Client::Client():Component(){
 		return; //TODO: need exceptions
 	}
 	
-	m_SharedComponents.push_back((SharedComponent*)new System());
-	m_SharedComponents.push_back((SharedComponent*)new Console());
-	
 	m_Components.push_back((Component*)new Graphics());
 	m_SharedComponents.push_back((SharedComponent*)new World());//TODO debug only
 	m_Components.push_back((Component*)new Camera());
 	m_Components.push_back((Component*)new Map());
 	m_Components.push_back((Component*)new Players());
 	m_Components.push_back((Component*)new GUI());
-
-	SDL_AddTimer(1000, calcFPS, NULL);
 }
 Client::~Client(){
 	reverse(m_Components.begin(), m_Components.end());
@@ -160,21 +150,11 @@ void Client::Tick(){
 		component->Tick();
 	}
 	SDL_GL_SwapWindow(screen);
-	frames++;
 }
 void Client::Message(int type,char* value){
 	for(auto &component : m_Components){
 		component->Message(type,value);
 	}
-}
-
-Uint32 calcFPS(Uint32 interval, void *param){
-	if(!Client::isRunning()) return interval;
-	Console::Info("FPS = " + to_string(Client::frames));
-	if (pClient != NULL)
-		pClient->fps = Client::frames;
-	Client::frames=0;
-	return interval;
 }
 void Client::StateChange(STATE lastState){
 	for(auto &component : m_Components){

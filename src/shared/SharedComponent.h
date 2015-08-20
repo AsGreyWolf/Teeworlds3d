@@ -10,7 +10,7 @@ public:
 	SharedComponent(){};
 	virtual ~SharedComponent(){};
 
-	///<summary>Tick the component</summary>
+	///<summary>Tick the component(graphics thread)</summary>
 	virtual void Tick(){};
 };
 

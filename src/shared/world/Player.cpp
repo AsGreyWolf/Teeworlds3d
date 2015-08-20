@@ -35,6 +35,7 @@ void Player::Tick(){
 	float tuningVelrampStart = 550;
 	float tuningVelrampRange = 2000;
 	float tuningVelrampCurvature = 1.4;
+	bool tuningPlayerColision = true;
 	float PhysSize = 28.0f;
 
 	bool Grounded = false;
@@ -60,6 +61,7 @@ void Player::Tick(){
 	float Accel = Grounded ? tuningGroundAccel : tuningAirAccel;
 	float Friction = Grounded ? tuningGroundFriction : tuningAirFriction;
 
+
 	float RampValue = VelocityRamp(glm::length(vel) * 50, tuningVelrampStart, tuningVelrampRange, tuningVelrampCurvature);
 	vel.x = vel.x*RampValue;
 	vel.y = vel.y*RampValue;
@@ -67,5 +69,11 @@ void Player::Tick(){
 	g_World()->MoveBox(&NewPos, &vel, glm::vec3(PhysSize, PhysSize, PhysSize), 0);
 	vel.x = vel.x*(1.0f / RampValue);
 	vel.y = vel.y*(1.0f / RampValue);
+	if (tuningPlayerColision)
+	{
+		glm::vec3 collidePos;
+		if(g_World()->IntersectPlayer(pos, NewPos, NULL, &collidePos, id)!=NULL)
+			NewPos = collidePos;
+	}
 	pos = NewPos;
 }

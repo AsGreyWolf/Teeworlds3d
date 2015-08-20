@@ -15,8 +15,10 @@ public:
 	World();
 	~World();
 
-	///<summary>Tick the component</summary>
+	///<summary>Tick the component(graphics thread)</summary>
 	void Tick();
+	///<summary>Second(physics) thread</summary>
+	void AsyncTick();
 
 	///<summary>Loads the map</summary>
 	///<param name="name">Filename in data/maps folder</param>
@@ -30,10 +32,11 @@ public:
 	///<param name="pos1">end point</param>
 	///<param name="pOutCollision">colision point</param>
 	///<param name="pOutBeforeCollision">last point before colision</param>
-	Tile* World::IntersectLine(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision);
+	Tile* IntersectLine(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision);
 	void MovePoint(glm::vec3 *pInoutPos, glm::vec3 *pInoutVel, float Elasticity, int *pBounces);
 	bool TestBox(glm::vec3 Pos, glm::vec3 Size);
 	void MoveBox(glm::vec3 *pInoutPos, glm::vec3 *pInoutVel, glm::vec3 Size, float Elasticity);
+	Player* IntersectPlayer(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision, int except);
 	
 	///<summary>Size in blocks</summary>
 	glm::vec3 worldSize;

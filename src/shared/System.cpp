@@ -2,6 +2,9 @@
 
 #include <ctime>
 #include "../../other/sdl/include/SDL.h"
+#include "../../other/sdl/include/SDL_thread.h"
+#include "Console.h"
+#include "World.h"
 #ifdef WIN32
 #include <codecvt>
 #include <Windows.h>
@@ -19,17 +22,74 @@ class System* pSystem;
 System* g_System(){ return pSystem; }
 
 const int System::MAX_FILENAME = FILENAME_MAX;
+int System::frames = 0;
+int System::asyncframes = 0;
 
+int calcFPS(void *param){
+	SDL_SetThreadPriority(SDL_THREAD_PRIORITY_HIGH);
+	SDL_Delay(1000);
+	while (pSystem){
+		Console::Info("FPS = " + to_string(System::frames));
+		pSystem->fps = System::frames == 0 ? 60 : System::frames;
+		System::frames = 0;
+		Console::Info("ASYNCFPS = " + to_string(System::asyncframes));
+		pSystem->asyncfps = System::asyncframes == 0 ? 60 : System::asyncframes;
+		System::asyncframes = 0;
+		SDL_Delay(1000);
+	}
+	return 0;
+}
+int async(void *param){
+	SDL_SetThreadPriority(SDL_THREAD_PRIORITY_LOW);
+	SDL_Delay(16);
+	while (pSystem){
+		pSystem->AsyncTick();
+		if (g_World())
+			g_World()->AsyncTick();
+		SDL_Delay(16);
+	}
+	return 0;
+}
+
+SDL_Thread *fpsThread;
+SDL_Thread *asyncThread;
 System::System(){
 	srand(time(NULL));
 	PATH_CUR = string(SDL_GetBasePath());
 	PATH_DATA = PATH_CUR + "data/";
 	pSystem = this;
+	fps = 60;
+	tickCoeff = 1.0f / fps;
+	lasttickTime = g_System()->GetTime();
+	if (SDL_Init(SDL_INIT_TIMER) != 0)
+	{
+		Console::Err("Unable to initialize SDL timer: " + string(SDL_GetError()));
+		return; //TODO: need exceptions
+	}
+	SDL_version ver;
+	SDL_GetVersion(&ver);
+	Console::Info("Initialized SDL " + to_string(ver.major) + "." + to_string(ver.minor) + "." + to_string(ver.patch));
+	fpsThread = SDL_CreateThread(calcFPS, "fpsThread", (void *)NULL);
+	asyncThread = SDL_CreateThread(async, "asyncThread", (void *)NULL);
 };
 System::~System(){
 	pSystem = 0;
+	int r;
+	SDL_WaitThread(asyncThread, &r);
+	SDL_WaitThread(fpsThread, &r);
 };
-void System::Tick(){}
+void System::Tick(){
+	long tickTime = g_System()->GetTime();
+	tickCoeff = (tickTime - lasttickTime)*1.0 / 1000;
+	lasttickTime = tickTime;
+	frames++;
+}
+void System::AsyncTick(){
+	long tickTime = g_System()->GetTime();
+	asynctickCoeff = (tickTime - asynclasttickTime)*1.0 / 1000;
+	asynclasttickTime = tickTime;
+	asyncframes++;
+}
 string System::GetPath(){
 	return PATH_CUR;
 };
@@ -37,7 +97,7 @@ string System::GetDataFile(string str){
 	return PATH_DATA + str;
 }
 long System::GetTime(){
-	return clock()*1000.0f / CLOCKS_PER_SEC;
+	return SDL_GetTicks();
 };
 void System::GetFilesInDirectory(std::vector<std::string> &out, const std::string &directory)
 {

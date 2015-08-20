@@ -30,20 +30,28 @@ void main(void) {
 		float lightIntensity =dot(ex_Normal, L)/2;
 /* shadow calc*/
 		if(ex_ShadowTexMap.x>=0.0 && ex_ShadowTexMap.x<=1.0 && ex_ShadowTexMap.y>=0.0 && ex_ShadowTexMap.y<=1.0){
-				float r=rand(ex_TexMap.xy);
+				float r=1.0;
 				vec2 shadowPos=ex_ShadowTexMap.xy+0.0005*vec2(r,r);
 				vec2 dx=vec2(0.0005*r,0.0);
 				vec2 dy=vec2(0.0,0.0005*r);
-				float shadowIntensity=calcShadow(ex_ShadowTexMap.z, shadowPos,dx);
-				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-dx);
-				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,dy);
-				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-dy);
-				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,dx+dy);
+				float shadowIntensity=calcShadow( ex_ShadowTexMap.z, shadowPos,dx+dy);
 				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,dx-dy);
 				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-dx+dy);
 				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-dx-dy);
-				shadowIntensity*=0.125;
-				lightIntensity -= 0.25f*shadowIntensity;
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,0.5*dx+dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,0.5*dx-dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-0.5*dx+dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-0.5*dx-dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,dx+0.5*dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,dx-0.5*dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-dx+0.5*dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-dx-0.5*dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,0.5*dx+0.5*dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,0.5*dx-0.5*dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-0.5*dx+0.5*dy);
+				shadowIntensity+=calcShadow( ex_ShadowTexMap.z, shadowPos,-0.5*dx-0.5*dy);
+				shadowIntensity*=0.0625;
+				lightIntensity -= 0.25*shadowIntensity;
 		}
 		lightIntensity=min(1.0,max(lightIntensity, 0.0));
 		//gl_FragColor*=vec4(vec3(lightIntensity*0.8),1.0);

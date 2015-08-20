@@ -11,8 +11,10 @@ public:
 	System();
 	~System();
 
-	///<summary>Tick the component</summary>
+	///<summary>Tick the component(graphics thread)</summary>
 	void Tick();
+	///<summary>Second(physics) thread</summary>
+	void AsyncTick();
 
 	///<summary>Returns app directory path</summary>
 	string GetPath();
@@ -22,9 +24,19 @@ public:
 	void GetFilesInDirectory(std::vector<std::string> &out, const std::string &directory);
 	///<summary>Returns filename in data folder</summary>
 	///<param name="str">Filename</param>
-	string System::GetDataFile(string str);
+	string GetDataFile(string str);
 
 	static const int MAX_FILENAME;
+	///<summary>Current frames</summary>
+	static int frames;
+	int fps;
+	double tickCoeff;
+	long lasttickTime;
+	///<summary>Second thread frames</summary>
+	static int asyncframes;
+	int asyncfps;
+	double asynctickCoeff;
+	long asynclasttickTime;
 private:
 	string PATH_CUR;
 	string PATH_DATA;

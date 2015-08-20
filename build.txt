@@ -1,0 +1,149 @@
+--------------------------COMPILING--------------------------
+Console.cpp
+System.cpp
+World.cpp
+Player.cpp
+Client.cpp
+Camera.cpp
+Graphics.cpp
+GUI.cpp
+Map.cpp
+Players.cpp
+Model.cpp
+Model2d.cpp
+PlayerModel.cpp
+Resources.cpp
+Text.cpp
+Text3d.cpp
+TextGenerator.cpp
+--------------------------LINKING--------------------------
+Camera.obj : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
+
+Searching libraries
+    Searching glew32s.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_image.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_ttf.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2main.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\GLu32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\OpenGL32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\msvcprt.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\MSVCRT.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\OLDNAMES.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\uuid.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\LIBCMT.lib:
+    Searching glew32s.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_image.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_ttf.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2main.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\GLu32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\OpenGL32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\msvcprt.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\MSVCRT.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\OLDNAMES.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\uuid.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\LIBCMT.lib:
+    Searching glew32s.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_image.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_ttf.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2main.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\GLu32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\OpenGL32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\msvcprt.lib:
+
+Finished searching libraries
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+Generating code
+Finished generating code
+
+Searching libraries
+    Searching glew32s.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_image.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_ttf.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2main.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\GLu32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\OpenGL32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\msvcprt.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\MSVCRT.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\OLDNAMES.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\uuid.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\LIBCMT.lib:
+    Searching glew32s.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_image.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_ttf.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2main.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\GLu32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\OpenGL32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\msvcprt.lib:
+
+Finished searching libraries
+
+Searching libraries
+    Searching glew32s.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_image.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_ttf.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2main.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\GLu32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\OpenGL32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\msvcprt.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\MSVCRT.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\OLDNAMES.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\uuid.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\LIBCMT.lib:
+    Searching glew32s.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_image.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2_ttf.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2main.lib:
+    Searching C:\Teeworlds3d\other\sdl\lib32\SDL2.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\GLu32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\OpenGL32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+    Searching C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+    Searching C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB\msvcprt.lib:
+
+Finished searching libraries
+Model.obj : warning LNK4049: locally defined symbol ___glewEnableVertexAttribArray imported
+Model.obj : warning LNK4049: locally defined symbol ___glewGenBuffers imported
+Model.obj : warning LNK4049: locally defined symbol ___glewDeleteBuffers imported
+Model.obj : warning LNK4049: locally defined symbol ___glewBindVertexArray imported
+Model.obj : warning LNK4049: locally defined symbol ___glewBufferData imported
+Model.obj : warning LNK4049: locally defined symbol ___glewGenVertexArrays imported
+Model.obj : warning LNK4049: locally defined symbol ___glewVertexAttribPointer imported
+Model.obj : warning LNK4049: locally defined symbol ___glewDeleteVertexArrays imported
+Model.obj : warning LNK4049: locally defined symbol ___glewBindBuffer imported
+Resources.obj : warning LNK4049: locally defined symbol ___glewAttachShader imported
+Resources.obj : warning LNK4049: locally defined symbol ___glewCreateProgram imported
+Resources.obj : warning LNK4049: locally defined symbol ___glewGetProgramInfoLog imported
+Resources.obj : warning LNK4049: locally defined symbol ___glewGetShaderiv imported
+Resources.obj : warning LNK4049: locally defined symbol ___glewGetProgramiv imported
+Resources.obj : warning LNK4049: locally defined symbol ___glewShaderSource imported
+Resources.obj : warning LNK4049: locally defined symbol ___glewCompileShader imported
+Resources.obj : warning LNK4049: locally defined symbol ___glewLinkProgram imported
+Resources.obj : warning LNK4049: locally defined symbol ___glewGetShaderInfoLog imported
+Resources.obj : warning LNK4049: locally defined symbol ___glewCreateShader imported
+ALL RIGHT
+Для продолжения нажмите любую клавишу . . . 

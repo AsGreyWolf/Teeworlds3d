@@ -28,7 +28,7 @@ if "%DEBUG%"=="" (
 @call mkdir debug
 @call cd debug
 @call echo --------------------------DEBUG--------------------------
-@call cl /c /Od /ZI /Gm /MD /MP /DPLATFORM_WIN /DWIN32 -I%SDL_INC% /analyze /fp:precise /EHsc %SRCFILES%
+@call cl /c /Od /ZI /Gm /MDd /MP /DPLATFORM_WIN /DWIN32 /D_USING_V110_SDK71_ -I%SDL_INC% /analyze /fp:precise /EHsc %SRCFILES%
 )
 if errorlevel 1 GOTO err
 @call echo --------------------------LINKING--------------------------

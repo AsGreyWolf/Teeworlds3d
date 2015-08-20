@@ -45,11 +45,7 @@ public:
 	///<summary>All the components</summary>
 	std::vector <Component*> m_Components;
 	std::vector <SharedComponent*> m_SharedComponents;
-	///<summary>Current frames</summary>
-	static int frames;
-	int fps;
-	double tickCoeff;
-	long lasttickTime;
+	
 	///<summary>Current State</summary>
 	STATE state;
 	SDL_Window *screen;
@@ -58,6 +54,5 @@ private:
 	SDL_Renderer* renderer;
 };
 Client* g_Client();
-Uint32 calcFPS(Uint32 interval, void *param);
 
 #endif

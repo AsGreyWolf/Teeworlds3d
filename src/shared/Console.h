@@ -10,7 +10,7 @@ public:
 	Console();
 	~Console();
 
-	///<summary>Tick the component</summary>
+	///<summary>Tick the component(graphics thread)</summary>
 	void Tick();
 
 	///<summary>Send error message</summary>
