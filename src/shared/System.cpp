@@ -143,7 +143,11 @@ void System::GetFilesInDirectory(std::vector<std::string> &out, const std::strin
 #endif
 };
 
+#ifdef WIN32
+#ifdef VS15
 FILE* stdfiles= new FILE[3]{ *stdin, *stdout, *stderr };
 extern "C" FILE* __iob_func() {
 	return stdfiles;
 }
+#endif
+#endif
