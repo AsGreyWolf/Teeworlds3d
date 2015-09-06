@@ -117,31 +117,26 @@ void World::UnLoad(){
 		delete[] tilesByPos;
 	worldSize = glm::vec3(0, 0, 0);
 }
-Player* World::IntersectPlayer(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision, int except){
+Player* World::IntersectPlayer(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision, int except, float radius){
+	vec3 Pos = Pos1 - Pos0;
+	float len = length(Pos) + 1;
+	if (len <= 1) return NULL;
+	vec3 dist = Pos / len;
 	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
 		if (i == except) continue;
 		Player* p = players[i];
-		vec3 Pos = Pos1 - Pos0;
 		vec3 Tee = p->pos - Pos0;
-		float len = length(Pos)+1;
-		vec3 dist = Pos/len;
 		float proj = dot(Tee, dist);
-		if (proj>len + 28.0f || proj<-28.0f)
+		if (proj>len + 28.0f + radius || proj<-28.0f-radius)
 			continue;
 		vec3 projection = proj*dist;
-		if (length(projection - Tee)<= 28.0f){
-			float b = dist.x*Tee.x + dist.y*Tee.y + dist.z*Tee.z;
-			float c = pow(Tee.x, 2.0f) + pow(Tee.y, 2.0f) + pow(Tee.z, 2.0f) - pow(28.0f, 2.0f);
-
-			float D = glm::sqrt(b*b - c);
-			float v;
-			if (b<D){
-				v = (b + D);
-			}
-			else{
-				v = (b - D);
-			}
+		if (length(projection - Tee)< 28.0f + radius){
+			float c = pow(length(Tee), 2.0f) - pow(28.0f+ radius, 2.0f);
+			float D = glm::sqrt(proj*proj - c);
+			float v = (proj - D);
+			if (v<0)
+				continue;
 			if (pOutCollision)
 				*pOutCollision = dist*v + Pos0;
 			if (pOutBeforeCollision)

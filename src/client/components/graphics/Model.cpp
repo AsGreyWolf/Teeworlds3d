@@ -42,35 +42,22 @@ Model::Model(int type,bool lighting){
 	glGenBuffers(1,&tbuffer);
 	texture = g_Graphics()->m_Resources->textureBlank;
 }
-Model::Model(bool lighting){
-	this->lighting=lighting;
-	type=GL_TRIANGLES;
-	position=vec3(0,0,0);
-	rot=vec3(0,0,0);
-	coloring=vec4(0,0,0,0);
-	scale=vec3(1,1,1);
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	glGenBuffers(1,&vbuffer);
-	glGenBuffers(1,&nbuffer);
-	glGenBuffers(1,&tbuffer);
-	texture = g_Graphics()->m_Resources->textureBlank;
-}
+Model::Model(bool lighting):Model(GL_TRIANGLES, lighting) {}
 void Model::Create(){
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER,vbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*vertex.size()*3, &vertex[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*vertex.size()*3, vertex.size()>0 ? &vertex[0] : NULL, GL_STATIC_DRAW);
 	glVertexAttribPointer(Graphics::SHADER_POS, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(Graphics::SHADER_POS);
 
 	glBindBuffer(GL_ARRAY_BUFFER,tbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*texcoord.size()*2, &texcoord[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*texcoord.size()*2, texcoord.size()>0 ? &texcoord[0] : NULL, GL_STATIC_DRAW);
 	glVertexAttribPointer(Graphics::SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(Graphics::SHADER_TEXMAP);
 
 	glBindBuffer(GL_ARRAY_BUFFER,nbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*normal.size()*3, &normal[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*normal.size()*3, normal.size()>0 ? &normal[0] : NULL, GL_STATIC_DRAW);
 	glVertexAttribPointer(Graphics::SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(Graphics::SHADER_NORMAL);
 

@@ -54,6 +54,8 @@ Graphics::Graphics() : Component(){
 	perspectiveMatrix=glm::perspective(1.0471975512f, aspect, 1.0f,10000.0f);
 	orthoMatrix=glm::ortho(-320.0f,320.0f,-320.0f,320.0f,0.0f,1.0f);
 
+	shadowSize = screenSize*aspect * 4;
+
 	glEnable(GL_BLEND);
 	glBlendEquation(GL_FUNC_ADD);
 	glEnable(GL_TEXTURE_2D);
@@ -96,6 +98,8 @@ Graphics::Graphics() : Component(){
 	modelMatrixUniform3d=glGetUniformLocation(m_Resources->shader3d,"modelMatrix");
 	normalMatrixUniform3d=glGetUniformLocation(m_Resources->shader3d,"normalMatrix");
 	shadowProjectionMatrixUniform3d=glGetUniformLocation(m_Resources->shader3d,"shadowProjectionMatrix");
+	textureUniform3d = glGetUniformLocation(m_Resources->shader3d, "tex");
+	shadowUniform3d = glGetUniformLocation(m_Resources->shader3d, "shadow");
 
 	modelMatrixUniformShadow = glGetUniformLocation(m_Resources->shaderShadow, "modelMatrix");
 	viewProjectionMatrixUniformShadow=glGetUniformLocation(m_Resources->shaderShadow,"viewProjectionMatrix");
@@ -126,60 +130,86 @@ void Graphics::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
 void Graphics::Render(){}
 void Graphics::RenderBillboard(){}
 void Graphics::Render2d(){}
-int currentShader;
-void Graphics::Tick(){
-#ifdef USE_SHADOWS
+void Graphics::CalcShadow() {
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);
-	glUseProgram(m_Resources->shaderShadow);
-	currentShader = m_Resources->shaderShadow;
-	glViewport(0,0,screenSize*aspect*4,screenSize*aspect*4);
-	//glEnable(GL_POLYGON_OFFSET_FILL);
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	vec3 pos = g_Camera()->position;
-	pos.z=1;
-	mat4 shadowMatrix=orthoMatrix*glm::lookAt(pos, pos+vec3(0,0,-1), vec3(0,1,0));
-	glUniformMatrix4fv(viewProjectionMatrixUniformShadow,1,false,(const float*)glm::value_ptr(shadowMatrix));
 	glCullFace(GL_FRONT);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glDepthMask(GL_TRUE);
+	glUseProgram(m_Resources->shaderShadow);
+	currentShader = m_Resources->shaderShadow;
+	glViewport(0, 0, shadowSize, shadowSize);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	vec3 pos = g_Camera()->position;
+	pos.z = 1;
+	shadowMatrix = orthoMatrix*glm::lookAt(pos, pos + vec3(0, 0, -1), vec3(0, 1, 0));
+	glUniformMatrix4fv(viewProjectionMatrixUniformShadow, 1, false, (const float*)glm::value_ptr(shadowMatrix));
+	
 	g_Client()->Render();
-#endif
+}
+void Graphics::Calc3d() {
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	glCullFace(GL_BACK);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glDepthMask(GL_TRUE);
 	glUseProgram(m_Resources->shader3d);
 	currentShader = m_Resources->shader3d;
-	glViewport(0,0,screenSize*aspect,screenSize);
-	glDisable(GL_POLYGON_OFFSET_FILL);
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glUniform1i(glGetUniformLocation(m_Resources->shader3d,"tex"),0);
-	glUniform1i(glGetUniformLocation(m_Resources->shader3d,"shadow"),1);
+	glViewport(0, 0, screenSize*aspect, screenSize);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glUniform1i(textureUniform3d, 0);
+	glUniform1i(shadowUniform3d, 1);
 	g_Camera()->SetMatrix();
 #ifdef USE_SHADOWS
-	glUniformMatrix4fv(shadowProjectionMatrixUniform3d,1,false,(const float*)glm::value_ptr(shadowMatrix));
+	glUniformMatrix4fv(shadowProjectionMatrixUniform3d, 1, false, (const float*)glm::value_ptr(shadowMatrix));
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D,m_Resources->textureShadowDepth);
+	glBindTexture(GL_TEXTURE_2D, m_Resources->textureShadowDepth);
 	glEnable(GL_TEXTURE_2D);
 	glActiveTexture(GL_TEXTURE0);
-	restoreMatrix=true;
 #endif
+
 	g_Client()->Render();
-	restoreMatrix=false;
+
 #ifdef USE_SHADOWS
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D,m_Resources->textureBlank);
+	glBindTexture(GL_TEXTURE_2D, m_Resources->textureBlank);
 	glDisable(GL_TEXTURE_2D);
 	glActiveTexture(GL_TEXTURE0);
 #endif
-
+}
+void Graphics::Calc2d() {
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	glCullFace(GL_BACK);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glDepthMask(GL_TRUE);
+	glUseProgram(m_Resources->shader3d);
+	currentShader = m_Resources->shader3d;
+	glViewport(0, 0, screenSize*aspect, screenSize);
 	glClear(GL_DEPTH_BUFFER_BIT);
+
 	g_Client()->RenderBillboard();
 
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	glCullFace(GL_BACK);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glDepthMask(GL_TRUE);
 	glUseProgram(m_Resources->shader2d);
 	currentShader = m_Resources->shader2d;
+	glViewport(0, 0, screenSize*aspect, screenSize);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	glUniform1f(aspectUniform2d,aspect);
+
+	glUniform1f(aspectUniform2d, aspect);
+
 	g_Client()->Render2d();
+}
+void Graphics::Tick(){
+#ifdef USE_SHADOWS
+	CalcShadow();
+	restoreMatrix = true;
+#endif
+	Calc3d();
+	restoreMatrix=false;
+	Calc2d();
 }
 void Graphics::Message(int type,char* value){}
 void Graphics::StateChange(STATE lastState){}

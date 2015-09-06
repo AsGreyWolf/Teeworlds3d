@@ -32,7 +32,6 @@ void Resources::Load(){
 	LoadTexture(textureBlank,true,false,"blank.png");
 	LoadTexture(textureRGB,true,false,"rgb.png");
 	LoadTexture(textureGame,true,true,"game.png");
-	GenTexture(textureShadowColor, g_Graphics()->screenSize*g_Graphics()->aspect * 4, g_Graphics()->screenSize*g_Graphics()->aspect * 4, false, false, false, NULL);// TODO remove it
 	GenTexture(textureShadowDepth, g_Graphics()->screenSize*g_Graphics()->aspect * 4, g_Graphics()->screenSize*g_Graphics()->aspect * 4, true, true, true, NULL);
 	vector<string> skins;
 	g_System()->GetFilesInDirectory(skins, g_System()->GetDataFile("skins"));

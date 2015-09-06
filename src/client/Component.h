@@ -3,12 +3,6 @@
 
 #include "../shared/SharedComponent.h"
 
-class Client;
-class Graphics;
-class Camera;
-class Map;
-class Players;
-class GUI;
 ///<summary>Client state</summary>
 struct STATE{
 	const  bool operator!=(const STATE s){

@@ -72,7 +72,7 @@ void Player::Tick(){
 	if (tuningPlayerColision)
 	{
 		glm::vec3 collidePos;
-		if(g_World()->IntersectPlayer(pos, NewPos, NULL, &collidePos, id)!=NULL)
+		if(g_World()->IntersectPlayer(pos, NewPos, NULL, &collidePos, id,28.0f)!=NULL)
 			NewPos = collidePos;
 	}
 	pos = NewPos;

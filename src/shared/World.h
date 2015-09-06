@@ -36,7 +36,7 @@ public:
 	void MovePoint(glm::vec3 *pInoutPos, glm::vec3 *pInoutVel, float Elasticity, int *pBounces);
 	bool TestBox(glm::vec3 Pos, glm::vec3 Size);
 	void MoveBox(glm::vec3 *pInoutPos, glm::vec3 *pInoutVel, glm::vec3 Size, float Elasticity);
-	Player* IntersectPlayer(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision, int except);
+	Player* IntersectPlayer(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision, int except, float radius);
 	
 	///<summary>Size in blocks</summary>
 	glm::vec3 worldSize;

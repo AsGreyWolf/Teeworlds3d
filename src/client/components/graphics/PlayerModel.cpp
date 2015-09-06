@@ -54,8 +54,7 @@ void PlayerModel::Render(const glm::mat4 &parentMatrix){
 	
 	eyes->Render(modelMatrix);
 }
-PlayerModel::PlayerModel():Model(){
-}
+PlayerModel::PlayerModel():Model(){}
 void PlayerModel::Create(){
 	lArm=new Model();
 	lArm->AddSphere(detalization, detalization, vec3(1, 1, 1), renderSize / 8, g_Graphics()->m_Resources->texturePos8x4[6], false);

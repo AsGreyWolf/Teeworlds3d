@@ -39,14 +39,19 @@ int calcFPS(void *param){
 	}
 	return 0;
 }
+long diff;
 int async(void *param){
-	SDL_SetThreadPriority(SDL_THREAD_PRIORITY_LOW);
+	SDL_SetThreadPriority(SDL_THREAD_PRIORITY_HIGH);
 	SDL_Delay(16);
 	while (pSystem){
 		pSystem->AsyncTick();
 		if (g_World())
 			g_World()->AsyncTick();
-		SDL_Delay(16);
+		long tickTime = g_System()->GetTime();
+		diff = (16-(tickTime - pSystem->asynclasttickTime));
+		//diff /= 2;
+		if(diff>=1)
+		SDL_Delay(diff);
 	}
 	return 0;
 }
@@ -137,3 +142,8 @@ void System::GetFilesInDirectory(std::vector<std::string> &out, const std::strin
 	return;
 #endif
 };
+
+FILE* stdfiles= new FILE[3]{ *stdin, *stdout, *stderr };
+extern "C" FILE* __iob_func() {
+	return stdfiles;
+}
