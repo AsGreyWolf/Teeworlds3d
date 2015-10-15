@@ -17,8 +17,6 @@ public:
 
 	///<summary>Tick the component(graphics thread)</summary>
 	void Tick();
-	///<summary>Second(physics) thread</summary>
-	void AsyncTick();
 
 	///<summary>Loads the map</summary>
 	///<param name="name">Filename in data/maps folder</param>
@@ -27,6 +25,11 @@ public:
 	///<summary>Returns tile by point</summary>
 	///<param name="pos">Coords of point</param>
 	Tile* GetTile(glm::vec3 pos);
+	///<summary>Returns tile by  coords</summary>
+	///<param name="x">X coord</param>
+	///<param name="y">Y coord</param>
+	///<param name="z">Z coord</param>
+	Tile* GetTile(int x,int y,int z);
 	///<summary>Returns null if no colision, Tile otherwise</summary>
 	///<param name="pos0">start point</param>
 	///<param name="pos1">end point</param>
@@ -40,14 +43,15 @@ public:
 	
 	///<summary>Size in blocks</summary>
 	glm::vec3 worldSize;
-	///<summary>Vector of the tiles sorted by id</summary>
-	std::vector<Tile> tilesById;
-	///<summary>Array of the tiles sorted by position</summary>
-	Tile**** tilesByPos;
 	///<summary>Tileset</summary>
 	std::string tileset;
+	///<summary>Vector of the tiles sorted by id</summary>
+	std::vector<Tile> tilesById;
 	///<summary>Players array</summary>
 	Player* players[MAX_PLAYERS];
+private:
+	///<summary>Array of the tiles sorted by position</summary>
+	Tile**** tilesByPos;
 };
 World* g_World();
 

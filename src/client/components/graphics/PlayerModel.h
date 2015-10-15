@@ -3,9 +3,6 @@
 
 #include "Model.h"
 #include "../../../tools/Protocol.h"
-
-const float renderSize = 36.0f;
-const float baseSize = 64.0f;
 class Player;
 
 ///<summary>Visual player object</summary>
@@ -27,6 +24,9 @@ public:
 	///<summary>Updates model with player info</summary>
 	///<param name="p">Player info</param>
 	void Update(Player* p);
+
+	const float renderSize = 36.0f;
+	const float baseSize = 64.0f;
 private:
 	Model* lArm;
 	Model* rArm;
@@ -59,6 +59,11 @@ private:
 	static vec3 weaponPos[NUM_WEAPONS];
 	glm::mat4 gunModelMatrix;
 	glm::mat4 gunNormalMatrix;
+
+	const int eyescale = (int)(baseSize*0.40);
+	const float separation = (0.075f*baseSize) - eyescale / 2;
+	const int detalization = 32;
+	const int animSpeed = 300;
 };
 
 #endif

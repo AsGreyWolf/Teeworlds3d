@@ -23,7 +23,6 @@ System* g_System(){ return pSystem; }
 
 const int System::MAX_FILENAME = FILENAME_MAX;
 int System::frames = 0;
-int System::asyncframes = 0;
 
 int calcFPS(void *param){
 	SDL_SetThreadPriority(SDL_THREAD_PRIORITY_HIGH);
@@ -32,26 +31,7 @@ int calcFPS(void *param){
 		Console::Info("FPS = " + to_string(System::frames));
 		pSystem->fps = System::frames == 0 ? 60 : System::frames;
 		System::frames = 0;
-		Console::Info("ASYNCFPS = " + to_string(System::asyncframes));
-		pSystem->asyncfps = System::asyncframes == 0 ? 60 : System::asyncframes;
-		System::asyncframes = 0;
 		SDL_Delay(1000);
-	}
-	return 0;
-}
-long diff;
-int async(void *param){
-	SDL_SetThreadPriority(SDL_THREAD_PRIORITY_HIGH);
-	SDL_Delay(16);
-	while (pSystem){
-		pSystem->AsyncTick();
-		if (g_World())
-			g_World()->AsyncTick();
-		long tickTime = g_System()->GetTime();
-		diff = (16-(tickTime - pSystem->asynclasttickTime));
-		//diff /= 2;
-		if(diff>=1)
-		SDL_Delay(diff);
 	}
 	return 0;
 }
@@ -75,7 +55,7 @@ System::System(){
 	SDL_GetVersion(&ver);
 	Console::Info("Initialized SDL " + to_string(ver.major) + "." + to_string(ver.minor) + "." + to_string(ver.patch));
 	fpsThread = SDL_CreateThread(calcFPS, "fpsThread", (void *)NULL);
-	asyncThread = SDL_CreateThread(async, "asyncThread", (void *)NULL);
+	//asyncThread = SDL_CreateThread(async, "asyncThread", (void *)NULL);
 };
 System::~System(){
 	pSystem = 0;
@@ -88,12 +68,6 @@ void System::Tick(){
 	tickCoeff = (tickTime - lasttickTime)*1.0 / 1000;
 	lasttickTime = tickTime;
 	frames++;
-}
-void System::AsyncTick(){
-	long tickTime = g_System()->GetTime();
-	asynctickCoeff = (tickTime - asynclasttickTime)*1.0 / 1000;
-	asynclasttickTime = tickTime;
-	asyncframes++;
 }
 string System::GetPath(){
 	return PATH_CUR;

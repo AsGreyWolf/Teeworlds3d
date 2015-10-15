@@ -8,10 +8,6 @@
 #include "../../../shared/System.h"
 #include "../../../shared/world/Player.h"
 
-const int eyescale = (int)(baseSize*0.40);
-const float separation=(0.075f*baseSize)-eyescale/2;
-const int detalization=32;
-const int animSpeed=300;
 vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(17, 2, 20),
 		vec3(17,3,-5),
@@ -35,12 +31,12 @@ void PlayerModel::Render(const glm::mat4 &parentMatrix){
 		modelMatrix=parentMatrix;
 
 	g_Graphics()->Translate(modelMatrix, position);
-	g_Graphics()->RotateZ(modelMatrix, rot);
+	g_Graphics()->RotateZ(modelMatrix, rotation);
 	lFoot->Render(modelMatrix);
 	rFoot->Render(modelMatrix);
-	g_Graphics()->RotateX(modelMatrix, rot);
+	g_Graphics()->RotateX(modelMatrix, rotation);
 	body->Render(modelMatrix);
-	g_Graphics()->RotateY(modelMatrix, rot);
+	g_Graphics()->RotateY(modelMatrix, rotation);
 
 	lArm->Render(modelMatrix);
 	rArm->Render(modelMatrix);
@@ -79,21 +75,21 @@ void PlayerModel::Create(){
 	nickName->Create();
 	nickNameShadow->Create();
 
-	lFoot->rot=vec3(0,0,5.0f/180*M_PI);
-	rFoot->rot=vec3(0,0,-5.0f/180*M_PI);
+	lFoot->rotation=vec3(0,0,5.0f/180*M_PI);
+	rFoot->rotation =vec3(0,0,-5.0f/180*M_PI);
 	lArm->texture=texture;
-	lArm->rot=vec3(0,0,-M_PI_2);
+	lArm->rotation =vec3(0,0,-M_PI_2);
 	rArm->texture=texture;
-	rArm->rot=vec3(0,0,M_PI_2);
+	rArm->rotation =vec3(0,0,M_PI_2);
 	lFoot->texture=texture;
 	rFoot->texture=texture;
 	body->texture=texture;
-	body->rot=vec3(0,0,-M_PI_2);
+	body->rotation =vec3(0,0,-M_PI_2);
 	eyes->texture=texture;
 	rFoot->position = vec3(renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
 	lFoot->position = vec3(-renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
 	eyes->position=vec3(0,(0.285f*baseSize),((0.05f)*baseSize)-eyescale/2);
-	nickNameShadow->coloring=vec4(0,0,0,0.5f);
+	nickNameShadow->color=vec4(0,0,0,0.5f);
 
 	animState=ANIMSTATE_NONE;
 }
@@ -107,7 +103,7 @@ void PlayerModel::Remove(){
 }
 void PlayerModel::Update(Player* p){
 	position=p->pos;
-	rot = p->rot;
+	rotation = p->rot;
 	weapon=p->weapon;
 	emote=p->emote;
 	if (g_Graphics()->m_Resources->skinTextures.find(p->skin) != g_Graphics()->m_Resources->skinTextures.end())
@@ -121,16 +117,16 @@ void PlayerModel::Update(Player* p){
 	eyes->texture=texture;
 	body->texture=texture;
 
-	lFoot->coloring=p->color;
-	rFoot->coloring=p->color;
-	lArm->coloring=p->color;
-	rArm->coloring=p->color;
-	body->coloring=p->color;
+	lFoot->color=p->color;
+	rFoot->color=p->color;
+	lArm->color=p->color;
+	rArm->color=p->color;
+	body->color=p->color;
 
 
 	rArm->position=weaponPos[p->weapon];
 
-	bool anim=abs(p->vel.x)>=1 || abs(p->vel.y)>=1;
+	bool anim=abs(p->vel.x)>0 || abs(p->vel.y)>0;
 	if(anim && animState==ANIMSTATE_NONE){
 		animState++;
 		animStart=g_System()->GetTime();

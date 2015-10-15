@@ -13,8 +13,6 @@ public:
 
 	///<summary>Tick the component(graphics thread)</summary>
 	void Tick();
-	///<summary>Second(physics) thread</summary>
-	void AsyncTick();
 
 	///<summary>Returns app directory path</summary>
 	string GetPath();
@@ -32,11 +30,6 @@ public:
 	int fps;
 	double tickCoeff;
 	long lasttickTime;
-	///<summary>Second thread frames</summary>
-	static int asyncframes;
-	int asyncfps;
-	double asynctickCoeff;
-	long asynclasttickTime;
 private:
 	string PATH_CUR;
 	string PATH_DATA;

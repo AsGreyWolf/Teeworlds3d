@@ -18,7 +18,7 @@ public:
 	GLuint texture;
 	///<summary>Position of the model</summary>
 	glm::vec2 position;
-	glm::vec4 coloring;
+	glm::vec4 color;
 	float depth;
 
 	///<summary>Creates the model and buffers in the GPU</summary>

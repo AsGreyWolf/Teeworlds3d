@@ -20,11 +20,11 @@ public:
 	///<summary>Position of the model</summary>
 	glm::vec3 position;
 	///<summary>Ratation of the model</summary>
-	glm::vec3 rot;
+	glm::vec3 rotation;
 	///<summary>Scale of the model</summary>
 	glm::vec3 scale;
-	glm::vec4 coloring;
-	
+	glm::vec4 color;
+
 	glm::mat4 modelMatrix;
 	glm::mat4 normalMatrix;
 

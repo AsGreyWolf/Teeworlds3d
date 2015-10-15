@@ -27,6 +27,8 @@ public:
 
 	std::string skin;
 	std::string nickname;
+
+	const float physSize = 28.0f;
 };
 
 #endif

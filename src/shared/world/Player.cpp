@@ -36,19 +36,18 @@ void Player::Tick(){
 	float tuningVelrampRange = 2000;
 	float tuningVelrampCurvature = 1.4;
 	bool tuningPlayerColision = true;
-	float PhysSize = 28.0f;
 
 	bool Grounded = false;
-	Tile* buf = g_World()->GetTile(glm::vec3(pos.x + PhysSize / 2, pos.y + PhysSize / 2, pos.z - PhysSize / 2 - 5));
+	Tile* buf = g_World()->GetTile(glm::vec3(pos.x + physSize / 2, pos.y + physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
 		Grounded = true;
-	buf = g_World()->GetTile(glm::vec3(pos.x + PhysSize / 2, pos.y - PhysSize / 2, pos.z - PhysSize / 2 - 5));
+	buf = g_World()->GetTile(glm::vec3(pos.x + physSize / 2, pos.y - physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
 		Grounded = true;
-	buf = g_World()->GetTile(glm::vec3(pos.x - PhysSize / 2, pos.y + PhysSize / 2, pos.z - PhysSize / 2 - 5));
+	buf = g_World()->GetTile(glm::vec3(pos.x - physSize / 2, pos.y + physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
 		Grounded = true;
-	buf = g_World()->GetTile(glm::vec3(pos.x - PhysSize / 2, pos.y - PhysSize / 2, pos.z - PhysSize / 2 - 5));
+	buf = g_World()->GetTile(glm::vec3(pos.x - physSize / 2, pos.y - physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
 		Grounded = true;
 	glm::vec3 TargetDirection(0, 1, 0);
@@ -66,13 +65,13 @@ void Player::Tick(){
 	vel.x = vel.x*RampValue;
 	vel.y = vel.y*RampValue;
 	glm::vec3 NewPos = pos;
-	g_World()->MoveBox(&NewPos, &vel, glm::vec3(PhysSize, PhysSize, PhysSize), 0);
+	g_World()->MoveBox(&NewPos, &vel, glm::vec3(physSize, physSize, physSize), 0);
 	vel.x = vel.x*(1.0f / RampValue);
 	vel.y = vel.y*(1.0f / RampValue);
 	if (tuningPlayerColision)
 	{
 		glm::vec3 collidePos;
-		if(g_World()->IntersectPlayer(pos, NewPos, NULL, &collidePos, id,28.0f)!=NULL)
+		if(g_World()->IntersectPlayer(pos, NewPos, NULL, &collidePos, id, physSize / 2)!=NULL)
 			NewPos = collidePos;
 	}
 	pos = NewPos;

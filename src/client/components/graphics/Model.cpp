@@ -16,8 +16,8 @@ void Model::Render(const glm::mat4 &parentMatrix){
 	if(!g_Graphics()->restoreMatrix)
 		modelMatrix=parentMatrix;
 
-	g_Graphics()->SetModelMatrix(modelMatrix,normalMatrix,position,rot,scale);
-	g_Graphics()->SetColor(coloring);
+	g_Graphics()->SetModelMatrix(modelMatrix,normalMatrix,position,rotation,scale);
+	g_Graphics()->SetColor(color);
 
 	//if(this!=g_Graphics()->m_Resources->coordsModel)
 	//g_Graphics()->m_Resources->coordsModel->render(modelMatrix);
@@ -32,8 +32,8 @@ Model::Model(int type,bool lighting){
 	this->lighting=lighting;
 	this->type=type;
 	position=vec3(0,0,0);
-	rot=vec3(0,0,0);
-	coloring=vec4(0,0,0,0);
+	rotation=vec3(0,0,0);
+	color=vec4(0,0,0,0);
 	scale=vec3(1,1,1);
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -288,7 +288,7 @@ void Model::AddRectangle(quad2 in, quad2 out, float depth){
 }
 
 void Model::LookAt(vec3 to){
-	rot=quad2::vec2rot(normalize(to-position));
+	rotation=quad2::vec2rot(normalize(to-position));
 }
 void Model::ScaleAt(vec3 to,vec3 basic, vec3 additional){
 	scale=additional*length(to-position)+basic;

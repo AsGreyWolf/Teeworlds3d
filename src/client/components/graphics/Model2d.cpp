@@ -9,7 +9,7 @@
 
 void Model2d::Render(){
 	g_Graphics()->SetPos2d(position, depth);
-	g_Graphics()->SetColor2d(coloring);
+	g_Graphics()->SetColor2d(color);
 
 	glBindTexture(GL_TEXTURE_2D,texture);
 	glBindVertexArray(vao);
@@ -18,7 +18,7 @@ void Model2d::Render(){
 Model2d::Model2d(int type){
 	this->type=type;
 	position=vec2(0,0);
-	coloring=vec4(0,0,0,0);
+	color=vec4(0,0,0,0);
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 	glGenBuffers(1,&vbuffer);

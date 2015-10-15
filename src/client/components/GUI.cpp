@@ -47,6 +47,6 @@ void GUI::Fill(quad2 in,quad2 out){
 	//TODO: make something less stupid
 	test=new Model2d();
 	test->AddRectangle(in,out);
-	test->coloring=vec4(0,0,0,0.5f);
+	test->color=vec4(0,0,0,0.5f);
 	test->Create();
 }
