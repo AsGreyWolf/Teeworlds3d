@@ -36,7 +36,7 @@ public:
 	void Tick();
 	///<summary>System message callback</summary>
 	void Message(int type,char* value);
-
+private:
 	void Fill(quad2 in,quad2 out);
 
 	class Text* fpsObject;

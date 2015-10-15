@@ -21,8 +21,15 @@ class Resources{
 public:
 	Resources(){};
 
-	//textures
+	///<summary>Loads all the objects from data folder</summary>
+	void Load();
+	///<summary>UnLoads all the objects from data folder</summary>
+	void UnLoad();
+	///<summary>UnLoads all the objects from buffers</summary>
+	void ClearBuffers();
 
+	//textures
+public:
 	///<summary>Loads texture from the file</summary>
 	///<param name="filepath">File name in data directory</param>
 	///<param name="tex">Texture id</param>
@@ -66,18 +73,19 @@ public:
 	vector<quad2> gameCursor;
 
 	//models
-
-	///<summary>Filenames of weapon OBJs</summary>
-	static const char* weaponFiles[NUM_WEAPONS];
-	///<summary>Filenames of weapon PNGs</summary>
-	static const char* weaponTextureFiles[NUM_WEAPONS];
+public:
 	///<summary>Weapon models</summary>
 	vector<Model*> weaponModels;
 	///<summary>3-axis coords model</summary>
 	class Model* coordsModel;
+private:
+	///<summary>Filenames of weapon OBJs</summary>
+	static const char* weaponFiles[NUM_WEAPONS];
+	///<summary>Filenames of weapon PNGs</summary>
+	static const char* weaponTextureFiles[NUM_WEAPONS];
 
 	//shaders
-
+public:
 	///<summary>Loads shader from the file</summary>
 	///<param name="filepath">File name in data directory</param>
 	///<param name="shader">Shader id</param>
@@ -94,20 +102,7 @@ public:
 	GLuint shader2d;
 
 	//fonts
-	///<summary>Font name</summary>
-	static const string fontName;
-	///<summary>Font path</summary>
-	string fontPath;
-	///<summary>Font sizes</summary>
-	enum{
-		FONT_NORMAL=1,
-		FONT_BIG=2,
-		FONT_DIVIDER=20,
-	};
-	///<summary>Fonts</summary>
-	map<int,TTF_Font*> fonts;
-	map<int,map<string,GLuint>> stringBuffer;
-	map<int,map<string,float>> aspectBuffer;
+public:
 	///<summary>Get font</summary>
 	///<param name="size">Text size</param>
 	TTF_Font* LoadFont(int size);
@@ -116,20 +111,29 @@ public:
 	///<param name="aspect">Where store aspect</param>
 	///<param name="data">Text</param>
 	///<param name="size">Text size</param>
-	bool LoadStringTexture(GLuint& tex,float &aspect,string data,int size,bool buffering);
+	bool LoadStringTexture(GLuint& tex, float &aspect, string data, int size, bool buffering);
+	///<summary>Font sizes</summary>
+	enum{
+		FONT_NORMAL=1,
+		FONT_BIG=2,
+		FONT_DIVIDER=20,
+	};
+private:
+	///<summary>Font name</summary>
+	static const string fontName;
+	///<summary>Font path</summary>
+	string fontPath;
+	///<summary>Fonts</summary>
+	map<int,TTF_Font*> fonts;
+	map<int,map<string,GLuint>> stringBuffer;
+	map<int,map<string,float>> aspectBuffer;
 
 	//colors
+public:
 	///<summary>White for sdl</summary>
 	static const SDL_Color SDLColorWhite;
 	///<summary>Black for sdl</summary>
 	static const SDL_Color SDLColorBlack;
-
-	///<summary>Loads all the objects from data folder</summary>
-	void Load();
-	///<summary>UnLoads all the objects from data folder</summary>
-	void UnLoad();
-	///<summary>UnLoads all the objects from buffers</summary>
-	void ClearBuffers();
 };
 
 #endif

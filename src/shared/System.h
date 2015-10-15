@@ -26,11 +26,10 @@ public:
 
 	static const int MAX_FILENAME;
 	///<summary>Current frames</summary>
-	static int frames;
 	int fps;
 	double tickCoeff;
-	long lasttickTime;
 private:
+	long lasttickTime;
 	string PATH_CUR;
 	string PATH_DATA;
 };

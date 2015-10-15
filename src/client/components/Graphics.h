@@ -122,6 +122,23 @@ public:
 	///<param name="scale">Scale of the model</param>
 	void Transform(glm::mat4 &modelMatrix,const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale);
 
+	///<summary>Data loader</summary>
+	class Resources* m_Resources;
+
+	///<summary>Aspect (screen width/screen height)</summary>
+	float aspect;
+	///<summary>Screen quad</summary>
+	quad2 screen;
+	///<summary>Height in pixels</summary>
+	int screenSize;
+	///<summary>Shadow size in pixels</summary>
+	int shadowSize;
+
+	///<summary>If we are rendering scene second time(not to calc matrix)</summary>
+	bool restoreMatrix;
+	///<summary>Current shader id</summary>
+	int currentShader;
+private:
 	///<summary>Shadow generation</summary>
 	void CalcShadow();
 	///<summary>3d generation</summary>
@@ -158,18 +175,6 @@ public:
 	///<summary>Position uniform in 2d shader</summary>
 	unsigned int posUniform2d;
 
-	///<summary>Aspect (screen width/screen height)</summary>
-	float aspect;
-	///<summary>Screen quad</summary>
-	quad2 screen;
-	///<summary>Height in pixels</summary>
-	int screenSize;
-	///<summary>Shadow size in pixels</summary>
-	int shadowSize;
-
-	///<summary>Data loader</summary>
-	class Resources* m_Resources;
-
 	///<summary>3d projection matrix</summary>
 	glm::mat4 perspectiveMatrix;
 	///<summary>ortho projection matrix</summary>
@@ -179,11 +184,6 @@ public:
 
 	///<summary>FBO for shadow calculating</summary>
 	GLuint shadowFBO;
-
-	///<summary>If we are rendering scene second time(not to calc matrix)</summary>
-	bool restoreMatrix;
-	///<summary>Current shader id</summary>
-	int currentShader;
 };
 Graphics* g_Graphics();
 

@@ -41,15 +41,15 @@ public:
 	///<summary>Is gamecycle running?</summary>
 	///<returns>true if it is, false otherwise</returns>
 	static bool isRunning();
-
-	///<summary>All the components</summary>
-	std::vector <Component*> m_Components;
-	std::vector <SharedComponent*> m_SharedComponents;
 	
 	///<summary>Current State</summary>
 	STATE state;
 	SDL_Window *screen;
 private:
+	///<summary>All the components</summary>
+	std::vector <Component*> m_Components;
+	std::vector <SharedComponent*> m_SharedComponents;
+
 	static bool working;
 	SDL_Renderer* renderer;
 };

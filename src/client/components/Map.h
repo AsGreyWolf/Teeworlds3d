@@ -44,7 +44,7 @@ public:
 	///<param name="name">Filename in data/maps folder</param>
 	bool Load(string name);
 	void UnLoad();
-
+private:
 	///<summary>Model object</summary>
 	class Model* m_Model;
 	///<summary>Texture of the map</summary>

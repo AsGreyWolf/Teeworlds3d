@@ -22,22 +22,21 @@ class System* pSystem;
 System* g_System(){ return pSystem; }
 
 const int System::MAX_FILENAME = FILENAME_MAX;
-int System::frames = 0;
+int frames = 0;
 
 int calcFPS(void *param){
 	SDL_SetThreadPriority(SDL_THREAD_PRIORITY_HIGH);
 	SDL_Delay(1000);
 	while (pSystem){
-		Console::Info("FPS = " + to_string(System::frames));
-		pSystem->fps = System::frames == 0 ? 60 : System::frames;
-		System::frames = 0;
+		Console::Info("FPS = " + to_string(frames));
+		pSystem->fps = frames == 0 ? 60 : frames;
+		frames = 0;
 		SDL_Delay(1000);
 	}
 	return 0;
 }
 
 SDL_Thread *fpsThread;
-SDL_Thread *asyncThread;
 System::System(){
 	srand(time(NULL));
 	PATH_CUR = string(SDL_GetBasePath());
@@ -55,12 +54,10 @@ System::System(){
 	SDL_GetVersion(&ver);
 	Console::Info("Initialized SDL " + to_string(ver.major) + "." + to_string(ver.minor) + "." + to_string(ver.patch));
 	fpsThread = SDL_CreateThread(calcFPS, "fpsThread", (void *)NULL);
-	//asyncThread = SDL_CreateThread(async, "asyncThread", (void *)NULL);
 };
 System::~System(){
 	pSystem = 0;
 	int r;
-	SDL_WaitThread(asyncThread, &r);
 	SDL_WaitThread(fpsThread, &r);
 };
 void System::Tick(){
