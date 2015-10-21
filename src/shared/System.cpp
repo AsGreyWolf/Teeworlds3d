@@ -81,6 +81,7 @@ void System::GetFilesInDirectory(std::vector<std::string> &out, const std::strin
 	HANDLE dir;
 	WIN32_FIND_DATAW file_data;
 	char str[MAX_FILENAME];
+	str[0] = 0;
 	strcpy(str, (directory + "/*").c_str());
 	LPWSTR wstr = (LPWSTR)malloc(MAX_FILENAME*sizeof(WCHAR));
 	MultiByteToWideChar(CP_ACP, 0, str, strlen(str) + 1, wstr, MAX_FILENAME);
@@ -106,6 +107,8 @@ void System::GetFilesInDirectory(std::vector<std::string> &out, const std::strin
 	}
 
 	while ((dirp = readdir(dp)) != NULL) {
+		if (dirp->d_name[0] == '.')
+			continue;
 		if (dirp->d_type != DT_DIR)
 			out.push_back(string(dirp->d_name));
 	}
@@ -119,6 +122,6 @@ void System::GetFilesInDirectory(std::vector<std::string> &out, const std::strin
 FILE* stdfiles= new FILE[3]{ *stdin, *stdout, *stderr };
 extern "C" FILE* __iob_func() {
 	return stdfiles;
-}
+};
 #endif
 #endif

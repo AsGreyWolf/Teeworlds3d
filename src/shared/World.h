@@ -30,7 +30,7 @@ public:
 	///<param name="y">Y coord</param>
 	///<param name="z">Z coord</param>
 	Tile* GetTile(int x,int y,int z);
-	///<summary>Returns null if no colision, Tile otherwise</summary>
+	///<summary>Returns null if no collision, Tile otherwise</summary>
 	///<param name="pos0">start point</param>
 	///<param name="pos1">end point</param>
 	///<param name="pOutCollision">colision point</param>

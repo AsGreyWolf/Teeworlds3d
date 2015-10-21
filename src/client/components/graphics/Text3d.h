@@ -16,7 +16,6 @@ public:
 	Text3d(bool lighting=false);
 	///<summary>Deletes the buffers in the RAM</summary>
 	void Clear();
-	TextGenerator* data;
 	///<summary>Creates generated text data</summary>
 	///<param name="text">Text</param>
 	///<param name="size">Text size</param>
@@ -27,6 +26,7 @@ public:
 	///<param name="text">Text</param>
 	void SetText(std::string text);
 	std::string text;
+	TextGenerator* data;
 };
 
 #endif

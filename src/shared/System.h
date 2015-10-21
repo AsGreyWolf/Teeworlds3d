@@ -24,11 +24,10 @@ public:
 	///<param name="str">Filename</param>
 	string GetDataFile(string str);
 
-	static const int MAX_FILENAME;
-	///<summary>Current frames</summary>
 	int fps;
 	double tickCoeff;
 private:
+	static const int MAX_FILENAME;
 	long lasttickTime;
 	string PATH_CUR;
 	string PATH_DATA;

@@ -39,7 +39,7 @@ Graphics::Graphics() : Component(){
 		Console::Err("Could not get context: " + string(SDL_GetError()));
 		return; //TODO: exceptions
 	}
-	SDL_GL_SetSwapInterval(1);
+	SDL_GL_SetSwapInterval(0);
 	glewInit();
 	Console::Info("Initialized OpenGL " + string((char*)glGetString(GL_VERSION)));
 	int w=1024;

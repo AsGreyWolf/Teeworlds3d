@@ -53,7 +53,7 @@ public:
 	///<param name="out">Outer space</param>
 	void AddRectangle(quad2 in,quad2 out);
 
-private:
+protected:
 	///<summary>Vertex positions buffer in the RAM</summary>
 	std::vector <glm::vec2> vertex;
 	///<summary>Vertex UV coordinates buffer in the RAM</summary>
