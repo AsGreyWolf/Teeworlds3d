@@ -3,49 +3,34 @@
 
 #include <vector>
 
-class Graphics;
-#include "../../../tools/quad2.h"
-#include "../../../tools/quad3.h"
-#include "../../../../other/glew/include/glew.h"
+#include "../../../../tools/quad2.h"
+#include "../../../../tools/quad3.h"
+#include "../../../../../other/glew/include/glew.h"
 #define GLM_FORCE_RADIANS
-#include "../../../../other/glm/gtc/matrix_transform.hpp"
-#include "../../../../other/glm/gtc/type_ptr.hpp"
+#include "../../../../../other/glm/gtc/matrix_transform.hpp"
+#include "../../../../../other/glm/gtc/type_ptr.hpp"
+
+class Graphics;
+class Texture;
 
 ///<summary>3d Model object</summary>
 class Model{
 public:
-	///<summary>Texture used in shaders</summary>
-	GLuint texture;
-	GLuint normalTexture;
-	///<summary>Position of the model</summary>
-	glm::vec3 position;
-	///<summary>Ratation of the model</summary>
-	glm::vec3 rotation;
-	///<summary>Scale of the model</summary>
-	glm::vec3 scale;
-	glm::vec4 color;
-
-	glm::mat4 modelMatrix;
-	glm::mat4 normalMatrix;
-
 	///<summary>Creates the model and buffers in the GPU</summary>
 	///<param name="type">Type of the verts (GL_TRIANGLES)</param>
 	///<param name="lighting">Use lighting?</param>
-	Model(int type,bool lighting=true);
-	///<summary>Creates the model and buffers in the GPU</summary>
-	Model(bool lighting=true);
-	~Model();
+	Model(bool lighting=true, int type = GL_TRIANGLES);
 	///<summary>Fills the buffers in the GPU with values in the RAM</summary>
-	void Create();
+	virtual void Create();
 	///<summary>Pushes the model into the shader</summary>
-	void Render(const glm::mat4 &parentMatrix);
-	void Render(){
+	virtual void Render(const glm::mat4 &parentMatrix);
+	///<summary>Deletes the buffers in the RAM</summary>
+	virtual void Clear();
+	virtual ~Model();
+	virtual void Render() {
 		Render(glm::mat4(1.0f));
 	}
-	///<summary>Deletes the buffers in the GPU and RAM</summary>
-	void Remove();
-	///<summary>Deletes the buffers in the RAM</summary>
-	void Clear();
+
 	///<summary>Appends vector of vertex to the buffers in the RAM</summary>
 	///<param name="v">Vertex positions</param>
 	///<param name="n">Vertex normals</param>
@@ -68,7 +53,6 @@ public:
 	///<param name="radius">Radius</param>
 	///<param name="texcoord">UV coordinates</param>
 	///<param name="backstart">Reverse generation</param>
-
 	void AddSphere(int rings, int sectors,vec3 lengthiness,float radius,quad2 texcoord,bool backstart);
 	///<summary>Add generated data in the buffers from the OBJ file</summary>
 	///<param name="filename">Path to the file from data folder</param>
@@ -86,6 +70,18 @@ public:
 	///<param name="additional">Scale per vector length</param>
 	void ScaleAt(vec3 to,vec3 basic, vec3 additional);
 
+	///<summary>Texture used in shaders</summary>
+	Texture* texture;
+	///<summary>Position of the model</summary>
+	glm::vec3 position;
+	///<summary>Ratation of the model</summary>
+	glm::vec3 rotation;
+	///<summary>Scale of the model</summary>
+	glm::vec3 scale;
+	glm::vec4 color;
+
+	glm::mat4 modelMatrix;
+	glm::mat4 normalMatrix;
 protected:
 	///<summary>Vertex positions buffer in the RAM</summary>
 	std::vector <glm::vec3> vertex;

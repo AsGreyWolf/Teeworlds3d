@@ -2,14 +2,15 @@
 #include <vector>
 #include <string>
 #include <cstdio>
-#include "../../shared/Console.h"
-#include "../Client.h"
-#include "Camera.h"
-#include "graphics/PlayerModel.h"
-#include "graphics/Model.h"
-#include "graphics/Model2d.h"
+#include "graphics/models/PlayerModel.h"
+#include "graphics/models/Model.h"
+#include "graphics/models/Model2d.h"
 #include "graphics/Resources.h"
+#include "graphics/Texture.h"
+#include "Camera.h"
+#include "../Client.h"
 #include "../../tools/Protocol.h"
+#include "../../shared/Console.h"
 #define USE_SHADOWS
 
 class Graphics* pGraphics;
@@ -35,7 +36,6 @@ Graphics::Graphics() : Component(){
 
 	if ((context = SDL_GL_CreateContext(g_Client()->screen)) == NULL)
 	{
-
 		Console::Err("Could not get context: " + string(SDL_GetError()));
 		return; //TODO: exceptions
 	}
@@ -117,7 +117,7 @@ Graphics::Graphics() : Component(){
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	//glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,GL_TEXTURE_2D,m_Resources->textureShadowColor,0);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D,m_Resources->textureShadowDepth,0);
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D,*(m_Resources->textureShadowDepth),0);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 Graphics::~Graphics(){
@@ -163,7 +163,7 @@ void Graphics::Calc3d() {
 #ifdef USE_SHADOWS
 	glUniformMatrix4fv(shadowProjectionMatrixUniform3d, 1, false, (const float*)glm::value_ptr(shadowMatrix));
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_Resources->textureShadowDepth);
+	glBindTexture(GL_TEXTURE_2D, *(m_Resources->textureShadowDepth));
 	glEnable(GL_TEXTURE_2D);
 	glActiveTexture(GL_TEXTURE0);
 #endif
@@ -172,7 +172,7 @@ void Graphics::Calc3d() {
 
 #ifdef USE_SHADOWS
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_Resources->textureBlank);
+	glBindTexture(GL_TEXTURE_2D, *(m_Resources->textureBlank));
 	glDisable(GL_TEXTURE_2D);
 	glActiveTexture(GL_TEXTURE0);
 #endif

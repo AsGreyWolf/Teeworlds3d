@@ -5,12 +5,11 @@
 #include <cstring>
 #include <fstream>
 #include <sstream>
-#include "../Graphics.h"
-#include "../../Client.h"
-#include "../../../shared/System.h"
-#include "Resources.h"
-
-
+#include "../Resources.h"
+#include "../Texture.h"
+#include "../../Graphics.h"
+#include "../../../Client.h"
+#include "../../../../shared/System.h"
 	
 void Model::Render(const glm::mat4 &parentMatrix){
 	if(!g_Graphics()->restoreMatrix)
@@ -22,18 +21,18 @@ void Model::Render(const glm::mat4 &parentMatrix){
 	//if(this!=g_Graphics()->m_Resources->coordsModel)
 	//g_Graphics()->m_Resources->coordsModel->render(modelMatrix);
 
-	glBindTexture(GL_TEXTURE_2D,texture);
+	texture->Bind();
 	glBindVertexArray(vao);
 	g_Graphics()->SetLight(lighting);
 	glDrawArrays(type , 0, vertex.size());
 }
 
-Model::Model(int type,bool lighting){
+Model::Model(bool lighting, int type){
 	this->lighting=lighting;
 	this->type=type;
 	position=vec3(0,0,0);
 	rotation=vec3(0,0,0);
-	color=vec4(0,0,0,0);
+	color=vec4(1,1,1,0);
 	scale=vec3(1,1,1);
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -42,7 +41,6 @@ Model::Model(int type,bool lighting){
 	glGenBuffers(1,&tbuffer);
 	texture = g_Graphics()->m_Resources->textureBlank;
 }
-Model::Model(bool lighting):Model(GL_TRIANGLES, lighting) {}
 void Model::Create(){
 	glBindVertexArray(vao);
 
@@ -65,14 +63,10 @@ void Model::Create(){
 }
 
 Model::~Model(){
-	Remove();
-}
-
-void Model::Remove(){
-	glDeleteBuffers(1,&vbuffer);
-	glDeleteBuffers(1,&nbuffer);
-	glDeleteBuffers(1,&tbuffer);
-	glDeleteVertexArrays(1,&vao);
+	glDeleteBuffers(1, &vbuffer);
+	glDeleteBuffers(1, &nbuffer);
+	glDeleteBuffers(1, &tbuffer);
+	glDeleteVertexArrays(1, &vao);
 	Clear();
 }
 

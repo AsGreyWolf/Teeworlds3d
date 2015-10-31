@@ -2,8 +2,8 @@
 #define RESOURCES_H
 
 #include <vector>
-#include <map>
 #include <string>
+#include <map>
 #include "../../../../other/sdl/include/SDL_ttf.h"
 #include "../../../tools/quad2.h"
 #include "../../../tools/quad3.h"
@@ -16,6 +16,7 @@
 using namespace std;
 class Graphics;
 class Model;
+class Texture;
 
 class Resources{
 public:
@@ -30,25 +31,6 @@ public:
 
 	//textures
 public:
-	///<summary>Loads texture from the file</summary>
-	///<param name="filepath">File name in data directory</param>
-	///<param name="tex">Texture id</param>
-	///<param name="mipmaps">Use mipmaps?</param>
-	///<param name="filtering">Use filtering?</param>
-	///<returns>true if all right, false if error found</returns>
-	bool LoadTexture(GLuint &tex, bool anisotropy, bool filtering, string filepath);
-	///<summary>Loads texture from the SDL_Surface</summary>
-	///<param name="data">SDL_Surface</param>
-	///<param name="tex">Texture id</param>
-	///<param name="mipmaps">Use mipmaps?</param>
-	///<param name="filtering">Use filtering?</param>
-	///<returns>true if all right, false if error found</returns>
-	bool LoadTextureFromSurface(GLuint &tex, bool anisotropy, bool filtering, SDL_Surface* &data);
-	///<summary>UnLoads texture</summary>
-	///<param name="tex">Texture id</param>
-	void UnLoadTexture(GLuint &tex);
-	void GenTexture(GLuint &tex, int w, int h, bool isDepth, bool anisotropy, bool filtering, const GLvoid* pixels);
-	void RemoveTexture(GLuint &tex);
 	///<summary>Quades for the 8x8-tile texture</summary>
 	vector<quad2> texturePos8;
 	///<summary>Quades for the 8x4-tile texture</summary>
@@ -58,17 +40,15 @@ public:
 	///<summary>Quades for the 16x8-tile texture</summary>
 	vector<quad2> texturePos16x8;
 	///<summary>Skin textures</summary>
-	map<string,GLuint> skinTextures;
+	map<string, Texture*> skinTextures;
 	///<summary>White 1px texture</summary>
-	GLuint textureBlank;
+	Texture* textureBlank;
 	///<summary>RGB texture</summary>
-	GLuint textureRGB;
+	Texture* textureRGB;
 	///<summary>InGame HUD texture</summary>
-	GLuint textureGame;
-	///<summary>Shadow texture(Color)</summary>
-	GLuint textureShadowColor;
+	Texture* textureGame;
 	///<summary>Shadow texture(Depth)</summary>
-	GLuint textureShadowDepth;
+	Texture* textureShadowDepth;
 	///<summary>InGame cursor quads</summary>
 	vector<quad2> gameCursor;
 
@@ -101,32 +81,18 @@ public:
 	///<summary>2d shader</summary>
 	GLuint shader2d;
 
-	//fonts
+	//text
 public:
 	///<summary>Get font</summary>
 	///<param name="size">Text size</param>
 	TTF_Font* LoadFont(int size);
-	///<summary>Get text texture</summary>
-	///<param name="tex">Where store texture</param>
-	///<param name="aspect">Where store aspect</param>
-	///<param name="data">Text</param>
-	///<param name="size">Text size</param>
-	bool LoadStringTexture(GLuint& tex, float &aspect, string data, int size, bool buffering);
-	///<summary>Font sizes</summary>
-	enum{
-		FONT_NORMAL=1,
-		FONT_BIG=2,
-		FONT_DIVIDER=20,
-	};
 private:
 	///<summary>Font name</summary>
-	static const string fontName;
+	static const std::string fontName;
 	///<summary>Font path</summary>
-	string fontPath;
+	std::string fontPath;
 	///<summary>Fonts</summary>
-	map<int,TTF_Font*> fonts;
-	map<int,map<string,GLuint>> stringBuffer;
-	map<int,map<string,float>> aspectBuffer;
+	std::map<int, TTF_Font*> fonts;
 
 	//colors
 public:

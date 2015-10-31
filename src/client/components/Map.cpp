@@ -1,14 +1,14 @@
 #include "Map.h"
 #include <stdio.h>
 #include <cstring>
+#include "graphics/models/Model.h"
+#include "graphics/Resources.h"
+#include "graphics/Texture.h"
+#include "Graphics.h"
+#include "../Client.h"
 #include "../../shared/System.h"
 #include "../../shared/World.h"
 #include "../../shared/world/Tile.h"
-#include "../Client.h"
-#include "Graphics.h"
-#include "graphics/Resources.h"
-#include "graphics/Model.h"
-//TODO: move physical object to shared
 
 class Map* pMap;
 Map* g_Map(){ return pMap; }
@@ -44,8 +44,7 @@ void Map::Message(int type,char* value){}
 bool Map::Load(string name){
 	g_World()->Load(name);
 	string p = "mapres/" + string(g_World()->tileset) + ".png";
-	texture=-1;
-	g_Graphics()->m_Resources->LoadTexture(texture,false,false,p);
+	texture = new Texture(p,false,false);
 
 	for (Tile& buffer : g_World()->tilesById){
 		if(!buffer.hasx){
@@ -106,7 +105,7 @@ bool Map::Load(string name){
 void Map::UnLoad(){
 	if(m_Model!=nullptr){
 		delete m_Model;
-		g_Graphics()->m_Resources->UnLoadTexture(texture);
+		delete texture;
 	}
 	g_World()->UnLoad();
 }

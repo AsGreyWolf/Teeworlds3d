@@ -2,8 +2,10 @@
 #define PLAYERMODEL_H
 
 #include "Model.h"
-#include "../../../tools/Protocol.h"
+#include "../../../../tools/Protocol.h"
+
 class Player;
+class Text3d;
 
 ///<summary>Visual player object</summary>
 class PlayerModel : public Model
@@ -14,13 +16,10 @@ public:
 	void Create();
 	///<summary>Pushes the subModels into the shader</summary>
 	void Render(const glm::mat4 &parentMatrix);
-	void Render(){
-		Render(glm::mat4(1.0f));
-	}
+	~PlayerModel();
+
 	///<summary>Pushes the billboards into the shader</summary>
 	void RenderBillboard();
-	///<summary>Removes the subModels</summary>
-	void Remove();
 	///<summary>Updates model with player info</summary>
 	///<param name="p">Player info</param>
 	void Update(Player* p);
@@ -34,7 +33,7 @@ private:
 	Model* rFoot;
 	Model* body;
 	Model* eyes;
-	Model* nickName;
+	Text3d* nickName;
 	Model* nickNameShadow;
 	bool visible;
 	int weapon;

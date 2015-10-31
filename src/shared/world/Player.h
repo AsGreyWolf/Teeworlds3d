@@ -7,11 +7,11 @@
 ///<summary>Player data as a world(physical) object</summary>
 class Player{
 public:
-	Player(int id);
+	Player(glm::uint8_t& id);
 
 	void Tick();
 
-	int id;
+	glm::uint8_t id;
 	///<summary>Position on map</summary>
 	glm::vec3 pos;
 	///<summary>Rotation(rads)</summary>
@@ -20,15 +20,23 @@ public:
 	glm::vec3 vel;
 	///<summary>Move acceleration(direction)</summary>
 	glm::vec2 acc;
+	glm::uint8_t jumped;
 
 	glm::vec4 color;
-	int weapon;
-	int emote;
+	glm::uint8_t weapon;
+	glm::uint8_t emote;
 
 	std::string skin;
 	std::string nickname;
 
 	const float physSize = 28.0f;
+
+	bool grounded;
+
+	bool jump;
+	glm::vec3 look;
+	bool hook;
+	bool controls;
 };
 
 #endif

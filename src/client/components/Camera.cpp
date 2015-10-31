@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include <iostream>
-#include "../Client.h"
 #include "Graphics.h"
+#include "../Client.h"
 #include "../../shared/System.h"
 
 class Camera* pCamera;
@@ -19,7 +19,7 @@ Camera::~Camera(){
 void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	RotateX(-yrel*g_System()->tickCoeff);
 	RotateZ(-xrel*g_System()->tickCoeff);
-	glm::vec3 look2=look;
+	/*glm::vec3 look2=look;
 	look2*=512;
 	look2 *= g_System()->tickCoeff;
 	glm::vec3 right2=right;
@@ -33,7 +33,7 @@ void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	if (keys[SDL_SCANCODE_D]) position+=right2;
 	if (keys[SDL_SCANCODE_A]) position-=right2;
 	if (keys[SDL_SCANCODE_R]) position+=up2;
-	if (keys[SDL_SCANCODE_F]) position-=up2;
+	if (keys[SDL_SCANCODE_F]) position-=up2;*/
 }
 void Camera::Render(){}
 void Camera::RenderBillboard(){}

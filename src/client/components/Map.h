@@ -13,6 +13,7 @@
 
 using namespace std;
 class Model;
+class Texture;
 
 ///<summary>Map as game object</summary>
 class Map : public Component{
@@ -48,7 +49,7 @@ private:
 	///<summary>Model object</summary>
 	class Model* m_Model;
 	///<summary>Texture of the map</summary>
-	GLuint texture;
+	Texture* texture;
 };
 Map* g_Map();
 

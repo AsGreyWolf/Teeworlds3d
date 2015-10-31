@@ -16,7 +16,7 @@ World::World(){
 	UnLoad();
 	//TODO: only debug
 	auto skinName = g_Graphics()->m_Resources->skinTextures.begin();
-	for (int i = 0; i<MAX_PLAYERS; i++){
+	for (glm::uint8_t i = 0; i<MAX_PLAYERS; i++){
 		players[i] = new Player(i);
 		players[i]->pos = vec3(0, 0, rand() % 20048);//vec3(rand() % 2048, rand() % 2048, rand() % 2048);
 		players[i]->rot = vec3(rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))), rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))), rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))));
@@ -207,12 +207,12 @@ void World::MovePoint(vec3 *pInoutPos, vec3 *pInoutVel, float Elasticity, int *p
 
 	vec3 Pos = *pInoutPos;
 	vec3 Vel = *pInoutVel;
-	vec3 newVel = Vel*(float)(g_System()->tickCoeff * 60);
-	Tile* buf = GetTile(Pos + newVel);
+	vec3 sVel= (float)(g_System()->tickCoeff * 60)*Vel;
+	Tile* buf = GetTile(Pos + sVel);
 	if (buf && buf->isPhys())
 	{
 		int Affected = 0;
-		buf = GetTile(vec3(Pos.x + newVel.x, Pos.y, Pos.z));
+		buf = GetTile(vec3(Pos.x + sVel.x, Pos.y, Pos.z));
 		if (buf && buf->isPhys())
 		{
 			pInoutVel->x *= -Elasticity;
@@ -220,7 +220,7 @@ void World::MovePoint(vec3 *pInoutPos, vec3 *pInoutVel, float Elasticity, int *p
 				(*pBounces)++;
 			Affected++;
 		}
-		buf = GetTile(vec3(Pos.x, Pos.y + newVel.y, Pos.z));
+		buf = GetTile(vec3(Pos.x, Pos.y + sVel.y, Pos.z));
 		if (buf && buf->isPhys())
 		{
 			pInoutVel->y *= -Elasticity;
@@ -228,7 +228,7 @@ void World::MovePoint(vec3 *pInoutPos, vec3 *pInoutVel, float Elasticity, int *p
 				(*pBounces)++;
 			Affected++;
 		}
-		buf = GetTile(vec3(Pos.x, Pos.y, Pos.z + newVel.z));
+		buf = GetTile(vec3(Pos.x, Pos.y, Pos.z + sVel.z));
 		if (buf && buf->isPhys())
 		{
 			pInoutVel->z *= -Elasticity;
@@ -246,7 +246,7 @@ void World::MovePoint(vec3 *pInoutPos, vec3 *pInoutVel, float Elasticity, int *p
 	}
 	else
 	{
-		*pInoutPos = Pos + newVel;
+		*pInoutPos = Pos + sVel;
 	}
 }
 bool World::TestBox(vec3 Pos, vec3 Size)
@@ -283,8 +283,9 @@ void World::MoveBox(vec3 *pInoutPos, vec3 *pInoutVel, vec3 Size, float Elasticit
 	// do the move
 	vec3 Pos = *pInoutPos;
 	vec3 Vel = *pInoutVel;
+	vec3 sVel = (float)(g_System()->tickCoeff * 60)*Vel;
 
-	float Distance = length(Vel)*(float)(g_System()->tickCoeff * 60);
+	float Distance = length(sVel);
 	int Max = (int)Distance;
 
 	if (Distance > 0.00001f)
@@ -297,7 +298,7 @@ void World::MoveBox(vec3 *pInoutPos, vec3 *pInoutVel, vec3 Size, float Elasticit
 			//if(max == 0)
 			//amount = 0;
 
-			vec3 NewPos = Pos + Vel*Fraction*(float)(g_System()->tickCoeff * 60); // TODO: this row is not nice
+			vec3 NewPos = Pos + sVel*Fraction; // TODO: this row is not nice
 
 			if (TestBox(NewPos, Size))
 			{
@@ -307,6 +308,7 @@ void World::MoveBox(vec3 *pInoutPos, vec3 *pInoutVel, vec3 Size, float Elasticit
 				{
 					NewPos.z = Pos.z;
 					Vel.z *= -Elasticity;
+					sVel.z *= -Elasticity;
 					Hits++;
 				}
 
@@ -314,12 +316,14 @@ void World::MoveBox(vec3 *pInoutPos, vec3 *pInoutVel, vec3 Size, float Elasticit
 				{
 					NewPos.y = Pos.y;
 					Vel.y *= -Elasticity;
+					sVel.y *= -Elasticity;
 					Hits++;
 				}
 				if (TestBox(vec3(NewPos.x, Pos.y, Pos.z), Size))
 				{
 					NewPos.x = Pos.x;
 					Vel.x *= -Elasticity;
+					sVel.x *= -Elasticity;
 					Hits++;
 				}
 
@@ -329,10 +333,13 @@ void World::MoveBox(vec3 *pInoutPos, vec3 *pInoutVel, vec3 Size, float Elasticit
 				{
 					NewPos.z = Pos.z;
 					Vel.z *= -Elasticity;
+					sVel.z *= -Elasticity;
 					NewPos.y = Pos.y;
 					Vel.y *= -Elasticity;
+					sVel.y *= -Elasticity;
 					NewPos.x = Pos.x;
 					Vel.x *= -Elasticity;
+					sVel.x *= -Elasticity;
 				}
 			}
 

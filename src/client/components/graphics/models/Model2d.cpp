@@ -3,22 +3,23 @@
 #include <stdio.h>
 #include <map>
 #include <cstring>
-#include "../../Client.h"
-#include "../Graphics.h"
-#include "Resources.h"
+#include "../Resources.h"
+#include "../Texture.h"
+#include "../../Graphics.h"
+#include "../../../Client.h"
 
 void Model2d::Render(){
 	g_Graphics()->SetPos2d(position, depth);
 	g_Graphics()->SetColor2d(color);
 
-	glBindTexture(GL_TEXTURE_2D,texture);
+	texture->Bind();
 	glBindVertexArray(vao);
 	glDrawArrays(type , 0, vertex.size());
 }
 Model2d::Model2d(int type){
 	this->type=type;
 	position=vec2(0,0);
-	color=vec4(0,0,0,0);
+	color=vec4(1,1,1,0);
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 	glGenBuffers(1,&vbuffer);
@@ -26,7 +27,6 @@ Model2d::Model2d(int type){
 	texture = g_Graphics()->m_Resources->textureBlank;
 	depth = 0;
 }
-Model2d::Model2d():Model2d(GL_TRIANGLES) {}
 void Model2d::Create(){
 	glBindVertexArray(vao);
 
@@ -43,12 +43,9 @@ void Model2d::Create(){
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 Model2d::~Model2d(){
-	Remove();
-}
-void Model2d::Remove(){
-	glDeleteBuffers(1,&vbuffer);
-	glDeleteBuffers(1,&tbuffer);
-	glDeleteVertexArrays(1,&vao);
+	glDeleteBuffers(1, &vbuffer);
+	glDeleteBuffers(1, &tbuffer);
+	glDeleteVertexArrays(1, &vao);
 	Clear();
 }
 void Model2d::Clear(){

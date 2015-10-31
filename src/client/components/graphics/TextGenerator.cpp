@@ -1,53 +1,50 @@
 #include "TextGenerator.h"
-#include "../../Client.h"
-#include "../Graphics.h"
 #include "Resources.h"
+#include "StringTexture.h"
+#include "../Graphics.h"
+#include "../../Client.h"
 
 TextGenerator::TextGenerator(string text,int size,int align,bool buffering){
-	float aspect=1;
-	float cursize=size*1.0f/g_Graphics()->m_Resources->FONT_DIVIDER;
+	float cursize=size*1.0f/ FONT_DIVIDER;
 	pixels=1;
 	while (pixels<g_Graphics()->to_pixels(cursize))
 		pixels<<=1;
 	this->buffering=buffering;
-	g_Graphics()->m_Resources->LoadStringTexture(texture, aspect, text, pixels, buffering);
+	texture=new StringTexture(text, pixels, buffering);
 	switch(align){
 	case ALIGN_LEFT_TOP:
-		geometry=quad2(0,-cursize,cursize*aspect,cursize);
+		geometry=quad2(0,-cursize,cursize*texture->aspect,cursize);
 		break;
 	case ALIGN_LEFT_CENTER:
-		geometry=quad2(0,-cursize/2,cursize*aspect,cursize);
+		geometry=quad2(0,-cursize/2,cursize*texture->aspect,cursize);
 		break;
 	case ALIGN_LEFT_BOTTOM:
-		geometry=quad2(0,0,cursize*aspect,cursize);
+		geometry=quad2(0,0,cursize*texture->aspect,cursize);
 		break;
 	case ALIGN_CENTER_TOP:
-		geometry=quad2(-cursize/2*aspect,-cursize,cursize*aspect,cursize);
+		geometry=quad2(-cursize/2* texture->aspect,-cursize,cursize*texture->aspect,cursize);
 		break;
 	case ALIGN_CENTER_CENTER:
-		geometry=quad2(-cursize/2*aspect,-cursize/2,cursize*aspect,cursize);
+		geometry=quad2(-cursize/2* texture->aspect,-cursize/2,cursize*texture->aspect,cursize);
 		break;
 	case ALIGN_CENTER_BOTTOM:
-		geometry=quad2(-cursize/2*aspect,0,cursize*aspect,cursize);
+		geometry=quad2(-cursize/2* texture->aspect,0,cursize*texture->aspect,cursize);
 		break;
 	case ALIGN_RIGHT_TOP:
-		geometry=quad2(-cursize*aspect,-cursize,cursize*aspect,cursize);
+		geometry=quad2(-cursize*texture->aspect,-cursize,cursize*texture->aspect,cursize);
 		break;
 	case ALIGN_RIGHT_CENTER:
-		geometry=quad2(-cursize*aspect,-cursize/2,cursize*aspect,cursize);
+		geometry=quad2(-cursize*texture->aspect,-cursize/2,cursize*texture->aspect,cursize);
 		break;
 	case ALIGN_RIGHT_BOTTOM:
-		geometry=quad2(-cursize*aspect,0,cursize*aspect,cursize);
+		geometry=quad2(-cursize*texture->aspect,0,cursize*texture->aspect,cursize);
 		break;
 	}
 }
 void TextGenerator::SetText(string text){
-	float aspect=1;
-	if(!buffering)
-		g_Graphics()->m_Resources->UnLoadTexture(texture);
-	g_Graphics()->m_Resources->LoadStringTexture(texture, aspect, text, pixels, buffering);
+	delete texture;
+	texture=new StringTexture(text, pixels, buffering);
 }
 TextGenerator::~TextGenerator(){
-	if(!buffering)
-		g_Graphics()->m_Resources->UnLoadTexture(texture);
+	delete texture;
 }

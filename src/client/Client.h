@@ -3,8 +3,8 @@
 
 #include <vector>
 #include <string>
-#include "../../other/sdl/include/SDL.h"
 #include "Component.h"
+#include "../../other/sdl/include/SDL.h"
 
 using namespace std;
 

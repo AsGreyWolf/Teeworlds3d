@@ -63,5 +63,8 @@ void main(void) {
 		max/=3;
 		gl_FragColor=vec4(max,max,max,gl_FragColor.a)*colorer;
 	}
+	else{
+		gl_FragColor*=vec4(colorer.r,colorer.g,colorer.b,1.0);
+	}
 	gl_FragDepth = log2(ex_logDepth) / log2(10000 + 1.0);
 }

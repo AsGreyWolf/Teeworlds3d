@@ -14,4 +14,7 @@ void main(void) {
 		max/=3;
 		gl_FragColor=vec4(max,max,max,gl_FragColor.a)*colorer;
 	}
+	else{
+		gl_FragColor*=vec4(colorer.r,colorer.g,colorer.b,1.0);
+	}
 }

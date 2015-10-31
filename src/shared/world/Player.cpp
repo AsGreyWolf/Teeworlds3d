@@ -4,19 +4,24 @@
 #define GLM_FORCE_RADIANS
 #include "../../../other/glm/gtx/rotate_vector.hpp"
 
-Player::Player(int id){
+Player::Player(glm::uint8_t& id){
 	this->id = id;
 	pos = glm::vec3(0, 0, 0);
-	rot=glm::vec3(0,0,0);
+	rot = glm::vec3(0,0,0);
 	vel = glm::vec3(0, 0, 0);
 	acc = glm::vec2(0, 0);
+	jumped = 0;
 
-	color = glm::vec4(0, 0, 0, 0);
-	int weapon=0;
-	int emote=0;
+	color = glm::vec4(1, 1, 1, 0);
+	weapon=0;
+	emote=0;
 
 	std::string skin="";
 	std::string nickname="";
+
+	grounded = true;
+
+	controls = false;
 };
 float VelocityRamp(float Value, float Start, float Range, float Curvature)
 {
@@ -34,31 +39,93 @@ void Player::Tick(){
 	float tuningAirFriction = 0.95f;
 	float tuningVelrampStart = 550;
 	float tuningVelrampRange = 2000;
-	float tuningVelrampCurvature = 1.4;
+	float tuningVelrampCurvature = 1.4f;
 	bool tuningPlayerColision = true;
+	float tuningGroundJumpImpulse = 13.2f;
+	float tuningAirJumpImpulse = 12.0f;
 
-	bool Grounded = false;
+	grounded = false;
 	Tile* buf = g_World()->GetTile(glm::vec3(pos.x + physSize / 2, pos.y + physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
-		Grounded = true;
+		grounded = true;
 	buf = g_World()->GetTile(glm::vec3(pos.x + physSize / 2, pos.y - physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
-		Grounded = true;
+		grounded = true;
 	buf = g_World()->GetTile(glm::vec3(pos.x - physSize / 2, pos.y + physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
-		Grounded = true;
+		grounded = true;
 	buf = g_World()->GetTile(glm::vec3(pos.x - physSize / 2, pos.y - physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
-		Grounded = true;
-	glm::vec3 TargetDirection(0, 1, 0);
-	TargetDirection = glm::rotateZ(TargetDirection, rot.z);
-	TargetDirection = glm::rotateX(TargetDirection, rot.x);
-	TargetDirection = glm::rotateY(TargetDirection, rot.y);
+		grounded = true;
+	grounded;
 
 	vel.z -= tuningGravity;
-	float MaxSpeed = Grounded ? tuningGroundSpeed : tuningAirSpeed;
-	float Accel = Grounded ? tuningGroundAccel : tuningAirAccel;
-	float Friction = Grounded ? tuningGroundFriction : tuningAirFriction;
+	float MaxSpeed = grounded ? tuningGroundSpeed : tuningAirSpeed;
+	float Accel = grounded ? tuningGroundAccel : tuningAirAccel;
+	float Friction = grounded ? tuningGroundFriction : tuningAirFriction;
+
+	if(controls){
+		rot = look;
+		if (jump)
+		{
+			if (!(jumped & 1))
+			{
+				if (grounded)
+				{
+					vel.z = tuningGroundJumpImpulse;
+					jumped |= 1;
+				}
+				else if (!(jumped & 2))
+				{
+					vel.z = tuningAirJumpImpulse;
+					jumped |= 3;
+				}
+			}
+		}
+		else
+			jumped &= ~1;
+		//TODO: hook
+	}
+	{
+		glm::vec2 nvel(vel.x, vel.y);
+		if (glm::length(acc)==0.0f)
+			nvel *= Friction;
+		else {
+			nvel += acc*Accel;
+			if (glm::length(nvel) > MaxSpeed) {
+				nvel = glm::normalize(nvel)*MaxSpeed;
+			}
+		}
+		vel.x = nvel.x;
+		vel.y = nvel.y;
+	}
+	if (grounded)
+		jumped &= ~2;
+	//TODO: HOOK
+	for (int i = 0; i < MAX_PLAYERS; i++)
+	{
+		if (i == id) continue;
+		Player* p = g_World()->players[i];
+		float distance = glm::distance(pos, p->pos);
+		glm::vec3 dir = glm::normalize(pos - p->pos);
+		if (tuningPlayerColision && distance < physSize*1.25f && distance > 0.0f)
+		{
+			float a = (physSize*1.45f - distance);
+			float velocity = 0.5f;
+
+			// make sure that we don't add excess force by checking the
+			// direction against the current velocity. if not zero.
+			if (glm::length(vel) > 0.0001)
+				velocity = 1 - (glm::dot(glm::normalize(vel), dir) + 1) / 2;
+
+			vel += dir*a*(velocity*0.75f);
+			vel *= 0.85f;
+		}
+		//TODO: HOOK
+	}
+	if (glm::length(vel) > 6000.0f)
+		vel = glm::normalize(vel) * 6000.0f;
+	
 
 
 	float RampValue = VelocityRamp(glm::length(vel) * 50, tuningVelrampStart, tuningVelrampRange, tuningVelrampCurvature);
@@ -75,4 +142,6 @@ void Player::Tick(){
 			NewPos = collidePos;
 	}
 	pos = NewPos;
+
+	if (pos.z < -6000) pos = glm::vec3(100,100,6000);
 }

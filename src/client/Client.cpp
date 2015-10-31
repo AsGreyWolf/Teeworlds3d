@@ -2,14 +2,14 @@
 #include <iostream>
 #include <locale>
 #include <clocale>
-#include "../shared/System.h"
-#include "../shared/Console.h"
-#include "../shared/World.h"
 #include "components/Graphics.h"
 #include "components/Camera.h"
 #include "components/Map.h"
 #include "components/Players.h"
 #include "components/GUI.h"
+#include "../shared/System.h"
+#include "../shared/Console.h"
+#include "../shared/World.h"
 #include "../../other/sdl/include/SDL_ttf.h"
 
 class Client* pClient;
@@ -77,13 +77,13 @@ Client::Client():Component(){
 		Console::Err("Could not get renderer: " + string(SDL_GetError()));
 		return; //TODO: need exceptions
 	}
-	
-	m_Components.push_back((Component*)new Graphics());
+	Component* graphics = new Graphics();
 	m_SharedComponents.push_back((SharedComponent*)new World());//TODO debug only
 	m_Components.push_back((Component*)new Camera());
 	m_Components.push_back((Component*)new Map());
 	m_Components.push_back((Component*)new Players());
 	m_Components.push_back((Component*)new GUI());
+	m_Components.push_back(graphics);
 }
 Client::~Client(){
 	reverse(m_Components.begin(), m_Components.end());
@@ -96,6 +96,8 @@ Client::~Client(){
 		delete component;
 	}
 	m_SharedComponents.clear();
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(screen);
 	TTF_Quit();
 	SDL_Quit();
 }

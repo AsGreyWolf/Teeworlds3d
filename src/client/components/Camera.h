@@ -1,10 +1,10 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include "../Component.h"
 #define GLM_FORCE_RADIANS
 #include "../../../other/glew/include/glew.h"
 #include "../../../other/glm/gtx/rotate_vector.hpp"
-#include "../Component.h"
 
 ///<summary>Camera component</summary>
 class Camera : public Component{

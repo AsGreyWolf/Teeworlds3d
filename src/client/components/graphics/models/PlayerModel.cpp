@@ -1,12 +1,12 @@
 #include "PlayerModel.h"
-#include "Resources.h"
 #include "Text3d.h"
-#include "TextGenerator.h"
-#include "../Graphics.h"
-#include "../../Client.h"
-#include "../../components/Camera.h"
-#include "../../../shared/System.h"
-#include "../../../shared/world/Player.h"
+#include "../Resources.h"
+#include "../TextGenerator.h"
+#include "../../Graphics.h"
+#include "../../../Client.h"
+#include "../../../components/Camera.h"
+#include "../../../../shared/System.h"
+#include "../../../../shared/world/Player.h"
 
 vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(17, 2, 20),
@@ -50,22 +50,40 @@ void PlayerModel::Render(const glm::mat4 &parentMatrix){
 	
 	eyes->Render(modelMatrix);
 }
-PlayerModel::PlayerModel():Model(){}
-void PlayerModel::Create(){
-	lArm=new Model();
+PlayerModel::PlayerModel():Model(){
+	lArm = new Model();
 	lArm->AddSphere(detalization, detalization, vec3(1, 1, 1), renderSize / 8, g_Graphics()->m_Resources->texturePos8x4[6], false);
-	rArm=new Model();
+	rArm = new Model();
 	rArm->AddSphere(detalization, detalization, vec3(1, 1, 1), renderSize / 8, g_Graphics()->m_Resources->texturePos8x4[6], true);
-	lFoot=new Model();
+	lFoot = new Model();
 	lFoot->AddSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), renderSize / 2.4f, g_Graphics()->m_Resources->texturePos8x4[14] >> g_Graphics()->m_Resources->texturePos8x4[15], false);
-	rFoot=new Model();
+	rFoot = new Model();
 	rFoot->AddSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), renderSize / 2.4f, g_Graphics()->m_Resources->texturePos8x4[14] >> g_Graphics()->m_Resources->texturePos8x4[15], true);
-	body=new Model();
+	body = new Model();
 	body->AddSphere(detalization, detalization, vec3(1, 1, 1), renderSize / 2, g_Graphics()->m_Resources->texturePos8x4[0] >> g_Graphics()->m_Resources->texturePos8x4[21], false);
-	eyes=new Model(false);
-	nickName=new Text3d();
-	nickNameShadow=new Model(false);
-	
+	eyes = new Model(false);
+	nickName = new Text3d("", TextGenerator::FONT_NORMAL, TextGenerator::ALIGN_CENTER_BOTTOM);
+	nickNameShadow = new Model(false);
+
+	lFoot->rotation = vec3(0, 0, 5.0f / 180 * M_PI);
+	rFoot->rotation = vec3(0, 0, -5.0f / 180 * M_PI);
+	lArm->texture = texture;
+	lArm->rotation = vec3(0, 0, -M_PI_2);
+	rArm->texture = texture;
+	rArm->rotation = vec3(0, 0, M_PI_2);
+	lFoot->texture = texture;
+	rFoot->texture = texture;
+	body->texture = texture;
+	body->rotation = vec3(0, 0, -M_PI_2);
+	eyes->texture = texture;
+	rFoot->position = vec3(renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
+	lFoot->position = vec3(-renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
+	eyes->position = vec3(0, (0.285f*baseSize), ((0.05f)*baseSize) - eyescale / 2);
+	nickNameShadow->color = vec4(0, 0, 0, 0.5f);
+
+	animState = ANIMSTATE_NONE;
+}
+void PlayerModel::Create(){
 	lArm->Create();
 	rArm->Create();
 	lFoot->Create();
@@ -74,26 +92,8 @@ void PlayerModel::Create(){
 	eyes->Create();
 	nickName->Create();
 	nickNameShadow->Create();
-
-	lFoot->rotation=vec3(0,0,5.0f/180*M_PI);
-	rFoot->rotation =vec3(0,0,-5.0f/180*M_PI);
-	lArm->texture=texture;
-	lArm->rotation =vec3(0,0,-M_PI_2);
-	rArm->texture=texture;
-	rArm->rotation =vec3(0,0,M_PI_2);
-	lFoot->texture=texture;
-	rFoot->texture=texture;
-	body->texture=texture;
-	body->rotation =vec3(0,0,-M_PI_2);
-	eyes->texture=texture;
-	rFoot->position = vec3(renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
-	lFoot->position = vec3(-renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
-	eyes->position=vec3(0,(0.285f*baseSize),((0.05f)*baseSize)-eyescale/2);
-	nickNameShadow->color=vec4(0,0,0,0.5f);
-
-	animState=ANIMSTATE_NONE;
 }
-void PlayerModel::Remove(){
+PlayerModel::~PlayerModel(){
 	delete lArm;
 	delete rArm;
 	delete lFoot;
@@ -117,8 +117,8 @@ void PlayerModel::Update(Player* p){
 	eyes->texture=texture;
 	body->texture=texture;
 
-	lFoot->color=p->color;
-	rFoot->color=p->color;
+	lFoot->color=p->color*(p->jumped & 2 ? 0.5f : 1.0f);
+	rFoot->color=p->color*(p->jumped & 2 ? 0.5f : 1.0f);
 	lArm->color=p->color;
 	rArm->color=p->color;
 	body->color=p->color;
@@ -126,7 +126,7 @@ void PlayerModel::Update(Player* p){
 
 	rArm->position=weaponPos[p->weapon];
 
-	bool anim=abs(p->vel.x)>0 || abs(p->vel.y)>0;
+	bool anim=p->grounded && (abs(p->vel.x) > 1 || abs(p->vel.y) > 1);
 	if(anim && animState==ANIMSTATE_NONE){
 		animState++;
 		animStart=g_System()->GetTime();
@@ -158,14 +158,14 @@ void PlayerModel::Update(Player* p){
 	eyes->AddQuad(quad3(vec3(-eyescale - separation, 0, eyescale), vec3(0 - separation, 0, eyescale), vec3(0 - separation, 0, 0), vec3(-eyescale - separation, 0, 0)), vec3(0, 1, 0), g_Graphics()->m_Resources->texturePos8x4[26 + emote].reflectX());
 	eyes->AddQuad(quad3(vec3(0 + separation, 0, eyescale), vec3(eyescale + separation, 0, eyescale), vec3(eyescale + separation, 0, 0), vec3(separation, 0, 0)), vec3(0, 1, 0), g_Graphics()->m_Resources->texturePos8x4[26 + emote]);
 	eyes->Create();
-	if(((Text3d*)nickName)->text!=p->nickname){
-		nickName->Clear();
-		nickNameShadow->Clear();
-
-		((Text3d*)nickName)->AddText(p->nickname,Resources::FONT_NORMAL,TextGenerator::ALIGN_CENTER_BOTTOM,false);
-		quad2 geom=((Text3d*)nickName)->data->geometry*100;
-		nickNameShadow->AddRectangle(geom,quad2(geom.p00+vec2(-1,-1),geom.p10+vec2(1,-1),geom.p01+vec2(-1,1),geom.p11+vec2(1,1)),-1);
+	if(nickName->text!=p->nickname){
+		delete nickName;
+		nickName = new Text3d(p->nickname, TextGenerator::FONT_NORMAL, TextGenerator::ALIGN_CENTER_BOTTOM);
 		nickName->Create();
+
+		nickNameShadow->Clear();
+		quad2 geom=nickName->data->geometry*100;
+		nickNameShadow->AddRectangle(geom,quad2(geom.p00+vec2(-1,-1),geom.p10+vec2(1,-1),geom.p01+vec2(-1,1),geom.p11+vec2(1,1)),-1);
 		nickNameShadow->Create();
 	}
 	nickName->position=p->pos;

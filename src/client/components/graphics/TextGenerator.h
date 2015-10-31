@@ -5,6 +5,7 @@
 #include "../../../tools/quad2.h"
 
 class Graphics;
+class Texture;
 
 ///<summary>Simple text generator</summary>
 class TextGenerator{
@@ -20,6 +21,12 @@ public:
 	///<param name="text">Text</param>
 	void SetText(std::string text);
 
+	///<summary>Font sizes</summary>
+	enum {
+		FONT_NORMAL = 1,
+		FONT_BIG = 2,
+		FONT_DIVIDER = 20,
+	};
 	enum{
 		ALIGN_LEFT_TOP=0,
 		ALIGN_LEFT_CENTER,
@@ -32,7 +39,7 @@ public:
 		ALIGN_RIGHT_BOTTOM,
 	};
 	quad2 geometry;
-	unsigned int texture;
+	Texture* texture;
 private:
 	int pixels;
 	bool buffering;

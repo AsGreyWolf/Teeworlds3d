@@ -2,39 +2,30 @@
 #define MODEL2D_H
 
 #include <vector>
+#include "../../../../tools/quad2.h"
+#include "../../../../tools/quad3.h"
+#include "../../../../../other/glew/include/glew.h"
+#define GLM_FORCE_RADIANS
+#include "../../../../../other/glm/gtc/matrix_transform.hpp"
+#include "../../../../../other/glm/gtc/type_ptr.hpp"
 
 class Graphics;
-#include "../../../tools/quad2.h"
-#include "../../../tools/quad3.h"
-#include "../../../../other/glew/include/glew.h"
-#define GLM_FORCE_RADIANS
-#include "../../../../other/glm/gtc/matrix_transform.hpp"
-#include "../../../../other/glm/gtc/type_ptr.hpp"
+class Texture;
 
 ///<summary>2d Model object</summary>
 class Model2d{
 public:
-	///<summary>Texture used in shaders</summary>
-	GLuint texture;
-	///<summary>Position of the model</summary>
-	glm::vec2 position;
-	glm::vec4 color;
-	float depth;
-
 	///<summary>Creates the model and buffers in the GPU</summary>
 	///<param name="type">Type of the verts (GL_TRIANGLES)</param>
-	Model2d(int type);
-	///<summary>Creates the model and buffers in the GPU</summary>
-	Model2d();
-	~Model2d();
+	Model2d(int type = GL_TRIANGLES);
 	///<summary>Fills the buffers in the GPU with values in the RAM</summary>
-	void Create();
+	virtual void Create();
 	///<summary>Pushes the model into the shader</summary>
-	void Render();
-	///<summary>Deletes the buffers in the GPU and RAM</summary>
-	void Remove();
+	virtual void Render();
 	///<summary>Deletes the buffers in the RAM</summary>
-	void Clear();
+	virtual void Clear();
+	virtual ~Model2d();
+
 	///<summary>Appends vector of vertex to the buffers in the RAM</summary>
 	///<param name="v">Vertex positions</param>
 	///<param name="t">Vertex UV coordinates</param>
@@ -47,12 +38,19 @@ public:
 	///<param name="v">Vertex positions</param>
 	///<param name="t">Vertex UV coordinates</param>
 	void AddQuad(quad2 v,quad2 t);
-
 	///<summary>Add generated rounded-rectangle data in the buffers</summary>
 	///<param name="in">Inner space</param>
 	///<param name="out">Outer space</param>
 	void AddRectangle(quad2 in,quad2 out);
 
+	///<summary>Texture used in shaders</summary>
+	Texture* texture;
+	///<summary>Position of the model</summary>
+	glm::vec2 position;
+	///<summary>Color of the model</summary>
+	glm::vec4 color;
+	///<summary>Depth of the model</summary>
+	float depth;
 protected:
 	///<summary>Vertex positions buffer in the RAM</summary>
 	std::vector <glm::vec2> vertex;
