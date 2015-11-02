@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../World.h"
+#include "../System.h"
 #include "Tile.h"
 #define GLM_FORCE_RADIANS
 #include "../../../other/glm/gtx/rotate_vector.hpp"
@@ -44,6 +45,8 @@ void Player::Tick(){
 	float tuningGroundJumpImpulse = 13.2f;
 	float tuningAirJumpImpulse = 12.0f;
 
+	float coeff = (float)(g_System()->tickCoeff * 60);
+
 	grounded = false;
 	Tile* buf = g_World()->GetTile(glm::vec3(pos.x + physSize / 2, pos.y + physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
@@ -59,7 +62,7 @@ void Player::Tick(){
 		grounded = true;
 	grounded;
 
-	vel.z -= tuningGravity;
+	vel.z -= coeff*tuningGravity;
 	float MaxSpeed = grounded ? tuningGroundSpeed : tuningAirSpeed;
 	float Accel = grounded ? tuningGroundAccel : tuningAirAccel;
 	float Friction = grounded ? tuningGroundFriction : tuningAirFriction;
@@ -89,12 +92,11 @@ void Player::Tick(){
 	{
 		glm::vec2 nvel(vel.x, vel.y);
 		if (glm::length(acc)==0.0f)
-			nvel *= Friction;
+			nvel *= pow(Friction,coeff);
 		else {
-			nvel += acc*Accel;
-			if (glm::length(nvel) > MaxSpeed) {
+			nvel += coeff*acc*Accel;
+			if (glm::length(nvel) > MaxSpeed)
 				nvel = glm::normalize(nvel)*MaxSpeed;
-			}
 		}
 		vel.x = nvel.x;
 		vel.y = nvel.y;
@@ -118,8 +120,8 @@ void Player::Tick(){
 			if (glm::length(vel) > 0.0001)
 				velocity = 1 - (glm::dot(glm::normalize(vel), dir) + 1) / 2;
 
-			vel += dir*a*(velocity*0.75f);
-			vel *= 0.85f;
+			vel += coeff*dir*a*(velocity*0.75f);
+			vel *= pow(0.85f,coeff);
 		}
 		//TODO: HOOK
 	}
@@ -142,6 +144,5 @@ void Player::Tick(){
 			NewPos = collidePos;
 	}
 	pos = NewPos;
-
 	if (pos.z < -6000) pos = glm::vec3(100,100,6000);
 }

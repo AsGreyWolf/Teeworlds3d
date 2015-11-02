@@ -63,6 +63,7 @@ System::~System(){
 void System::Tick(){
 	long tickTime = g_System()->GetTime();
 	tickCoeff = (tickTime - lasttickTime)*1.0 / 1000;
+	if (tickCoeff > 1)tickCoeff = 1.0f / 60;
 	lasttickTime = tickTime;
 	frames++;
 }
