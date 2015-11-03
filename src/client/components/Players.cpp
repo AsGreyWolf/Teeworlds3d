@@ -13,8 +13,6 @@
 class Players* pPlayers;
 Players* g_Players(){ return pPlayers; }
 
-// TODO just for debug
-Model2d* cursor;
 Players::Players() : Component(){
 	pPlayers = this;
 	// TODO just for debug
@@ -22,16 +20,11 @@ Players::Players() : Component(){
 		playerModels[i] = new PlayerModel();
 		playerModels[i]->Create();
 	}
-	cursor=new Model2d();
-	cursor->AddQuad(quad2(-0.0625f, -0.0625f, 0.125f, 0.125f), g_Graphics()->m_Resources->gameCursor[0]);
-	cursor->texture = g_Graphics()->m_Resources->textureGame;
-	cursor->Create();
 }
 Players::~Players(){
 	for(int i=0;i<MAX_PLAYERS;i++){
 		delete playerModels[i];
 	}
-	delete cursor;
 	pPlayers = NULL;
 }
 ///TODO: debug only
@@ -85,7 +78,12 @@ void Players::Render(){
 	}
 }
 void Players::Render2d(){
+	Model2d* cursor=new Model2d();
+	cursor->AddQuad(quad2(-0.0625f, -0.0625f, 0.125f, 0.125f), g_Graphics()->m_Resources->gameCursor[g_World()->players[0]->weapon]);
+	cursor->texture = g_Graphics()->m_Resources->textureGame;
+	cursor->Create();
 	cursor->Render();
+	delete cursor;
 }
 void Players::RenderBillboard(){
 	for(int i=0;i<MAX_PLAYERS;i++){

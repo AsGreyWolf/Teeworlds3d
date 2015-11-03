@@ -60,7 +60,6 @@ void Player::Tick(){
 	buf = g_World()->GetTile(glm::vec3(pos.x - physSize / 2, pos.y - physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
 		grounded = true;
-	grounded;
 
 	vel.z -= coeff*tuningGravity;
 	float MaxSpeed = grounded ? tuningGroundSpeed : tuningAirSpeed;
