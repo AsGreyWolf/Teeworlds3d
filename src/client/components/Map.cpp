@@ -20,28 +20,27 @@ Map::~Map(){
 	UnLoad();
 	pMap = NULL;
 }
-void Map::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
-void Map::StateChange(STATE lastState){
+void Map::StateChange(const STATE& lastState){
+	Component::StateChange(lastState);
 	if(!lastState.ingame && g_Client()->state.ingame)
 	{
-		m_Model=new Model(g_Graphics());
-		Load("1234");
+		m_Model=new Model();
+		Load("123");
 		return;
 	}
 	if(lastState.ingame && !g_Client()->state.ingame){
 		UnLoad();
 	}
 }
-void Map::Render(){
-	if(g_Client()->state.ingame)
-		m_Model->Render();
+void Map::Tick(){
+	Component::Tick();
+	m_Model->SetMatrix();
+	//TODO: disable
+	//if (g_Client()->state.ingame)
+	//	m_Model->Render();
 }
-void Map::RenderBillboard(){}
-void Map::Render2d(){}
-void Map::Tick(){}
-void Map::Message(int type,char* value){}
 
-bool Map::Load(string name){
+bool Map::Load(const string& name){
 	g_World()->Load(name);
 	string p = "mapres/" + string(g_World()->tileset) + ".png";
 	texture = new Texture(p,false,false);

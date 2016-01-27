@@ -3,10 +3,13 @@
 #include "../../../shared/System.h"
 #include "../../../shared/Console.h"
 
-void Texture::Initialize(std::string filepath, bool anisotropy, bool filtering) {
+void Texture::Initialize(const std::string& filepath, bool anisotropy, bool filtering) {
 	string path = g_System()->GetDataFile(filepath);
-	SDL_Surface *temp = NULL;
-	temp = IMG_Load(path.c_str());
+	SDL_Surface *temp;
+	if ((temp = IMG_Load(path.c_str())) == NULL) {
+		Console::Err("Error Loading Texture: " + filepath + " : " + string(IMG_GetError()));
+		return;
+	}
 	Initialize(temp, anisotropy, filtering);
 	if (id==0) {
 		Console::Err("Error Loading Texture: " + filepath + " : " + string(SDL_GetError()));
@@ -16,16 +19,14 @@ void Texture::Initialize(std::string filepath, bool anisotropy, bool filtering) 
 	SDL_FreeSurface(temp);
 	Console::Info("Texture loaded " + filepath);
 };
-void Texture::Initialize(SDL_Surface* &data, bool anisotropy, bool filtering) {
-	g_Graphics()->to_RGBA(data);
-	GLint maxTexSize;
+void Texture::Initialize(SDL_Surface* data, bool anisotropy, bool filtering) {
+	data = g_Graphics()->to_RGBA(data);
 	if (data == NULL) {
-		id = 0;
 		return;
 	}
+	GLint maxTexSize;
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
 	if (data->w > maxTexSize) {
-		id = 0;
 		return;
 	}
 	Initialize(data->pixels, anisotropy, filtering, data->w, data->h);

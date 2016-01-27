@@ -2,6 +2,7 @@
 #define MODEL2D_H
 
 #include <vector>
+#include <list>
 #include "../../../../tools/quad2.h"
 #include "../../../../tools/quad3.h"
 #include "../../../../../other/glew/include/glew.h"
@@ -29,19 +30,19 @@ public:
 	///<summary>Appends vector of vertex to the buffers in the RAM</summary>
 	///<param name="v">Vertex positions</param>
 	///<param name="t">Vertex UV coordinates</param>
-	void AddVertex(std::vector<glm::vec2> v,std::vector<glm::vec2> t);
+	void AddVertex(const std::vector<glm::vec2>& v, const std::vector<glm::vec2>& t);
 	///<summary>Appends 1 vertex to the buffers in the RAM</summary>
 	///<param name="v">Vertex position</param>
 	///<param name="t">Vertex UV coordinates</param>
-	void AddVertex(glm::vec2 v,glm::vec2 t);
+	void AddVertex(const glm::vec2& v, const glm::vec2& t);
 	///<summary>Appends 1 quad to the buffers in the RAM</summary>
 	///<param name="v">Vertex positions</param>
 	///<param name="t">Vertex UV coordinates</param>
-	void AddQuad(quad2 v,quad2 t);
+	void AddQuad(const quad2& v, const quad2& t);
 	///<summary>Add generated rounded-rectangle data in the buffers</summary>
 	///<param name="in">Inner space</param>
 	///<param name="out">Outer space</param>
-	void AddRectangle(quad2 in,quad2 out);
+	void AddRectangle(const quad2& in, const quad2& out);
 
 	///<summary>Texture used in shaders</summary>
 	Texture* texture;
@@ -51,6 +52,9 @@ public:
 	glm::vec4 color;
 	///<summary>Depth of the model</summary>
 	float depth;
+
+	///<summary>Render all registred models</summary>
+	static void RenderModels();
 protected:
 	///<summary>Vertex positions buffer in the RAM</summary>
 	std::vector <glm::vec2> vertex;
@@ -63,7 +67,10 @@ protected:
 	///<summary>Vertex UV coordinates buffer in the GPU</summary>
 	GLuint tbuffer;
 	///<summary>Type of the model (GL_TRIANGLES)</summary>
-	int type;
+	const int type;
+private:
+	///<summary>Registred models list</summary>
+	static std::list<Model2d*> registredModels;
 };
 
 #endif

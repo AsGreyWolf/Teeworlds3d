@@ -22,7 +22,7 @@ public:
 	void GetFilesInDirectory(std::vector<std::string> &out, const std::string &directory);
 	///<summary>Returns filename in data folder</summary>
 	///<param name="str">Filename</param>
-	string GetDataFile(string str);
+	string GetDataFile(const string& str);
 
 	int fps;
 	double tickCoeff;

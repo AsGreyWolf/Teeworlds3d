@@ -1,5 +1,6 @@
 #include "PlayerModel.h"
 #include "Text3d.h"
+#include "BufferedModel.h"
 #include "../Resources.h"
 #include "../TextGenerator.h"
 #include "../../Graphics.h"
@@ -8,7 +9,7 @@
 #include "../../../../shared/System.h"
 #include "../../../../shared/world/Player.h"
 
-vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
+const vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(17, 2, 20),
 		vec3(17,3,-5),
 		vec3(17,3,-5),
@@ -16,54 +17,50 @@ vec3 PlayerModel::weaponPos[NUM_WEAPONS]={
 		vec3(17,3,-5),
 		vec3(0,1,0),
 	};
-void PlayerModel::RenderBillboard(){
-	nickName->LookAt(g_Camera()->position);
-	nickNameShadow->LookAt(g_Camera()->position);
-	nickName->ScaleAt(g_Camera()->position, vec3(0), vec3(0.002f));
-	nickNameShadow->ScaleAt(g_Camera()->position, vec3(0), vec3(0.002f));
-	nickName->scale+=1;
-	nickNameShadow->scale+=1;
-	nickNameShadow->Render();
-	nickName->Render();
-}
-void PlayerModel::Render(const glm::mat4 &parentMatrix){
-	if (!g_Graphics()->restoreMatrix)
-		modelMatrix=parentMatrix;
-
+const float PlayerModel::renderSize = 36.0f;
+const float PlayerModel::baseSize = 64.0f;
+const int PlayerModel::eyescale = (int)(PlayerModel::baseSize*0.40);
+const float PlayerModel::separation = (0.075f*PlayerModel::baseSize) - eyescale / 2;
+const int PlayerModel::detalization = 32;
+const int PlayerModel::animSpeed = 300;
+void PlayerModel::SetMatrix(const glm::mat4& parentMatrix) {
+	modelMatrix = parentMatrix;
+	nickName->SetMatrix(modelMatrix);
+	nickNameShadow->SetMatrix(modelMatrix);
+	/*g_Graphics()->m_Resources->hookModels[hookUnits]->position = hookPos;
+	g_Graphics()->m_Resources->hookModels[hookUnits]->rotation = hookRot;
+	g_Graphics()->m_Resources->hookModels[hookUnits]->modelMatrix = hookModelMatrix;
+	g_Graphics()->m_Resources->hookModels[hookUnits]->normalMatrix = hookNormalMatrix;
+	g_Graphics()->m_Resources->hookModels[hookUnits]->Render();
+	hookModelMatrix = g_Graphics()->m_Resources->hookModels[hookUnits]->modelMatrix;
+	hookNormalMatrix = g_Graphics()->m_Resources->hookModels[hookUnits]->normalMatrix;*/
 	g_Graphics()->Translate(modelMatrix, position);
 	g_Graphics()->RotateZ(modelMatrix, rotation);
-	lFoot->Render(modelMatrix);
-	rFoot->Render(modelMatrix);
+	lFoot->SetMatrix(modelMatrix);
+	rFoot->SetMatrix(modelMatrix);
 	g_Graphics()->RotateX(modelMatrix, rotation);
-	body->Render(modelMatrix);
+	body->SetMatrix(modelMatrix);
 	g_Graphics()->RotateY(modelMatrix, rotation);
-
-	lArm->Render(modelMatrix);
-	rArm->Render(modelMatrix);
-
-	g_Graphics()->m_Resources->weaponModels[weapon]->position = weaponPos[weapon];
-	g_Graphics()->m_Resources->weaponModels[weapon]->modelMatrix = gunModelMatrix;
-	g_Graphics()->m_Resources->weaponModels[weapon]->normalMatrix = gunNormalMatrix;
-	g_Graphics()->m_Resources->weaponModels[weapon]->Render(modelMatrix);
-	gunModelMatrix = g_Graphics()->m_Resources->weaponModels[weapon]->modelMatrix;
-	gunNormalMatrix = g_Graphics()->m_Resources->weaponModels[weapon]->normalMatrix;
-	
-	eyes->Render(modelMatrix);
+	lArm->SetMatrix(modelMatrix);
+	rArm->SetMatrix(modelMatrix);
+	weapon->SetMatrix(modelMatrix);
+	eyes->SetMatrix(modelMatrix);
 }
 PlayerModel::PlayerModel():Model(){
 	lArm = new Model();
-	lArm->AddSphere(detalization, detalization, vec3(1, 1, 1), renderSize / 8, g_Graphics()->m_Resources->texturePos8x4[6], false);
+	lArm->AddSphere(vec3(0, 0, 0), detalization, detalization, vec3(1, 1, 1), renderSize / 8, g_Graphics()->m_Resources->texturePos8x4[6], false);
 	rArm = new Model();
-	rArm->AddSphere(detalization, detalization, vec3(1, 1, 1), renderSize / 8, g_Graphics()->m_Resources->texturePos8x4[6], true);
+	rArm->AddSphere(vec3(0, 0, 0), detalization, detalization, vec3(1, 1, 1), renderSize / 8, g_Graphics()->m_Resources->texturePos8x4[6], true);
 	lFoot = new Model();
-	lFoot->AddSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), renderSize / 2.4f, g_Graphics()->m_Resources->texturePos8x4[14] >> g_Graphics()->m_Resources->texturePos8x4[15], false);
+	lFoot->AddSphere(vec3(0, 0, 0), detalization, detalization, vec3(0.7f, 1, 0.5f), renderSize / 2.4f, g_Graphics()->m_Resources->texturePos8x4[14] >> g_Graphics()->m_Resources->texturePos8x4[15], false);
 	rFoot = new Model();
-	rFoot->AddSphere(detalization, detalization, vec3(0.7f, 1, 0.5f), renderSize / 2.4f, g_Graphics()->m_Resources->texturePos8x4[14] >> g_Graphics()->m_Resources->texturePos8x4[15], true);
+	rFoot->AddSphere(vec3(0, 0, 0), detalization, detalization, vec3(0.7f, 1, 0.5f), renderSize / 2.4f, g_Graphics()->m_Resources->texturePos8x4[14] >> g_Graphics()->m_Resources->texturePos8x4[15], true);
 	body = new Model();
-	body->AddSphere(detalization, detalization, vec3(1, 1, 1), renderSize / 2, g_Graphics()->m_Resources->texturePos8x4[0] >> g_Graphics()->m_Resources->texturePos8x4[21], false);
+	body->AddSphere(vec3(0, 0, 0), detalization, detalization, vec3(1, 1, 1), renderSize / 2, g_Graphics()->m_Resources->texturePos8x4[0] >> g_Graphics()->m_Resources->texturePos8x4[21], false);
 	eyes = new Model(false);
 	nickName = new Text3d("", TextGenerator::FONT_NORMAL, TextGenerator::ALIGN_CENTER_BOTTOM);
-	nickNameShadow = new Model(false);
+	nickNameShadow = new Model(false,true);
+	weapon = new BufferedModel(g_Graphics()->m_Resources->weaponModels[0]);
 
 	lFoot->rotation = vec3(0, 0, 5.0f / 180 * M_PI);
 	rFoot->rotation = vec3(0, 0, -5.0f / 180 * M_PI);
@@ -92,6 +89,7 @@ void PlayerModel::Create(){
 	eyes->Create();
 	nickName->Create();
 	nickNameShadow->Create();
+	weapon->Create();
 }
 PlayerModel::~PlayerModel(){
 	delete lArm;
@@ -100,11 +98,18 @@ PlayerModel::~PlayerModel(){
 	delete rFoot;
 	delete body;
 	delete eyes;
+	delete nickName;
+	delete nickNameShadow;
+	delete weapon;
 }
 void PlayerModel::Update(Player* p){
-	position=p->pos;
+	position = p->pos;
 	rotation = p->rot;
-	weapon=p->weapon;
+	hookPos = p->hookPos;
+	hookRot = quad2::vec2rot(p->hookPos - p->pos);
+	hookUnits = glm::max(glm::min(length(p->hookPos - p->pos)/12, 32.0f),1.0f)-1;
+	weapon->model=g_Graphics()->m_Resources->weaponModels[p->weapon];
+	weapon->position = weaponPos[p->weapon];
 	emote=p->emote;
 	if (g_Graphics()->m_Resources->skinTextures.find(p->skin) != g_Graphics()->m_Resources->skinTextures.end())
 		texture = g_Graphics()->m_Resources->skinTextures[p->skin];

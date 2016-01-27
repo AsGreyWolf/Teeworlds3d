@@ -17,6 +17,7 @@ Camera::~Camera(){
 	pCamera = NULL;
 }
 void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
+	Component::Input(keys, xrel, yrel, wheel);
 	RotateX(-yrel*g_System()->tickCoeff);
 	RotateZ(-xrel*g_System()->tickCoeff);
 	/*glm::vec3 look2=look;
@@ -35,11 +36,6 @@ void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	if (keys[SDL_SCANCODE_R]) position+=up2;
 	if (keys[SDL_SCANCODE_F]) position-=up2;*/
 }
-void Camera::Render(){}
-void Camera::RenderBillboard(){}
-void Camera::Render2d(){}
-void Camera::Tick(){}
-void Camera::Message(int type,char* value){}
 
 void Camera::SetMatrix(){
 	if (!g_Client()->state.ingame) return;
@@ -74,7 +70,8 @@ void Camera::updateVectors(){
 	right=glm::rotateX(right, rotation.x);
 	right=glm::rotateZ(right, rotation.z);
 }
-void Camera::StateChange(STATE lastState){
+void Camera::StateChange(const STATE& lastState){
+	Component::StateChange(lastState);
 	if (!lastState.ingame && g_Client()->state.ingame){
 		rotation=vec3(0,0,0);
 		look=vec3(0,1,0);

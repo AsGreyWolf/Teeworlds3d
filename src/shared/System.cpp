@@ -37,7 +37,7 @@ int calcFPS(void *param){
 }
 
 SDL_Thread *fpsThread;
-System::System(){
+System::System() :SharedComponent() {
 	srand(time(NULL));
 	PATH_CUR = string(SDL_GetBasePath());
 	PATH_DATA = PATH_CUR + "data/";
@@ -61,6 +61,7 @@ System::~System(){
 	SDL_WaitThread(fpsThread, &r);
 };
 void System::Tick(){
+	SharedComponent::Tick();
 	long tickTime = g_System()->GetTime();
 	tickCoeff = (tickTime - lasttickTime)*1.0 / 1000;
 	if (tickCoeff > 1)tickCoeff = 1.0f / 60;
@@ -70,7 +71,7 @@ void System::Tick(){
 string System::GetPath(){
 	return PATH_CUR;
 };
-string System::GetDataFile(string str){
+string System::GetDataFile(const string& str){
 	return PATH_DATA + str;
 }
 long System::GetTime(){

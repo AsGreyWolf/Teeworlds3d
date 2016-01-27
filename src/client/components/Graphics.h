@@ -22,6 +22,8 @@
 
 using namespace std;
 class Resources;
+class Model;
+class Model2d;
 
 ///<summary>Something was wrong</summary>
 class OpenGLException{
@@ -30,7 +32,7 @@ public:
 	OpenGLException(GLuint e){
 		error=e;
 	};
-	virtual string what() const throw(){
+	string what() const throw(){
 		return "OpenGL Error: "+string((const char*)gluErrorString(error));
 	};
 };
@@ -43,36 +45,18 @@ public:
 		SHADER_POS=0,
 		SHADER_TEXMAP,
 		SHADER_NORMAL
-		//SHADER_COLOR
 	};
 
 	Graphics();
 	~Graphics();
-	///<summary>Input callback</summary>
-	///<param name="keys">Keyboard state</param>
-	///<param name="xrel">Mouse X position change</param>
-	///<param name="yrel">Mouse Y position change</param>
-	///<param name="wheel">Mouse wheel state</param>
-	void Input(unsigned char* keys,int xrel,int yrel,int wheel);
-	///<summary>State change callback</summary>
-	///<param name="lastState">Last state</param>
-	void StateChange(STATE lastState);
-	///<summary>3d render callback</summary>
-	void Render();
-	///<summary>Render 3d Billboard</summary>
-	void RenderBillboard();
-	///<summary>2d render callback</summary>
-	void Render2d();
 	///<summary>Tick callback</summary>
 	void Tick();
-	///<summary>System message callback</summary>
-	void Message(int type,char* value);
 
 	///<summary>Throwes exception on Opengl Error</summary>
 	void CheckGLError() throw(OpenGLException);
 	///<summary>Convertes SDL_Surface in RGBA mode</summary>
 	///<param name="src">Source</param>
-	void to_RGBA(SDL_Surface* &src);
+	SDL_Surface* to_RGBA(SDL_Surface* src);
 	///<summary>Convertes screen coords to pixels</summary>
 	///<param name="coord">Coord</param>
 	int to_pixels(float coord);
@@ -81,26 +65,28 @@ public:
 	float to_screen(int pix);
 	///<summary>Updates color uniform in 3d shader</summary>
 	///<param name="color">Color</param>
-	void SetColor(vec4 color);
+	void SetColor(const vec4& color);
 	///<summary>Updates light uniform in 3d shader</summary>
 	///<param name="light">Use light?</param>
 	void SetLight(bool light);
 	///<summary>Updates color uniform in 2d shader</summary>
 	///<param name="color">Color</param>
-	void SetColor2d(vec4 color);
+	void SetColor2d(const vec4& color);
 	///<summary>Updates position uniform in 2d shader</summary>
 	///<param name="pos">Position</param>
-	void SetPos2d(glm::vec2 pos, float depth);
+	void SetPos2d(const glm::vec2& pos, float depth);
 	///<summary>Updates viewProjectionMatrix uniform in 3d shader</summary>
 	///<param name="position">Position of the camera</param>
 	///<param name="center">Vector directed forward the camera</param>
 	///<param name="up">Vector directed upforwards the camera</param>
 	void SetViewMatrix(const glm::vec3 &position, const glm::vec3 &center, const glm::vec3 &up);
-	///<summary>Updates modelMatrix uniform in 3d shader</summary>
+	///<summary>Updates modelMatrix and normalMatrix</summary>
 	///<param name="position">Position of the model</param>
 	///<param name="rotation">Rotation of the model</param>
 	///<param name="size">Size of the model</param>
-	void SetModelMatrix(glm::mat4 &modelMatrix,glm::mat4 &normalMatrix,const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &size);
+	void SetMatrix(glm::mat4 &modelMatrix,glm::mat4 &normalMatrix,const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &size);
+	///<summary>Set modelMatrix and normalMatrix to the uniform</summary>
+	void SetMatrix(const glm::mat4 &modelMatrix, const glm::mat4 &normalMatrix);
 	///<summary>Translate matrix</summary>
 	///<param name="position">Position of the model</param>
 	void Translate(glm::mat4 &modelMatrix,const glm::vec3 &position);
@@ -134,17 +120,15 @@ public:
 	///<summary>Shadow size in pixels</summary>
 	int shadowSize;
 
-	///<summary>If we are rendering scene second time(not to calc matrix)</summary>
-	bool restoreMatrix;
 	///<summary>Current shader id</summary>
 	int currentShader;
 private:
 	///<summary>Shadow generation</summary>
-	void CalcShadow();
+	void RenderShadow();
 	///<summary>3d generation</summary>
-	void Calc3d();
+	void Render3d();
 	///<summary>2d generation</summary>
-	void Calc2d();
+	void Render2d();
 
 	///<summary>Light uniform in 3d shader</summary>
 	unsigned int lightUniform3d;

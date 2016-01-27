@@ -22,13 +22,9 @@ int Graphics::to_pixels(float coord){
 float Graphics::to_screen(int pix){
 	return pix*2.0f/screenSize;
 }
-void Graphics::to_RGBA(SDL_Surface* &src){
-	if(src==NULL) return;
-	SDL_Surface* ret=SDL_ConvertSurfaceFormat(src,SDL_PIXELFORMAT_ABGR8888,0);
-	if(ret!=NULL){
-		SDL_FreeSurface(src);
-		src=ret;
-	}
+SDL_Surface* Graphics::to_RGBA(SDL_Surface* src){
+	if(src==NULL) return NULL;
+	return SDL_ConvertSurfaceFormat(src,SDL_PIXELFORMAT_ABGR8888,0);
 }
 Graphics::Graphics() : Component(){
 	pGraphics = this;
@@ -39,7 +35,7 @@ Graphics::Graphics() : Component(){
 		Console::Err("Could not get context: " + string(SDL_GetError()));
 		return; //TODO: exceptions
 	}
-	SDL_GL_SetSwapInterval(0);
+	SDL_GL_SetSwapInterval(1);
 	glewInit();
 	Console::Info("Initialized OpenGL " + string((char*)glGetString(GL_VERSION)));
 	int w=1024;
@@ -51,7 +47,7 @@ Graphics::Graphics() : Component(){
 	screenSize=h;
 	aspect=(float)w/h;
 	screen=quad2(-1*aspect,-1,2*aspect,2);
-	perspectiveMatrix=glm::perspective(1.0471975512f, aspect, 1.0f,10000.0f);
+	perspectiveMatrix=glm::perspective(1.57079632679f, aspect, 1.0f,10000.0f);
 	orthoMatrix=glm::ortho(-320.0f,320.0f,-320.0f,320.0f,0.0f,1.0f);
 
 	shadowSize = screenSize*aspect * 4;
@@ -126,11 +122,7 @@ Graphics::~Graphics(){
 	delete m_Resources;
 	pGraphics = NULL;
 }
-void Graphics::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
-void Graphics::Render(){}
-void Graphics::RenderBillboard(){}
-void Graphics::Render2d(){}
-void Graphics::CalcShadow() {
+void Graphics::RenderShadow() {
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);
 	glCullFace(GL_FRONT);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
@@ -145,9 +137,9 @@ void Graphics::CalcShadow() {
 	shadowMatrix = orthoMatrix*glm::lookAt(pos, pos + vec3(0, 0, -1), vec3(0, 1, 0));
 	glUniformMatrix4fv(viewProjectionMatrixUniformShadow, 1, false, (const float*)glm::value_ptr(shadowMatrix));
 	
-	g_Client()->Render();
+	Model::RenderModels();
 }
-void Graphics::Calc3d() {
+void Graphics::Render3d() {
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	glCullFace(GL_BACK);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -168,7 +160,7 @@ void Graphics::Calc3d() {
 	glActiveTexture(GL_TEXTURE0);
 #endif
 
-	g_Client()->Render();
+	Model::RenderModels();
 
 #ifdef USE_SHADOWS
 	glActiveTexture(GL_TEXTURE1);
@@ -177,7 +169,7 @@ void Graphics::Calc3d() {
 	glActiveTexture(GL_TEXTURE0);
 #endif
 }
-void Graphics::Calc2d() {
+void Graphics::Render2d() {
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	glCullFace(GL_BACK);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -187,7 +179,7 @@ void Graphics::Calc2d() {
 	glViewport(0, 0, screenSize*aspect, screenSize);
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	g_Client()->RenderBillboard();
+	Model::RenderBillboards();
 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	glCullFace(GL_BACK);
@@ -200,70 +192,61 @@ void Graphics::Calc2d() {
 
 	glUniform1f(aspectUniform2d, aspect);
 
-	g_Client()->Render2d();
+	Model2d::RenderModels();
 }
 void Graphics::Tick(){
+	Component::Tick();
 #ifdef USE_SHADOWS
-	CalcShadow();
-	restoreMatrix = true;
+	RenderShadow();
 #endif
-	Calc3d();
-	restoreMatrix=false;
-	Calc2d();
+	Render3d();
+	Render2d();
 }
-void Graphics::Message(int type,char* value){}
-void Graphics::StateChange(STATE lastState){}
-void Graphics::SetColor(vec4 color){
+void Graphics::SetColor(const vec4& color){
 	if (currentShader == m_Resources->shader3d)
 	glUniform4f(colorUniform3d,color.r,color.g,color.b,color.a);
 }
-void Graphics::SetColor2d(vec4 color){
+void Graphics::SetColor2d(const vec4& color){
 	glUniform4f(colorUniform2d,color.r,color.g,color.b,color.a);
 }
 void Graphics::SetLight(bool light){
 	if (currentShader == m_Resources->shader3d)
-	glUniform1f(lightUniform3d, light?1.0f:0.0f);
+		glUniform1f(lightUniform3d, light?1.0f:0.0f);
 }
-void Graphics::SetPos2d(vec2 pos, float depth){
+void Graphics::SetPos2d(const vec2& pos, float depth){
 	glUniform3f(posUniform2d, pos.x, pos.y, depth);
 }
 void Graphics::SetViewMatrix(const glm::vec3 &position, const glm::vec3 &center, const glm::vec3 &up){
 	glUniformMatrix4fv(viewProjectionMatrixUniform3d,1,false,(const float*)glm::value_ptr(perspectiveMatrix*glm::lookAt(position, center, up)));
 }
-void Graphics::SetModelMatrix(glm::mat4 &modelMatrix,glm::mat4 &normalMatrix,const vec3 &position, const vec3 &rotation, const vec3 &size){
-	if(!restoreMatrix){
-		Transform(modelMatrix,position,rotation,size);
-
-		normalMatrix=modelMatrix;
-		normalMatrix=glm::inverse(normalMatrix);
-		normalMatrix=glm::transpose(normalMatrix);
-	}
-	if (currentShader == m_Resources->shader3d){
+void Graphics::SetMatrix(const glm::mat4 &modelMatrix, const glm::mat4 &normalMatrix) {
+	if (currentShader == m_Resources->shader3d) {
 		glUniformMatrix4fv(normalMatrixUniform3d, 1, false, (const float*)glm::value_ptr(normalMatrix));
 		glUniformMatrix4fv(modelMatrixUniform3d, 1, false, (const float*)glm::value_ptr(modelMatrix));
 	}
 	if (currentShader == m_Resources->shaderShadow)
-		glUniformMatrix4fv(modelMatrixUniformShadow,1,false,(const float*)glm::value_ptr(modelMatrix));
+		glUniformMatrix4fv(modelMatrixUniformShadow, 1, false, (const float*)glm::value_ptr(modelMatrix));
+}
+void Graphics::SetMatrix(glm::mat4 &modelMatrix,glm::mat4 &normalMatrix,const vec3 &position, const vec3 &rotation, const vec3 &size){
+	Transform(modelMatrix,position,rotation,size);
+	normalMatrix=modelMatrix;
+	normalMatrix=glm::inverse(normalMatrix);
+	normalMatrix=glm::transpose(normalMatrix);
 }
 void Graphics::Translate(glm::mat4 &modelMatrix,const glm::vec3 &position){
-	if(!restoreMatrix)
-		modelMatrix=glm::translate(modelMatrix,position);
+	modelMatrix=glm::translate(modelMatrix,position);
 }
 void Graphics::RotateX(glm::mat4 &modelMatrix,const glm::vec3 &rotation){
-	if(!restoreMatrix)
-		modelMatrix=glm::rotate(modelMatrix,rotation.x,vec3(1,0,0));
+	modelMatrix=glm::rotate(modelMatrix,rotation.x,vec3(1,0,0));
 }
 void Graphics::RotateY(glm::mat4 &modelMatrix,const glm::vec3 &rotation){
-	if(!restoreMatrix)
-		modelMatrix=glm::rotate(modelMatrix,rotation.y,vec3(0,1,0));
+	modelMatrix=glm::rotate(modelMatrix,rotation.y,vec3(0,1,0));
 }
 void Graphics::RotateZ(glm::mat4 &modelMatrix,const glm::vec3 &rotation){
-	if(!restoreMatrix)
-		modelMatrix=glm::rotate(modelMatrix,rotation.z,vec3(0,0,1));
+	modelMatrix=glm::rotate(modelMatrix,rotation.z,vec3(0,0,1));
 }
 void Graphics::Scale(glm::mat4 &modelMatrix,const glm::vec3 &scale){
-	if(!restoreMatrix)
-		modelMatrix=glm::scale(modelMatrix,scale);
+	modelMatrix=glm::scale(modelMatrix,scale);
 }
 void Graphics::Transform(glm::mat4 &modelMatrix,const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale){
 	Translate(modelMatrix,position);

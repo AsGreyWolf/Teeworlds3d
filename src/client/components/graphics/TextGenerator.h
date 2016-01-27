@@ -15,19 +15,20 @@ public:
 	///<param name="size">Text size</param>
 	///<param name="align">Align</param>
 	///<param name="buffering">Buffering</param>
-	TextGenerator(std::string text,int size=1,int align=0,bool buffering=true);
+	TextGenerator(const std::string& text,int size=1,int align=0,bool buffering=true);
 	~TextGenerator();
 	///<summary>Updates generated text with current text</summary>
 	///<param name="text">Text</param>
-	void SetText(std::string text);
+	void SetText(const std::string& text);
 
 	///<summary>Font sizes</summary>
-	enum {
+	enum FONTS{
 		FONT_NORMAL = 1,
 		FONT_BIG = 2,
 		FONT_DIVIDER = 20,
 	};
-	enum{
+	///<summary>Font aligns</summary>
+	enum ALIGNS{
 		ALIGN_LEFT_TOP=0,
 		ALIGN_LEFT_CENTER,
 		ALIGN_LEFT_BOTTOM,
@@ -38,6 +39,7 @@ public:
 		ALIGN_RIGHT_CENTER,
 		ALIGN_RIGHT_BOTTOM,
 	};
+	///<summary>Size of generated texture</summary>
 	quad2 geometry;
 	Texture* texture;
 private:

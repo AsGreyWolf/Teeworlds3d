@@ -17,13 +17,14 @@ public:
 	///<param name="align">Align (see TextGenerator)</param>
 	///<param name="buffering">Buffering (see TextGenerator)</param>
 	///<param name="lighting">Use lighting?</param>
-	Text3d(std::string text, int size = 1, int align = 0, bool buffering = false, bool lighting=false);
+	Text3d(const std::string& text, int size = 1, int align = 0, bool buffering = false, bool lighting = false, bool isBillboard = true);
 	~Text3d();
 
 	///<summary>Updates generated text with current text</summary>
 	///<param name="text">Text</param>
-	void SetText(std::string text);
-	std::string text;
+	void SetText(const std::string& text);
+	///<summary>Current text</summary>
+	std::string text;//TODO private
 	TextGenerator* data;
 };
 

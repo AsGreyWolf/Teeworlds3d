@@ -28,19 +28,11 @@ GUI::~GUI(){
 	delete fpsTitle;
 	pGUI = NULL;
 }
-void GUI::Input(unsigned char* keys,int xrel,int yrel,int wheel){}
-void GUI::StateChange(STATE lastState){}
-void GUI::Render(){}
-void GUI::RenderBillboard(){}
-void GUI::Render2d(){
-	test->Render();
+void GUI::Tick(){
+	Component::Tick();
 	fpsObject->SetText(std::to_string(g_System()->fps));
-	fpsObject->Render();
-	fpsTitle->Render();
 }
-void GUI::Tick(){}
-void GUI::Message(int type,char* value){}
-void GUI::Fill(quad2 in,quad2 out){
+void GUI::Fill(const quad2& in, const quad2& out){
 	//TODO: make something less stupid
 	test=new Model2d();
 	test->AddRectangle(in,out);

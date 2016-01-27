@@ -6,6 +6,7 @@
 
 class Player;
 class Text3d;
+class BufferedModel;
 
 ///<summary>Visual player object</summary>
 class PlayerModel : public Model
@@ -14,19 +15,15 @@ public:
 	PlayerModel();
 	///<summary>Initializes subModels and creates them</summary>
 	void Create();
-	///<summary>Pushes the subModels into the shader</summary>
-	void Render(const glm::mat4 &parentMatrix);
 	~PlayerModel();
+	///<summary>Update matrix</summary>
+	void SetMatrix(const glm::mat4& parent = mat4(1.0f));
 
-	///<summary>Pushes the billboards into the shader</summary>
-	void RenderBillboard();
 	///<summary>Updates model with player info</summary>
 	///<param name="p">Player info</param>
 	void Update(Player* p);
-
-	const float renderSize = 36.0f;
-	const float baseSize = 64.0f;
 private:
+	///Submodels
 	Model* lArm;
 	Model* rArm;
 	Model* lFoot;
@@ -35,34 +32,32 @@ private:
 	Model* eyes;
 	Text3d* nickName;
 	Model* nickNameShadow;
-	bool visible;
-	int weapon;
+	BufferedModel* weapon;
 	int emote;
+	int hookUnits;
+	glm::vec3 hookPos;
+	glm::vec3 hookRot;
 
-
-	void addQuad(){};
-	void addVertex(std::vector<vec3> v,std::vector<vec3> n,std::vector<vec2> t,vec3 c){};
-	void addVertex(vec3 v,vec3 n,vec2 t,vec3 c){};
-	void clear(){};
-
-	float animStart;
-	enum{
+	///<summary>Foot animation state list</summary>
+	enum ANIMSTATES{
 		ANIMSTATE_NONE=0,
 		ANIMSTATE_LEFT_ONLY,
 		ANIMSTATE_ALL,
 		ANIMSTATE_RIGHT_ONLY,
 	};
+	///<summary>Foot animation state</summary>
 	int animState;
+	///<summary>Foot animation start time</summary>
+	float animStart;
 	float lastFaseA;
 
-	static vec3 weaponPos[NUM_WEAPONS];
-	glm::mat4 gunModelMatrix;
-	glm::mat4 gunNormalMatrix;
-
-	const int eyescale = (int)(baseSize*0.40);
-	const float separation = (0.075f*baseSize) - eyescale / 2;
-	const int detalization = 32;
-	const int animSpeed = 300;
+	static const vec3 weaponPos[NUM_WEAPONS];
+	static const float renderSize;
+	static const float baseSize;
+	static const int eyescale;
+	static const float separation;
+	static const int detalization;
+	static const int animSpeed;
 };
 
 #endif

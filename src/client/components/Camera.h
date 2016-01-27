@@ -9,17 +9,6 @@
 ///<summary>Camera component</summary>
 class Camera : public Component{
 public:
-	///<summary>Vector directed upwards the camera</summary>
-	glm::vec3 up;
-	///<summary>Vector directed forward the camera</summary>
-	glm::vec3 look;
-	///<summary>Vector directed to the right of the camera</summary>
-	glm::vec3 right;
-	///<summary>Position of the camera</summary>
-	glm::vec3 position;
-	///<summary>Rotation of the camera</summary>
-	glm::vec3 rotation;
-
 	Camera();
 	~Camera();
 	///<summary>Input callback</summary>
@@ -30,17 +19,7 @@ public:
 	void Input(unsigned char* keys,int xrel,int yrel,int wheel);
 	///<summary>State change callback</summary>
 	///<param name="lastState">Last state</param>
-	void StateChange(STATE lastState);
-	///<summary>3d render callback</summary>
-	void Render();
-	///<summary>Render 3d Billboard</summary>
-	void RenderBillboard();
-	///<summary>2d render callback</summary>
-	void Render2d();
-	///<summary>Tick callback</summary>
-	void Tick();
-	///<summary>System message callback</summary>
-	void Message(int type,char* value);
+	void StateChange(const STATE& lastState);
 
 	///<summary>Updates the current viewProjection matrix</summary>
 	void SetMatrix();
@@ -55,6 +34,17 @@ public:
 	void RotateZ(float rad);
 	///<summary>Updates the vectors</summary>
 	void updateVectors();
+
+	///<summary>Vector directed upwards the camera</summary>
+	glm::vec3 up;
+	///<summary>Vector directed forward the camera</summary>
+	glm::vec3 look;
+	///<summary>Vector directed to the right of the camera</summary>
+	glm::vec3 right;
+	///<summary>Position of the camera</summary>
+	glm::vec3 position;
+	///<summary>Rotation of the camera</summary>
+	glm::vec3 rotation;
 };
 Camera* g_Camera();
 

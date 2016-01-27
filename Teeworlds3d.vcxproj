@@ -123,6 +123,7 @@
     <ClInclude Include="src\client\Component.h" />
     <ClInclude Include="src\client\components\Camera.h" />
     <ClInclude Include="src\client\components\Graphics.h" />
+    <ClInclude Include="src\client\components\graphics\models\BufferedModel.h" />
     <ClInclude Include="src\client\components\graphics\models\Model.h" />
     <ClInclude Include="src\client\components\graphics\models\Model2d.h" />
     <ClInclude Include="src\client\components\graphics\models\PlayerModel.h" />
@@ -147,8 +148,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\client\Client.cpp" />
+    <ClCompile Include="src\client\Component.cpp" />
     <ClCompile Include="src\client\components\Camera.cpp" />
     <ClCompile Include="src\client\components\Graphics.cpp" />
+    <ClCompile Include="src\client\components\graphics\models\BufferedModel.cpp" />
     <ClCompile Include="src\client\components\graphics\models\Model.cpp" />
     <ClCompile Include="src\client\components\graphics\models\Model2d.cpp" />
     <ClCompile Include="src\client\components\graphics\models\PlayerModel.cpp" />
@@ -162,6 +165,7 @@
     <ClCompile Include="src\client\components\Map.cpp" />
     <ClCompile Include="src\client\components\Players.cpp" />
     <ClCompile Include="src\shared\Console.cpp" />
+    <ClCompile Include="src\shared\SharedComponent.cpp" />
     <ClCompile Include="src\shared\System.cpp" />
     <ClCompile Include="src\shared\World.cpp" />
     <ClCompile Include="src\shared\world\Player.cpp" />

@@ -6,28 +6,13 @@
 #include "System.h"
 //TODO debug
 #include "../client/components/Graphics.h"
-#include "../client/components/graphics/Resources.h"//TODO: REMOVE IT, NOW!
 
 class World* pWorld;
 World* g_World(){ return pWorld; }
 
-World::World(){
+World::World() :SharedComponent() {
 	pWorld = this;
 	UnLoad();
-	//TODO: only debug
-	auto skinName = g_Graphics()->m_Resources->skinTextures.begin();
-	for (glm::uint8_t i = 0; i<MAX_PLAYERS; i++){
-		players[i] = new Player(i);
-		players[i]->pos = vec3(0, 0, rand() % 20048);//vec3(rand() % 2048, rand() % 2048, rand() % 2048);
-		players[i]->rot = vec3(rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))), rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))), rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))));
-		players[i]->rot = glm::normalize(players[i]->rot);
-		players[i]->weapon = rand() % NUM_WEAPONS;
-		players[i]->emote = EMOTE_NORMAL;
-		players[i]->skin = (*skinName).first;
-		players[i]->nickname = (*skinName).first;
-		skinName++;
-		if (skinName == g_Graphics()->m_Resources->skinTextures.end()) skinName = g_Graphics()->m_Resources->skinTextures.begin();
-	}
 };
 World::~World(){
 	UnLoad();
@@ -37,13 +22,14 @@ World::~World(){
 	pWorld = 0;
 };
 void World::Tick(){
+	SharedComponent::Tick();
 	if (!tileset.empty())
 		for (int i = 0; i < MAX_PLAYERS; i++) {
 			if (pWorld->players[i])
 				pWorld->players[i]->Tick();
 		}
 }
-bool World::Load(string name){
+bool World::Load(const string& name){
 	string pp = "maps/" + name + ".map";
 	string path = g_System()->GetDataFile(pp);
 
@@ -130,7 +116,7 @@ void World::UnLoad(){
 		delete[] tilesByPos;
 	worldSize = glm::vec3(0, 0, 0);
 }
-Player* World::IntersectPlayer(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision, int except, float radius){
+Player* World::IntersectPlayer(const glm::vec3& Pos0, const glm::vec3& Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision, int except, float radius){
 	vec3 Pos = Pos1 - Pos0;
 	float minv;
 	Player* minp = NULL;
@@ -146,7 +132,7 @@ Player* World::IntersectPlayer(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCo
 		float c = pow(length(Tee), 2.0f) - pow(p->physSize /2 + radius, 2.0f);
 		float D = glm::sqrt(proj*proj - c);
 		float v = (proj - D);
-		if (glm::isnan(v) || v>len + 1 || v<-1){
+		if (glm::isnan(v) || v>len || v<0){
 			continue;
 		}
 		if (minp == NULL || minv > v) {
@@ -161,10 +147,38 @@ Player* World::IntersectPlayer(glm::vec3 Pos0, glm::vec3 Pos1, glm::vec3 *pOutCo
 			*pOutBeforeCollision = dist*minv - dist + Pos0;
 		return minp;
 	}
-	return NULL;
+	return NULL;/*
+	float Distance = distance(Pos0, Pos1);
+	int End = Distance + 1;
+	vec3 LastPos = Pos0;
+	for (int i = 0; i < End; i++)
+	{
+		float a = i / Distance;
+		vec3 Pos = glm::mix(Pos0, Pos1, a);
+		for (int p = 0; p < MAX_PLAYERS; p++)
+		{
+			if (p == except) continue;
+			Player* player = players[p];
+			float D = distance(Pos, player->pos);
+			if (D < player->physSize / 2 + radius && D > 0.0f)
+			{
+				if (a > 0.0f)
+					Pos0 = LastPos;
+				else if (distance(Pos1, player->pos) > D)
+					Pos0 = Pos1;
+				if (pOutCollision)
+					*pOutCollision = Pos0;
+				if (pOutBeforeCollision)
+					*pOutBeforeCollision = Pos0;
+				return player;
+			}
+		}
+		LastPos = Pos;
+	}
+	return NULL;*/
 }
 // Code from original Teeworlds with small changes, Copyright Teeworlds team
-Tile* World::GetTile(vec3 pos){
+Tile* World::GetTile(const vec3& pos){
 	int x = round(pos.x) / 32;
 	int y = round(pos.y) / 32;
 	int z = round(pos.z) / 32;
@@ -173,7 +187,7 @@ Tile* World::GetTile(vec3 pos){
 Tile* World::GetTile(int x, int y, int z) {
 	return x < 0 ? NULL : x >= worldSize.x ? NULL : y < 0 ? NULL : y >= worldSize.y ? NULL : z < 0 ? NULL : z >= worldSize.z ? NULL : tilesByPos[x][y][z];
 }
-Tile* World::IntersectLine(vec3 Pos0, vec3 Pos1, vec3 *pOutCollision, vec3 *pOutBeforeCollision)
+Tile* World::IntersectLine(const vec3& Pos0, const vec3& Pos1, vec3 *pOutCollision, vec3 *pOutBeforeCollision)
 {
 	float Distance = glm::distance(Pos0, Pos1);
 	int End(Distance + 1);
@@ -249,9 +263,9 @@ void World::MovePoint(vec3 *pInoutPos, vec3 *pInoutVel, float Elasticity, int *p
 		*pInoutPos = Pos + sVel;
 	}
 }
-bool World::TestBox(vec3 Pos, vec3 Size)
+bool World::TestBox(const vec3& Pos, const vec3& size)
 {
-	Size *= 0.5f;
+	vec3 Size = size*0.5f;
 	Tile* buf = GetTile(vec3(Pos.x - Size.x, Pos.y - Size.y, Pos.z - Size.z));
 	if (buf && buf->isPhys())
 		return true;
@@ -278,7 +292,7 @@ bool World::TestBox(vec3 Pos, vec3 Size)
 		return true;
 	return false;
 }
-void World::MoveBox(vec3 *pInoutPos, vec3 *pInoutVel, vec3 Size, float Elasticity)
+void World::MoveBox(vec3 *pInoutPos, vec3 *pInoutVel, const vec3& Size, float Elasticity)
 {
 	// do the move
 	vec3 Pos = *pInoutPos;

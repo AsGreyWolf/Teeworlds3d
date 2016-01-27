@@ -4,7 +4,7 @@
 #include "../../../shared/Console.h"
 using namespace std;
 
-void StringTexture::Initialize(TTF_Font* font, std::string data) {
+void StringTexture::Initialize(TTF_Font* font, const std::string& data) {
 	buffering=false;
 	SDL_Surface* surface = TTF_RenderUTF8_Blended(font, data.c_str(), g_Graphics()->m_Resources->SDLColorWhite);
 	if (!surface){
@@ -25,7 +25,7 @@ StringTexture::~StringTexture() {
 		cleanup = false;
 };
 std::map<int, std::map<std::string, Texture*>> StringTexture::stringBuffer;
-StringTexture::StringTexture(std::string data, int size, bool buffering) : buffering(buffering) {
+StringTexture::StringTexture(const std::string& data, int size, bool buffering) : buffering(buffering) {
 	Initialize(g_Graphics()->m_Resources->textureRGB);
 	if (buffering) {
 		map<int, map<string, Texture*>>::iterator key = stringBuffer.find(size);

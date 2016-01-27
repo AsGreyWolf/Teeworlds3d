@@ -5,7 +5,7 @@
 class quad2{
 public:
 	glm::vec2 p00,p01,p10,p11;
-	quad2(glm::vec2 pos,float w,float h){
+	quad2(const glm::vec2& pos,float w,float h){
 		p00=pos;
 		p01=pos+glm::vec2(0,h);
 		p10=pos+glm::vec2(w,0);
@@ -17,7 +17,7 @@ public:
 		p10=glm::vec2(x+w,y);
 		p11=glm::vec2(x+w,y+h);
 	};
-	quad2(glm::vec2 s00,glm::vec2 s10,glm::vec2 s01,glm::vec2 s11){
+	quad2(const glm::vec2& s00, const glm::vec2& s10, const glm::vec2& s01, const glm::vec2& s11){
 		p00=s00;
 		p01=s01;
 		p10=s10;
@@ -57,11 +57,11 @@ public:
 	quad2 operator>>(const glm::vec2& c){
 		return operator>>(operator+(c));
 	}
-	static glm::vec3 vec2rot(glm::vec3 v){
+	static glm::vec3 vec2rot(const glm::vec3& v){
 		glm::vec2 xy=glm::normalize(glm::vec2(v.x,v.y));
 		return glm::vec3(asin(v.z),0,xy.x>0.0?-acos(xy.y):acos(xy.y));
 	}
-	static glm::vec3 vec2vec3(glm::vec2 v, float depth=0){
+	static glm::vec3 vec2vec3(const glm::vec2& v, float depth=0){
 		return glm::vec3(-v.x, depth, v.y);
 	}
 };

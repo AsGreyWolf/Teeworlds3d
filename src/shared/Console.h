@@ -15,10 +15,10 @@ public:
 
 	///<summary>Send error message</summary>
 	///<param name="c">Message</param>
-	static void Err(string c);
+	static void Err(const string& c);
 	///<summary>Send info message</summary>
 	///<param name="c">Message</param>
-	static void Info(string c);
+	static void Info(const string& c);
 };
 Console* g_Console();
 

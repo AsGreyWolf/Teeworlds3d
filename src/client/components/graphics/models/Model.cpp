@@ -7,29 +7,42 @@
 #include <sstream>
 #include "../Resources.h"
 #include "../Texture.h"
+#include "../../Camera.h"
 #include "../../Graphics.h"
 #include "../../../Client.h"
 #include "../../../../shared/System.h"
-	
-void Model::Render(const glm::mat4 &parentMatrix){
-	if(!g_Graphics()->restoreMatrix)
-		modelMatrix=parentMatrix;
 
-	g_Graphics()->SetModelMatrix(modelMatrix,normalMatrix,position,rotation,scale);
+std::list<Model*> Model::registredModels;
+std::list<Model*> Model::registredBillboards;
+void Model::RenderModels() {
+	for (Model*& model : registredModels)
+		model->Render();
+}
+void Model::RenderBillboards() {
+	for (Model*& model : registredBillboards)
+		model->Render();
+}
+void Model::Render(){
+	g_Graphics()->SetMatrix(modelMatrix, normalMatrix);
+	g_Graphics()->SetLight(lighting);
 	g_Graphics()->SetColor(color);
-
-	//if(this!=g_Graphics()->m_Resources->coordsModel)
-	//g_Graphics()->m_Resources->coordsModel->render(modelMatrix);
 
 	texture->Bind();
 	glBindVertexArray(vao);
-	g_Graphics()->SetLight(lighting);
-	glDrawArrays(type , 0, vertex.size());
+	glDrawArrays(type, 0, vertex.size());
+}
+void Model::SetMatrix(const glm::mat4 &parentMatrix) {
+	modelMatrix = parentMatrix;
+	if (isBillboard) {
+		LookAt(g_Camera()->position);
+		ScaleAt(g_Camera()->position, vec3(0), vec3(0.002f));
+		scale += 1;
+	}
+	g_Graphics()->SetMatrix(modelMatrix, normalMatrix, position, rotation, scale);
 }
 
-Model::Model(bool lighting, int type){
+Model::Model(bool lightingv, bool isBillboardv, int typev) :type(typev),isBillboard(isBillboardv){
 	this->lighting=lighting;
-	this->type=type;
 	position=vec3(0,0,0);
 	rotation=vec3(0,0,0);
 	color=vec4(1,1,1,0);
@@ -40,6 +53,10 @@ Model::Model(bool lighting, int type){
 	glGenBuffers(1,&nbuffer);
 	glGenBuffers(1,&tbuffer);
 	texture = g_Graphics()->m_Resources->textureBlank;
+	if (isBillboard)
+		registredBillboards.push_back(this); //TODO remove and make registration system
+	else
+		registredModels.push_back(this);
 }
 void Model::Create(){
 	glBindVertexArray(vao);
@@ -63,6 +80,10 @@ void Model::Create(){
 }
 
 Model::~Model(){
+	if (isBillboard)
+		registredBillboards.remove(this);
+	else
+		registredModels.remove(this);
 	glDeleteBuffers(1, &vbuffer);
 	glDeleteBuffers(1, &nbuffer);
 	glDeleteBuffers(1, &tbuffer);
@@ -76,19 +97,19 @@ void Model::Clear(){
 	texcoord.clear();
 }
 
-void Model::AddVertex(vec3 v,vec3 n,vec2 t){
+void Model::AddVertex(const vec3& v, const vec3& n, const vec2& t){
 	vertex.push_back(v);
 	normal.push_back(n);
 	texcoord.push_back(t);
 }
 
-void Model::AddVertex(std::vector<vec3> v,std::vector<vec3> n,std::vector<vec2> t){
+void Model::AddVertex(const std::vector<vec3>& v, const std::vector<vec3>& n, const std::vector<vec2>& t){
 	vertex.insert(vertex.end(),v.begin(),v.end());
 	normal.insert(normal.end(),n.begin(),n.end());
 	texcoord.insert(texcoord.end(),t.begin(),t.end());
 }
 
-void Model::AddQuad(quad3 v,vec3 n,quad2 t){
+void Model::AddQuad(const quad3& v, const vec3& n, const quad2& t){
 	AddVertex(v.p1,n,t.p10);
 	AddVertex(v.p2,n,t.p00);
 	AddVertex(v.p3,n,t.p01);
@@ -98,7 +119,7 @@ void Model::AddQuad(quad3 v,vec3 n,quad2 t){
 	AddVertex(v.p4,n,t.p11);
 }
 
-void Model::AddSphere(int rings, int sectors,vec3 lengthiness,float radius,quad2 texc,bool backstart){
+void Model::AddSphere(const vec3& position, int rings, int sectors, const vec3& lengthiness, float radius, const quad2& texc, bool backstart){
 
 	float const R = 1./(float)(rings-1);
 	float const S = 1./(float)(sectors-1);
@@ -122,7 +143,7 @@ void Model::AddSphere(int rings, int sectors,vec3 lengthiness,float radius,quad2
 			float const x = cos(2*M_PI * s * S) * sin( M_PI * r * R );
 			float const y = sin(2*M_PI * s * S) * sin( M_PI * r * R );
 			*t++ = vec2(texc.p00.x+s*S*tcsizex,texc.p00.y+r*R*tcsizey);
-			*v++ = vec3(-x * radius*lengthiness.x,y * radius*lengthiness.y,z*radius*lengthiness.z);
+			*v++ = vec3(-x * radius*lengthiness.x,y * radius*lengthiness.y,z*radius*lengthiness.z)+ position;
 			*n++ = vec3(-x,y,z);
 		}
 	else
@@ -131,7 +152,7 @@ void Model::AddSphere(int rings, int sectors,vec3 lengthiness,float radius,quad2
 			float const x = cos(2*M_PI * s * S) * sin( M_PI * r * R );
 			float const y = sin(2*M_PI * s * S) * sin( M_PI * r * R );
 			*t++ = vec2(texc.p00.x+s*S*tcsizex,texc.p00.y+r*R*tcsizey);
-			*v++ = vec3(x * radius*lengthiness.x,y * radius*lengthiness.y,z*radius*lengthiness.z);
+			*v++ = vec3(x * radius*lengthiness.x,y * radius*lengthiness.y,z*radius*lengthiness.z) + position;
 			*n++ = vec3(x,y,z);
 		}
 		if(backstart)
@@ -164,7 +185,7 @@ void Model::AddSphere(int rings, int sectors,vec3 lengthiness,float radius,quad2
 			}
 }
 
-void Model::AddObjModel(string filename){
+void Model::AddObjModel(const vec3& position, const string& filename){
 	std::ifstream file(g_System()->GetDataFile(filename));
 	if(!file.good()) {
 		file.close();
@@ -184,6 +205,7 @@ void Model::AddObjModel(string filename){
 			if (!(iss >> v.x>>v.y>>v.z)) { continue; }
 			vec3 buf=v;
 			buf*=32;
+			buf +=position;
 			verts.push_back(buf);
 		}
 		else if(com.compare("vn")==0){
@@ -233,7 +255,7 @@ void Model::AddObjModel(string filename){
 	}
 	file.close();
 }
-void Model::AddRectangle(quad2 in, quad2 out, float depth){
+void Model::AddRectangle(const quad2& in, const quad2& out, float depth){
 	quad2 tex(0,0,1,1);
 	vec3 n=vec3(0,1,0);
 	AddQuad(quad3(in, depth), n, tex);
@@ -281,9 +303,9 @@ void Model::AddRectangle(quad2 in, quad2 out, float depth){
 	}
 }
 
-void Model::LookAt(vec3 to){
+void Model::LookAt(const vec3& to){
 	rotation=quad2::vec2rot(normalize(to-position));
 }
-void Model::ScaleAt(vec3 to,vec3 basic, vec3 additional){
+void Model::ScaleAt(const vec3& to, const vec3& basic, const vec3& additional){
 	scale=additional*length(to-position)+basic;
 }

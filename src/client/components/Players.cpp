@@ -12,6 +12,7 @@
 
 class Players* pPlayers;
 Players* g_Players(){ return pPlayers; }
+Model2d* cursor;
 
 Players::Players() : Component(){
 	pPlayers = this;
@@ -26,10 +27,13 @@ Players::~Players(){
 		delete playerModels[i];
 	}
 	pPlayers = NULL;
+	if (cursor)
+		delete cursor;
 }
 ///TODO: debug only
 bool lastSpaceState=false;
 void Players::Input(unsigned char* keys,int xrel,int yrel,int wheel){
+	Component::Input(keys, xrel, yrel, wheel);
 	if (keys[SDL_SCANCODE_KP_6])
 		g_World()->players[0]->pos += (float)(g_System()->tickCoeff * 300)*g_Camera()->right;
 	if (keys[SDL_SCANCODE_KP_4])
@@ -51,13 +55,13 @@ void Players::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	}
 	glm::vec2 cameraFront = vec2(g_Camera()->look.x, g_Camera()->look.y);
 	glm::vec2 cameraRight = vec2(g_Camera()->right.x, g_Camera()->right.y);
-	g_World()->players[0]->acc = vec2(0, 0);
-	if (keys[SDL_SCANCODE_W]) g_World()->players[0]->acc += cameraFront;
-	if (keys[SDL_SCANCODE_S]) g_World()->players[0]->acc -= cameraFront;
-	if (keys[SDL_SCANCODE_D]) g_World()->players[0]->acc += cameraRight;
-	if (keys[SDL_SCANCODE_A]) g_World()->players[0]->acc -= cameraRight;
-	if(glm::length(g_World()->players[0]->acc)>0)
-		g_World()->players[0]->acc = glm::normalize(g_World()->players[0]->acc);
+	g_World()->players[0]->dir = vec2(0, 0);
+	if (keys[SDL_SCANCODE_W]) g_World()->players[0]->dir += cameraFront;
+	if (keys[SDL_SCANCODE_S]) g_World()->players[0]->dir -= cameraFront;
+	if (keys[SDL_SCANCODE_D]) g_World()->players[0]->dir += cameraRight;
+	if (keys[SDL_SCANCODE_A]) g_World()->players[0]->dir -= cameraRight;
+	if(glm::length(g_World()->players[0]->dir)>0)
+		g_World()->players[0]->dir = glm::normalize(g_World()->players[0]->dir);
 	g_World()->players[0]->jump = false;
 	if(keys[SDL_SCANCODE_SPACE]){
 		if(!lastSpaceState){
@@ -67,30 +71,25 @@ void Players::Input(unsigned char* keys,int xrel,int yrel,int wheel){
 	}else{
 		lastSpaceState=false;
 	}
+	g_World()->players[0]->hook = false;
+	if (keys[SDL_SCANCODE_LCTRL]) {
+		g_World()->players[0]->hook = true;
+	}
 	g_World()->players[0]->look = g_Camera()->rotation;
 	g_World()->players[0]->controls = true;
 }
-void Players::StateChange(STATE lastState){}
-void Players::Render(){
-	for(int i=0;i<MAX_PLAYERS;i++){
+void Players::Tick(){
+	Component::Tick();
+	g_Camera()->position = g_World()->players[0]->pos;
+	for (int i = 0; i < MAX_PLAYERS; i++) {
 		playerModels[i]->Update(g_World()->players[i]);
-		((Model*)playerModels[i])->Render();
+		playerModels[i]->SetMatrix();
 	}
-}
-void Players::Render2d(){
-	Model2d* cursor=new Model2d();
+	if (cursor)
+		delete cursor;
+	cursor = new Model2d();
 	cursor->AddQuad(quad2(-0.0625f, -0.0625f, 0.125f, 0.125f), g_Graphics()->m_Resources->gameCursor[g_World()->players[0]->weapon]);
 	cursor->texture = g_Graphics()->m_Resources->textureGame;
 	cursor->Create();
 	cursor->Render();
-	delete cursor;
 }
-void Players::RenderBillboard(){
-	for(int i=0;i<MAX_PLAYERS;i++){
-		playerModels[i]->RenderBillboard();
-	}
-}
-void Players::Tick(){
-	g_Camera()->position = g_World()->players[0]->pos;
-}
-void Players::Message(int type,char* value){}

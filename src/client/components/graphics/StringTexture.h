@@ -18,17 +18,27 @@ public:
 	///<param name="data">Text</param>
 	///<param name="size">Text size</param>
 	///<param name="buffering">Is buffering enabled</param>
-	StringTexture(std::string data, int size, bool buffering);
+	StringTexture(const std::string& data, int size, bool buffering);
 	~StringTexture();
 
+	///<summary>Clean up the buffers</summary>
 	static void ClearBuffers();
 private:
-	bool buffering;
-	StringTexture(TTF_Font* font, std::string data){Initialize(font,data);};
-	void Initialize(TTF_Font* font, std::string data);
-	StringTexture(Texture* t){Initialize(t);};
+	///<summary>Generate string texture with spec. font and string data</summary>
+	///<param name="font">TTF Font pointer</param>
+	///<param name="data">Data string</param>
+	StringTexture(TTF_Font* font, const std::string& data) { Initialize(font, data); };
+	///<summary>Initialize string texture with spec. font and string data</summary>
+	///<param name="font">TTF Font pointer</param>
+	///<param name="data">Data string</param>
+	void Initialize(TTF_Font* font, const std::string& data);
+	///<summary>Generate string texture with spec. texture</summary>
+	StringTexture(Texture* t) { Initialize(t); };
+	///<summary>Initialize string texture with spec. texture</summary>
 	void Initialize(Texture* t);
-
+	///<summary>Is buffering enabled</summary>
+	bool buffering;
+	///<summary>Buffered data</summary>
 	static std::map<int, std::map<std::string, Texture*>> stringBuffer;
 };
 

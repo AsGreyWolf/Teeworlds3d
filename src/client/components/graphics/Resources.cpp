@@ -43,15 +43,20 @@ void Resources::Load(){
 		skins[i].resize(skins[i].size()-4);
 		skinTextures.insert(skinTextures.begin(),pair<string,Texture*>(skins[i],skintex));
 	}
+	texturePos8.reserve(8*8);
 	for (int j = 0; j < 8; j++)for (int i = 0; i < 8;i++)
 		texturePos8.push_back(quad2(1.0f*i/8,1.0f*j/8,1.0f/8,1.0f/8));
+	texturePos16.reserve(16*16);
 	for (int j = 0; j < 16; j++)for (int i = 0; i < 16; i++)
 		texturePos16.push_back(quad2(1.0f*i / 16, 1.0f*j / 16, 1.0f / 16, 1.0f / 16));
+	texturePos8x4.reserve(8*4);
 	for (int j = 0; j < 4; j++)for (int i = 0; i< 8; i++)
 		texturePos8x4.push_back(quad2(1.0f*i / 8, 1.0f*j / 4, 1.0f / 8, 1.0f / 4));
+	texturePos16x8.reserve(16*8);
 	for (int j = 0; j < 8; j++)for (int i = 0; i < 16; i++)
 		texturePos16x8.push_back(quad2(1.0f*i / 16, 1.0f*j / 8, 1.0f / 16, 1.0f / 8));
 
+	gameCursor.reserve(NUM_WEAPONS);
 	gameCursor.push_back(texturePos16x8[0]);
 	gameCursor.push_back(texturePos16x8[32]);
 	gameCursor.push_back(texturePos16x8[48]);
@@ -60,7 +65,7 @@ void Resources::Load(){
 	gameCursor.push_back(texturePos16x8[80]);
 
 	//models
-	coordsModel=new Model(false, GL_LINES);
+	coordsModel=new Model(false, false, GL_LINES);
 	coordsModel->texture=textureRGB;
 	coordsModel->AddVertex(vec3(0,0,0),vec3(0,0,1),vec2(0.5f,0.5f));
 	coordsModel->AddVertex(vec3(32,0,0),vec3(0,0,1),vec2(0,0));
@@ -70,15 +75,16 @@ void Resources::Load(){
 	coordsModel->AddVertex(vec3(0,0,32),vec3(0,0,1),vec2(0,1));
 	coordsModel->Create();
 
+	weaponModels.reserve(NUM_WEAPONS);
 	for(int i=0;i<NUM_WEAPONS;i++){
 		Model* buffer;
 		buffer=new Model();
-		buffer->AddObjModel(weaponFiles[i]);
+		buffer->AddObjModel(vec3(0, 0, 0), weaponFiles[i]);
 		buffer->Create();
 		buffer->texture = new Texture(weaponTextureFiles[i], true, false);
 		weaponModels.push_back(buffer);
 	}
-
+	
 	//shaders
 	LoadShader("shaders/shader",shader3d);
 	LoadShader("shaders/shader2d",shader2d);
@@ -110,7 +116,7 @@ void Resources::UnLoad(){
 	//models
 	delete coordsModel;
 
-	for(int i=0;i<NUM_WEAPONS;i++){
+	for(int i=0;i<weaponModels.size();i++){
 		delete weaponModels[i]->texture;
 		delete weaponModels[i];
 	}
@@ -166,7 +172,7 @@ void Resources::UnLoadShader(GLuint &shader)
 	glDeleteProgram(shader);
 	shader = 0;
 }
-bool Resources::LoadShader(string filepath, GLuint &shader)
+bool Resources::LoadShader(const string& filepath, GLuint &shader)
 {
 	string firstpath = g_System()->GetDataFile(filepath);
 

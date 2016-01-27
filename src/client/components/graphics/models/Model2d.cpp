@@ -8,6 +8,11 @@
 #include "../../Graphics.h"
 #include "../../../Client.h"
 
+std::list<Model2d*> Model2d::registredModels;
+void Model2d::RenderModels() {
+	for (Model2d*& model : registredModels)
+		model->Render();
+}
 void Model2d::Render(){
 	g_Graphics()->SetPos2d(position, depth);
 	g_Graphics()->SetColor2d(color);
@@ -16,8 +21,7 @@ void Model2d::Render(){
 	glBindVertexArray(vao);
 	glDrawArrays(type , 0, vertex.size());
 }
-Model2d::Model2d(int type){
-	this->type=type;
+Model2d::Model2d(int typev):type(typev){
 	position=vec2(0,0);
 	color=vec4(1,1,1,0);
 	glGenVertexArrays(1, &vao);
@@ -26,6 +30,7 @@ Model2d::Model2d(int type){
 	glGenBuffers(1,&tbuffer);
 	texture = g_Graphics()->m_Resources->textureBlank;
 	depth = 0;
+	registredModels.push_back(this);
 }
 void Model2d::Create(){
 	glBindVertexArray(vao);
@@ -43,6 +48,7 @@ void Model2d::Create(){
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 Model2d::~Model2d(){
+	registredModels.remove(this);
 	glDeleteBuffers(1, &vbuffer);
 	glDeleteBuffers(1, &tbuffer);
 	glDeleteVertexArrays(1, &vao);
@@ -52,15 +58,15 @@ void Model2d::Clear(){
 	vertex.clear();
 	texcoord.clear();
 }
-void Model2d::AddVertex(vec2 v,vec2 t){
+void Model2d::AddVertex(const vec2& v, const vec2& t){
 	vertex.push_back(v);
 	texcoord.push_back(t);
 }
-void Model2d::AddVertex(std::vector<vec2> v,std::vector<vec2> t){
+void Model2d::AddVertex(const std::vector<vec2>& v, const std::vector<vec2>& t){
 	vertex.insert(vertex.end(),v.begin(),v.end());
 	texcoord.insert(texcoord.end(),t.begin(),t.end());
 }
-void Model2d::AddQuad(quad2 v,quad2 t){
+void Model2d::AddQuad(const quad2& v, const quad2& t){
 			AddVertex(v.p00,t.p00);
 			AddVertex(v.p10,t.p10);
 			AddVertex(v.p01,t.p01);
@@ -70,7 +76,7 @@ void Model2d::AddQuad(quad2 v,quad2 t){
 			AddVertex(v.p11,t.p11);
 }
 
-void Model2d::AddRectangle(quad2 in,quad2 out){
+void Model2d::AddRectangle(const quad2& in, const quad2& out){
 	quad2 tex(0,0,1,1);
 	AddQuad(in,tex);
 	float roundedleft=(in.p00-out.p00).x;

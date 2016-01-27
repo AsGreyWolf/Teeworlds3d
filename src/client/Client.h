@@ -20,19 +20,13 @@ public:
 	///<param name="yrel">Mouse Y position change</param>
 	///<param name="wheel">Mouse wheel state</param>
 	void Input(unsigned char* keys,int xrel,int yrel,int wheel);
-	///<summary>Render 3d</summary>
-	void Render();
-	///<summary>Render 3d Billboard</summary>
-	void RenderBillboard();
-	///<summary>Render 2d</summary>
-	void Render2d();
 	///<summary>Tick the components</summary>
 	void Tick();
 	///<summary>Send message to the components</summary>
 	void Message(int type,char* value);
 	///<summary>Send new state to the components</summary>
 	///<param name="lastState">Last state</param>
-	void StateChange(STATE lastState);
+	void StateChange(const STATE& lastState);
 
 	///<summary>Starts the gamecycle</summary>
 	void Start();
@@ -47,9 +41,6 @@ public:
 	SDL_Window *screen;
 private:
 	///<summary>All the components</summary>
-	std::vector <Component*> m_Components;
-	std::vector <SharedComponent*> m_SharedComponents;
-
 	static bool working;
 	SDL_Renderer* renderer;
 };

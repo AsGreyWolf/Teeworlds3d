@@ -70,7 +70,7 @@ public:
 	///<param name="filepath">File name in data directory</param>
 	///<param name="shader">Shader id</param>
 	///<returns>true if all right, false if error found</returns>
-	bool LoadShader(string filepath, GLuint &shader);
+	bool LoadShader(const string& filepath, GLuint &shader);
 	///<summary>UnLoads shader</summary>
 	///<param name="shader">Shader id</param>
 	void UnLoadShader(GLuint &shader);

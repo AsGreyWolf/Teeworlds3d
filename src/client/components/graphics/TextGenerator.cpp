@@ -4,7 +4,7 @@
 #include "../Graphics.h"
 #include "../../Client.h"
 
-TextGenerator::TextGenerator(string text,int size,int align,bool buffering){
+TextGenerator::TextGenerator(const string& text,int size,int align,bool buffering){
 	float cursize=size*1.0f/ FONT_DIVIDER;
 	pixels=1;
 	while (pixels<g_Graphics()->to_pixels(cursize))
@@ -41,7 +41,7 @@ TextGenerator::TextGenerator(string text,int size,int align,bool buffering){
 		break;
 	}
 }
-void TextGenerator::SetText(string text){
+void TextGenerator::SetText(const string& text){
 	delete texture;
 	texture=new StringTexture(text, pixels, buffering);
 }

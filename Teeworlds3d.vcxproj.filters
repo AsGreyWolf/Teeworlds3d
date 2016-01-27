@@ -300,6 +300,9 @@
     <ClInclude Include="src\client\components\graphics\models\Text3d.h">
       <Filter>client/\components/\graphics/\models</Filter>
     </ClInclude>
+    <ClInclude Include="src\client\components\graphics\models\BufferedModel.h">
+      <Filter>client/\components/\graphics/\models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\client\Client.cpp">
@@ -358,6 +361,15 @@
     </ClCompile>
     <ClCompile Include="src\client\components\graphics\models\Text3d.cpp">
       <Filter>client/\components/\graphics/\models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\models\BufferedModel.cpp">
+      <Filter>client/\components/\graphics/\models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shared\SharedComponent.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\Component.cpp">
+      <Filter>client/</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

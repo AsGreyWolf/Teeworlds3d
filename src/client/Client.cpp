@@ -2,6 +2,7 @@
 #include <iostream>
 #include <locale>
 #include <clocale>
+#include "components/graphics/Resources.h"
 #include "components/Graphics.h"
 #include "components/Camera.h"
 #include "components/Map.h"
@@ -9,8 +10,10 @@
 #include "components/GUI.h"
 #include "../shared/System.h"
 #include "../shared/Console.h"
+#include "../shared/world/player.h"
 #include "../shared/World.h"
 #include "../../other/sdl/include/SDL_ttf.h"
+#include "../../other/sdl/include/SDL_image.h"
 
 class Client* pClient;
 Client* g_Client(){ return pClient; }
@@ -44,8 +47,9 @@ bool Client::isRunning(){
 	return working;
 }
 Client::Client():Component(){
-	m_SharedComponents.push_back((SharedComponent*)new System());
-	m_SharedComponents.push_back((SharedComponent*)new Console());
+	SharedComponent::RegisterComponent(new System());
+	SharedComponent::RegisterComponent(new Console());
+	SharedComponent::RegisterComponent(new World());
 	pClient = this;
 
 	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_EVENTS)!=0)
@@ -54,6 +58,13 @@ Client::Client():Component(){
 		return; //TODO: need exceptions
 	}
 	SDL_version ver;
+	/*if (IMG_Init(IMG_INIT_PNG) == 0)
+	{
+		Console::Err("Unable to initialize SDL_IMG: " + string(IMG_GetError()));
+		return; //TODO: TODO: need exceptions
+	}
+	ver = *IMG_Linked_Version();
+	Console::Info("Initialized SDL_IMG " + to_string(ver.major) + "." + to_string(ver.minor) + "." + to_string(ver.patch));*/
 	if(TTF_Init()!=0)
 	{
 		Console::Err("Unable to initialize SDL_TTF: " + string(TTF_GetError()));
@@ -77,31 +88,42 @@ Client::Client():Component(){
 		Console::Err("Could not get renderer: " + string(SDL_GetError()));
 		return; //TODO: need exceptions
 	}
-	Component* graphics = new Graphics();
-	m_SharedComponents.push_back((SharedComponent*)new World());//TODO debug only
-	m_Components.push_back((Component*)new Camera());
-	m_Components.push_back((Component*)new Map());
-	m_Components.push_back((Component*)new Players());
-	m_Components.push_back((Component*)new GUI());
-	m_Components.push_back(graphics);
+	Component::RegisterComponent(new Graphics());
+	Component::RegisterComponent(new Camera());
+	Component::RegisterComponent(new Map());
+	Component::RegisterComponent((Component*)new Players());
+	Component::RegisterComponent((Component*)new GUI());
+
+
+	//TODO: only debug
+	auto skinName = g_Graphics()->m_Resources->skinTextures.begin();
+	for (glm::uint8_t i = 0; i<MAX_PLAYERS; i++) {
+		g_World()->players[i] = new Player(i);
+		g_World()->players[i]->pos = vec3(0, 0, rand() % 20048);//vec3(rand() % 2048, rand() % 2048, rand() % 2048);
+		g_World()->players[i]->rot = vec3(rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))), rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))), rand() / (static_cast <float> (RAND_MAX / (M_PI * 2))));
+		g_World()->players[i]->rot = glm::normalize(g_World()->players[i]->rot);
+		g_World()->players[i]->weapon = rand() % NUM_WEAPONS;
+		g_World()->players[i]->emote = EMOTE_NORMAL;
+		g_World()->players[i]->skin = (*skinName).first;
+		g_World()->players[i]->nickname = (*skinName).first;
+		skinName++;
+		if (skinName == g_Graphics()->m_Resources->skinTextures.end()) skinName = g_Graphics()->m_Resources->skinTextures.begin();
+		if (i == 0 || i == MAX_PLAYERS - 1) continue;
+		g_World()->players[i]->hookState = HOOK_GRABBED;
+		g_World()->players[i]->hookedPlayer = i + 1;
+	}
 }
 Client::~Client(){
-	reverse(m_Components.begin(), m_Components.end());
-	for (auto &component : m_Components){
-		delete component;
-	}
-	m_Components.clear();
-	reverse(m_SharedComponents.begin(), m_SharedComponents.end());
-	for (auto &component : m_SharedComponents){
-		delete component;
-	}
-	m_SharedComponents.clear();
+	Component::ClearComponents();
+	SharedComponent::ClearComponents();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(screen);
 	TTF_Quit();
+	IMG_Quit();
 	SDL_Quit();
 }
 void Client::Input(unsigned char* keyss,int xrels,int yrels,int wheels){
+	Component::Input(keyss, xrels, yrels, wheels);
 	SDL_Event sdlevent;
 	const Uint8* keys = NULL;
 	int xrel=0;
@@ -125,41 +147,18 @@ void Client::Input(unsigned char* keyss,int xrels,int yrels,int wheels){
 		}
 	}
 	keys = SDL_GetKeyboardState(NULL);
-	for(auto &component : m_Components){
-		component->Input((unsigned char*)keys,xrel,yrel,wheel);
-	}
-}
-void Client::Render(){
-	for(auto &component : m_Components){
-		component->Render();
-	}
-}
-void Client::RenderBillboard(){
-	for(auto &component : m_Components){
-		component->RenderBillboard();
-	}
-}
-void Client::Render2d(){
-	for(auto &component : m_Components){
-		component->Render2d();
-	}
+	Component::InputComponents((unsigned char*)keys, xrel, yrel, wheel);
 }
 void Client::Tick(){
-	for (auto &component : m_SharedComponents){
-		component->Tick();
-	}
-	for(auto &component : m_Components){
-		component->Tick();
-	}
+	Component::Tick();
+	SharedComponent::TickComponents();
 	SDL_GL_SwapWindow(screen);
 }
 void Client::Message(int type,char* value){
-	for(auto &component : m_Components){
-		component->Message(type,value);
-	}
+	Component::Message(type,value);
+	Component::MessageComponents(type,value);
 }
-void Client::StateChange(STATE lastState){
-	for(auto &component : m_Components){
-		component->StateChange(lastState);
-	}
+void Client::StateChange(const STATE& lastState){
+	Component::StateChange(lastState);
+	Component::StateChangeComponents(lastState);
 }

@@ -3,7 +3,7 @@
 #include "../TextGenerator.h"
 #include "../../Graphics.h"
 
-Text3d::Text3d(std::string text, int size, int align, bool buffering,bool lighting):Model(lighting), data(NULL){
+Text3d::Text3d(const std::string& text, int size, int align, bool buffering,bool lighting, bool isBillboard):Model(lighting, isBillboard), data(NULL){
 	this->text = text;
 	data = new TextGenerator(text, size, align, buffering);
 	texture = data->texture;
@@ -12,7 +12,7 @@ Text3d::Text3d(std::string text, int size, int align, bool buffering,bool lighti
 Text3d::~Text3d() {
 	delete data;
 }
-void Text3d::SetText(string text){
+void Text3d::SetText(const string& text){
 	if(text==this->text) return;
 	this->text=text;
 	data->SetText(text);
