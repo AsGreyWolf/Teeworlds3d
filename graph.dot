@@ -1,0 +1,142 @@
+ digraph tee3d {
+ 	subgraph cluster_0 { 
+ 		label="shared"; 
+ 		SharedComponent [shape=house color=red];
+ 		Console [shape=house];
+	 	System [shape=house];
+	 	World [shape=house];
+	 	Tile;
+	 	Positioned;
+	 	Player;
+		SharedComponent->Console[color=red arrowhead=none arrowtail=empty dir=back];
+		SharedComponent->System[color=red arrowhead=none arrowtail=empty dir=back];
+		SharedComponent->World[color=red arrowhead=none arrowtail=empty dir=back];
+		Positioned->Player[color=red arrowhead=none arrowtail=empty dir=back];
+		World->Player;
+		System->Player;
+		Tile->Player;
+		Player->World;
+		Tile->World;
+		Console->World;
+		System->World;
+ 	}
+ 	subgraph cluster_1 { 
+ 		label="client"; 
+	 	ClientComponent [shape=component color=red];
+	 	Client [shape=component];
+	 	Graphics [shape=component];
+	 	Camera [shape=component];
+	 	Resources [shape=component];
+	 	Input [shape=component];
+	 	Map [shape=component];
+
+		ClientComponent->Camera[color=red arrowhead=none arrowtail=empty dir=back];
+		ClientComponent->Client[color=red arrowhead=none arrowtail=empty dir=back];
+		ClientComponent->Graphics[color=red arrowhead=none arrowtail=empty dir=back];
+		ClientComponent->Resources[color=red arrowhead=none arrowtail=empty dir=back];
+		ClientComponent->Input[color=red arrowhead=none arrowtail=empty dir=back];
+		ClientComponent->Map[color=red arrowhead=none arrowtail=empty dir=back];
+
+		Graphics->Resources;
+
+		Input->Client;
+		Input->Camera;
+
+		Resources->Map;
+
+	 	subgraph cluster_2 {
+	 		label="graphics"; 
+			Shader [shape=diamond color=red];
+			Shader3d [shape=diamond];
+			ShaderShadow [shape=diamond];
+			Shader2d [shape=diamond];
+			ShaderParticle [shape=diamond];
+			Model [color=red];
+			Geometry3d[color=red];
+			Geometry2d[color=red];
+			Model3d;
+			Model2d;
+			ShadowModel;
+			PlayerModel;
+			Particles;
+			ObjModel;
+			Primitives;
+			Sphere;
+			Texture;
+			Model->Model3d->PlayerModel[color=red arrowhead=none arrowtail=empty dir=back];
+			Model->ShadowModel[color=red arrowhead=none arrowtail=empty dir=back];
+			Model->Model2d[color=red arrowhead=none arrowtail=empty dir=back];
+			Shader->Shader3d[color=red arrowhead=none arrowtail=empty dir=back];
+			Shader->ShaderShadow[color=red arrowhead=none arrowtail=empty dir=back];
+			Shader->ShaderParticle[color=red arrowhead=none arrowtail=empty dir=back];
+			Shader->Shader2d[color=red arrowhead=none arrowtail=empty dir=back];
+			Geometry3d->ObjModel[color=red arrowhead=none arrowtail=empty dir=back];
+			Geometry3d->Primitives[color=red arrowhead=none arrowtail=empty dir=back];
+			Geometry3d->Sphere[color=red arrowhead=none arrowtail=empty dir=back];
+			Geometry2d->Primitives[color=red arrowhead=none arrowtail=empty dir=back];
+			Model3d->Particles[color=red arrowhead=none arrowtail=empty dir=back];
+
+			Shader3d->Model3d;
+			Texture->Model3d;
+			ShadowModel->Model3d;
+			Geometry3d->Model3d;
+			Shader2d->Model2d;
+			Texture->Model2d;
+			Geometry2d->Model2d;
+			Texture->PlayerModel;
+			Sphere->PlayerModel;
+			Model->Shader3d;
+			Texture->Shader3d;
+			ShaderShadow->Shader3d;
+			Model->Shader2d;
+			Texture->ShaderShadow;
+			Model->ShaderShadow;
+			Model->ShaderParticle;
+			Model3d->ShadowModel;
+			ShaderShadow->ShadowModel;
+			Texture->ShadowModel;
+			Shader3d->Particles;
+			ShaderParticle->Particles;
+	 	}/*
+		Graphics->Model3d;
+		Graphics->Model2d;
+		Resources->PlayerModel;
+		Camera->Shader3d;
+		Graphics->Shader3d;
+		Graphics->Shader2d;
+		Shader->Graphics;
+		Camera->ShaderShadow;
+		Graphics->ShaderShadow;
+		Camera->ShaderParticle;
+		Graphics->ShaderParticle;
+
+		PlayerModel->Resources;
+		Texture->Resources;
+		Model3d->Resources;
+		Primitives->Resources;
+		ObjModel->Resources;
+		Model3d->Map;
+		PlayerModel->Map;
+		Primitives->Map;*/
+ 	}/*
+	SharedComponent->ClientComponent[color=red arrowhead=none arrowtail=empty dir=back];
+	System->Camera;
+	Map->Client;
+	Console->Client;
+	Console->Graphics;
+	System->Resources;
+	World->Map;
+	Tile->Map;
+	Positioned->Camera[color=red arrowhead=none arrowtail=empty dir=back];
+	
+		Player->PlayerModel;
+		System->PlayerModel;
+		Console->Shader;
+		System->Shader;
+		System->Texture;
+		Console->Texture;
+		Graphics->Texture;
+		System->ObjModel;
+		Positioned->Model3d[color=red arrowhead=none arrowtail=empty dir=back];
+		*/
+}

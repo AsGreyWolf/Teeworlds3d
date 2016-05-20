@@ -1,0 +1,1241 @@
+# depslib dependency file v1.0
+1463771189 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/ClientComponent.cpp
+	"ClientComponent.h"
+
+1463771191 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/ClientComponent.h
+	"../shared/SharedComponent.h"
+	<SDL.h>
+
+1463771209 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/SharedComponent.h
+	<stdint.h>
+	<list>
+
+1423672828 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_assert.h"
+	"SDL_atomic.h"
+	"SDL_audio.h"
+	"SDL_clipboard.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_filesystem.h"
+	"SDL_joystick.h"
+	"SDL_gamecontroller.h"
+	"SDL_haptic.h"
+	"SDL_hints.h"
+	"SDL_loadso.h"
+	"SDL_log.h"
+	"SDL_messagebox.h"
+	"SDL_mutex.h"
+	"SDL_power.h"
+	"SDL_render.h"
+	"SDL_rwops.h"
+	"SDL_system.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_version.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<math.h>
+	<float.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1423672828 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_config.h
+	"SDL_platform.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_platform.h
+	"AvailabilityMacros.h"
+	"TargetConditionals.h"
+	<winapifamily.h>
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/begin_code.h
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/close_code.h
+
+1423672828 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_assert.h
+	"SDL_config.h"
+	"begin_code.h"
+	<signal.h>
+	"close_code.h"
+
+1423672828 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_atomic.h
+	"SDL_stdinc.h"
+	"SDL_platform.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672828 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672828 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_endian.h
+	"SDL_stdinc.h"
+	<endian.h>
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_atomic.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672828 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_clipboard.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672828 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_cpuinfo.h
+	"SDL_stdinc.h"
+	<intrin.h>
+	<intrin.h>
+	<altivec.h>
+	<mmintrin.h>
+	<mm3dnow.h>
+	<xmmintrin.h>
+	<emmintrin.h>
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_gamecontroller.h"
+	"SDL_quit.h"
+	"SDL_gesture.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_video.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_surface.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_pixels.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_rect.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_pixels.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_surface.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_blendmode.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672828 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_blendmode.h
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keycode.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_keycode.h
+	"SDL_stdinc.h"
+	"SDL_scancode.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_scancode.h
+	"SDL_stdinc.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_gamecontroller.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_gesture.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_touch.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_filesystem.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_haptic.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_hints.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_log.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_messagebox.h
+	"SDL_stdinc.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_power.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_render.h
+	"SDL_stdinc.h"
+	"SDL_rect.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_system.h
+	"SDL_stdinc.h"
+	"SDL_keyboard.h"
+	"SDL_render.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1463771166 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.h
+	"../ClientComponent.h"
+	<tools/vmath.h>
+
+1463771170 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Graphics.h
+	"../ClientComponent.h"
+	<glew.h>
+	<tools/vmath.h>
+
+1423672822 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glew/include/glew.h
+	<stddef.h>
+	<inttypes.h>
+	<stdint.h>
+	<inttypes.h>
+	<OpenGL/glu.h>
+	<GL/glu.h>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/glm.hpp
+	"detail/_fixes.hpp"
+	<cmath>
+	<climits>
+	<cfloat>
+	<limits>
+	<cassert>
+	"fwd.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"trigonometric.hpp"
+	"exponential.hpp"
+	"common.hpp"
+	"packing.hpp"
+	"geometric.hpp"
+	"matrix.hpp"
+	"vector_relational.hpp"
+	"integer.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/_fixes.hpp
+	<cmath>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/fwd.hpp
+	"detail/type_int.hpp"
+	"detail/type_float.hpp"
+	"detail/type_vec.hpp"
+	"detail/type_mat.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_int.hpp
+	"setup.hpp"
+	<type_traits>
+	<cstdint>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/setup.hpp
+	<cassert>
+	<cstddef>
+	<cuda.h>
+	<intrin.h>
+	<immintrin.h>
+	<immintrin.h>
+	<smmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+	<__config>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_float.hpp
+	"setup.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec.hpp
+	"precision.hpp"
+	"type_int.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/precision.hpp
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat.hpp
+	"precision.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/vec2.hpp
+	"detail/type_vec2.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec2.hpp
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec2.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/_swizzle.hpp
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/_swizzle_func.hpp
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec2.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/vec3.hpp
+	"detail/type_vec3.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec3.hpp
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec3.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec3.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/vec4.hpp
+	"detail/type_vec4.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec4.hpp
+	"setup.hpp"
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec4.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec4.inl
+	"type_vec4_sse2.inl"
+	"type_vec4_avx.inl"
+	"type_vec4_avx2.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/mat2x2.hpp
+	"detail/type_mat2x2.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat2x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x2.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat2x2.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/mat2x3.hpp
+	"detail/type_mat2x3.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat2x3.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x3.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat2x3.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/mat2x4.hpp
+	"detail/type_mat2x4.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat2x4.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x4.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat2x4.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/mat3x2.hpp
+	"detail/type_mat3x2.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat3x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x2.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat3x2.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/mat3x3.hpp
+	"detail/type_mat3x3.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat3x3.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x3.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat3x3.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/mat3x4.hpp
+	"detail/type_mat3x4.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat3x4.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x4.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat3x4.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/mat4x2.hpp
+	"detail/type_mat4x2.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat4x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x2.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat4x2.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/mat4x3.hpp
+	"detail/type_mat4x3.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat4x3.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x3.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat4x3.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/mat4x4.hpp
+	"detail/type_mat4x4.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat4x4.hpp
+	"../fwd.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x4.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_mat4x4.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/trigonometric.hpp
+	"detail/func_trigonometric.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_trigonometric.hpp
+	"setup.hpp"
+	"precision.hpp"
+	"func_trigonometric.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_trigonometric.inl
+	"_vectorize.hpp"
+	<cmath>
+	<limits>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/_vectorize.hpp
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec1.hpp
+	"../fwd.hpp"
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec1.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec1.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/exponential.hpp
+	"detail/func_exponential.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_exponential.hpp
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<cmath>
+	"func_exponential.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_exponential.inl
+	"func_vector_relational.hpp"
+	"_vectorize.hpp"
+	<limits>
+	<cmath>
+	<cassert>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_vector_relational.hpp
+	"precision.hpp"
+	"setup.hpp"
+	"func_vector_relational.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_vector_relational.inl
+	<limits>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/common.hpp
+	"detail/func_common.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_common.hpp
+	"setup.hpp"
+	"precision.hpp"
+	"type_int.hpp"
+	"_fixes.hpp"
+	"func_common.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_common.inl
+	"func_vector_relational.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"_vectorize.hpp"
+	<limits>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/packing.hpp
+	"detail/func_packing.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_packing.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"func_packing.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_packing.inl
+	"func_common.hpp"
+	"type_half.hpp"
+	"../fwd.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_half.hpp
+	"setup.hpp"
+	"type_half.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_half.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/geometric.hpp
+	"detail/func_geometric.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_geometric.hpp
+	"type_vec3.hpp"
+	"func_geometric.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_geometric.inl
+	"func_exponential.hpp"
+	"func_common.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_float.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/matrix.hpp
+	"detail/func_matrix.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_matrix.hpp
+	"../detail/precision.hpp"
+	"../detail/setup.hpp"
+	"../detail/type_mat.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	"func_matrix.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_matrix.inl
+	"../geometric.hpp"
+	<limits>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/vector_relational.hpp
+	"detail/func_vector_relational.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/integer.hpp
+	"detail/func_integer.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_integer.hpp
+	"setup.hpp"
+	"precision.hpp"
+	"func_common.hpp"
+	"func_vector_relational.hpp"
+	"func_integer.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/func_integer.inl
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_int.hpp"
+	"_vectorize.hpp"
+	<intrin.h>
+	<limits>
+
+1463771226 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/quad2.h
+	<algorithm>
+	<cmath>
+	<glm.hpp>
+	<gtc/type_ptr.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtx/rotate_vector.hpp>
+	<gtx/closest_point.hpp>
+
+1463771230 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/rot3.h
+	<algorithm>
+	<cmath>
+	<glm.hpp>
+	<gtc/type_ptr.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtx/rotate_vector.hpp>
+	<gtx/closest_point.hpp>
+
+1463771161 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Camera.h
+	"../ClientComponent.h"
+	<tools/vmath.h>
+	<shared/world/Positioned.h>
+
+1463771159 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Camera.cpp
+	"Camera.h"
+	<shared/System.h>
+	<client/components/Input.h>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtx/rotate_vector.hpp
+	"../glm.hpp"
+	"../gtx/transform.hpp"
+	"rotate_vector.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtx/transform.hpp
+	"../glm.hpp"
+	"../gtc/matrix_transform.hpp"
+	"transform.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtc/matrix_transform.hpp
+	"../mat4x4.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../gtc/constants.hpp"
+	"matrix_transform.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtc/constants.hpp
+	"../detail/setup.hpp"
+	"constants.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtc/constants.inl
+	<limits>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtc/matrix_transform.inl
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtx/transform.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtx/rotate_vector.inl
+
+1463771214 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/System.h
+	"SharedComponent.h"
+	<string>
+	<vector>
+
+1463771102 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Model3d.h
+	"../Model.h"
+	<vector>
+	<glew.h>
+	<tools/vmath.h>
+	<shared/world/Positioned.h>
+	<client/components/graphics/Texture.h>
+	<client/components/graphics/geometry/Geometry3d.h>
+
+1463773731 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Model.h
+	<memory>
+	<tools/vmath.h>
+
+1463771228 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/quad3.h
+	<cmath>
+	<glm.hpp>
+	<gtc/type_ptr.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtx/rotate_vector.hpp>
+	<gtx/closest_point.hpp>
+	<tools/quad2.h>
+
+1463771163 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
+	"Client.h"
+	<SDL_ttf.h>
+	<SDL_image.h>
+	<shared/Console.h>
+	<shared/System.h>
+	<client/components/Graphics.h>
+	<client/components/Resources.h>
+	<client/components/Map.h>
+	<client/components/Camera.h>
+	<client/components/Input.h>
+	<client/components/graphics/models/Model3d.h>
+	<client/components/graphics/models/PlayerModel.h>
+	<client/components/graphics/models/Model2d.h>
+	<client/components/graphics/shaders/ShaderShadow.h>
+	<client/components/graphics/geometry/Primitives.h>
+	<shared/World.h>
+
+1463771205 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/Console.h
+	"SharedComponent.h"
+	<string>
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1423672830 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/sdl/include/SDL_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1463771168 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Graphics.cpp
+	"Graphics.h"
+	<shared/Console.h>
+	<client/components/graphics/Shader.h>
+
+1463771126 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.h
+	"../Shader.h"
+	<tools/vmath.h>
+
+1463771151 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Shader.h
+	<string>
+	<list>
+	<set>
+	<memory>
+	<glew.h>
+	<tools/vmath.h>
+
+1463773734 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Model.cpp
+	"Model.h"
+
+1463773451 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Model3d.cpp
+	"Model3d.h"
+	<client/components/Graphics.h>
+	<client/components/graphics/shaders/Shader3d.h>
+	<client/components/graphics/models/ShadowModel.h>
+
+1463771149 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Shader.cpp
+	"Shader.h"
+	<shared/Console.h>
+	<shared/System.h>
+
+1463771124 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.cpp
+	"Shader3d.h"
+	"../../Camera.h"
+	"../../Graphics.h"
+	"../Texture.h"
+	"../Model.h"
+	"ShaderShadow.h"
+	<string>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtc/type_ptr.hpp
+	"../gtc/quaternion.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	<cstring>
+	"type_ptr.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtc/quaternion.hpp
+	"../mat3x3.hpp"
+	"../mat4x4.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../gtc/constants.hpp"
+	"quaternion.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtc/quaternion.inl
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"../exponential.hpp"
+	<limits>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtc/type_ptr.inl
+	<cstring>
+
+1463771203 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/Console.cpp
+	"Console.h"
+	<iostream>
+
+1463771207 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/SharedComponent.cpp
+	"SharedComponent.h"
+	<list>
+
+1463771211 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/System.cpp
+	"System.h"
+	<ctime>
+	<codecvt>
+	<Windows.h>
+	<direct.h>
+	<unistd.h>
+	<sys/types.h>
+	<dirent.h>
+	<sys/time.h>
+	<SDL.h>
+	<SDL_thread.h>
+	<shared/Console.h>
+
+1463774183 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/World.cpp
+	"World.h"
+	<iostream>
+	<shared/System.h>
+	<shared/Console.h>
+	<shared/world/Player.h>
+	<shared/world/Tile.h>
+
+1463771219 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/World.h
+	"SharedComponent.h"
+	<string>
+	<vector>
+	<tools/vmath.h>
+	<tools/Protocol.h>
+
+1463771224 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/Protocol.h
+
+1463771196 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/world/Player.h
+	<string>
+	<tools/Protocol.h>
+	<tools/vmath.h>
+	<shared/world/Positioned.h>
+
+1463771200 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/world/Tile.h
+	<vector>
+	<tools/vmath.h>
+
+1463771194 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/world/Player.cpp
+	"Player.h"
+	<shared/World.h>
+	<shared/System.h>
+	<shared/world/Tile.h>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtx/closest_point.hpp
+	"../glm.hpp"
+	"closest_point.inl"
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtx/closest_point.inl
+
+1463771155 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Texture.h
+	<string>
+	<memory>
+	<glew.h>
+
+1463771153 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Texture.cpp
+	"Texture.h"
+	<SDL_image.h>
+	<shared/Console.h>
+	<shared/System.h>
+	<client/components/Graphics.h>
+
+1463771116 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/ShadowModel.h
+	"Model3d.h"
+
+1463771114 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/ShadowModel.cpp
+	"ShadowModel.h"
+	<client/components/graphics/shaders/ShaderShadow.h>
+
+1463771135 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderShadow.h
+	"../Shader.h"
+	<tools/vmath.h>
+	<client/components/graphics/Texture.h>
+
+1463771132 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderShadow.cpp
+	"ShaderShadow.h"
+	"../../Camera.h"
+	"../../Graphics.h"
+	"../Model.h"
+
+1454664584 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Resources.cpp
+	"Resources.h"
+	"../../../shared/System.h"
+	"../Graphics.h"
+	"Texture.h"
+	"models/Model3d.h"
+
+1454663302 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Resources.h
+	<vector>
+	<string>
+	<map>
+	"../../../tools/Protocol.h"
+	"../../../tools/quad2.h"
+
+1463771187 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Resources.h
+	"../ClientComponent.h"
+	<vector>
+	<string>
+	<map>
+	<tools/Protocol.h>
+	<tools/vmath.h>
+	<client/components/graphics/Texture.h>
+	<client/components/graphics/models/Model3d.h>
+
+1463771184 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Resources.cpp
+	"Resources.h"
+	<shared/System.h>
+	<client/components/Graphics.h>
+	<client/components/graphics/geometry/Primitives.h>
+	<client/components/graphics/geometry/ObjModel.h>
+	<client/components/graphics/models/PlayerModel.h>
+
+1463771118 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader2d.cpp
+	"Shader2d.h"
+	"../../Graphics.h"
+	"../Model.h"
+	<string>
+
+1463771121 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader2d.h
+	"../Shader.h"
+	<tools/vmath.h>
+
+1463771094 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Model2d.cpp
+	"Model2d.h"
+	<client/components/Graphics.h>
+	<client/components/graphics/shaders/Shader2d.h>
+
+1463771097 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Model2d.h
+	"../Model.h"
+	<vector>
+	<glew.h>
+	<tools/vmath.h>
+	<client/components/graphics/Texture.h>
+	<client/components/graphics/geometry/Geometry2d.h>
+
+1463771232 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/vmath.h
+	<cmath>
+	<glm.hpp>
+	<gtc/type_ptr.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtx/rotate_vector.hpp>
+	<gtx/closest_point.hpp>
+	<tools/quad2.h>
+	<tools/quad3.h>
+	<tools/rot3.h>
+
+1458652440 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/singleton.h
+
+1463771172 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Input.cpp
+	"Input.h"
+
+1463771175 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Input.h
+	"../ClientComponent.h"
+	<vector>
+
+1463771112 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/PlayerModel.h
+	"Model3d.h"
+	<vector>
+	<glew.h>
+	<tools/vmath.h>
+	<shared/world/Player.h>
+	<client/components/graphics/Texture.h>
+
+1463771110 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/PlayerModel.cpp
+	"PlayerModel.h"
+	<client/components/graphics/geometry/Sphere.h>
+	<client/components/Resources.h>
+	<shared/System.h>
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec4_sse2.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec4_avx.inl
+
+1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec4_avx2.inl
+
+1463771182 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Map.h
+	"../ClientComponent.h"
+	<string>
+	<vector>
+	<client/components/graphics/models/Model3d.h>
+	<client/components/graphics/models/PlayerModel.h>
+
+1463773948 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Map.cpp
+	"Map.h"
+	<tools/Protocol.h>
+	<shared/World.h>
+	<shared/world/Tile.h>
+	<client/components/Resources.h>
+	<client/components/graphics/geometry/Primitives.h>
+
+1463258029 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/SphereBuilder.h
+	<client/components/graphics/models/Geometry3d.h>
+
+1463257673 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/SphereBuilder.cpp
+	"SphereBuilder.h"
+
+1463258909 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Geometry3d.h
+	<vector>
+	<tools/vmath.h>
+
+1463259241 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Primitives.h
+	<client/components/graphics/models/Geometry3d.h>
+
+1463259471 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/ObjModel.h
+	<client/components/graphics/models/Geometry3d.h>
+
+1463258792 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Geometry3d.cpp
+	"Geometry3d.h"
+
+1463259474 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/ObjModel.cpp
+	"ObjModel.h"
+	<fstream>
+	<sstream>
+	<shared/System.h>
+
+1463259907 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Primitives.cpp
+	"Primitives.h"
+
+1463771075 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Geometry3d.cpp
+	"Geometry3d.h"
+
+1463771078 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Geometry3d.h
+	<vector>
+	<tools/vmath.h>
+
+1463771080 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/ObjModel.cpp
+	"ObjModel.h"
+	<fstream>
+	<sstream>
+	<shared/System.h>
+
+1463771083 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/ObjModel.h
+	<client/components/graphics/geometry/Geometry3d.h>
+
+1463771086 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Primitives.cpp
+	"Primitives.h"
+
+1463771088 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Primitives.h
+	<client/components/graphics/geometry/Geometry2d.h>
+	<client/components/graphics/geometry/Geometry3d.h>
+
+1463257673 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/SphereBuilder.cpp
+	"SphereBuilder.h"
+
+1463260088 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/SphereBuilder.h
+	<client/components/graphics/geometry/Geometry3d.h>
+
+1463771092 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Sphere.h
+	<client/components/graphics/geometry/Geometry3d.h>
+
+1463771074 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Geometry2d.h
+	<vector>
+	<tools/vmath.h>
+
+1463771090 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Sphere.cpp
+	"Sphere.h"
+
+1463771072 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Geometry2d.cpp
+	"Geometry2d.h"
+
+1463743495 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/ModelParticle.cpp
+	"ModelParticle.h"
+	<client/components/Graphics.h>
+	<client/components/graphics/shaders/ShaderParticle.h>
+
+1463743443 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/ModelParticle.h
+	"../Model.h"
+	<vector>
+	<glew.h>
+	<tools/vmath.h>
+	<client/components/graphics/Texture.h>
+
+1463771287 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderParticle.h
+	"../Shader.h"
+	<tools/vmath.h>
+
+1463771289 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderParticle.cpp
+	"ShaderParticle.h"
+	"../../Camera.h"
+	"../../Graphics.h"
+	"../Model.h"
+
+1463747817 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/ParticleModel.h
+	"Model3d.h"
+
+1463748985 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/ParticleModel.cpp
+	"ParticleModel.h"
+	<client/components/graphics/shaders/Shader3d.h>
+	<client/components/graphics/shaders/ShaderParticle.h>
+
+1463771107 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Particles.h
+	"Model3d.h"
+
+1463771425 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Particles.cpp
+	"Particles.h"
+	<client/components/graphics/shaders/Shader3d.h>
+	<client/components/graphics/shaders/ShaderParticle.h>
+
+1463771198 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/world/Positioned.h
+	<tools/vmath.h>
+

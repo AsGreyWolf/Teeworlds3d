@@ -2,36 +2,41 @@
 #define SYSTEM_H
 
 #include "SharedComponent.h"
+
 #include <string>
 #include <vector>
 
 ///<summary>Interaction with OS</summary>
-class System : public SharedComponent{
-public:
+class System : public SharedComponent {
+private:
 	System();
-	~System();
+	friend System *g_System();
+
+public:
+	~System() override;
 
 	///<summary>Tick the component(graphics thread)</summary>
-	void Tick();
+	void Tick() override;
 
 	///<summary>Returns app directory path</summary>
-	string GetPath();
+	std::string GetPath() const;
 	///<summary>Returns time in ms</summary>
-	long GetTime();
+	long GetTime() const;
 	///<summary>Fills out with filenames in the directory</summary>
-	void GetFilesInDirectory(std::vector<std::string> &out, const std::string &directory);
+	void GetFilesInDirectory(std::vector<std::string> &out,
+	                         const std::string &directory) const;
 	///<summary>Returns filename in data folder</summary>
 	///<param name="str">Filename</param>
-	string GetDataFile(const string& str);
+	std::string GetDataFile(const std::string &str) const;
 
 	int fps;
 	double tickCoeff;
+
 private:
-	static const int MAX_FILENAME;
+	std::string PATH_CUR;
+	std::string PATH_DATA;
 	long lasttickTime;
-	string PATH_CUR;
-	string PATH_DATA;
 };
-System* g_System();
+System *g_System();
 
 #endif

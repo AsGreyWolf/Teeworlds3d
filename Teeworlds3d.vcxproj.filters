@@ -28,14 +28,11 @@
     <Filter Include="client/\components/\graphics/\models">
       <UniqueIdentifier>{0802e6ee-5fd1-4c9a-a334-6f0e5d6d2260}</UniqueIdentifier>
     </Filter>
+    <Filter Include="client/\components/\graphics/\shaders">
+      <UniqueIdentifier>{11ce5627-ccbe-42fc-af16-6ba7f27cae2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\client\Component.h">
-      <Filter>client/</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\components\Graphics.h">
-      <Filter>client/\components/</Filter>
-    </ClInclude>
     <ClInclude Include="other\sdl\include\begin_code.h">
       <Filter>libs</Filter>
     </ClInclude>
@@ -231,20 +228,8 @@
     <ClInclude Include="other\sdl\include\SDL_video.h">
       <Filter>libs</Filter>
     </ClInclude>
-    <ClInclude Include="src\client\components\Camera.h">
-      <Filter>client/\components/</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\components\Map.h">
-      <Filter>client/\components/</Filter>
-    </ClInclude>
     <ClInclude Include="src\tools\Protocol.h">
       <Filter>tools</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\components\Players.h">
-      <Filter>client/\components/</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\components\graphics\Resources.h">
-      <Filter>client/\components/\graphics/</Filter>
     </ClInclude>
     <ClInclude Include="src\tools\quad3.h">
       <Filter>tools</Filter>
@@ -252,25 +237,7 @@
     <ClInclude Include="src\tools\quad2.h">
       <Filter>tools</Filter>
     </ClInclude>
-    <ClInclude Include="src\client\components\GUI.h">
-      <Filter>client/\components/</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\components\graphics\TextGenerator.h">
-      <Filter>client/\components/\graphics/</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\Client.h">
-      <Filter>client/</Filter>
-    </ClInclude>
     <ClInclude Include="src\shared\SharedComponent.h">
-      <Filter>shared</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shared\Console.h">
-      <Filter>shared</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shared\World.h">
-      <Filter>shared</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shared\System.h">
       <Filter>shared</Filter>
     </ClInclude>
     <ClInclude Include="src\shared\world\Player.h">
@@ -279,97 +246,88 @@
     <ClInclude Include="src\shared\world\Tile.h">
       <Filter>shared\world</Filter>
     </ClInclude>
-    <ClInclude Include="src\client\components\graphics\Texture.h">
+    <ClInclude Include="src\tools\rot3.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shared\Console.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shared\System.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shared\World.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\ClientComponent.h">
+      <Filter>client/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\Shader.h">
       <Filter>client/\components/\graphics/</Filter>
     </ClInclude>
-    <ClInclude Include="src\client\components\graphics\StringTexture.h">
+    <ClInclude Include="src\client\components\graphics\Model.h">
       <Filter>client/\components/\graphics/</Filter>
     </ClInclude>
-    <ClInclude Include="src\client\components\graphics\models\Model.h">
+    <ClInclude Include="src\client\components\graphics\shaders\Shader3d.h">
+      <Filter>client/\components/\graphics/\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\Camera.h">
+      <Filter>client/\components/</Filter>
+    </ClInclude>
+    <ClInclude Include="src\client\components\graphics\models\Model3d.h">
       <Filter>client/\components/\graphics/\models</Filter>
     </ClInclude>
-    <ClInclude Include="src\client\components\graphics\models\Model2d.h">
-      <Filter>client/\components/\graphics/\models</Filter>
+    <ClInclude Include="src\client\components\Graphics.h">
+      <Filter>client/\components/</Filter>
     </ClInclude>
-    <ClInclude Include="src\client\components\graphics\models\PlayerModel.h">
-      <Filter>client/\components/\graphics/\models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\components\graphics\models\Text.h">
-      <Filter>client/\components/\graphics/\models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\components\graphics\models\Text3d.h">
-      <Filter>client/\components/\graphics/\models</Filter>
-    </ClInclude>
-    <ClInclude Include="src\client\components\graphics\models\BufferedModel.h">
-      <Filter>client/\components/\graphics/\models</Filter>
+    <ClInclude Include="src\client\components\Client.h">
+      <Filter>client/\components/</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\client\Client.cpp">
-      <Filter>client/</Filter>
+    <ClCompile Include="src\shared\world\Player.cpp">
+      <Filter>shared\world</Filter>
     </ClCompile>
-    <ClCompile Include="src\client\components\Graphics.cpp">
-      <Filter>client/\components/</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\Camera.cpp">
-      <Filter>client/\components/</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\Map.cpp">
-      <Filter>client/\components/</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\Players.cpp">
-      <Filter>client/\components/</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\graphics\Resources.cpp">
-      <Filter>client/\components/\graphics/</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\GUI.cpp">
-      <Filter>client/\components/</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\graphics\TextGenerator.cpp">
-      <Filter>client/\components/\graphics/</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shared\Console.cpp">
+    <ClCompile Include="src\shared\SharedComponent.cpp">
       <Filter>shared</Filter>
     </ClCompile>
-    <ClCompile Include="src\shared\World.cpp">
+    <ClCompile Include="src\shared\Console.cpp">
       <Filter>shared</Filter>
     </ClCompile>
     <ClCompile Include="src\shared\System.cpp">
       <Filter>shared</Filter>
     </ClCompile>
-    <ClCompile Include="src\shared\world\Player.cpp">
-      <Filter>shared\world</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\graphics\Texture.cpp">
-      <Filter>client/\components/\graphics/</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\graphics\StringTexture.cpp">
-      <Filter>client/\components/\graphics/</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\graphics\models\Model.cpp">
-      <Filter>client/\components/\graphics/\models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\graphics\models\Model2d.cpp">
-      <Filter>client/\components/\graphics/\models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\graphics\models\PlayerModel.cpp">
-      <Filter>client/\components/\graphics/\models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\graphics\models\Text.cpp">
-      <Filter>client/\components/\graphics/\models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\graphics\models\Text3d.cpp">
-      <Filter>client/\components/\graphics/\models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\client\components\graphics\models\BufferedModel.cpp">
-      <Filter>client/\components/\graphics/\models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shared\SharedComponent.cpp">
+    <ClCompile Include="src\shared\World.cpp">
       <Filter>shared</Filter>
     </ClCompile>
-    <ClCompile Include="src\client\Component.cpp">
+    <ClCompile Include="src\client\ClientComponent.cpp">
       <Filter>client/</Filter>
     </ClCompile>
+    <ClCompile Include="src\client\components\graphics\Shader.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\Model.cpp">
+      <Filter>client/\components/\graphics/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\shaders\Shader3d.cpp">
+      <Filter>client/\components/\graphics/\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\Camera.cpp">
+      <Filter>client/\components/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\graphics\models\Model3d.cpp">
+      <Filter>client/\components/\graphics/\models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\Graphics.cpp">
+      <Filter>client/\components/</Filter>
+    </ClCompile>
+    <ClCompile Include="src\client\components\Client.cpp">
+      <Filter>client/\components/</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Teeworlds3d.rc" />
   </ItemGroup>
 </Project>

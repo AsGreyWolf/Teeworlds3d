@@ -1,57 +1,56 @@
 #include "Graphics.h"
-#include <vector>
-#include <string>
-#include <cstdio>
-#include "graphics/models/PlayerModel.h"
-#include "graphics/models/Model.h"
-#include "graphics/models/Model2d.h"
-#include "graphics/Resources.h"
-#include "graphics/Texture.h"
-#include "Camera.h"
-#include "../Client.h"
-#include "../../tools/Protocol.h"
-#include "../../shared/Console.h"
-#define USE_SHADOWS
 
-class Graphics* pGraphics;
-Graphics* g_Graphics(){ return pGraphics; }
+#include <shared/Console.h>
+#include <client/components/graphics/Shader.h>
 
-int Graphics::to_pixels(float coord){
-	return coord*screenSize/2;
-}
-float Graphics::to_screen(int pix){
-	return pix*2.0f/screenSize;
-}
-SDL_Surface* Graphics::to_RGBA(SDL_Surface* src){
-	if(src==NULL) return NULL;
-	return SDL_ConvertSurfaceFormat(src,SDL_PIXELFORMAT_ABGR8888,0);
-}
-Graphics::Graphics() : Component(){
+class Graphics *pGraphics;
+Graphics *g_Graphics() { return pGraphics ? pGraphics : new Graphics(); }
+
+Graphics::Graphics() : ClientComponent() {
 	pGraphics = this;
-	SDL_GLContext context;
 
-	if ((context = SDL_GL_CreateContext(g_Client()->screen)) == NULL)
-	{
-		Console::Err("Could not get context: " + string(SDL_GetError()));
-		return; //TODO: exceptions
+	SDL_version ver;
+	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+		g_Console()->Err("Unable to initialize SDL Video: " +
+		                 std::string(SDL_GetError()));
+		return; // TODO: need exceptions
 	}
-	SDL_GL_SetSwapInterval(1);
+	SDL_GetVersion(&ver);
+	g_Console()->Info("Initialized SDL Video " + std::to_string(ver.major) + "." +
+	                  std::to_string(ver.minor) + "." + std::to_string(ver.patch));
+	// SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	// SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	if ((window = SDL_CreateWindow("", 50, 50, 1024, 768,
+	                               SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN)) ==
+	    NULL) {
+		g_Console()->Err("Could not create window: " + std::string(SDL_GetError()));
+		return; // need exceptions
+	}
+	if ((renderer = SDL_CreateRenderer(window, -1, 0)) == NULL) {
+		g_Console()->Err("Could not get renderer: " + std::string(SDL_GetError()));
+		return; // TODO: need exceptions
+	}
+	if ((context = SDL_GL_CreateContext(window)) == NULL) {
+		g_Console()->Err("Could not get context: " + std::string(SDL_GetError()));
+		return; // TODO: exceptions
+	}
+	SDL_GL_SetSwapInterval(0);
 	glewInit();
-	Console::Info("Initialized OpenGL " + string((char*)glGetString(GL_VERSION)));
-	int w=1024;
-	int h=768;
-	if( h == 0 )
-	{
+	g_Console()->Info("Initialized OpenGL " +
+	                  std::string((char *)glGetString(GL_VERSION)));
+	int w = 1024; // TODO: config
+	int h = 768;
+	if (h == 0) {
 		h = 1;
 	}
-	screenSize=h;
-	aspect=(float)w/h;
-	screen=quad2(-1*aspect,-1,2*aspect,2);
-	perspectiveMatrix=glm::perspective(1.57079632679f, aspect, 1.0f,10000.0f);
-	orthoMatrix=glm::ortho(-320.0f,320.0f,-320.0f,320.0f,0.0f,1.0f);
+	screenSize = glm::vec2(w, h);
+	screenAspect = (float)w / h;
+	screen = quad2(-1 * screenAspect, -1, 2 * screenAspect, 2);
 
-	shadowSize = screenSize*aspect * 4;
-
+	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_BLEND);
 	glBlendEquation(GL_FUNC_ADD);
 	glEnable(GL_TEXTURE_2D);
@@ -74,192 +73,29 @@ Graphics::Graphics() : Component(){
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
-
-	m_Resources=new Resources();
-	m_Resources->Load();
-
-	glBindAttribLocation(m_Resources->shader3d, SHADER_POS, "in_Position");
-	glBindAttribLocation(m_Resources->shader3d, SHADER_TEXMAP, "in_TexMap");
-	glBindAttribLocation(m_Resources->shader3d, SHADER_NORMAL, "in_Normal");
-
-	glBindAttribLocation(m_Resources->shaderShadow, SHADER_POS, "in_Position");
-	glBindAttribLocation(m_Resources->shaderShadow, SHADER_TEXMAP, "in_TexMap");
-
-	glBindAttribLocation(m_Resources->shader2d, SHADER_POS, "in_Position");
-	glBindAttribLocation(m_Resources->shader2d, SHADER_TEXMAP, "in_TexMap");
-
-	colorUniform3d=glGetUniformLocation(m_Resources->shader3d,"colorer");
-	lightUniform3d=glGetUniformLocation(m_Resources->shader3d,"lighting");
-	viewProjectionMatrixUniform3d=glGetUniformLocation(m_Resources->shader3d,"viewProjectionMatrix");
-	modelMatrixUniform3d=glGetUniformLocation(m_Resources->shader3d,"modelMatrix");
-	normalMatrixUniform3d=glGetUniformLocation(m_Resources->shader3d,"normalMatrix");
-	shadowProjectionMatrixUniform3d=glGetUniformLocation(m_Resources->shader3d,"shadowProjectionMatrix");
-	textureUniform3d = glGetUniformLocation(m_Resources->shader3d, "tex");
-	shadowUniform3d = glGetUniformLocation(m_Resources->shader3d, "shadow");
-
-	modelMatrixUniformShadow = glGetUniformLocation(m_Resources->shaderShadow, "modelMatrix");
-	viewProjectionMatrixUniformShadow=glGetUniformLocation(m_Resources->shaderShadow,"viewProjectionMatrix");
-
-	colorUniform2d=glGetUniformLocation(m_Resources->shader2d,"colorer");
-	aspectUniform2d=glGetUniformLocation(m_Resources->shader2d,"aspect");
-	posUniform2d=glGetUniformLocation(m_Resources->shader2d,"pos");
-
 	glLineWidth(3);
 	glPointSize(3);
-	//glPolygonOffset(-1, -1);
 
-	glGenFramebuffersEXT(1, &shadowFBO);
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	//glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,GL_TEXTURE_2D,m_Resources->textureShadowColor,0);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D,*(m_Resources->textureShadowDepth),0);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 }
-Graphics::~Graphics(){
-	m_Resources->UnLoad();
-	glDeleteFramebuffers(1,&shadowFBO);
-	delete m_Resources;
+Graphics::~Graphics() {
+	Shader::ClearShaders();
+	SDL_GL_DeleteContext(context);
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	pGraphics = NULL;
 }
-void Graphics::RenderShadow() {
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, shadowFBO);
-	glCullFace(GL_FRONT);
-	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-	glDepthMask(GL_TRUE);
-	glUseProgram(m_Resources->shaderShadow);
-	currentShader = m_Resources->shaderShadow;
-	glViewport(0, 0, shadowSize, shadowSize);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	vec3 pos = g_Camera()->position;
-	pos.z = 1;
-	shadowMatrix = orthoMatrix*glm::lookAt(pos, pos + vec3(0, 0, -1), vec3(0, 1, 0));
-	glUniformMatrix4fv(viewProjectionMatrixUniformShadow, 1, false, (const float*)glm::value_ptr(shadowMatrix));
-	
-	Model::RenderModels();
+glm::mat4 orthoMatrix =
+    glm::ortho(-320.0f, 320.0f, -320.0f, 320.0f, 0.0f, 1.0f);
+void Graphics::Tick() {
+	Shader::RenderShaders();
+	SDL_GL_SwapWindow(window);
 }
-void Graphics::Render3d() {
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-	glCullFace(GL_BACK);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glDepthMask(GL_TRUE);
-	glUseProgram(m_Resources->shader3d);
-	currentShader = m_Resources->shader3d;
-	glViewport(0, 0, screenSize*aspect, screenSize);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glUniform1i(textureUniform3d, 0);
-	glUniform1i(shadowUniform3d, 1);
-	g_Camera()->SetMatrix();
-#ifdef USE_SHADOWS
-	glUniformMatrix4fv(shadowProjectionMatrixUniform3d, 1, false, (const float*)glm::value_ptr(shadowMatrix));
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, *(m_Resources->textureShadowDepth));
-	glEnable(GL_TEXTURE_2D);
-	glActiveTexture(GL_TEXTURE0);
-#endif
-
-	Model::RenderModels();
-
-#ifdef USE_SHADOWS
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, *(m_Resources->textureBlank));
-	glDisable(GL_TEXTURE_2D);
-	glActiveTexture(GL_TEXTURE0);
-#endif
-}
-void Graphics::Render2d() {
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-	glCullFace(GL_BACK);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glDepthMask(GL_TRUE);
-	glUseProgram(m_Resources->shader3d);
-	currentShader = m_Resources->shader3d;
-	glViewport(0, 0, screenSize*aspect, screenSize);
-	glClear(GL_DEPTH_BUFFER_BIT);
-
-	Model::RenderBillboards();
-
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-	glCullFace(GL_BACK);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glDepthMask(GL_TRUE);
-	glUseProgram(m_Resources->shader2d);
-	currentShader = m_Resources->shader2d;
-	glViewport(0, 0, screenSize*aspect, screenSize);
-	glClear(GL_DEPTH_BUFFER_BIT);
-
-	glUniform1f(aspectUniform2d, aspect);
-
-	Model2d::RenderModels();
-}
-void Graphics::Tick(){
-	Component::Tick();
-#ifdef USE_SHADOWS
-	RenderShadow();
-#endif
-	Render3d();
-	Render2d();
-}
-void Graphics::SetColor(const vec4& color){
-	if (currentShader == m_Resources->shader3d)
-	glUniform4f(colorUniform3d,color.r,color.g,color.b,color.a);
-}
-void Graphics::SetColor2d(const vec4& color){
-	glUniform4f(colorUniform2d,color.r,color.g,color.b,color.a);
-}
-void Graphics::SetLight(bool light){
-	if (currentShader == m_Resources->shader3d)
-		glUniform1f(lightUniform3d, light?1.0f:0.0f);
-}
-void Graphics::SetPos2d(const vec2& pos, float depth){
-	glUniform3f(posUniform2d, pos.x, pos.y, depth);
-}
-void Graphics::SetViewMatrix(const glm::vec3 &position, const glm::vec3 &center, const glm::vec3 &up){
-	glUniformMatrix4fv(viewProjectionMatrixUniform3d,1,false,(const float*)glm::value_ptr(perspectiveMatrix*glm::lookAt(position, center, up)));
-}
-void Graphics::SetMatrix(const glm::mat4 &modelMatrix, const glm::mat4 &normalMatrix) {
-	if (currentShader == m_Resources->shader3d) {
-		glUniformMatrix4fv(normalMatrixUniform3d, 1, false, (const float*)glm::value_ptr(normalMatrix));
-		glUniformMatrix4fv(modelMatrixUniform3d, 1, false, (const float*)glm::value_ptr(modelMatrix));
-	}
-	if (currentShader == m_Resources->shaderShadow)
-		glUniformMatrix4fv(modelMatrixUniformShadow, 1, false, (const float*)glm::value_ptr(modelMatrix));
-}
-void Graphics::SetMatrix(glm::mat4 &modelMatrix,glm::mat4 &normalMatrix,const vec3 &position, const vec3 &rotation, const vec3 &size){
-	Transform(modelMatrix,position,rotation,size);
-	normalMatrix=modelMatrix;
-	normalMatrix=glm::inverse(normalMatrix);
-	normalMatrix=glm::transpose(normalMatrix);
-}
-void Graphics::Translate(glm::mat4 &modelMatrix,const glm::vec3 &position){
-	modelMatrix=glm::translate(modelMatrix,position);
-}
-void Graphics::RotateX(glm::mat4 &modelMatrix,const glm::vec3 &rotation){
-	modelMatrix=glm::rotate(modelMatrix,rotation.x,vec3(1,0,0));
-}
-void Graphics::RotateY(glm::mat4 &modelMatrix,const glm::vec3 &rotation){
-	modelMatrix=glm::rotate(modelMatrix,rotation.y,vec3(0,1,0));
-}
-void Graphics::RotateZ(glm::mat4 &modelMatrix,const glm::vec3 &rotation){
-	modelMatrix=glm::rotate(modelMatrix,rotation.z,vec3(0,0,1));
-}
-void Graphics::Scale(glm::mat4 &modelMatrix,const glm::vec3 &scale){
-	modelMatrix=glm::scale(modelMatrix,scale);
-}
-void Graphics::Transform(glm::mat4 &modelMatrix,const glm::vec3 &position,const glm::vec3 &rotation,const glm::vec3 &scale){
-	Translate(modelMatrix,position);
-	RotateZ(modelMatrix,rotation);
-	RotateX(modelMatrix,rotation);
-	RotateY(modelMatrix,rotation);
-	Scale(modelMatrix,scale);
-}
-//TODO: Exceptions support
-void Graphics::CheckGLError() throw(OpenGLException){
-	int glError = glGetError();
-	while(glError!=GL_NO_ERROR){
-		throw OpenGLException(glError);
-		glError = glGetError();
-	}
+int Graphics::to_pixels(float coord) { return coord * screenSize.y / 2; }
+float Graphics::to_screen(int pix) { return pix * 2.0f / screenSize.y; }
+SDL_Surface *Graphics::to_RGBA(SDL_Surface *src) {
+	if (src == NULL)
+		return NULL;
+	return SDL_ConvertSurfaceFormat(src, SDL_PIXELFORMAT_ABGR8888, 0);
 }

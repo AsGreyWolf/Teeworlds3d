@@ -1,76 +1,53 @@
 #ifndef MODEL2D_H
 #define MODEL2D_H
 
+#include "../Model.h"
 #include <vector>
-#include <list>
-#include "../../../../tools/quad2.h"
-#include "../../../../tools/quad3.h"
-#include "../../../../../other/glew/include/glew.h"
-#define GLM_FORCE_RADIANS
-#include "../../../../../other/glm/gtc/matrix_transform.hpp"
-#include "../../../../../other/glm/gtc/type_ptr.hpp"
+#define GLEW_STATIC
+#include <glew.h>
+#include <tools/vmath.h>
+#include <client/components/graphics/Texture.h>
+#include <client/components/graphics/geometry/Geometry2d.h>
 
-class Graphics;
 class Texture;
 
-///<summary>2d Model object</summary>
-class Model2d{
+class Model2d : public Model {
 public:
-	///<summary>Creates the model and buffers in the GPU</summary>
-	///<param name="type">Type of the verts (GL_TRIANGLES)</param>
 	Model2d(int type = GL_TRIANGLES);
-	///<summary>Fills the buffers in the GPU with values in the RAM</summary>
-	virtual void Create();
-	///<summary>Pushes the model into the shader</summary>
-	virtual void Render();
-	///<summary>Deletes the buffers in the RAM</summary>
-	virtual void Clear();
-	virtual ~Model2d();
+	Model2d(const Model2d &second);
+	~Model2d() override;
+	void Render() override;
 
-	///<summary>Appends vector of vertex to the buffers in the RAM</summary>
-	///<param name="v">Vertex positions</param>
-	///<param name="t">Vertex UV coordinates</param>
-	void AddVertex(const std::vector<glm::vec2>& v, const std::vector<glm::vec2>& t);
-	///<summary>Appends 1 vertex to the buffers in the RAM</summary>
-	///<param name="v">Vertex position</param>
-	///<param name="t">Vertex UV coordinates</param>
-	void AddVertex(const glm::vec2& v, const glm::vec2& t);
-	///<summary>Appends 1 quad to the buffers in the RAM</summary>
-	///<param name="v">Vertex positions</param>
-	///<param name="t">Vertex UV coordinates</param>
-	void AddQuad(const quad2& v, const quad2& t);
-	///<summary>Add generated rounded-rectangle data in the buffers</summary>
-	///<param name="in">Inner space</param>
-	///<param name="out">Outer space</param>
-	void AddRectangle(const quad2& in, const quad2& out);
+	Model2d &operator=(const Model2d &second);
 
-	///<summary>Texture used in shaders</summary>
-	Texture* texture;
-	///<summary>Position of the model</summary>
+	void Add(const Geometry2d &geom);
+
+	Texture texture;
 	glm::vec2 position;
-	///<summary>Color of the model</summary>
 	glm::vec4 color;
-	///<summary>Depth of the model</summary>
 	float depth;
 
-	///<summary>Render all registred models</summary>
-	static void RenderModels();
 protected:
-	///<summary>Vertex positions buffer in the RAM</summary>
-	std::vector <glm::vec2> vertex;
-	///<summary>Vertex UV coordinates buffer in the RAM</summary>
-	std::vector <glm::vec2> texcoord;
-	///<summary>Vertex array object</summary>
-	GLuint vao;
-	///<summary>Vertex positions buffer in the GPU</summary>
-	GLuint vbuffer;
-	///<summary>Vertex UV coordinates buffer in the GPU</summary>
-	GLuint tbuffer;
-	///<summary>Type of the model (GL_TRIANGLES)</summary>
-	const int type;
-private:
-	///<summary>Registred models list</summary>
-	static std::list<Model2d*> registredModels;
+	class Data {
+	public:
+		Data();
+		~Data();
+		void Validate();
+		void Render(int type);
+		void Add(const Geometry2d &geom);
+
+	private:
+		GLuint vao;
+		GLuint vbuffer;
+		GLuint tbuffer;
+		Geometry2d geometry;
+		bool valid = false;
+	};
+	typedef std::shared_ptr<Data> Model2dDataPtr;
+#define Model2dDataPtr() std::make_shared<Data>()
+
+	Model2dDataPtr data;
+	int type;
 };
 
 #endif

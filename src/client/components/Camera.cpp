@@ -1,84 +1,45 @@
 #include "Camera.h"
-#include <iostream>
-#include "Graphics.h"
-#include "../Client.h"
-#include "../../shared/System.h"
 
-class Camera* pCamera;
-Camera* g_Camera(){ return pCamera; }
+#include <shared/System.h>
+#include <client/components/Input.h>
 
-Camera::Camera() : Component(){
+class Camera *pCamera;
+Camera *g_Camera() { return pCamera ? pCamera : new Camera(); }
+
+Camera::Camera() : ClientComponent() {
 	pCamera = this;
-	position = vec3(0, 0, 0);
-	rotation = vec3(0, 0, 0);
-	SetMatrix();
+	pos = glm::vec3(0.0, 0.0, 0.0);
+	rot = rot3(0.0, 0.0, 0.0);
+	UpdateVectors();
 }
-Camera::~Camera(){
-	pCamera = NULL;
-}
-void Camera::Input(unsigned char* keys,int xrel,int yrel,int wheel){
-	Component::Input(keys, xrel, yrel, wheel);
-	RotateX(-yrel*g_System()->tickCoeff);
-	RotateZ(-xrel*g_System()->tickCoeff);
-	/*glm::vec3 look2=look;
-	look2*=512;
+Camera::~Camera() { pCamera = NULL; }
+void Camera::Tick() {
+	RotateX(-g_Input()->mouseY * 0.01);
+	RotateZ(-g_Input()->mouseX * 0.01);
+	UpdateVectors();
+	glm::vec3 look2 = look;
+	look2 *= 512.0;
 	look2 *= g_System()->tickCoeff;
-	glm::vec3 right2=right;
-	right2*=512;
+	glm::vec3 right2 = right;
+	right2 *= 512.0;
 	right2 *= g_System()->tickCoeff;
-	glm::vec3 up2=up;
-	up2*=512;
+	glm::vec3 up2 = up;
+	up2 *= 512.0;
 	up2 *= g_System()->tickCoeff;
-	if (keys[SDL_SCANCODE_W]) position+=look2;
-	if (keys[SDL_SCANCODE_S]) position-=look2;
-	if (keys[SDL_SCANCODE_D]) position+=right2;
-	if (keys[SDL_SCANCODE_A]) position-=right2;
-	if (keys[SDL_SCANCODE_R]) position+=up2;
-	if (keys[SDL_SCANCODE_F]) position-=up2;*/
 }
-
-void Camera::SetMatrix(){
-	if (!g_Client()->state.ingame) return;
-	updateVectors();
-
-	g_Graphics()->SetViewMatrix(position, position + look, up);
-
-	glScalef(1,1,1);
+void Camera::RotateX(float rad) { rot.x += rad; }
+void Camera::RotateY(float rad) { rot.y += rad; }
+void Camera::RotateZ(float rad) { rot.z += rad; }
+void Camera::UpdateVectors() {
+	up = glm::rotate(glm::vec3(0.0, 0.0, 1.0), rot);
+	look = glm::rotate(glm::vec3(0.0, 1.0, 0.0), rot);
+	right = glm::rotate(glm::vec3(1.0, 0.0, 0.0), rot);
 }
-void Camera::RotateX(float rad){
-	rotation.x+=rad;
-}
-void Camera::RotateY(float rad){
-	rotation.y+=rad;
-}
-void Camera::RotateZ(float rad){
-	rotation.z+=rad;
-}
-void Camera::updateVectors(){
-	up=vec3(0,0,1);
-	up=glm::rotateY(up, rotation.y);
-	up=glm::rotateX(up, rotation.x);
-	up=glm::rotateZ(up, rotation.z);
-
-	look=vec3(0,1,0);
-	look=glm::rotateY(look, rotation.y);
-	look=glm::rotateX(look, rotation.x);
-	look=glm::rotateZ(look, rotation.z);
-
-	right=vec3(1,0,0);
-	right=glm::rotateY(right, rotation.y);
-	right=glm::rotateX(right, rotation.x);
-	right=glm::rotateZ(right, rotation.z);
-}
-void Camera::StateChange(const STATE& lastState){
-	Component::StateChange(lastState);
-	if (!lastState.ingame && g_Client()->state.ingame){
-		rotation=vec3(0,0,0);
-		look=vec3(0,1,0);
-		up=vec3(0,0,1);
-		position=vec3(0,0,0);
-		right=vec3(1,0,0);
-		//sinx=0;siny=0;sinz=0;
-		//cosx=1;cosy=1;cosz=1;
+void Camera::StateChange(const STATE &lastState) {
+	ClientComponent::StateChange(lastState);
+	if (!lastState.ingame && state.ingame) {
+		rot = rot3(0.0, 0.0, 0.0);
+		pos = glm::vec3(0.0, 0.0, 0.0);
+		UpdateVectors();
 	}
 }

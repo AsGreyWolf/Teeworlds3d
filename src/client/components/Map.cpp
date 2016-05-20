@@ -1,110 +1,112 @@
 #include "Map.h"
-#include <stdio.h>
-#include <cstring>
-#include "graphics/models/Model.h"
-#include "graphics/Resources.h"
-#include "graphics/Texture.h"
-#include "Graphics.h"
-#include "../Client.h"
-#include "../../shared/System.h"
-#include "../../shared/World.h"
-#include "../../shared/world/Tile.h"
+#include <tools/Protocol.h>
+#include <shared/World.h>
+#include <shared/world/Tile.h>
+#include <client/components/Resources.h>
+#include <client/components/graphics/geometry/Primitives.h>
 
-class Map* pMap;
-Map* g_Map(){ return pMap; }
+class Map *pMap;
+Map *g_Map() { return pMap ? pMap : new Map(); }
 
-Map::Map() : Component(){
-	pMap = this;
+Map::Map() { pMap = this; }
+Map::~Map() { pMap = 0; }
+void Map::Tick() {
+	for (int i = 0; i < MAX_PLAYERS; i++)
+		if (g_World()->players && g_World()->players[i]) {
+			playerModels[i].Enable();
+			playerModels[i].Sync(*g_World()->players[i]);
+			playerModels[i].UpdateMatrix();
+		} else
+			playerModels[i].Disable();
 }
-Map::~Map(){
-	UnLoad();
-	pMap = NULL;
-}
-void Map::StateChange(const STATE& lastState){
-	Component::StateChange(lastState);
-	if(!lastState.ingame && g_Client()->state.ingame)
-	{
-		m_Model=new Model();
-		Load("123");
-		return;
-	}
-	if(lastState.ingame && !g_Client()->state.ingame){
-		UnLoad();
-	}
-}
-void Map::Tick(){
-	Component::Tick();
-	m_Model->SetMatrix();
-	//TODO: disable
-	//if (g_Client()->state.ingame)
-	//	m_Model->Render();
-}
-
-bool Map::Load(const string& name){
+bool Map::Load(const std::string &name) {
 	g_World()->Load(name);
-	string p = "mapres/" + string(g_World()->tileset) + ".png";
-	texture = new Texture(p,false,false);
+	if (!g_World()->isValid())
+		return false;
+	terrain.texture = Texture("mapres/" + g_World()->tileset + ".png");
+	for (Tile &buffer : g_World()->tilesById) {
+		if (!buffer.isVisible())
+			continue;
+		if (!buffer.hasx) {
+			terrain.Add(Quad(quad3(glm::vec3(buffer.x * 32 - 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 - 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 - 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 - 16),
+			                       glm::vec3(buffer.x * 32 - 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 - 16)),
+			                 glm::vec3(-1, 0, 0),
+			                 g_Resources()->texturePos16[buffer.texOther]));
+		}
+		if (!buffer.hasX) {
+			terrain.Add(Quad(quad3(glm::vec3(buffer.x * 32 + 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 + 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 + 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 - 16),
+			                       glm::vec3(buffer.x * 32 + 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 - 16)),
+			                 glm::vec3(1, 0, 0),
+			                 g_Resources()->texturePos16[buffer.texOther]));
+		}
 
-	for (Tile& buffer : g_World()->tilesById){
-		if(!buffer.hasx){
-			m_Model->AddQuad(quad3(
-				vec3(buffer.x*32-16,buffer.y*32-16,buffer.z*32+16),
-				vec3(buffer.x*32-16,buffer.y*32+16,buffer.z*32+16),
-				vec3(buffer.x*32-16,buffer.y*32+16,buffer.z*32-16),
-				vec3(buffer.x*32-16,buffer.y*32-16,buffer.z*32-16)
-				),vec3(-1,0,0),g_Graphics()->m_Resources->texturePos16[buffer.texOther]);
-
+		if (!buffer.hasy) {
+			terrain.Add(Quad(quad3(glm::vec3(buffer.x * 32 + 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 - 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 - 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 - 16),
+			                       glm::vec3(buffer.x * 32 + 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 - 16)),
+			                 glm::vec3(0, -1, 0),
+			                 g_Resources()->texturePos16[buffer.texOther]));
 		}
-		if(!buffer.hasX){
-			m_Model->AddQuad(quad3(
-				vec3(buffer.x*32+16,buffer.y*32+16,buffer.z*32+16),
-				vec3(buffer.x*32+16,buffer.y*32-16,buffer.z*32+16),
-				vec3(buffer.x*32+16,buffer.y*32-16,buffer.z*32-16),
-				vec3(buffer.x*32+16,buffer.y*32+16,buffer.z*32-16)
-				),vec3(1,0,0),g_Graphics()->m_Resources->texturePos16[buffer.texOther]);
+		if (!buffer.hasY) {
+			terrain.Add(Quad(quad3(glm::vec3(buffer.x * 32 - 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 + 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 + 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 - 16),
+			                       glm::vec3(buffer.x * 32 - 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 - 16)),
+			                 glm::vec3(0, 1, 0),
+			                 g_Resources()->texturePos16[buffer.texOther]));
 		}
-
-		if(!buffer.hasy){
-			m_Model->AddQuad(quad3(
-				vec3(buffer.x*32+16,buffer.y*32-16,buffer.z*32+16),
-				vec3(buffer.x*32-16,buffer.y*32-16,buffer.z*32+16),
-				vec3(buffer.x*32-16,buffer.y*32-16,buffer.z*32-16),
-				vec3(buffer.x*32+16,buffer.y*32-16,buffer.z*32-16)
-				),vec3(0,-1,0),g_Graphics()->m_Resources->texturePos16[buffer.texOther]);
+		if (!buffer.hasZ) {
+			terrain.Add(Quad(quad3(glm::vec3(buffer.x * 32 + 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 - 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 - 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 + 16),
+			                       glm::vec3(buffer.x * 32 + 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 + 16)),
+			                 glm::vec3(0, 0, 1),
+			                 g_Resources()->texturePos16[buffer.texTop]));
 		}
-		if(!buffer.hasY){
-			m_Model->AddQuad(quad3(
-				vec3(buffer.x*32-16,buffer.y*32+16,buffer.z*32+16),
-				vec3(buffer.x*32+16,buffer.y*32+16,buffer.z*32+16),
-				vec3(buffer.x*32+16,buffer.y*32+16,buffer.z*32-16),
-				vec3(buffer.x*32-16,buffer.y*32+16,buffer.z*32-16)
-				),vec3(0,1,0),g_Graphics()->m_Resources->texturePos16[buffer.texOther]);
-		}
-		if(!buffer.hasZ){
-			m_Model->AddQuad(quad3(
-				vec3(buffer.x*32+16,buffer.y*32+16,buffer.z*32+16),
-				vec3(buffer.x*32-16,buffer.y*32+16,buffer.z*32+16),
-				vec3(buffer.x*32-16,buffer.y*32-16,buffer.z*32+16),
-				vec3(buffer.x*32+16,buffer.y*32-16,buffer.z*32+16)
-				),vec3(0,0,1),g_Graphics()->m_Resources->texturePos16[buffer.texTop]);
-		}
-		if(!buffer.hasz){
-			m_Model->AddQuad(quad3(
-				vec3(buffer.x*32+16,buffer.y*32-16,buffer.z*32-16),
-				vec3(buffer.x*32-16,buffer.y*32-16,buffer.z*32-16),
-				vec3(buffer.x*32-16,buffer.y*32+16,buffer.z*32-16),
-				vec3(buffer.x*32+16,buffer.y*32+16,buffer.z*32-16)
-				),vec3(0,0,-1),g_Graphics()->m_Resources->texturePos16[buffer.texBottom]);
+		if (!buffer.hasz) {
+			terrain.Add(Quad(quad3(glm::vec3(buffer.x * 32 + 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 - 16),
+			                       glm::vec3(buffer.x * 32 - 16, buffer.y * 32 - 16,
+			                                 buffer.z * 32 - 16),
+			                       glm::vec3(buffer.x * 32 - 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 - 16),
+			                       glm::vec3(buffer.x * 32 + 16, buffer.y * 32 + 16,
+			                                 buffer.z * 32 - 16)),
+			                 glm::vec3(0, 0, -1),
+			                 g_Resources()->texturePos16[buffer.texBottom]));
 		}
 	}
-	m_Model->texture=texture;
-	m_Model->Create();
+	playerModels.resize(MAX_PLAYERS, blankPlayer);
+	terrain.Enable();
+	terrain.UpdateMatrix();
 	return true;
 }
-void Map::UnLoad(){
-	if(m_Model!=nullptr){
-		delete m_Model;
-		delete texture;
-	}
-	g_World()->UnLoad();
+void Map::UnLoad() {
+	terrain = Model3d();
+	playerModels.clear();
 }

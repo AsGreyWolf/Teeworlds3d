@@ -1,24 +1,17 @@
 #include "SharedComponent.h"
+
 #include <list>
 
-std::list <SharedComponent*> SharedComponent::registredSharedComponents;
-void SharedComponent::RegisterComponent(SharedComponent* component) {
-	registredSharedComponents.push_back(component);
-}
-void SharedComponent::UnRegisterComponent(SharedComponent* component) {
-	registredSharedComponents.remove(component);
-}
+std::list<SharedComponent *> SharedComponent::registred;
+
+SharedComponent::SharedComponent() { registred.push_back(this); }
+SharedComponent::~SharedComponent() { registred.remove(this); }
+void SharedComponent::Tick() {}
 void SharedComponent::ClearComponents() {
-	while (!registredSharedComponents.empty())
-		UnRegisterComponent(registredSharedComponents.back());
-}
-SharedComponent::SharedComponent() {
-}
-SharedComponent::~SharedComponent() {
-}
-void SharedComponent::Tick() {
+	while (!registred.empty())
+		delete registred.back();
 }
 void SharedComponent::TickComponents() {
-	for (SharedComponent*& component : registredSharedComponents)
+	for (SharedComponent *&component : registred)
 		component->Tick();
 }

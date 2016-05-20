@@ -1,10 +1,10 @@
 #ifndef TILE_H
 #define TILE_H
-#include <vector>
-#include "../../../other/glm/glm.hpp"
 
-class Tile
-{
+#include <vector>
+#include <tools/vmath.h>
+
+class Tile {
 public:
 	int x;
 	int y;
@@ -20,34 +20,20 @@ public:
 	bool hasY;
 	bool hasz;
 	bool hasZ;
-	Tile(){
-		hasx = true;
-		hasX = true;
-		hasy = true;
-		hasY = true;
-		hasz = true;
-		hasZ = true;
+	Tile() {
+		hasx = false;
+		hasX = false;
+		hasy = false;
+		hasY = false;
+		hasz = false;
+		hasZ = false;
 	}
-	bool isPhys(){
-		return isPhys(type);
-	}
-	bool isNoHook(){
-		return isNoHook(type);
-	}
-	bool isVisible(){
-		return isVisible(type);
-	}
-	static bool isPhys(int type){
-		return (type == 1 || type == 2);
-	}
-	static bool isNoHook(int type){
-		return type == 2;
-	}
-	static bool isVisible(int type){
-		return isPhys(type);
-	}
+	bool isPhys() const { return isPhys(type); }
+	bool isNoHook() const { return isNoHook(type); }
+	bool isVisible() const { return isVisible(type); }
+	static bool isPhys(int type) { return (type == 1 || type == 2); }
+	static bool isNoHook(int type) { return type == 2; }
+	static bool isVisible(int type) { return isPhys(type); }
 };
-
-
 
 #endif

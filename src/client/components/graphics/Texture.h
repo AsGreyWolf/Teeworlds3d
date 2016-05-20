@@ -2,39 +2,45 @@
 #define TEXTURE_H
 
 #include <string>
-#include "../../../../other/sdl/include/SDL_image.h"
-#include "../../../tools/quad2.h"
-#include "../../../tools/quad3.h"
-#include "../../../../other/glew/include/glew.h"
-#define GLM_FORCE_RADIANS
-#include "../../../../other/glm/gtc/matrix_transform.hpp"
-#include "../../../../other/glm/gtc/type_ptr.hpp"
+#include <memory>
+#define GLEW_STATIC
+#include <glew.h>
+
+enum TEXTURE_MODS {
+    TEXTURE_ANISOTROPY = 0x01,
+    TEXTURE_FILTERING = 0x02,
+    TEXTURE_DEPTH = 0x04,
+};
 
 class Texture {
 public:
-	Texture() { id = 0; };
-	///<summary>Load texture from the file</summary>
-	Texture(const std::string& filepath, bool anisotropy, bool filtering){Initialize(filepath,anisotropy,filtering);};
-	///<summary>Generate texture from the surface</summary>
-	Texture(SDL_Surface* data, bool anisotropy, bool filtering){Initialize(data,anisotropy,filtering);};
-	///<summary>Generate texture from the pixel buffer</summary>
-	Texture(const GLvoid* pixels, bool anisotropy, bool filtering, int w, int h, bool isDepth=false){Initialize(pixels,anisotropy,filtering,w,h,isDepth);};
-	virtual ~Texture();
+    Texture(std::string filepath, int flags = 0);
+    Texture(const GLvoid *pixels, int w, int h, int flags = 0);
+    Texture(const Texture &second);
+    Texture();
+    ~Texture();
+    Texture &operator=(const Texture &second);
+    operator GLuint() const { return *data; };
 
-	///<summary>Bind texture</summary>
-	void Bind();
-	operator GLuint() const { return id; };
-	///<summary>W/H</summary>
-	float aspect;
-protected:
-	///<summary>Load texture from the file</summary>
-    void Initialize(const std::string& filepath, bool anisotropy, bool filtering);
-	///<summary>Generate texture from the surface</summary>
-	void Initialize(SDL_Surface* data, bool anisotropy, bool filtering);
-	///<summary>Generate texture from the pixel buffer</summary>
-	void Initialize(const GLvoid* pixels, bool anisotropy, bool filtering, int w, int h, bool isDepth=false);
-	bool cleanup;
-	GLuint id;
+    void Bind() const;
+
+    float aspect = 1;
+    int flags = 0;
+
+private:
+    class Data {
+    public:
+        Data();
+        ~Data();
+        operator GLuint() const { return id; };
+
+    private:
+        GLuint id = 0;
+    };
+    typedef std::shared_ptr<Data> TextureDataPtr;
+#define TextureDataPtr(a) std::make_shared<Data>(a);
+
+    TextureDataPtr data;
 };
 
 #endif

@@ -12,8 +12,8 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-pg" />
 					<Add option="-g" />
+					<Add option="-pg" />
 					<Add option="-ggdb -O0 -g3" />
 				</Compiler>
 				<Linker>
@@ -28,7 +28,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -40,6 +40,10 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-DLINUX" />
+			<Add directory="src" />
+			<Add directory="other/glew/include" />
+			<Add directory="other/glm" />
+			<Add directory="other/sdl/include" />
 		</Compiler>
 		<Linker>
 			<Add option="-lGL -lGLEW -lSDL2 -lSDL2_image -lGLU" />
@@ -47,6 +51,19 @@
 		<Unit filename="other/glew/include/glew.h" />
 		<Unit filename="other/glew/include/glxew.h" />
 		<Unit filename="other/glew/include/wglew.h" />
+		<Unit filename="other/glew/lib/Win32/glew32.dll" />
+		<Unit filename="other/glew/lib/Win32/glew32.lib" />
+		<Unit filename="other/glew/lib/Win32/glew32s.lib" />
+		<Unit filename="other/glew/lib/Win32/glewinfo.exe" />
+		<Unit filename="other/glew/lib/Win32/glewinfo.txt" />
+		<Unit filename="other/glew/lib/Win32/visualinfo.exe" />
+		<Unit filename="other/glew/lib/Win32/visualinfo.txt" />
+		<Unit filename="other/glew/lib/x64/glew32.dll" />
+		<Unit filename="other/glew/lib/x64/glew32.lib" />
+		<Unit filename="other/glew/lib/x64/glew32s.lib" />
+		<Unit filename="other/glew/lib/x64/glewinfo.exe" />
+		<Unit filename="other/glew/lib/x64/visualinfo.exe" />
+		<Unit filename="other/glm/CMakeLists.txt" />
 		<Unit filename="other/glm/common.hpp" />
 		<Unit filename="other/glm/detail/_features.hpp" />
 		<Unit filename="other/glm/detail/_fixes.hpp" />
@@ -296,6 +313,15 @@
 		<Unit filename="other/glm/vec3.hpp" />
 		<Unit filename="other/glm/vec4.hpp" />
 		<Unit filename="other/glm/vector_relational.hpp" />
+		<Unit filename="other/sdl/BUGS_sdl.txt" />
+		<Unit filename="other/sdl/CHANGES_image.txt" />
+		<Unit filename="other/sdl/CHANGES_sdl.txt" />
+		<Unit filename="other/sdl/COPYING_image.txt" />
+		<Unit filename="other/sdl/COPYING_sdl.txt" />
+		<Unit filename="other/sdl/README-SDL_sdl.txt" />
+		<Unit filename="other/sdl/README_image.txt" />
+		<Unit filename="other/sdl/README_sdl.txt" />
+		<Unit filename="other/sdl/WhatsNew_sdl.txt" />
 		<Unit filename="other/sdl/include/SDL.h" />
 		<Unit filename="other/sdl/include/SDL_assert.h" />
 		<Unit filename="other/sdl/include/SDL_atomic.h" />
@@ -362,39 +388,96 @@
 		<Unit filename="other/sdl/include/SDL_video.h" />
 		<Unit filename="other/sdl/include/begin_code.h" />
 		<Unit filename="other/sdl/include/close_code.h" />
-		<Unit filename="src/client/Client.cpp" />
-		<Unit filename="src/client/Client.h" />
-		<Unit filename="src/client/Component.h" />
+		<Unit filename="other/sdl/lib32/LICENSE.freetype.txt" />
+		<Unit filename="other/sdl/lib32/LICENSE.jpeg.txt" />
+		<Unit filename="other/sdl/lib32/LICENSE.png.txt" />
+		<Unit filename="other/sdl/lib32/LICENSE.tiff.txt" />
+		<Unit filename="other/sdl/lib32/LICENSE.webp.txt" />
+		<Unit filename="other/sdl/lib32/LICENSE.zlib.txt" />
+		<Unit filename="other/sdl/lib32/SDL2.dll" />
+		<Unit filename="other/sdl/lib32/SDL2.lib" />
+		<Unit filename="other/sdl/lib32/SDL2_image.dll" />
+		<Unit filename="other/sdl/lib32/SDL2_image.lib" />
+		<Unit filename="other/sdl/lib32/SDL2_ttf.dll" />
+		<Unit filename="other/sdl/lib32/SDL2_ttf.lib" />
+		<Unit filename="other/sdl/lib32/SDL2main.lib" />
+		<Unit filename="other/sdl/lib32/libfreetype-6.dll" />
+		<Unit filename="other/sdl/lib32/libjpeg-9.dll" />
+		<Unit filename="other/sdl/lib32/libpng16-16.dll" />
+		<Unit filename="other/sdl/lib32/libtiff-5.dll" />
+		<Unit filename="other/sdl/lib32/libwebp-4.dll" />
+		<Unit filename="other/sdl/lib32/zlib1.dll" />
+		<Unit filename="other/sdl/lib64/LICENSE.freetype.txt" />
+		<Unit filename="other/sdl/lib64/LICENSE.jpeg.txt" />
+		<Unit filename="other/sdl/lib64/LICENSE.png.txt" />
+		<Unit filename="other/sdl/lib64/LICENSE.tiff.txt" />
+		<Unit filename="other/sdl/lib64/LICENSE.webp.txt" />
+		<Unit filename="other/sdl/lib64/LICENSE.zlib.txt" />
+		<Unit filename="other/sdl/lib64/SDL2.dll" />
+		<Unit filename="other/sdl/lib64/SDL2.lib" />
+		<Unit filename="other/sdl/lib64/SDL2_image.dll" />
+		<Unit filename="other/sdl/lib64/SDL2_image.lib" />
+		<Unit filename="other/sdl/lib64/SDL2_ttf.dll" />
+		<Unit filename="other/sdl/lib64/SDL2_ttf.lib" />
+		<Unit filename="other/sdl/lib64/SDL2main.lib" />
+		<Unit filename="other/sdl/lib64/libfreetype-6.dll" />
+		<Unit filename="other/sdl/lib64/libjpeg-9.dll" />
+		<Unit filename="other/sdl/lib64/libpng16-16.dll" />
+		<Unit filename="other/sdl/lib64/libtiff-5.dll" />
+		<Unit filename="other/sdl/lib64/libwebp-4.dll" />
+		<Unit filename="other/sdl/lib64/zlib1.dll" />
+		<Unit filename="src/client/ClientComponent.cpp" />
+		<Unit filename="src/client/ClientComponent.h" />
 		<Unit filename="src/client/components/Camera.cpp" />
 		<Unit filename="src/client/components/Camera.h" />
-		<Unit filename="src/client/components/GUI.cpp" />
-		<Unit filename="src/client/components/GUI.h" />
+		<Unit filename="src/client/components/Client.cpp" />
+		<Unit filename="src/client/components/Client.h" />
 		<Unit filename="src/client/components/Graphics.cpp" />
 		<Unit filename="src/client/components/Graphics.h" />
+		<Unit filename="src/client/components/Input.cpp" />
+		<Unit filename="src/client/components/Input.h" />
 		<Unit filename="src/client/components/Map.cpp" />
 		<Unit filename="src/client/components/Map.h" />
-		<Unit filename="src/client/components/Players.cpp" />
-		<Unit filename="src/client/components/Players.h" />
-		<Unit filename="src/client/components/graphics/Resources.cpp" />
-		<Unit filename="src/client/components/graphics/Resources.h" />
-		<Unit filename="src/client/components/graphics/StringTexture.cpp" />
-		<Unit filename="src/client/components/graphics/StringTexture.h" />
-		<Unit filename="src/client/components/graphics/TextGenerator.cpp" />
-		<Unit filename="src/client/components/graphics/TextGenerator.h" />
+		<Unit filename="src/client/components/Resources.cpp" />
+		<Unit filename="src/client/components/Resources.h" />
+		<Unit filename="src/client/components/graphics/Model.cpp" />
+		<Unit filename="src/client/components/graphics/Model.h" />
+		<Unit filename="src/client/components/graphics/Shader.cpp" />
+		<Unit filename="src/client/components/graphics/Shader.h" />
 		<Unit filename="src/client/components/graphics/Texture.cpp" />
 		<Unit filename="src/client/components/graphics/Texture.h" />
-		<Unit filename="src/client/components/graphics/models/Model.cpp" />
-		<Unit filename="src/client/components/graphics/models/Model.h" />
+		<Unit filename="src/client/components/graphics/geometry/Geometry2d.cpp" />
+		<Unit filename="src/client/components/graphics/geometry/Geometry2d.h" />
+		<Unit filename="src/client/components/graphics/geometry/Geometry3d.cpp" />
+		<Unit filename="src/client/components/graphics/geometry/Geometry3d.h" />
+		<Unit filename="src/client/components/graphics/geometry/ObjModel.cpp" />
+		<Unit filename="src/client/components/graphics/geometry/ObjModel.h" />
+		<Unit filename="src/client/components/graphics/geometry/Primitives.cpp" />
+		<Unit filename="src/client/components/graphics/geometry/Primitives.h" />
+		<Unit filename="src/client/components/graphics/geometry/Sphere.cpp" />
+		<Unit filename="src/client/components/graphics/geometry/Sphere.h" />
 		<Unit filename="src/client/components/graphics/models/Model2d.cpp" />
 		<Unit filename="src/client/components/graphics/models/Model2d.h" />
+		<Unit filename="src/client/components/graphics/models/Model3d.cpp" />
+		<Unit filename="src/client/components/graphics/models/Model3d.h" />
+		<Unit filename="src/client/components/graphics/models/ModelParticle.h" />
+		<Unit filename="src/client/components/graphics/models/ParticleModel.cpp" />
+		<Unit filename="src/client/components/graphics/models/ParticleModel.h" />
 		<Unit filename="src/client/components/graphics/models/PlayerModel.cpp" />
 		<Unit filename="src/client/components/graphics/models/PlayerModel.h" />
-		<Unit filename="src/client/components/graphics/models/Text.cpp" />
-		<Unit filename="src/client/components/graphics/models/Text.h" />
-		<Unit filename="src/client/components/graphics/models/Text3d.cpp" />
-		<Unit filename="src/client/components/graphics/models/Text3d.h" />
+		<Unit filename="src/client/components/graphics/models/ShadowModel.cpp" />
+		<Unit filename="src/client/components/graphics/models/ShadowModel.h" />
+		<Unit filename="src/client/components/graphics/shaders/Shader2d.cpp" />
+		<Unit filename="src/client/components/graphics/shaders/Shader2d.h" />
+		<Unit filename="src/client/components/graphics/shaders/Shader3d.cpp" />
+		<Unit filename="src/client/components/graphics/shaders/Shader3d.h" />
+		<Unit filename="src/client/components/graphics/shaders/ShaderParticle.cpp" />
+		<Unit filename="src/client/components/graphics/shaders/ShaderParticle.h" />
+		<Unit filename="src/client/components/graphics/shaders/ShaderShadow.cpp" />
+		<Unit filename="src/client/components/graphics/shaders/ShaderShadow.h" />
 		<Unit filename="src/shared/Console.cpp" />
 		<Unit filename="src/shared/Console.h" />
+		<Unit filename="src/shared/SharedComponent.cpp" />
 		<Unit filename="src/shared/SharedComponent.h" />
 		<Unit filename="src/shared/System.cpp" />
 		<Unit filename="src/shared/System.h" />
@@ -406,6 +489,8 @@
 		<Unit filename="src/tools/Protocol.h" />
 		<Unit filename="src/tools/quad2.h" />
 		<Unit filename="src/tools/quad3.h" />
+		<Unit filename="src/tools/rot3.h" />
+		<Unit filename="src/tools/vmath.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

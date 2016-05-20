@@ -1,26 +1,48 @@
 #ifndef QUAD3_H
 #define QUAD3_H
-#include "../../other/glm/glm.hpp"
-#include "quad2.h"
-using namespace glm;
-class quad3{
+
+#include <cmath>
+#define GLM_FORCE_RADIANS
+#include <glm.hpp>
+#include <gtc/type_ptr.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtx/rotate_vector.hpp>
+#include <gtx/closest_point.hpp>
+#include <tools/quad2.h>
+
+class quad3 {
 public:
-	vec3 p1,p2,p3,p4;
-	quad3(const vec3& v1, const vec3& v2, const vec3& v3, const vec3& v4){
-		p1=v1;
-		p2=v2;
-		p3=v3;
-		p4=v4;
+	glm::vec3 p1, p2, p3, p4;
+	quad3(const glm::vec3 &v1, const glm::vec3 &v2, const glm::vec3 &v3,
+	      const glm::vec3 &v4) {
+		p1 = v1;
+		p2 = v2;
+		p3 = v3;
+		p4 = v4;
 	}
-	quad3(const quad2& data, float depth=0){
-		p2 = quad2::vec2vec3(data.p10, depth);
-		p1 = quad2::vec2vec3(data.p00, depth);
-		p4 = quad2::vec2vec3(data.p01, depth);
-		p3 = quad2::vec2vec3(data.p11, depth);
+	quad3(const quad2 &data, float depth = 0) {
+		p1 = glm::vec3(-data.p00.x, depth, data.p00.y);
+		p2 = glm::vec3(-data.p10.x, depth, data.p10.y);
+		p3 = glm::vec3(-data.p11.x, depth, data.p11.y);
+		p4 = glm::vec3(-data.p01.x, depth, data.p01.y);
 	}
-	quad3 operator*(float a){
-		return quad3(p1*a,p2*a,p3*a,p4*a);
+	quad3(const quad3 &second)
+	    : quad3(second.p1, second.p2, second.p3, second.p4) {}
+	quad3 &operator=(const quad3 &second) {
+		p1 = second.p1;
+		p2 = second.p2;
+		p3 = second.p3;
+		p4 = second.p4;
+		return *this;
 	}
+	quad3 operator*(float a) const {
+		return quad3(p1 * a, p2 * a, p3 * a, p4 * a);
+	}
+	quad3 operator/(float a) const { return operator*(1.0f / a); }
+	quad3 operator+(const glm::vec3 &c) const {
+		return quad3(p1 + c, p2 + c, p3 + c, p4 + c);
+	}
+	quad3 operator-(const glm::vec3 &c) const { return operator+(-c); }
 };
 
 #endif

@@ -1,41 +1,38 @@
 #include "Player.h"
-#include "../World.h"
-#include "../System.h"
-#include "Tile.h"
-#define GLM_FORCE_RADIANS
-#include "../../../other/glm/gtx/rotate_vector.hpp"
-#include "../../../other/glm/gtx/closest_point.hpp"
 
-Player::Player(glm::uint8_t id){
+#include <shared/World.h>
+#include <shared/System.h>
+#include <shared/world/Tile.h>
+
+Player::Player(glm::uint8_t id) {
 	this->id = id;
 	pos = glm::vec3(0, 0, 0);
-	rot = glm::vec3(0,0,0);
+	rot = glm::vec3(0, 1, 0);
 	vel = glm::vec3(0, 0, 0);
 	dir = glm::vec2(0, 0);
 	jumped = 0;
-	hookState=0;
+	hookState = HOOK_IDLE;
 	hookPos = glm::vec3(0, 0, 0);
 	hookDir = glm::vec3(0, 0, 0);
-	hookedPlayer=-1;
+	hookedPlayer = -1;
 
 	color = glm::vec4(1, 1, 1, 0);
-	weapon=0;
-	emote=0;
+	weapon = 0;
+	emote = 0;
 
-	std::string skin="";
-	std::string nickname="";
+	std::string skin = "";
+	std::string nickname = "";
 
 	grounded = true;
 
-	controls = false;
+	local = false;
 };
-float VelocityRamp(float Value, float Start, float Range, float Curvature)
-{
-	if (Value < Start)
+float VelocityRamp(float value, float start, float range, float curvature) {
+	if (value < start)
 		return 1.0f;
-	return 1.0f / powf(Curvature, (Value - Start) / Range);
+	return 1.0f / powf(curvature, (value - start) / range);
 }
-void Player::Tick(){
+void Player::Tick() {
 	float tuningGravity = 0.5f;
 	float tuningGroundSpeed = 10.0f;
 	float tuningAirSpeed = 5.0f;
@@ -55,62 +52,54 @@ void Player::Tick(){
 	float tuningHookDragSpeed = 15.0f;
 	bool tuningPlayerHooking = true;
 
+	long time = g_System()->GetTime();
 	float coeff = (float)(g_System()->tickCoeff * 60);
 
 	grounded = false;
-	Tile* buf = g_World()->GetTile(glm::vec3(pos.x + physSize / 2, pos.y + physSize / 2, pos.z - physSize / 2 - 5));
+	Tile *buf = g_World()->GetTile(glm::vec3(
+	    pos.x + physSize / 2, pos.y + physSize / 2, pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
 		grounded = true;
-	buf = g_World()->GetTile(glm::vec3(pos.x + physSize / 2, pos.y - physSize / 2, pos.z - physSize / 2 - 5));
+	buf = g_World()->GetTile(glm::vec3(pos.x + physSize / 2, pos.y - physSize / 2,
+	                                   pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
 		grounded = true;
-	buf = g_World()->GetTile(glm::vec3(pos.x - physSize / 2, pos.y + physSize / 2, pos.z - physSize / 2 - 5));
+	buf = g_World()->GetTile(glm::vec3(pos.x - physSize / 2, pos.y + physSize / 2,
+	                                   pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
 		grounded = true;
-	buf = g_World()->GetTile(glm::vec3(pos.x - physSize / 2, pos.y - physSize / 2, pos.z - physSize / 2 - 5));
+	buf = g_World()->GetTile(glm::vec3(pos.x - physSize / 2, pos.y - physSize / 2,
+	                                   pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
 		grounded = true;
-	vel.z -= coeff*tuningGravity;
+	vel.z -= coeff * tuningGravity;
 	float MaxSpeed = grounded ? tuningGroundSpeed : tuningAirSpeed;
 	float Accel = grounded ? tuningGroundAccel : tuningAirAccel;
 	float Friction = grounded ? tuningGroundFriction : tuningAirFriction;
 
-	if(controls){
+	if (local) {
 		rot = look;
-		if (jump)
-		{
-			if (!(jumped & 1))
-			{
-				if (grounded)
-				{
+		if (jump) {
+			if (!(jumped & 1)) {
+				if (grounded) {
 					vel.z = tuningGroundJumpImpulse;
 					jumped |= 1;
-				}
-				else if (!(jumped & 2))
-				{
+				} else if (!(jumped & 2)) {
 					vel.z = tuningAirJumpImpulse;
 					jumped |= 3;
 				}
 			}
-		}
-		else
+		} else
 			jumped &= ~1;
-		if (hook)
-		{
-			if (hookState == HOOK_IDLE)
-			{
+		if (hook) {
+			if (hookState == HOOK_IDLE) {
 				hookState = HOOK_FLYING;
-				hookDir = glm::vec3(0, 1, 0);
-				hookDir = glm::rotateY(hookDir, look.y);
-				hookDir = glm::rotateX(hookDir, look.x);
-				hookDir = glm::rotateZ(hookDir, look.z);
-				hookPos = pos + hookDir*physSize*1.5f;
+				hookDir = glm::rotate(glm::vec3(0, 1, 0), look);
+				hookPos = pos + hookDir * physSize * 1.5f;
 				hookedPlayer = -1;
-				//m_HookTick = 0;
+				hookTime = time;
 			}
-		}
-		else
-		{
+		} else {
 			hookedPlayer = -1;
 			hookState = HOOK_IDLE;
 			hookPos = pos;
@@ -118,63 +107,51 @@ void Player::Tick(){
 	}
 	{
 		glm::vec2 nvel(vel.x, vel.y);
-		if (glm::length(dir)==0.0f)
-			nvel *= pow(Friction,coeff);
+		if (glm::zero(dir))
+			nvel *= powf(Friction, coeff);
 		else {
-			nvel += coeff*dir*Accel;
+			nvel += coeff * dir * Accel;
 			if (glm::length(nvel) > MaxSpeed)
-				nvel = glm::normalize(nvel)*MaxSpeed;
+				nvel = glm::normalize(nvel) * MaxSpeed;
 		}
 		vel.x = nvel.x;
 		vel.y = nvel.y;
 	}
 	if (grounded)
 		jumped &= ~2;
-	if (hookState == HOOK_IDLE)
-	{
+	if (hookState == HOOK_IDLE) {
 		hookedPlayer = -1;
 		hookState = HOOK_IDLE;
 		hookPos = pos;
-	}
-	else if (hookState >= HOOK_RETRACT_START && hookState < HOOK_RETRACT_END)
-	{
+	} else if (hookState >= HOOK_RETRACT_START && hookState < HOOK_RETRACT_END) {
 		hookState++;
-	}
-	else if (hookState == HOOK_RETRACT_END)
-	{
+	} else if (hookState == HOOK_RETRACT_END) {
 		hookState = HOOK_RETRACTED;
-	}
-	else if (hookState == HOOK_FLYING)
-	{
-		glm::vec3 newPos = hookPos + hookDir*tuningHookFireSpeed*coeff;
-		if (glm::distance(pos, newPos) > tuningHookLength)
-		{
+	} else if (hookState == HOOK_FLYING) {
+		glm::vec3 newPos = hookPos + hookDir * tuningHookFireSpeed * coeff;
+		if (glm::distance(pos, newPos) > tuningHookLength) {
 			hookState = HOOK_RETRACT_START;
 			newPos = pos + glm::normalize(newPos - pos) * tuningHookLength;
 		}
 		bool goingToHitGround = false;
 		bool goingToRetract = false;
-		Tile* hit = g_World()->IntersectLine(hookPos, newPos, &newPos, 0);
-		if (hit && hit->isPhys())
-		{
+		Tile *hit = g_World()->IntersectLine(hookPos, newPos, &newPos, 0);
+		if (hit && hit->isPhys()) {
 			if (hit->isNoHook())
 				goingToRetract = true;
 			else
 				goingToHitGround = true;
 		}
-		if (tuningPlayerHooking)
-		{
+		if (tuningPlayerHooking) {
 			float distance = 0.0f;
-			for (int i = 0; i < MAX_PLAYERS; i++)
-			{
-				Player* player = g_World()->players[i];
+			for (int i = 0; i < MAX_PLAYERS; i++) {
+				Player *player = g_World()->players[i];
 				if (player == this)
 					continue;
-				glm::vec3 closestPoint = glm::closestPointOnLine(hookPos, newPos, player->pos);
-				if (glm::distance(player->pos, closestPoint) < physSize + 2.0f)
-				{
-					if (hookedPlayer == -1 || glm::distance(hookPos, player->pos) < distance)
-					{
+				glm::vec3 closestPoint =
+				    glm::closestPointOnLine(hookPos, newPos, player->pos);
+				if (glm::distance(player->pos, closestPoint) < physSize + 2.0f) {
+					if (hookedPlayer == -1 || glm::distance(hookPos, player->pos) < distance) {
 						hookState = HOOK_GRABBED;
 						hookedPlayer = i;
 						distance = glm::distance(hookPos, player->pos);
@@ -182,37 +159,29 @@ void Player::Tick(){
 				}
 			}
 		}
-		if (hookState == HOOK_FLYING)
-		{
-			if (goingToHitGround)
-			{
+		if (hookState == HOOK_FLYING) {
+			if (goingToHitGround) {
 				hookState = HOOK_GRABBED;
-			}
-			else if (goingToRetract)
-			{
+			} else if (goingToRetract) {
 				hookState = HOOK_RETRACT_START;
 			}
 
 			hookPos = newPos;
 		}
 	}
-	if (hookState == HOOK_GRABBED)
-	{
-		if (hookedPlayer != -1)
-		{
-			Player* player = g_World()->players[hookedPlayer];
+	if (hookState == HOOK_GRABBED) {
+		if (hookedPlayer != -1) {
+			Player *player = g_World()->players[hookedPlayer];
 			if (player)
 				hookPos = player->pos;
-			else
-			{
+			else {
 				hookedPlayer = -1;
 				hookState = HOOK_RETRACTED;
 				hookPos = pos;
 			}
 		}
-		if (hookedPlayer == -1 && glm::distance(hookPos, pos) > 46.0f)
-		{
-			glm::vec3 hookVel = glm::normalize(hookPos - pos)*tuningHookDragAccel;
+		if (hookedPlayer == -1 && glm::distance(hookPos, pos) > 46.0f) {
+			glm::vec3 hookVel = glm::normalize(hookPos - pos) * tuningHookDragAccel;
 			if (hookVel.z < 0)
 				hookVel.z *= 0.3f;
 			if ((hookVel.x < 0 && dir.x < 0) || (hookVel.x > 0 && dir.x > 0))
@@ -223,72 +192,67 @@ void Player::Tick(){
 				hookVel.y *= 0.95f;
 			else
 				hookVel.y *= 0.75f;
-			glm::vec3 newVel = vel + hookVel*coeff;
-			if (glm::length(newVel) < tuningHookDragSpeed || glm::length(newVel) < glm::length(vel))
+			glm::vec3 newVel = vel + hookVel * coeff;
+			if (glm::length(newVel) < tuningHookDragSpeed ||
+			    glm::length(newVel) < glm::length(vel))
 				vel = newVel;
-
 		}
-		// release hook (max hook time is 1.25
-		//m_HookTick++;
-		//if (m_HookedPlayer != -1 && (m_HookTick > SERVER_TICK_SPEED + SERVER_TICK_SPEED / 5 || !m_pWorld->m_apCharacters[m_HookedPlayer]))
-		//{
-		//	m_HookedPlayer = -1;
-		//	m_HookState = HOOK_RETRACTED;
-		//	m_HookPos = m_Pos;
-		//}
+		if (hookedPlayer != -1 &&
+		    (time - hookTime > 1250 || !g_World()->players[hookedPlayer])) {
+			hookedPlayer = -1;
+			hookState = HOOK_RETRACTED;
+			hookPos = pos;
+		}
 	}
-	for (int i = 0; i < MAX_PLAYERS; i++)
-	{
-		Player* player = g_World()->players[i];
-		if (player == this) continue;
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+		Player *player = g_World()->players[i];
+		if (player == this || !player)
+			continue;
 		float distance = glm::distance(pos, player->pos);
 		glm::vec3 dir = glm::normalize(pos - player->pos);
-		if (tuningPlayerColision && distance < physSize*1.25f && distance > 0.0f)
-		{
-			float a = (physSize*1.45f - distance);
+		if (tuningPlayerColision && distance < physSize * 1.25f && distance > 0.0f) {
+			float a = (physSize * 1.45f - distance);
 			float velocity = 0.5f;
-			if (glm::length(vel) > 0.0001)
+			if (!glm::zero(vel))
 				velocity = 1 - (glm::dot(glm::normalize(vel), dir) + 1) / 2;
-			vel += coeff*dir*a*(velocity*0.75f);
-			vel *= pow(0.85f,coeff);
+			vel += coeff * dir * a * (velocity * 0.75f);
+			vel *= pow(0.85f, coeff);
 		}
-		if (hookedPlayer == i && tuningPlayerHooking)
-		{
-			if (distance > physSize*1.50f)
-			{
+		if (hookedPlayer == i && tuningPlayerHooking) {
+			if (distance > physSize * 1.50f) {
 				float accel = tuningHookDragAccel * (distance / tuningHookLength);
 				float dragSpeed = tuningHookDragSpeed;
 				{
-					player->vel += accel*dir*1.5f*coeff;
+					player->vel += accel * dir * 1.5f * coeff;
 					if (glm::length(player->vel) > dragSpeed)
-						player->vel = glm::normalize(player->vel)*dragSpeed;
+						player->vel = glm::normalize(player->vel) * dragSpeed;
 				}
 				{
-					vel += -accel*dir*0.25f*coeff;
+					vel += -accel * dir * 0.25f * coeff;
 					if (glm::length(vel) > dragSpeed)
-						vel = glm::normalize(vel)*dragSpeed;
+						vel = glm::normalize(vel) * dragSpeed;
 				}
 			}
 		}
 	}
 	if (glm::length(vel) > 6000.0f)
 		vel = glm::normalize(vel) * 6000.0f;
-	
 
-
-	float RampValue = VelocityRamp(glm::length(vel) * 50, tuningVelrampStart, tuningVelrampRange, tuningVelrampCurvature);
-	vel.x = vel.x*RampValue;
-	vel.y = vel.y*RampValue;
+	float RampValue = VelocityRamp(glm::length(vel) * 50, tuningVelrampStart,
+	                               tuningVelrampRange, tuningVelrampCurvature);
+	vel.x = vel.x * RampValue;
+	vel.y = vel.y * RampValue;
 	glm::vec3 NewPos = pos;
 	g_World()->MoveBox(&NewPos, &vel, glm::vec3(physSize, physSize, physSize), 0);
-	vel.x = vel.x*(1.0f / RampValue);
-	vel.y = vel.y*(1.0f / RampValue);
-	if (tuningPlayerColision)
-	{
+	vel.x = vel.x * (1.0f / RampValue);
+	vel.y = vel.y * (1.0f / RampValue);
+	if (tuningPlayerColision) {
 		glm::vec3 collidePos;
-		if(g_World()->IntersectPlayer(pos, NewPos, NULL, &collidePos, id, physSize / 2)!=NULL)
+		if (g_World()->IntersectPlayer(pos, NewPos, NULL, &collidePos, id,
+		                               physSize / 2) != NULL)
 			NewPos = collidePos;
 	}
 	pos = NewPos;
-	if (pos.z < -6000) pos = glm::vec3(100,100,6000);
+	if (pos.z < -6000)
+		pos = glm::vec3(100, 100, 6000);
 }

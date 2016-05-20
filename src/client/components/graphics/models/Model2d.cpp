@@ -1,124 +1,88 @@
 #include "Model2d.h"
-#include <string>
-#include <stdio.h>
-#include <map>
-#include <cstring>
-#include "../Resources.h"
-#include "../Texture.h"
-#include "../../Graphics.h"
-#include "../../../Client.h"
 
-std::list<Model2d*> Model2d::registredModels;
-void Model2d::RenderModels() {
-	for (Model2d*& model : registredModels)
-		model->Render();
-}
-void Model2d::Render(){
-	g_Graphics()->SetPos2d(position, depth);
-	g_Graphics()->SetColor2d(color);
+#include <client/components/Graphics.h>
+#include <client/components/graphics/shaders/Shader2d.h>
 
-	texture->Bind();
-	glBindVertexArray(vao);
-	glDrawArrays(type , 0, vertex.size());
+Model2d::Model2d(int t) {
+	type = t;
+	data = Model2dDataPtr();
+	position = glm::vec2(0, 0);
+	color = glm::vec4(1, 1, 1, 0);
+	depth = 0.0f;
+	g_Shader2d()->RegisterModel(this);
 }
-Model2d::Model2d(int typev):type(typev){
-	position=vec2(0,0);
-	color=vec4(1,1,1,0);
+Model2d::Model2d(const Model2d &second) : Model(second) {
+	type = second.type;
+	data = second.data;
+	position = second.position;
+	color = second.color;
+	depth = second.depth;
+	texture = second.texture;
+	g_Shader2d()->RegisterModel(this);
+}
+Model2d &Model2d::operator=(const Model2d &second) {
+	data.reset();
+	type = second.type;
+	data = second.data;
+	position = second.position;
+	color = second.color;
+	depth = second.depth;
+	texture = second.texture;
+	return *this;
+}
+Model2d::~Model2d() {
+	g_Shader2d()->UnregisterModel(this);
+	data.reset();
+}
+void Model2d::Render() {
+	texture.Bind();
+	g_Shader2d()->SetColor(color);
+	g_Shader2d()->SetPosition(position, depth);
+	data->Render(type);
+}
+void Model2d::Add(const Geometry2d &geom) { data->Add(geom); }
+
+Model2d::Data::Data() {
+	g_Graphics(); // TODO: fix
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-	glGenBuffers(1,&vbuffer);
-	glGenBuffers(1,&tbuffer);
-	texture = g_Graphics()->m_Resources->textureBlank;
-	depth = 0;
-	registredModels.push_back(this);
+	glGenBuffers(1, &vbuffer);
+	glGenBuffers(1, &tbuffer);
 }
-void Model2d::Create(){
-	glBindVertexArray(vao);
-
-	glBindBuffer(GL_ARRAY_BUFFER,vbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*vertex.size()*2, vertex.size()>0?&vertex[0]:NULL, GL_STATIC_DRAW);
-	glVertexAttribPointer(Graphics::SHADER_POS, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(Graphics::SHADER_POS);
-
-	glBindBuffer(GL_ARRAY_BUFFER,tbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*texcoord.size()*2, vertex.size()>0 ? &texcoord[0] : NULL, GL_STATIC_DRAW);
-	glVertexAttribPointer(Graphics::SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(Graphics::SHADER_TEXMAP);
-
-	glBindBuffer(GL_ARRAY_BUFFER,0);
-}
-Model2d::~Model2d(){
-	registredModels.remove(this);
+Model2d::Data::~Data() {
+	g_Graphics(); // TODO: fix
 	glDeleteBuffers(1, &vbuffer);
 	glDeleteBuffers(1, &tbuffer);
 	glDeleteVertexArrays(1, &vao);
-	Clear();
 }
-void Model2d::Clear(){
-	vertex.clear();
-	texcoord.clear();
+void Model2d::Data::Render(int type) {
+	Validate();
+	g_Graphics(); // TODO: fix
+	glBindVertexArray(vao);
+	glDrawArrays(type, 0, geometry.v.size());
 }
-void Model2d::AddVertex(const vec2& v, const vec2& t){
-	vertex.push_back(v);
-	texcoord.push_back(t);
-}
-void Model2d::AddVertex(const std::vector<vec2>& v, const std::vector<vec2>& t){
-	vertex.insert(vertex.end(),v.begin(),v.end());
-	texcoord.insert(texcoord.end(),t.begin(),t.end());
-}
-void Model2d::AddQuad(const quad2& v, const quad2& t){
-			AddVertex(v.p00,t.p00);
-			AddVertex(v.p10,t.p10);
-			AddVertex(v.p01,t.p01);
+void Model2d::Data::Validate() {
+	if (!valid) {
+		g_Graphics(); // TODO: fix
+		glBindVertexArray(vao);
 
-			AddVertex(v.p01,t.p01);
-			AddVertex(v.p10,t.p10);
-			AddVertex(v.p11,t.p11);
+		glBindBuffer(GL_ARRAY_BUFFER, vbuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * geometry.v.size() * 2,
+		             geometry.v.size() > 0 ? &geometry.v[0] : NULL, GL_STATIC_DRAW);
+		glVertexAttribPointer(SHADER_POS, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(SHADER_POS);
+
+		glBindBuffer(GL_ARRAY_BUFFER, tbuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * geometry.t.size() * 2,
+		             geometry.t.size() > 0 ? &geometry.t[0] : NULL, GL_STATIC_DRAW);
+		glVertexAttribPointer(SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(SHADER_TEXMAP);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+	valid = true;
 }
-
-void Model2d::AddRectangle(const quad2& in, const quad2& out){
-	quad2 tex(0,0,1,1);
-	AddQuad(in,tex);
-	float roundedleft=(in.p00-out.p00).x;
-	float roundedbottom=(in.p00-out.p00).y;
-	float roundedright=(out.p11-in.p11).x;
-	float roundedtop=(out.p11-in.p11).y;
-	AddQuad(quad2(in.p01,in.p11,out.p01+vec2(roundedleft,0),out.p11-vec2(roundedright,0)),tex);
-	AddQuad(quad2(out.p00+vec2(roundedleft,0),out.p10-vec2(roundedright,0),in.p00,in.p10),tex);
-	AddQuad(quad2(out.p00+vec2(0,roundedbottom),in.p00,out.p01-vec2(0,roundedtop),in.p01),tex);
-	AddQuad(quad2(in.p10,out.p10+vec2(0,roundedbottom),in.p11,out.p11-vec2(0,roundedtop)),tex);
-
-	if(glm::min(roundedright,roundedtop)!=0){
-		int quality=g_Graphics()->to_pixels(glm::max(roundedright,roundedtop))/4;
-
-		for(int i=0;i<quality;i++){
-			AddVertex(in.p11,vec2(0,0));
-			AddVertex(in.p11+vec2(cos(i*M_PI_2/quality)*roundedright,sin(i*M_PI_2/quality)*roundedtop),vec2(0,0));
-			AddVertex(in.p11+vec2(cos((i+1)*M_PI_2/quality)*roundedright,sin((i+1)*M_PI_2/quality)*roundedtop),vec2(0,0));
-		}
-	}
-	if(glm::min(roundedright,roundedbottom)!=0){
-		int quality=g_Graphics()->to_pixels(glm::max(roundedright,roundedbottom))/4;
-		for(int i=0;i<quality;i++){
-			AddVertex(in.p10+vec2(cos(i*M_PI_2/quality)*roundedright,-sin(i*M_PI_2/quality)*roundedbottom),vec2(0,0));
-			AddVertex(in.p10,vec2(0,0));
-			AddVertex(in.p10+vec2(cos((i+1)*M_PI_2/quality)*roundedright,-sin((i+1)*M_PI_2/quality)*roundedbottom),vec2(0,0));
-		}
-	}
-	if(glm::min(roundedleft,roundedbottom)!=0){
-		int quality=g_Graphics()->to_pixels(glm::max(roundedleft,roundedbottom))/4;
-		for(int i=0;i<quality;i++){
-			AddVertex(in.p00,vec2(0,0));
-			AddVertex(in.p00+vec2(-cos(i*M_PI_2/quality)*roundedleft,-sin(i*M_PI_2/quality)*roundedbottom),vec2(0,0));
-			AddVertex(in.p00+vec2(-cos((i+1)*M_PI_2/quality)*roundedleft,-sin((i+1)*M_PI_2/quality)*roundedbottom),vec2(0,0));
-		}
-	}
-	if(glm::min(roundedleft,roundedtop)!=0){
-		int quality=g_Graphics()->to_pixels(glm::max(roundedleft,roundedtop))/4;
-		for(int i=0;i<quality;i++){
-			AddVertex(in.p01+vec2(-cos(i*M_PI_2/quality)*roundedleft,sin(i*M_PI_2/quality)*roundedtop),vec2(0,0));
-			AddVertex(in.p01,vec2(0,0));
-			AddVertex(in.p01+vec2(-cos((i+1)*M_PI_2/quality)*roundedleft,sin((i+1)*M_PI_2/quality)*roundedtop),vec2(0,0));
-		}
-	}
+void Model2d::Data::Add(const Geometry2d &geom) {
+	geometry += geom;
+	valid = false;
 }

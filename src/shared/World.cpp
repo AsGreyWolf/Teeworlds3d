@@ -1,44 +1,45 @@
 #include "World.h"
+
 #include <iostream>
-#include "world/Player.h"
-#include "world/Tile.h"
-#include "Console.h"
-#include "System.h"
-//TODO debug
-#include "../client/components/Graphics.h"
+#include <shared/System.h>
+#include <shared/Console.h>
+#include <shared/world/Player.h>
+#include <shared/world/Tile.h>
 
-class World* pWorld;
-World* g_World(){ return pWorld; }
+class World *pWorld;
+World *g_World() { return pWorld ? pWorld : new World(); }
 
-World::World() :SharedComponent() {
+World::World() : SharedComponent() {
 	pWorld = this;
+	tilesByPos = 0;
 	UnLoad();
+	for (int i = 0; i < MAX_PLAYERS; i++)
+		pWorld->players[i] = 0;
 };
-World::~World(){
+World::~World() {
 	UnLoad();
-	for (int i = 0; i < MAX_PLAYERS; i++){
-		delete players[i];
-	}
+	for (int i = 0; i < MAX_PLAYERS; i++)
+		if (players[i])
+			delete players[i];
 	pWorld = 0;
 };
-void World::Tick(){
+void World::Tick() {
 	SharedComponent::Tick();
 	if (!tileset.empty())
-		for (int i = 0; i < MAX_PLAYERS; i++) {
+		for (int i = 0; i < MAX_PLAYERS; i++)
 			if (pWorld->players[i])
 				pWorld->players[i]->Tick();
-		}
 }
-bool World::Load(const string& name){
-	string pp = "maps/" + name + ".map";
-	string path = g_System()->GetDataFile(pp);
+void World::Load(const std::string &name) {
+	std::string pp = "maps/" + name + ".map";
+	std::string path = g_System()->GetDataFile(pp);
 
-	Console::Info("Loading " + name);
+	g_Console()->Info("Loading " + name);
 
-	FILE* file = fopen(path.c_str(), "rb");
-	if (file == 0){
-		Console::Err("File not found");
-		return false;
+	FILE *file = fopen(path.c_str(), "rb");
+	if (file == 0) {
+		g_Console()->Err("File not found");
+		return;
 	}
 	unsigned char buf;
 	buf = fgetc(file);
@@ -49,14 +50,15 @@ bool World::Load(const string& name){
 	worldSize.z = (int)(buf);
 
 	tilesById.clear();
-	tilesByPos = new Tile***[(int)worldSize.x];
+	tilesByPos = new Tile ***[(int)worldSize.x];
 
 	unsigned int i = 0;
-	for (int xi = 0; xi<worldSize.x; xi++){
-		tilesByPos[xi] = new Tile**[(int)worldSize.y];
-		for (int yi = 0; yi<worldSize.y; yi++){
-			tilesByPos[xi][yi] = new Tile*[(int)worldSize.z];
-			for (int zi = 0; zi<worldSize.z; zi++){
+	for (int xi = 0; xi < worldSize.x; xi++) {
+		tilesByPos[xi] = new Tile **[(int)worldSize.y];
+		for (int yi = 0; yi < worldSize.y; yi++) {
+			tilesByPos[xi][yi] = new Tile *[(int)worldSize.z];
+			for (int zi = 0; zi < worldSize.z; zi++) {
+				// TODO: remove whitespaces
 				Tile tile;
 				tilesById.push_back(tile);
 				tilesById[i].id = i;
@@ -75,64 +77,77 @@ bool World::Load(const string& name){
 			}
 		}
 	}
-	for (i = 0; i<tilesById.size(); i++){
+	for (i = 0; i < tilesById.size(); i++) {
 		tilesByPos[tilesById[i].x][tilesById[i].y][tilesById[i].z] = &tilesById[i];
 	}
-	for (Tile& buffer : tilesById) {
-		if (buffer.type == 0) continue;
-		Tile* another = GetTile(buffer.x - 1, buffer.y, buffer.z);
-		if (!another || !another->isVisible()) buffer.hasx = false;
+	for (Tile &buffer : tilesById) {
+		if (!buffer.isVisible())
+			continue;
+		Tile *another = GetTile(buffer.x - 1, buffer.y, buffer.z);
+		if (another && another->isVisible())
+			buffer.hasx = true;
 		another = GetTile(buffer.x + 1, buffer.y, buffer.z);
-		if (!another || !another->isVisible()) buffer.hasX = false;
-		another = GetTile(buffer.x, buffer.y-1, buffer.z);
-		if (!another || !another->isVisible()) buffer.hasy = false;
-		another = GetTile(buffer.x, buffer.y+1, buffer.z);
-		if (!another || !another->isVisible()) buffer.hasY = false;
-		another = GetTile(buffer.x, buffer.y, buffer.z-1);
-		if (!another || !another->isVisible()) buffer.hasz = false;
-		another = GetTile(buffer.x, buffer.y, buffer.z+1);
-		if (!another || !another->isVisible()) buffer.hasZ = false;
+		if (another && another->isVisible())
+			buffer.hasX = true;
+		another = GetTile(buffer.x, buffer.y - 1, buffer.z);
+		if (another && another->isVisible())
+			buffer.hasy = true;
+		another = GetTile(buffer.x, buffer.y + 1, buffer.z);
+		if (another && another->isVisible())
+			buffer.hasY = true;
+		another = GetTile(buffer.x, buffer.y, buffer.z - 1);
+		if (another && another->isVisible())
+			buffer.hasz = true;
+		another = GetTile(buffer.x, buffer.y, buffer.z + 1);
+		if (another && another->isVisible())
+			buffer.hasZ = true;
 	}
 	char s[50];
 	fgets(s, sizeof(s), file);
-	for (int j = 0; j<50; j++){
+	for (int j = 0; j < 50; j++) {
 		if (s[j] == '\n') {
 			s[j] = '\0';
 			break;
 		}
 	}
-	tileset = string(s);
-	return true;
+	tileset = std::string(s);
 }
-void World::UnLoad(){
+void World::UnLoad() {
 	tileset = "";
 	tilesById.clear();
-	for (int xi = 0; xi<worldSize.x; xi++){
-		for (int yi = 0; yi<worldSize.y; yi++)
-			delete[] tilesByPos[xi][yi];
-		delete[] tilesByPos[xi];
-	}
-	if(worldSize.x>0)
+	if (tilesByPos) {
+		for (int xi = 0; xi < worldSize.x; xi++) {
+			for (int yi = 0; yi < worldSize.y; yi++)
+				delete[] tilesByPos[xi][yi];
+			delete[] tilesByPos[xi];
+		}
 		delete[] tilesByPos;
+	}
 	worldSize = glm::vec3(0, 0, 0);
 }
-Player* World::IntersectPlayer(const glm::vec3& Pos0, const glm::vec3& Pos1, glm::vec3 *pOutCollision, glm::vec3 *pOutBeforeCollision, int except, float radius){
-	vec3 Pos = Pos1 - Pos0;
+bool World::isValid() const { return !tileset.empty(); }
+Player *World::IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
+                               glm::vec3 *collision, glm::vec3 *beforeCollision,
+                               int except, float radius) const {
+	glm::vec3 pos = pos1 - pos0;
 	float minv;
-	Player* minp = NULL;
-	float len = length(Pos);
-	if (len <= 0) return NULL;
-	vec3 dist = normalize(Pos);
-	for (int i = 0; i < MAX_PLAYERS; i++)
-	{
-		if (i == except) continue;
-		Player* p = players[i];
-		vec3 Tee = p->pos - Pos0;
-		float proj = dot(Tee, dist);
-		float c = pow(length(Tee), 2.0f) - pow(p->physSize /2 + radius, 2.0f);
-		float D = glm::sqrt(proj*proj - c);
+	Player *minp = NULL;
+	float len = glm::length(pos);
+	if (len <= 0)
+		return NULL;
+	glm::vec3 dist = glm::normalize(pos);
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+		if (i == except)
+			continue;
+		Player *p = players[i];
+		if (!p)
+			continue;
+		glm::vec3 tee = p->pos - pos0;
+		float proj = glm::dot(tee, dist);
+		float c = pow(glm::length(tee), 2.0f) - pow(p->physSize / 2 + radius, 2.0f);
+		float D = glm::sqrt(proj * proj - c);
 		float v = (proj - D);
-		if (glm::isnan(v) || v>len || v<0){
+		if (glm::isnan(v) || v > len || v < 0) {
 			continue;
 		}
 		if (minp == NULL || minv > v) {
@@ -141,226 +156,218 @@ Player* World::IntersectPlayer(const glm::vec3& Pos0, const glm::vec3& Pos1, glm
 		}
 	}
 	if (minp != NULL) {
-		if (pOutCollision)
-			*pOutCollision = dist*minv + Pos0;
-		if (pOutBeforeCollision)
-			*pOutBeforeCollision = dist*minv - dist + Pos0;
+		if (collision)
+			*collision = dist *minv + pos0;
+		if (beforeCollision)
+			*beforeCollision = dist *minv - dist + pos0;
 		return minp;
 	}
-	return NULL;/*
-	float Distance = distance(Pos0, Pos1);
-	int End = Distance + 1;
-	vec3 LastPos = Pos0;
-	for (int i = 0; i < End; i++)
-	{
-		float a = i / Distance;
-		vec3 Pos = glm::mix(Pos0, Pos1, a);
-		for (int p = 0; p < MAX_PLAYERS; p++)
-		{
-			if (p == except) continue;
-			Player* player = players[p];
-			float D = distance(Pos, player->pos);
-			if (D < player->physSize / 2 + radius && D > 0.0f)
-			{
-				if (a > 0.0f)
-					Pos0 = LastPos;
-				else if (distance(Pos1, player->pos) > D)
-					Pos0 = Pos1;
-				if (pOutCollision)
-					*pOutCollision = Pos0;
-				if (pOutBeforeCollision)
-					*pOutBeforeCollision = Pos0;
-				return player;
-			}
-		}
-		LastPos = Pos;
-	}
-	return NULL;*/
+	return NULL; /*
+	    float Distance = distance(Pos0, Pos1);
+	    int End = Distance + 1;
+	    vec3 LastPos = Pos0;
+	    for (int i = 0; i < End; i++)
+	    {
+	    float a = i / Distance;
+	    vec3 Pos = glm::mix(Pos0, Pos1, a);
+	    for (int p = 0; p < MAX_PLAYERS; p++)
+	    {
+	    if (p == except) continue;
+	    Player* player = players[p];
+	    float D = distance(Pos, player->pos);
+	    if (D < player->physSize / 2 + radius && D > 0.0f)
+	    {
+	    if (a > 0.0f)
+	    Pos0 = LastPos;
+	    else if (distance(Pos1, player->pos) > D)
+	    Pos0 = Pos1;
+	    if (pOutCollision)
+	    *pOutCollision = Pos0;
+	    if (pOutBeforeCollision)
+	    *pOutBeforeCollision = Pos0;
+	    return player;
+	    }
+	    }
+	    LastPos = Pos;
+	    }
+	    return NULL;*/
 }
 // Code from original Teeworlds with small changes, Copyright Teeworlds team
-Tile* World::GetTile(const vec3& pos){
+Tile *World::GetTile(const glm::vec3 &pos) const {
 	int x = round(pos.x) / 32;
 	int y = round(pos.y) / 32;
 	int z = round(pos.z) / 32;
-	return GetTile(x,y,z);
+	return GetTile(x, y, z);
 }
-Tile* World::GetTile(int x, int y, int z) {
-	return x < 0 ? NULL : x >= worldSize.x ? NULL : y < 0 ? NULL : y >= worldSize.y ? NULL : z < 0 ? NULL : z >= worldSize.z ? NULL : tilesByPos[x][y][z];
+Tile *World::GetTile(int x, int y, int z) const {
+	return x < 0 ? NULL : x >= worldSize.x
+	                          ? NULL
+	                          : y < 0 ? NULL
+	                                  : y >= worldSize.y
+	                                        ? NULL
+	                                        : z < 0 ? NULL
+	                                                : z >= worldSize.z
+	                                                      ? NULL
+	                                                      : tilesByPos[x][y][z];
 }
-Tile* World::IntersectLine(const vec3& Pos0, const vec3& Pos1, vec3 *pOutCollision, vec3 *pOutBeforeCollision)
-{
-	float Distance = glm::distance(Pos0, Pos1);
-	int End(Distance + 1);
-	vec3 Last = Pos0;
-	Tile* buf;
-	for (int i = 0; i < End; i++)
-	{
-		float a = i / Distance;
-		vec3 Pos = mix(Pos0, Pos1, a);
-		buf = GetTile(Pos);
-		if (buf && buf->isPhys())
-		{
-			if (pOutCollision)
-				*pOutCollision = Pos;
-			if (pOutBeforeCollision)
-				*pOutBeforeCollision = Last;
+Tile *World::IntersectLine(const glm::vec3 &pos0, const glm::vec3 &pos1,
+                           glm::vec3 *collision,
+                           glm::vec3 *beforeCollision) const {
+	float distance = glm::distance(pos0, pos1);
+	int end = distance + 1;
+	glm::vec3 last = pos0;
+	Tile *buf;
+	for (int i = 0; i < end; i++) {
+		float a = i / distance;
+		glm::vec3 pos = glm::mix(pos0, pos1, a);
+		buf = GetTile(pos);
+		if (buf && buf->isPhys()) {
+			if (collision)
+				*collision = pos;
+			if (beforeCollision)
+				*beforeCollision = last;
 			return buf;
 		}
-		Last = Pos;
+		last = pos;
 	}
-	if (pOutCollision)
-		*pOutCollision = Pos1;
-	if (pOutBeforeCollision)
-		*pOutBeforeCollision = Pos1;
+	if (collision)
+		*collision = pos1;
+	if (beforeCollision)
+		*beforeCollision = pos1;
 	return NULL;
 }
-void World::MovePoint(vec3 *pInoutPos, vec3 *pInoutVel, float Elasticity, int *pBounces)
-{
-	if (pBounces)
-		*pBounces = 0;
+void World::MovePoint(glm::vec3 *position, glm::vec3 *velocity,
+                      float elasticity, int *bounces) const {
+	if (bounces)
+		*bounces = 0;
 
-	vec3 Pos = *pInoutPos;
-	vec3 Vel = *pInoutVel;
-	vec3 sVel= (float)(g_System()->tickCoeff * 60)*Vel;
-	Tile* buf = GetTile(Pos + sVel);
-	if (buf && buf->isPhys())
-	{
+	glm::vec3 pos = *position;
+	glm::vec3 vel = *velocity;
+	glm::vec3 sVel = (float)(g_System()->tickCoeff * 60) * vel;
+	Tile *buf = GetTile(pos + sVel);
+	if (buf && buf->isPhys()) {
 		int Affected = 0;
-		buf = GetTile(vec3(Pos.x + sVel.x, Pos.y, Pos.z));
-		if (buf && buf->isPhys())
-		{
-			pInoutVel->x *= -Elasticity;
-			if (pBounces)
-				(*pBounces)++;
+		buf = GetTile(glm::vec3(pos.x + sVel.x, pos.y, pos.z));
+		if (buf && buf->isPhys()) {
+			velocity->x *= -elasticity;
+			if (bounces)
+				(*bounces)++;
 			Affected++;
 		}
-		buf = GetTile(vec3(Pos.x, Pos.y + sVel.y, Pos.z));
-		if (buf && buf->isPhys())
-		{
-			pInoutVel->y *= -Elasticity;
-			if (pBounces)
-				(*pBounces)++;
+		buf = GetTile(glm::vec3(pos.x, pos.y + sVel.y, pos.z));
+		if (buf && buf->isPhys()) {
+			velocity->y *= -elasticity;
+			if (bounces)
+				(*bounces)++;
 			Affected++;
 		}
-		buf = GetTile(vec3(Pos.x, Pos.y, Pos.z + sVel.z));
-		if (buf && buf->isPhys())
-		{
-			pInoutVel->z *= -Elasticity;
-			if (pBounces)
-				(*pBounces)++;
+		buf = GetTile(glm::vec3(pos.x, pos.y, pos.z + sVel.z));
+		if (buf && buf->isPhys()) {
+			velocity->z *= -elasticity;
+			if (bounces)
+				(*bounces)++;
 			Affected++;
 		}
 
-		if (Affected == 0)
-		{
-			pInoutVel->x *= -Elasticity;
-			pInoutVel->y *= -Elasticity;
-			pInoutVel->z *= -Elasticity;
+		if (Affected == 0) {
+			velocity->x *= -elasticity;
+			velocity->y *= -elasticity;
+			velocity->z *= -elasticity;
 		}
-	}
-	else
-	{
-		*pInoutPos = Pos + sVel;
+	} else {
+		*position = pos + sVel;
 	}
 }
-bool World::TestBox(const vec3& Pos, const vec3& size)
-{
-	vec3 Size = size*0.5f;
-	Tile* buf = GetTile(vec3(Pos.x - Size.x, Pos.y - Size.y, Pos.z - Size.z));
+bool World::TestBox(const glm::vec3 &pos, const glm::vec3 &size) const {
+	glm::vec3 Size = size * 0.5f;
+	Tile *buf = GetTile(glm::vec3(pos.x - Size.x, pos.y - Size.y, pos.z - Size.z));
 	if (buf && buf->isPhys())
 		return true;
-	buf = GetTile(vec3(Pos.x - Size.x, Pos.y - Size.y, Pos.z + Size.z));
+	buf = GetTile(glm::vec3(pos.x - Size.x, pos.y - Size.y, pos.z + Size.z));
 	if (buf && buf->isPhys())
 		return true;
-	buf = GetTile(vec3(Pos.x - Size.x, Pos.y + Size.y, Pos.z - Size.z));
+	buf = GetTile(glm::vec3(pos.x - Size.x, pos.y + Size.y, pos.z - Size.z));
 	if (buf && buf->isPhys())
 		return true;
-	buf = GetTile(vec3(Pos.x - Size.x, Pos.y + Size.y, Pos.z + Size.z));
+	buf = GetTile(glm::vec3(pos.x - Size.x, pos.y + Size.y, pos.z + Size.z));
 	if (buf && buf->isPhys())
 		return true;
-	buf = GetTile(vec3(Pos.x + Size.x, Pos.y - Size.y, Pos.z - Size.z));
+	buf = GetTile(glm::vec3(pos.x + Size.x, pos.y - Size.y, pos.z - Size.z));
 	if (buf && buf->isPhys())
 		return true;
-	buf = GetTile(vec3(Pos.x + Size.x, Pos.y - Size.y, Pos.z + Size.z));
+	buf = GetTile(glm::vec3(pos.x + Size.x, pos.y - Size.y, pos.z + Size.z));
 	if (buf && buf->isPhys())
 		return true;
-	buf = GetTile(vec3(Pos.x + Size.x, Pos.y + Size.y, Pos.z - Size.z));
+	buf = GetTile(glm::vec3(pos.x + Size.x, pos.y + Size.y, pos.z - Size.z));
 	if (buf && buf->isPhys())
 		return true;
-	buf = GetTile(vec3(Pos.x + Size.x, Pos.y + Size.y, Pos.z + Size.z));
+	buf = GetTile(glm::vec3(pos.x + Size.x, pos.y + Size.y, pos.z + Size.z));
 	if (buf && buf->isPhys())
 		return true;
 	return false;
 }
-void World::MoveBox(vec3 *pInoutPos, vec3 *pInoutVel, const vec3& Size, float Elasticity)
-{
+void World::MoveBox(glm::vec3 *position, glm::vec3 *velocity,
+                    const glm::vec3 &size, float elasticity) const {
 	// do the move
-	vec3 Pos = *pInoutPos;
-	vec3 Vel = *pInoutVel;
-	vec3 sVel = (float)(g_System()->tickCoeff * 60)*Vel;
+	glm::vec3 pos = *position;
+	glm::vec3 vel = *velocity;
+	glm::vec3 sVel = (float)(g_System()->tickCoeff * 60) * vel;
 
-	float Distance = length(sVel);
-	int Max = (int)Distance;
+	float distance = glm::length(sVel);
+	int max = (int)distance;
 
-	if (Distance > 0.00001f)
-	{
-		//vec2 old_pos = pos;
-		float Fraction = 1.0f / (float)(Max + 1);
-		for (int i = 0; i <= Max; i++)
-		{
-			//float amount = i/(float)max;
-			//if(max == 0)
-			//amount = 0;
+	if (distance > 0.00001f) {
+		// vec2 old_pos = pos;
+		float Fraction = 1.0f / (float)(max + 1);
+		for (int i = 0; i <= max; i++) {
+			// float amount = i/(float)max;
+			// if(max == 0)
+			// amount = 0;
 
-			vec3 NewPos = Pos + sVel*Fraction; // TODO: this row is not nice
+			glm::vec3 NewPos = pos + sVel * Fraction; // TODO: this row is not nice
 
-			if (TestBox(NewPos, Size))
-			{
+			if (TestBox(NewPos, size)) {
 				int Hits = 0;
 
-				if (TestBox(vec3(Pos.x, Pos.y, NewPos.z), Size))
-				{
-					NewPos.z = Pos.z;
-					Vel.z *= -Elasticity;
-					sVel.z *= -Elasticity;
+				if (TestBox(glm::vec3(pos.x, pos.y, NewPos.z), size)) {
+					NewPos.z = pos.z;
+					vel.z *= -elasticity;
+					sVel.z *= -elasticity;
 					Hits++;
 				}
 
-				if (TestBox(vec3(Pos.x, NewPos.y, Pos.z), Size))
-				{
-					NewPos.y = Pos.y;
-					Vel.y *= -Elasticity;
-					sVel.y *= -Elasticity;
+				if (TestBox(glm::vec3(pos.x, NewPos.y, pos.z), size)) {
+					NewPos.y = pos.y;
+					vel.y *= -elasticity;
+					sVel.y *= -elasticity;
 					Hits++;
 				}
-				if (TestBox(vec3(NewPos.x, Pos.y, Pos.z), Size))
-				{
-					NewPos.x = Pos.x;
-					Vel.x *= -Elasticity;
-					sVel.x *= -Elasticity;
+				if (TestBox(glm::vec3(NewPos.x, pos.y, pos.z), size)) {
+					NewPos.x = pos.x;
+					vel.x *= -elasticity;
+					sVel.x *= -elasticity;
 					Hits++;
 				}
 
 				// neither of the tests got a collision.
 				// this is a real _corner case_!
-				if (Hits == 0)
-				{
-					NewPos.z = Pos.z;
-					Vel.z *= -Elasticity;
-					sVel.z *= -Elasticity;
-					NewPos.y = Pos.y;
-					Vel.y *= -Elasticity;
-					sVel.y *= -Elasticity;
-					NewPos.x = Pos.x;
-					Vel.x *= -Elasticity;
-					sVel.x *= -Elasticity;
+				if (Hits == 0) {
+					NewPos.z = pos.z;
+					pos.z *= -elasticity;
+					sVel.z *= -elasticity;
+					NewPos.y = pos.y;
+					pos.y *= -elasticity;
+					sVel.y *= -elasticity;
+					NewPos.x = pos.x;
+					vel.x *= -elasticity;
+					sVel.x *= -elasticity;
 				}
 			}
 
-			Pos = NewPos;
+			pos = NewPos;
 		}
 	}
 
-	*pInoutPos = Pos;
-	*pInoutVel = Vel;
+	*position = pos;
+	*velocity = vel;
 }

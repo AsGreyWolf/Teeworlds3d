@@ -2,24 +2,25 @@
 #define CONSOLE_H
 
 #include "SharedComponent.h"
+
 #include <string>
 
 ///<summary>Text I/O interaction with player</summary>
-class Console : public SharedComponent{
-public:
+class Console : public SharedComponent {
+private:
 	Console();
-	~Console();
+	friend Console *g_Console();
 
-	///<summary>Tick the component(graphics thread)</summary>
-	void Tick();
+public:
+	~Console() override;
 
 	///<summary>Send error message</summary>
 	///<param name="c">Message</param>
-	static void Err(const string& c);
+	void Err(const std::string &c);
 	///<summary>Send info message</summary>
 	///<param name="c">Message</param>
-	static void Info(const string& c);
+	void Info(const std::string &c);
 };
-Console* g_Console();
+Console *g_Console();
 
 #endif

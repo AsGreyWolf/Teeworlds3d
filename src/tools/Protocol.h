@@ -1,9 +1,8 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
-//TODO: move to shared
-#include "quad2.h"
-#define MAX_PLAYERS 128
-enum WEAPONS{
+
+#define MAX_PLAYERS 16
+enum WEAPONS {
 	WEAPON_HAMMER,
 	WEAPON_GUN,
 	WEAPON_SHOTGUN,
@@ -12,8 +11,7 @@ enum WEAPONS{
 	WEAPON_NINJA,
 	NUM_WEAPONS,
 };
-enum EMOTES
-{
+enum EMOTES {
 	EMOTE_NORMAL,
 	EMOTE_ANGRY,
 	EMOTE_PAIN,
@@ -22,8 +20,7 @@ enum EMOTES
 	EMOTE_SURPRISE,
 	NUM_EMOTES
 };
-enum HOOKSTATES
-{
+enum HOOKSTATES {
 	HOOK_RETRACTED = -1,
 	HOOK_IDLE = 0,
 	HOOK_RETRACT_START = 1,
@@ -31,4 +28,5 @@ enum HOOKSTATES
 	HOOK_FLYING,
 	HOOK_GRABBED,
 };
+
 #endif
