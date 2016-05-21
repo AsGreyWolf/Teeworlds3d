@@ -52,12 +52,17 @@ protected:
 		bool valid = false;
 	};
 	typedef std::shared_ptr<Data> Model3dDataPtr;
-#define Model3dDataPtr() std::make_shared<Data>()
+	#define Model3dDataPtr() std::make_shared<Data>()
 
 	Model3dDataPtr data;
 	ShadowModel *shadow;
 	int type;
 	bool light;
+
+	glm::mat4 bufferedModelMatrix;
+	glm::vec3 bufferedPos;
+	rot3 bufferedRot;
+	glm::mat4 bufferedParentMatrix;
 };
 
 #endif

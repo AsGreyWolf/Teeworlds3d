@@ -22,6 +22,10 @@ public:
 
 	///<summary>Tick the component(graphics thread)</summary>
 	void Tick() override;
+	void Tick0();
+	void Tick1();
+	void Tick2();
+	void Tick3();
 
 	///<summary>Loads the map</summary>
 	///<param name="name">Filename in data/maps folder</param>

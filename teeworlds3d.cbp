@@ -461,8 +461,9 @@
 		<Unit filename="src/client/components/graphics/models/Model3d.cpp" />
 		<Unit filename="src/client/components/graphics/models/Model3d.h" />
 		<Unit filename="src/client/components/graphics/models/ModelParticle.h" />
-		<Unit filename="src/client/components/graphics/models/ParticleModel.cpp" />
 		<Unit filename="src/client/components/graphics/models/ParticleModel.h" />
+		<Unit filename="src/client/components/graphics/models/Particles.cpp" />
+		<Unit filename="src/client/components/graphics/models/Particles.h" />
 		<Unit filename="src/client/components/graphics/models/PlayerModel.cpp" />
 		<Unit filename="src/client/components/graphics/models/PlayerModel.h" />
 		<Unit filename="src/client/components/graphics/models/ShadowModel.cpp" />
@@ -485,6 +486,7 @@
 		<Unit filename="src/shared/World.h" />
 		<Unit filename="src/shared/world/Player.cpp" />
 		<Unit filename="src/shared/world/Player.h" />
+		<Unit filename="src/shared/world/Positioned.h" />
 		<Unit filename="src/shared/world/Tile.h" />
 		<Unit filename="src/tools/Protocol.h" />
 		<Unit filename="src/tools/quad2.h" />

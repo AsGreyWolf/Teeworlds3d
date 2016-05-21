@@ -29,7 +29,12 @@ public:
 		data = glm::vec3(asin(glm::normalize(v).z), 0,
 		                 xy.x > 0.0 ? -acos(xy.y) : acos(xy.y));
 	};
-
+	bool operator==(const rot3 &other) const{
+		return data==other.data;
+	};
+	bool operator!=(const rot3 &other) const{
+		return data!=other.data;
+	};
 private:
 	glm::vec3 data;
 };

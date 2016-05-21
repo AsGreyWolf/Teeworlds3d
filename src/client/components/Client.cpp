@@ -78,7 +78,7 @@ void Client::Start() {
 			skin = g_Resources()->skinTextures.begin();
 		g_World()->players[i] = new Player(i);
 		g_World()->players[i]->nickname = g_World()->players[i]->skin = (*skin).first;
-		g_World()->players[i]->pos = glm::vec3(rand() % 3200, rand() % 3200, 400.0);
+		g_World()->players[i]->pos = glm::vec3(rand() % 4080, rand() % 4080, 400.0);
 		g_World()->players[i]->weapon = rand() % NUM_WEAPONS;
 		g_World()->players[i]->emote = rand() % NUM_EMOTES;
 		g_World()->players[i]->rot =
@@ -86,7 +86,7 @@ void Client::Start() {
 		         rand() * M_PI / RAND_MAX * 2);
 		skin++;
 	}
-	g_World()->players[0]->color = glm::vec4(0, 0, 0, 0.3f);
+	//g_World()->players[0]->color = glm::vec4(0, 0, 0, 0.3f);
 
 	depthMap = new Model2d();
 	depthMap->position =

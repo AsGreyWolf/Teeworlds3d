@@ -740,7 +740,7 @@
 	<gtx/rotate_vector.hpp>
 	<gtx/closest_point.hpp>
 
-1463771230 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/rot3.h
+1463809277 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/rot3.h
 	<algorithm>
 	<cmath>
 	<glm.hpp>
@@ -754,7 +754,7 @@
 	<tools/vmath.h>
 	<shared/world/Positioned.h>
 
-1463771159 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Camera.cpp
+1463776258 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Camera.cpp
 	"Camera.h"
 	<shared/System.h>
 	<client/components/Input.h>
@@ -798,7 +798,7 @@
 	<string>
 	<vector>
 
-1463771102 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Model3d.h
+1463830319 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Model3d.h
 	"../Model.h"
 	<vector>
 	<glew.h>
@@ -820,7 +820,7 @@
 	<gtx/closest_point.hpp>
 	<tools/quad2.h>
 
-1463771163 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
+1463837401 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
 	"Client.h"
 	<SDL_ttf.h>
 	<SDL_image.h>
@@ -873,18 +873,19 @@
 1463773734 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Model.cpp
 	"Model.h"
 
-1463773451 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Model3d.cpp
+1463837195 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/Model3d.cpp
 	"Model3d.h"
 	<client/components/Graphics.h>
 	<client/components/graphics/shaders/Shader3d.h>
 	<client/components/graphics/models/ShadowModel.h>
 
-1463771149 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Shader.cpp
+1463827382 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Shader.cpp
 	"Shader.h"
 	<shared/Console.h>
 	<shared/System.h>
+	<fstream>
 
-1463771124 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.cpp
+1463810004 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.cpp
 	"Shader3d.h"
 	"../../Camera.h"
 	"../../Graphics.h"
@@ -949,7 +950,7 @@
 	<SDL_thread.h>
 	<shared/Console.h>
 
-1463774183 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/World.cpp
+1463836694 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/World.cpp
 	"World.h"
 	<iostream>
 	<shared/System.h>
@@ -957,14 +958,14 @@
 	<shared/world/Player.h>
 	<shared/world/Tile.h>
 
-1463771219 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/World.h
+1463833494 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/World.h
 	"SharedComponent.h"
 	<string>
 	<vector>
 	<tools/vmath.h>
 	<tools/Protocol.h>
 
-1463771224 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/Protocol.h
+1463836024 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/Protocol.h
 
 1463771196 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/world/Player.h
 	<string>
@@ -976,7 +977,7 @@
 	<vector>
 	<tools/vmath.h>
 
-1463771194 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/world/Player.cpp
+1463832646 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/world/Player.cpp
 	"Player.h"
 	<shared/World.h>
 	<shared/System.h>
@@ -1093,7 +1094,7 @@
 	"../ClientComponent.h"
 	<vector>
 
-1463771112 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/PlayerModel.h
+1463809523 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/PlayerModel.h
 	"Model3d.h"
 	<vector>
 	<glew.h>
@@ -1101,7 +1102,7 @@
 	<shared/world/Player.h>
 	<client/components/graphics/Texture.h>
 
-1463771110 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/PlayerModel.cpp
+1463837613 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/PlayerModel.cpp
 	"PlayerModel.h"
 	<client/components/graphics/geometry/Sphere.h>
 	<client/components/Resources.h>

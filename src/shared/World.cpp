@@ -31,8 +31,7 @@ void World::Tick() {
 				pWorld->players[i]->Tick();
 }
 void World::Load(const std::string &name) {
-	std::string pp = "maps/" + name + ".map";
-	std::string path = g_System()->GetDataFile(pp);
+	std::string path = g_System()->GetDataFile("maps/" + name + ".map");
 
 	g_Console()->Info("Loading " + name);
 

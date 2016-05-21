@@ -5,6 +5,12 @@
 #include <client/components/graphics/models/ShadowModel.h>
 
 Model3d::Model3d(bool l, int t) : Model() {
+	bufferedModelMatrix = glm::mat4(1.0f);
+	bufferedPos = glm::vec3(0, 0, 0);
+	bufferedRot = glm::vec3(0, 1, 0);
+	bufferedParentMatrix = glm::mat4(1.0f);
+	modelMatrix = glm::mat4(1.0f);
+	normalMatrix = glm::transpose(glm::inverse(modelMatrix));
 	light = l;
 	type = t;
 	data = Model3dDataPtr();
@@ -19,6 +25,12 @@ Model3d::Model3d(bool l, int t) : Model() {
 	g_Shader3d()->RegisterModel(this);
 }
 Model3d::Model3d(const Model3d &second) : Model(second) {
+	bufferedModelMatrix = glm::mat4(1.0f);
+	bufferedPos = glm::vec3(0, 0, 0);
+	bufferedRot = glm::vec3(0, 1, 0);
+	bufferedParentMatrix = glm::mat4(1.0f);
+	modelMatrix = glm::mat4(1.0f);
+	normalMatrix = glm::transpose(glm::inverse(modelMatrix));
 	light = second.light;
 	type = second.type;
 	data = second.data;
@@ -81,13 +93,29 @@ void Model3d::Disable() {
 }
 void Model3d::Add(const Geometry3d &geom) { data->Add(geom); }
 void Model3d::UpdateMatrix(const glm::mat4 &parentMatrix) {
-	modelMatrix = parentMatrix;
-	modelMatrix = glm::translate(modelMatrix, pos);
-	modelMatrix = glm::rotate(modelMatrix, rot.z, glm::vec3(0, 0, 1));
-	modelMatrix = glm::rotate(modelMatrix, rot.x, glm::vec3(1, 0, 0));
-	modelMatrix = glm::rotate(modelMatrix, rot.y, glm::vec3(0, 1, 0));
-	modelMatrix = glm::scale(modelMatrix, scale);
-	normalMatrix = glm::transpose(glm::inverse(modelMatrix));
+	// position and rotation are buffered with matrix, don't calculate again if it
+	// not set
+	bool bufferedModelMatrixChanged = false;
+	if (pos != bufferedPos || rot != bufferedRot) {
+		bufferedModelMatrix = glm::translate(pos);
+		bufferedModelMatrix =
+		    glm::rotate(bufferedModelMatrix, rot.z, glm::vec3(0, 0, 1));
+		bufferedModelMatrix =
+		    glm::rotate(bufferedModelMatrix, rot.x, glm::vec3(1, 0, 0));
+		bufferedModelMatrix =
+		    glm::rotate(bufferedModelMatrix, rot.y, glm::vec3(0, 1, 0));
+		bufferedModelMatrix = glm::scale(bufferedModelMatrix, scale);
+		bufferedModelMatrixChanged = true;
+	}
+	// don't calculate model and normal matrix again if bufferedModelMatrix and
+	// parentMatrix did not changed
+	if (bufferedModelMatrixChanged || parentMatrix != bufferedParentMatrix) {
+		modelMatrix = parentMatrix * bufferedModelMatrix;
+		normalMatrix = glm::transpose(glm::inverse(modelMatrix));
+		bufferedPos = pos;
+		bufferedRot = rot;
+		bufferedParentMatrix = parentMatrix;
+	}
 }
 void Model3d::ScaleAt(const glm::vec3 &to, const glm::vec3 &basic,
                       const glm::vec3 &additional) {

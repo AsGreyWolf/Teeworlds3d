@@ -1,7 +1,7 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 
-#define MAX_PLAYERS 16
+#define MAX_PLAYERS 1024
 enum WEAPONS {
 	WEAPON_HAMMER,
 	WEAPON_GUN,

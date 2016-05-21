@@ -17,15 +17,6 @@ void Camera::Tick() {
 	RotateX(-g_Input()->mouseY * 0.01);
 	RotateZ(-g_Input()->mouseX * 0.01);
 	UpdateVectors();
-	glm::vec3 look2 = look;
-	look2 *= 512.0;
-	look2 *= g_System()->tickCoeff;
-	glm::vec3 right2 = right;
-	right2 *= 512.0;
-	right2 *= g_System()->tickCoeff;
-	glm::vec3 up2 = up;
-	up2 *= 512.0;
-	up2 *= g_System()->tickCoeff;
 }
 void Camera::RotateX(float rad) { rot.x += rad; }
 void Camera::RotateY(float rad) { rot.y += rad; }

@@ -2,23 +2,30 @@
 
 #include <shared/Console.h>
 #include <shared/System.h>
+#include <fstream>
 
-char *filetobuf(std::string file) {
-	FILE *fptr;
-	long length;
-	char *buf;
-	fptr = fopen(file.c_str(), "rb");
-	if (!fptr)
-		return NULL;
-	fseek(fptr, 0, SEEK_END);
-	length = ftell(fptr);
-	buf = new char[length + 1];
-	fseek(fptr, 0, SEEK_SET);
-	fread(buf, length, 1, fptr);
-	fclose(fptr);
-	buf[length] = 0;
-
-	return buf;
+std::string filetobuf(std::string file) {
+	std::ifstream in(file);
+	if (!in.good())
+		return "";
+	return std::string((std::istreambuf_iterator<char>(in)),
+	                   std::istreambuf_iterator<char>());
+}
+void logShader(GLuint id) {
+	int maxLength;
+	glGetShaderiv(id, GL_INFO_LOG_LENGTH, &maxLength);
+	char *infoLog = new char[maxLength];
+	glGetShaderInfoLog(id, maxLength, &maxLength, infoLog);
+	g_Console()->Err(std::string(infoLog));
+	delete[] infoLog;
+}
+void logProgram(GLuint id) {
+	int maxLength;
+	glGetProgramiv(id, GL_INFO_LOG_LENGTH, &maxLength);
+	char *infoLog = new char[maxLength];
+	glGetProgramInfoLog(id, maxLength, &maxLength, infoLog);
+	g_Console()->Err(std::string(infoLog));
+	delete[] infoLog;
 }
 Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
                GLboolean colormask0, GLboolean colormask1, GLboolean colormask2,
@@ -36,35 +43,21 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 
 	std::string firstpath = g_System()->GetDataFile(filepath);
 
-	GLchar *vertexsource, *fragmentsource, *geometrysource;
+	std::string vertexsource, fragmentsource, geometrysource;
 	GLuint vertexshader, fragmentshader, geometryshader;
 	int IsCompiled_VS, IsCompiled_FS, IsCompiled_GS;
 	int IsLinked;
-	int maxLength;
-	char *vertexInfoLog;
-	char *fragmentInfoLog;
-	char *geometryInfoLog;
-	char *shaderProgramInfoLog;
-	std::string path = firstpath;
-	path.append(".vert");
-	vertexsource = filetobuf(path);
-	path = firstpath;
-	path.append(".frag");
-	fragmentsource = filetobuf(path);
-	path = firstpath;
-	path.append(".geom");
-	geometrysource = filetobuf(path);
+	vertexsource = filetobuf(firstpath + ".vert");
+	fragmentsource = filetobuf(firstpath + ".frag");
+	geometrysource = filetobuf(firstpath + ".geom");
 
 	vertexshader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexshader, 1, (const GLchar **)&vertexsource, 0);
 	glCompileShader(vertexshader);
 	glGetShaderiv(vertexshader, GL_COMPILE_STATUS, &IsCompiled_VS);
 	if (IsCompiled_VS == GL_FALSE) {
-		glGetShaderiv(vertexshader, GL_INFO_LOG_LENGTH, &maxLength);
-		vertexInfoLog = new char[maxLength];
-		glGetShaderInfoLog(vertexshader, maxLength, &maxLength, vertexInfoLog);
-		g_Console()->Err(std::string(vertexInfoLog));
-		delete[] vertexInfoLog;
+		logShader(vertexshader);
+		return;
 	}
 
 	fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -72,46 +65,33 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 	glCompileShader(fragmentshader);
 	glGetShaderiv(fragmentshader, GL_COMPILE_STATUS, &IsCompiled_FS);
 	if (IsCompiled_FS == GL_FALSE) {
-		glGetShaderiv(fragmentshader, GL_INFO_LOG_LENGTH, &maxLength);
-		fragmentInfoLog = new char[maxLength];
-		glGetShaderInfoLog(fragmentshader, maxLength, &maxLength, fragmentInfoLog);
-		g_Console()->Err(std::string(fragmentInfoLog));
-		delete[] fragmentInfoLog;
+		logShader(fragmentshader);
+		return;
 	}
 
-	if (geometrysource != NULL) {
+	if (geometrysource.length() > 0) {
 		geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
 		glShaderSource(geometryshader, 1, (const GLchar **)&geometrysource, 0);
 		glCompileShader(geometryshader);
 		glGetShaderiv(geometryshader, GL_COMPILE_STATUS, &IsCompiled_GS);
 		if (IsCompiled_GS == GL_FALSE) {
-			glGetShaderiv(geometryshader, GL_INFO_LOG_LENGTH, &maxLength);
-			geometryInfoLog = new char[maxLength];
-			glGetShaderInfoLog(geometryshader, maxLength, &maxLength, geometryInfoLog);
-			g_Console()->Err(std::string(geometryInfoLog));
-			delete[] geometryInfoLog;
+			logShader(geometryshader);
+			return;
 		}
 	}
 
 	id = glCreateProgram();
 	glAttachShader(id, vertexshader);
 	glAttachShader(id, fragmentshader);
-	if (geometrysource != NULL)
+	if (geometrysource.length() > 0)
 		glAttachShader(id, geometryshader);
 	glLinkProgram(id);
 	glGetProgramiv(id, GL_LINK_STATUS, (int *)&IsLinked);
 	if (IsLinked == GL_FALSE) {
+		logProgram(id);
 		id = 0;
-		glGetProgramiv(id, GL_INFO_LOG_LENGTH, &maxLength);
-		shaderProgramInfoLog = new char[maxLength];
-		glGetProgramInfoLog(id, maxLength, &maxLength, shaderProgramInfoLog);
-		g_Console()->Err(std::string(shaderProgramInfoLog));
-		delete[] shaderProgramInfoLog;
+		return;
 	}
-	delete[] vertexsource;
-	delete[] fragmentsource;
-	if (geometrysource != NULL)
-		delete[] geometrysource;
 	g_Console()->Info("Shader loaded " + filepath);
 }
 Shader::~Shader() {
