@@ -215,6 +215,8 @@ pip-log.txt
 .mr.developer.cfg
 
 #custom
+teeworlds3d
+objs/*
 Win32Project1/
 srcold/
 *.out
