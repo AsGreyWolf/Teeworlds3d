@@ -1,6 +1,6 @@
 #include "World.h"
 
-#include <iostream>
+#include <fstream>
 #include <shared/System.h>
 #include <shared/Console.h>
 #include <shared/world/Player.h>
@@ -35,17 +35,17 @@ void World::Load(const std::string &name) {
 
 	g_Console()->Info("Loading " + name);
 
-	FILE *file = fopen(path.c_str(), "rb");
-	if (file == 0) {
+	std::ifstream file(path);
+	if (!file.good()) {
 		g_Console()->Err("File not found");
 		return;
 	}
 	unsigned char buf;
-	buf = fgetc(file);
+	file>>buf;
 	worldSize.x = (int)(buf);
-	buf = fgetc(file);
+	file>>buf;
 	worldSize.y = (int)(buf);
-	buf = fgetc(file);
+	file>>buf;
 	worldSize.z = (int)(buf);
 
 	tilesById.clear();
@@ -64,13 +64,13 @@ void World::Load(const std::string &name) {
 				tilesById[i].x = xi;
 				tilesById[i].y = yi;
 				tilesById[i].z = zi;
-				buf = fgetc(file);
+				file>>buf;
 				tilesById[i].type = (int)(buf);
-				buf = fgetc(file);
+				file>>buf;
 				tilesById[i].texTop = (int)(buf);
-				buf = fgetc(file);
+				file>>buf;
 				tilesById[i].texBottom = (int)(buf);
-				buf = fgetc(file);
+				file>>buf;
 				tilesById[i].texOther = (int)(buf);
 				i++;
 			}
@@ -101,15 +101,13 @@ void World::Load(const std::string &name) {
 		if (another && another->isVisible())
 			buffer.hasZ = true;
 	}
-	char s[50];
-	fgets(s, sizeof(s), file);
-	for (int j = 0; j < 50; j++) {
-		if (s[j] == '\n') {
-			s[j] = '\0';
+	file>>tileset;
+	for (int j = 0; j < tileset.length(); j++) {
+		if (tileset[j] == '\n') {
+			tileset=tileset.substr(0,j);
 			break;
 		}
 	}
-	tileset = std::string(s);
 }
 void World::UnLoad() {
 	tileset = "";
