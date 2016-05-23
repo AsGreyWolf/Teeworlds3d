@@ -434,12 +434,16 @@
 		<Unit filename="src/client/components/Client.h" />
 		<Unit filename="src/client/components/Graphics.cpp" />
 		<Unit filename="src/client/components/Graphics.h" />
+		<Unit filename="src/client/components/ImageLoader.cpp" />
+		<Unit filename="src/client/components/ImageLoader.h" />
 		<Unit filename="src/client/components/Input.cpp" />
 		<Unit filename="src/client/components/Input.h" />
 		<Unit filename="src/client/components/Map.cpp" />
 		<Unit filename="src/client/components/Map.h" />
 		<Unit filename="src/client/components/Resources.cpp" />
 		<Unit filename="src/client/components/Resources.h" />
+		<Unit filename="src/client/components/TextGenerator.cpp" />
+		<Unit filename="src/client/components/TextGenerator.h" />
 		<Unit filename="src/client/components/graphics/Model.cpp" />
 		<Unit filename="src/client/components/graphics/Model.h" />
 		<Unit filename="src/client/components/graphics/Shader.cpp" />
@@ -488,6 +492,7 @@
 		<Unit filename="src/shared/world/Player.h" />
 		<Unit filename="src/shared/world/Positioned.h" />
 		<Unit filename="src/shared/world/Tile.h" />
+		<Unit filename="src/tools/Positioned.h" />
 		<Unit filename="src/tools/Protocol.h" />
 		<Unit filename="src/tools/quad2.h" />
 		<Unit filename="src/tools/quad3.h" />
