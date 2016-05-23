@@ -1,7 +1,5 @@
 #include "Texture.h"
 
-#include <SDL_image.h>
-#include <shared/Console.h>
 #include <shared/System.h>
 #include <client/components/Graphics.h>
 
@@ -10,12 +8,15 @@ Texture::Texture(const Texture &second) { operator=(second); }
 Texture &Texture::operator=(const Texture &second) {
 	data = second.data;
 	aspect = second.aspect;
+	size = second.size;
 	flags = second.flags;
 	return *this;
 }
 Texture::Texture(const GLvoid *pixels, int w, int h, int fl) {
+	g_Graphics(); // TODO: fix
 	data = TextureDataPtr();
 	aspect = 1.0f * w / h;
+	size = glm::vec2(w, h);
 	flags = fl;
 	Bind();
 	int anisotropyI;
@@ -38,33 +39,22 @@ Texture::Texture(const GLvoid *pixels, int w, int h, int fl) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE,
 		             pixels);
 }
-Texture::Texture(std::string filepath, int fl) {
-	std::string path = g_System()->GetDataFile(filepath);
-	SDL_Surface *temp;
-	if ((temp = IMG_Load(path.c_str())) == NULL) {
-		g_Console()->Err("Error Loading Texture: " + filepath + " : " +
-		                 std::string(IMG_GetError()));
-		return;
-	}
-	SDL_Surface *converted = g_Graphics()->to_RGBA(temp);
-	SDL_FreeSurface(temp);
+Texture::Texture(SDL_Surface *surface, int fl) {
+	SDL_Surface *converted = g_Graphics()->to_RGBA(surface);
 
 	if (converted == NULL) {
-		g_Console()->Err("Error Loading Texture: " + filepath + " : " +
-		                 std::string(SDL_GetError()));
 		SDL_FreeSurface(converted);
 		return;
 	}
 	GLint maxTexSize;
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
 	if (converted->w > maxTexSize) {
-		g_Console()->Err("Error Loading Texture: " + filepath + " : " +
-		                 std::string(SDL_GetError()));
 		SDL_FreeSurface(converted);
 		return;
 	}
 	data = TextureDataPtr();
 	aspect = 1.0f * converted->w / converted->h;
+	size = glm::vec2(converted->w, converted->h);
 	flags = fl;
 	Bind();
 	int anisotropyI;
@@ -88,7 +78,6 @@ Texture::Texture(std::string filepath, int fl) {
 		             GL_RGBA, GL_UNSIGNED_BYTE, converted->pixels);
 
 	SDL_FreeSurface(converted);
-	g_Console()->Info("Texture loaded " + filepath);
 }
 Texture::~Texture() { data.reset(); }
 void Texture::Bind() const {

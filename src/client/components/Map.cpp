@@ -3,13 +3,17 @@
 #include <shared/World.h>
 #include <shared/world/Tile.h>
 #include <client/components/Resources.h>
+#include <client/components/ImageLoader.h>
 #include <client/components/graphics/geometry/Primitives.h>
 
 class Map *pMap;
 Map *g_Map() { return pMap ? pMap : new Map(); }
 
 Map::Map() { pMap = this; }
-Map::~Map() { pMap = 0; }
+Map::~Map() {
+	playerModels.clear();
+	pMap = 0;
+}
 void Map::Tick() {
 	for (int i = 0; i < MAX_PLAYERS; i++)
 		if (g_World()->players && g_World()->players[i]) {
@@ -23,7 +27,7 @@ bool Map::Load(const std::string &name) {
 	g_World()->Load(name);
 	if (!g_World()->isValid())
 		return false;
-	terrain.texture = Texture("mapres/" + g_World()->tileset + ".png");
+	terrain.texture = g_ImageLoader()->Load("mapres/" + g_World()->tileset + ".png");
 	for (Tile &buffer : g_World()->tilesById) {
 		if (!buffer.isVisible())
 			continue;

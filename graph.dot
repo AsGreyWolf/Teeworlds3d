@@ -6,12 +6,10 @@
 	 	System [shape=house];
 	 	World [shape=house];
 	 	Tile;
-	 	Positioned;
 	 	Player;
 		SharedComponent->Console[color=red arrowhead=none arrowtail=empty dir=back];
 		SharedComponent->System[color=red arrowhead=none arrowtail=empty dir=back];
 		SharedComponent->World[color=red arrowhead=none arrowtail=empty dir=back];
-		Positioned->Player[color=red arrowhead=none arrowtail=empty dir=back];
 		World->Player;
 		System->Player;
 		Tile->Player;
@@ -19,6 +17,7 @@
 		Tile->World;
 		Console->World;
 		System->World;
+		System->Console;
  	}
  	subgraph cluster_1 { 
  		label="client"; 
@@ -29,6 +28,8 @@
 	 	Resources [shape=component];
 	 	Input [shape=component];
 	 	Map [shape=component];
+	 	TextGenerator [shape=component];
+	 	ImageLoader [shape=component];
 
 		ClientComponent->Camera[color=red arrowhead=none arrowtail=empty dir=back];
 		ClientComponent->Client[color=red arrowhead=none arrowtail=empty dir=back];
@@ -36,13 +37,14 @@
 		ClientComponent->Resources[color=red arrowhead=none arrowtail=empty dir=back];
 		ClientComponent->Input[color=red arrowhead=none arrowtail=empty dir=back];
 		ClientComponent->Map[color=red arrowhead=none arrowtail=empty dir=back];
-
-		Graphics->Resources;
+		ClientComponent->TextGenerator[color=red arrowhead=none arrowtail=empty dir=back];
+		ClientComponent->ImageLoader[color=red arrowhead=none arrowtail=empty dir=back];
 
 		Input->Client;
 		Input->Camera;
 
-		Resources->Map;
+		ImageLoader->Map;
+		ImageLoader->Resources->Map;
 
 	 	subgraph cluster_2 {
 	 		label="graphics"; 
@@ -97,7 +99,8 @@
 			Texture->ShadowModel;
 			Shader3d->Particles;
 			ShaderParticle->Particles;
-	 	}/*
+	 	}
+	 	/*
 		Graphics->Model3d;
 		Graphics->Model2d;
 		Resources->PlayerModel;
@@ -117,8 +120,11 @@
 		ObjModel->Resources;
 		Model3d->Map;
 		PlayerModel->Map;
-		Primitives->Map;*/
- 	}/*
+		Primitives->Map;
+		Texture->TextGenerator;
+		Texture->ImageLoader;*/
+ 	}
+ 	/*
 	SharedComponent->ClientComponent[color=red arrowhead=none arrowtail=empty dir=back];
 	System->Camera;
 	Map->Client;
@@ -127,16 +133,17 @@
 	System->Resources;
 	World->Map;
 	Tile->Map;
-	Positioned->Camera[color=red arrowhead=none arrowtail=empty dir=back];
+	Console->TextGenerator;
+	System->TextGenerator;
+	Console->ImageLoader;
+	System->ImageLoader;
 	
 		Player->PlayerModel;
 		System->PlayerModel;
 		Console->Shader;
 		System->Shader;
 		System->Texture;
-		Console->Texture;
 		Graphics->Texture;
 		System->ObjModel;
-		Positioned->Model3d[color=red arrowhead=none arrowtail=empty dir=back];
 		*/
 }

@@ -1,7 +1,7 @@
 #include "Resources.h"
 
 #include <shared/System.h>
-#include <client/components/Graphics.h>
+#include <client/components/ImageLoader.h>
 #include <client/components/graphics/geometry/Primitives.h>
 #include <client/components/graphics/geometry/ObjModel.h>
 #include <client/components/graphics/models/PlayerModel.h> //TODO: REMOVE !!!!
@@ -17,14 +17,14 @@ Resources *g_Resources() { return pResources ? pResources : new Resources(); }
 Resources::Resources() : ClientComponent() {
 	pResources = this;
 	// textures
-	textureRGB = Texture(std::string("rgb.png"), TEXTURE_ANISOTROPY);
-	textureBlank = Texture(std::string("blank.png"), TEXTURE_ANISOTROPY);
+	textureRGB = g_ImageLoader()->Load(std::string("rgb.png"), TEXTURE_ANISOTROPY);
+	textureBlank = g_ImageLoader()->Load(std::string("blank.png"), TEXTURE_ANISOTROPY);
 	textureGame =
-	    Texture(std::string("game.png"), TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
+	    g_ImageLoader()->Load(std::string("game.png"), TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
 	std::vector<std::string> skins;
 	g_System()->GetFilesInDirectory(skins, g_System()->GetDataFile("skins"));
 	for (unsigned int i = 0; i < skins.size(); i++) {
-		Texture skintex("skins/" + skins[i]);
+		Texture skintex=g_ImageLoader()->Load("skins/" + skins[i]);
 		skins[i].resize(skins[i].size() - 4);
 		skinTextures.insert(skinTextures.begin(),
 		                    std::pair<std::string, Texture>(skins[i], skintex));
@@ -75,7 +75,7 @@ Resources::Resources() : ClientComponent() {
 		Model3d buffer;
 		buffer.Add(ObjModel(weaponFiles[i]));
 		buffer.texture =
-		    Texture(std::string(weaponFiles[i]) + ".png", TEXTURE_ANISOTROPY);
+		    g_ImageLoader()->Load(std::string(weaponFiles[i]) + ".png", TEXTURE_ANISOTROPY);
 		weaponModels.push_back(buffer);
 	}
 	eyesModels.reserve(NUM_EMOTES);
@@ -100,7 +100,7 @@ Resources::Resources() : ClientComponent() {
 	}
 	hookHead.Add(ObjModel("models/hook0"));
 	hookBody.Add(ObjModel("models/hook"));
-	hookBody.texture = hookHead.texture = Texture("models/hook.png");
+	hookBody.texture = hookHead.texture = g_ImageLoader()->Load("models/hook.png");
 }
 Resources::~Resources() {
 	skinTextures.clear();

@@ -6,7 +6,7 @@
 #define GLEW_STATIC
 #include <glew.h>
 #include <tools/vmath.h>
-#include <shared/world/Positioned.h>
+#include <tools/Positioned.h>
 #include <client/components/graphics/Texture.h>
 #include <client/components/graphics/geometry/Geometry3d.h>
 

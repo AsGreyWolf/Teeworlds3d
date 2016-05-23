@@ -4,7 +4,7 @@
 #include <string>
 #include <tools/Protocol.h>
 #include <tools/vmath.h>
-#include <shared/world/Positioned.h>
+#include <tools/Positioned.h>
 
 ///<summary>Player data as a world(physical) object</summary>
 class Player : public Positioned {

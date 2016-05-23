@@ -3,7 +3,7 @@
 
 #include "../ClientComponent.h"
 #include <tools/vmath.h>
-#include <shared/world/Positioned.h>
+#include <tools/Positioned.h>
 
 class Camera : public ClientComponent, public Positioned {
 private:
