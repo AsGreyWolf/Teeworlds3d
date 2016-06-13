@@ -1,4 +1,3 @@
-#version 120
 attribute vec2 in_Position;
 attribute vec2 in_TexMap;
 

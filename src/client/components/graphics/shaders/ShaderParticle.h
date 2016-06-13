@@ -16,12 +16,21 @@ public:
 	void Render() override;
 	void SetColor(const glm::vec4 &color);
 	void SetMatrix(const glm::mat4 &modelMatrix);
+	void SetSize(float size);
+	void SetGravity(float gravity);
+	void SetTTL(float time);
+	void SetVel(const glm::vec3 &vel);
 
 private:
 	GLuint colorUniform;
 	GLuint viewProjectionMatrixUniform;
 	GLuint modelMatrixUniform;
 	GLuint textureUniform;
+	GLuint timeUniform;
+	GLuint sizeUniform;
+	GLuint gravityUniform;
+	GLuint ttlUniform;
+	GLuint velUniform;
 
 	glm::mat4 perspectiveMatrix;
 };

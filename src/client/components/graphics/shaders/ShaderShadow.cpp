@@ -1,8 +1,8 @@
 #include "ShaderShadow.h"
 
-#include "../../Camera.h"
-#include "../../Graphics.h"
-#include "../Model.h"
+#include <client/components/Graphics.h>
+#include <client/components/Camera.h>
+#include <client/components/graphics/Model.h>
 
 ShaderShadow *pShaderShadow;
 ShaderShadow *g_ShaderShadow() {
@@ -19,7 +19,7 @@ ShaderShadow::ShaderShadow()
 	texture = Texture(NULL, g_Graphics()->screenSize.x, g_Graphics()->screenSize.x,
 	                  TEXTURE_ANISOTROPY | TEXTURE_FILTERING | TEXTURE_DEPTH);
 
-	orthoMatrix = glm::ortho(-320.0f, 320.0f, -320.0f, 320.0f, -6000.0f, 0.0f);
+	orthoMatrix = glm::ortho(-320.0f, 320.0f, -320.0f, 320.0f, -1000.0f, 0.0f);
 
 	GLuint id = *pShaderShadow;
 

@@ -22,10 +22,6 @@ public:
 
 	///<summary>Tick the component(graphics thread)</summary>
 	void Tick() override;
-	void Tick0();
-	void Tick1();
-	void Tick2();
-	void Tick3();
 
 	///<summary>Loads the map</summary>
 	///<param name="name">Filename in data/maps folder</param>
@@ -57,7 +53,7 @@ public:
 	                        int except, float radius) const;
 
 	///<summary>Size in blocks</summary>
-	glm::vec3 worldSize;
+	glm::uvec3 worldSize;
 	///<summary>Tileset</summary>
 	std::string tileset;
 	///<summary>Vector of the tiles sorted by id</summary>

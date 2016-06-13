@@ -11,7 +11,7 @@ if "%1"=="debug" SET DEBUG="true"
 @call SET LIB=%ProgramFiles(x86)%\Microsoft SDKs\Windows\7.1A\Lib;%LIB%
 
 @call SET INCLUDEPATH=-I"%BAT_PATH%src" -I"%BAT_PATH%other/glew/include" -I"%BAT_PATH%other/glm" -I"%BAT_PATH%other/sdl/include"
-@call SET SRCFILES="%BAT_PATH%src/shared/*.cpp" "%BAT_PATH%src/shared/world/*.cpp" "%BAT_PATH%src/client/*.cpp" "%BAT_PATH%src/client/components/*.cpp" "%BAT_PATH%src/client/components/graphics/*.cpp" "%BAT_PATH%src/client/components/graphics/models/*.cpp" "%BAT_PATH%src/client/components/graphics/shaders/*.cpp" "%BAT_PATH%src/client/components/graphics/geometry/*.cpp"
+@call SET SRCFILES="%BAT_PATH%src/shared/*.cpp" "%BAT_PATH%src/shared/world/*.cpp" "%BAT_PATH%src/client/*.cpp" "%BAT_PATH%src/client/components/*.cpp" "%BAT_PATH%src/client/components/graphics/*.cpp" "%BAT_PATH%src/client/components/graphics/models/*.cpp" "%BAT_PATH%src/client/components/graphics/shaders/*.cpp"
 @call SET LIBFILES= "glew32s.lib" "SDL2_image.lib" "SDL2_ttf.lib" "SDL2main.lib" "SDL2.lib" "GLu32.lib" "OpenGL32.lib" "kernel32.lib" "user32.lib" "gdi32.lib"
 if not "%ISVS15%"=="" (
 @call SET LIBFILES=%LIBFILES% "legacy_stdio_definitions.lib"

@@ -12,7 +12,7 @@ public:
 	virtual void Render();
 	virtual void Enable();
 	virtual void Disable();
-	inline bool isEnabled() { return enabled; };
+	inline bool isEnabled() const { return enabled; };
 
 private:
 	bool enabled = false;

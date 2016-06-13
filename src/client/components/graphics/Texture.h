@@ -30,6 +30,9 @@ public:
 	glm::vec2 size = glm::vec2(0, 0);
 	int flags = 0;
 
+protected:
+	void SetPixels(const GLvoid *pixels);
+
 private:
 	class Data {
 	public:
@@ -41,7 +44,7 @@ private:
 		GLuint id = 0;
 	};
 	typedef std::shared_ptr<Data> TextureDataPtr;
-#define TextureDataPtr(a) std::make_shared<Data>(a);
+	#define TextureDataPtr(a) std::make_shared<Data>(a);
 
 	TextureDataPtr data;
 };

@@ -9,6 +9,15 @@ Graphics *g_Graphics() { return pGraphics ? pGraphics : new Graphics(); }
 Graphics::Graphics() : ClientComponent() {
 	pGraphics = this;
 
+	int w = 1024; // TODO: config
+	int h = 768;
+	if (h == 0) {
+		h = 1;
+	}
+	screenSize = glm::vec2(w, h);
+	screenAspect = (float)w / h;
+	screen = quad2(-1 * screenAspect, -1, 2 * screenAspect, 2);
+	
 	SDL_version ver;
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		g_Console()->Err("Unable to initialize SDL Video: " +
@@ -23,7 +32,7 @@ Graphics::Graphics() : ClientComponent() {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	if ((window = SDL_CreateWindow("", 50, 50, 1024, 768,
+	if ((window = SDL_CreateWindow("", 50, 50, w, h,
 	                               SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN)) ==
 	    NULL) {
 		g_Console()->Err("Could not create window: " + std::string(SDL_GetError()));
@@ -41,14 +50,6 @@ Graphics::Graphics() : ClientComponent() {
 	glewInit();
 	g_Console()->Info("Initialized OpenGL " +
 	                  std::string((char *)glGetString(GL_VERSION)));
-	int w = 1024; // TODO: config
-	int h = 768;
-	if (h == 0) {
-		h = 1;
-	}
-	screenSize = glm::vec2(w, h);
-	screenAspect = (float)w / h;
-	screen = quad2(-1 * screenAspect, -1, 2 * screenAspect, 2);
 
 	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_BLEND);

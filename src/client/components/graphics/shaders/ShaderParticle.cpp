@@ -1,8 +1,9 @@
 #include "ShaderParticle.h"
 
-#include "../../Camera.h"
-#include "../../Graphics.h"
-#include "../Model.h"
+#include <shared/System.h>
+#include <client/components/Camera.h>
+#include <client/components/Graphics.h>
+#include <client/components/graphics/Model.h>
 
 ShaderParticle *pShaderParticle;
 ShaderParticle *g_ShaderParticle() {
@@ -25,10 +26,18 @@ ShaderParticle::ShaderParticle()
 	viewProjectionMatrixUniform = glGetUniformLocation(id, "viewProjectionMatrix");
 	modelMatrixUniform = glGetUniformLocation(id, "modelMatrix");
 	textureUniform = glGetUniformLocation(id, "tex");
+	timeUniform = glGetUniformLocation(id, "time");
+	sizeUniform = glGetUniformLocation(id, "size");
+	gravityUniform = glGetUniformLocation(id, "gravity");
+	ttlUniform = glGetUniformLocation(id, "ttl");
+	velUniform = glGetUniformLocation(id, "vel");
 }
 ShaderParticle::~ShaderParticle() { pShaderParticle = 0; }
 void ShaderParticle::Render() {
 	Shader::Render();
+	glEnable(GL_POINT_SPRITE);
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	glUniform1i(timeUniform, g_System()->GetTime());
 	glUniform1i(textureUniform, 0);
 	glUniformMatrix4fv(
 	    viewProjectionMatrixUniform, 1, GL_FALSE,
@@ -40,6 +49,9 @@ void ShaderParticle::Render() {
 	for (Model *model : registredModels)
 		if (model->isEnabled())
 			model->Render();
+
+	glDisable(GL_PROGRAM_POINT_SIZE);
+	glDisable(GL_POINT_SPRITE);
 }
 void ShaderParticle::SetColor(const glm::vec4 &color) {
 	glUniform4f(colorUniform, color.r, color.g, color.b, color.a);
@@ -47,4 +59,12 @@ void ShaderParticle::SetColor(const glm::vec4 &color) {
 void ShaderParticle::SetMatrix(const glm::mat4 &modelMatrix) {
 	glUniformMatrix4fv(modelMatrixUniform, 1, GL_FALSE,
 	                   (const float *)glm::value_ptr(modelMatrix));
+}
+void ShaderParticle::SetSize(float size) { glUniform1f(sizeUniform, size); }
+void ShaderParticle::SetGravity(float gravity) {
+	glUniform1f(gravityUniform, gravity);
+}
+void ShaderParticle::SetTTL(float time) { glUniform1f(ttlUniform, time); }
+void ShaderParticle::SetVel(const glm::vec3 &vel) {
+	glUniform3f(velUniform, vel.x, vel.y, vel.z);
 }

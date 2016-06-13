@@ -28,10 +28,8 @@ public:
 	};
 	static const float renderSize;
 	static const float baseSize;
-	static const int eyescale;
-	static const float separation;
-	static const int detalization;
-	static const int animSpeed;
+	static const int eyeScale;
+	static const float eyeSeparation;
 
 protected:
 	Model3d lArm;
@@ -52,6 +50,13 @@ protected:
 	int animState;
 	float animStart;
 	float animFase;
+	glm::vec2 animDir;
+
+	static const int detalization;
+	static const int animSpeed;
+	static const glm::vec3 eyesPos;
+	static const glm::vec3 lFootPos;
+	static const glm::vec3 rFootPos;
 };
 
 #endif

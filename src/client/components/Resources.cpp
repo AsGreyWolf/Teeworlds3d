@@ -82,18 +82,18 @@ Resources::Resources() : ClientComponent() {
 	for (int i = 0; i < NUM_EMOTES; i++) {
 		Model3d buffer(false);
 		buffer.Add(Quad(
-		    quad3(glm::vec3(-PlayerModel::eyescale - PlayerModel::separation, 0,
-		                    PlayerModel::eyescale),
-		          glm::vec3(0 - PlayerModel::separation, 0, PlayerModel::eyescale),
-		          glm::vec3(0 - PlayerModel::separation, 0, 0),
-		          glm::vec3(-PlayerModel::eyescale - PlayerModel::separation, 0, 0)),
+		    quad3(glm::vec3(-PlayerModel::eyeScale - PlayerModel::eyeSeparation, 0,
+		                    PlayerModel::eyeScale),
+		          glm::vec3(0 - PlayerModel::eyeSeparation, 0, PlayerModel::eyeScale),
+		          glm::vec3(0 - PlayerModel::eyeSeparation, 0, 0),
+		          glm::vec3(-PlayerModel::eyeScale - PlayerModel::eyeSeparation, 0, 0)),
 		    glm::vec3(0, 1, 0), texturePos8x4[26 + i].reflectX()));
 		buffer.Add(Quad(
-		    quad3(glm::vec3(0 + PlayerModel::separation, 0, PlayerModel::eyescale),
-		          glm::vec3(PlayerModel::eyescale + PlayerModel::separation, 0,
-		                    PlayerModel::eyescale),
-		          glm::vec3(PlayerModel::eyescale + PlayerModel::separation, 0, 0),
-		          glm::vec3(PlayerModel::separation, 0, 0)),
+		    quad3(glm::vec3(0 + PlayerModel::eyeSeparation, 0, PlayerModel::eyeScale),
+		          glm::vec3(PlayerModel::eyeScale + PlayerModel::eyeSeparation, 0,
+		                    PlayerModel::eyeScale),
+		          glm::vec3(PlayerModel::eyeScale + PlayerModel::eyeSeparation, 0, 0),
+		          glm::vec3(PlayerModel::eyeSeparation, 0, 0)),
 		    glm::vec3(0, 1, 0), texturePos8x4[26 + i]));
 		buffer.texture = skinTextures["default"];
 		eyesModels.push_back(buffer);

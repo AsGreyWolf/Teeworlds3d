@@ -1,7 +1,7 @@
 #include "Shader2d.h"
 
-#include "../../Graphics.h"
-#include "../Model.h"
+#include <client/components/Graphics.h>
+#include <client/components/graphics/Model.h>
 #include <string>
 
 Shader2d *pShader2d;

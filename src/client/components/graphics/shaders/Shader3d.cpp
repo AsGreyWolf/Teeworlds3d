@@ -1,10 +1,10 @@
 #include "Shader3d.h"
 
-#include "../../Camera.h"
-#include "../../Graphics.h"
-#include "../Texture.h"
-#include "../Model.h"
-#include "ShaderShadow.h"
+#include <client/components/Camera.h>
+#include <client/components/Graphics.h>
+#include <client/components/graphics/Texture.h>
+#include <client/components/graphics/Model.h>
+#include <client/components/graphics/shaders/ShaderShadow.h>
 #include <string>
 
 Shader3d *pShader3d;

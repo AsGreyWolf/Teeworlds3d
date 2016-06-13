@@ -41,11 +41,11 @@ void World::Load(const std::string &name) {
 		return;
 	}
 	unsigned char buf;
-	file>>buf;
+	file >> buf;
 	worldSize.x = (int)(buf);
-	file>>buf;
+	file >> buf;
 	worldSize.y = (int)(buf);
-	file>>buf;
+	file >> buf;
 	worldSize.z = (int)(buf);
 
 	tilesById.clear();
@@ -64,13 +64,13 @@ void World::Load(const std::string &name) {
 				tilesById[i].x = xi;
 				tilesById[i].y = yi;
 				tilesById[i].z = zi;
-				file>>buf;
+				file >> buf;
 				tilesById[i].type = (int)(buf);
-				file>>buf;
+				file >> buf;
 				tilesById[i].texTop = (int)(buf);
-				file>>buf;
+				file >> buf;
 				tilesById[i].texBottom = (int)(buf);
-				file>>buf;
+				file >> buf;
 				tilesById[i].texOther = (int)(buf);
 				i++;
 			}
@@ -101,10 +101,10 @@ void World::Load(const std::string &name) {
 		if (another && another->isVisible())
 			buffer.hasZ = true;
 	}
-	file>>tileset;
+	file >> tileset;
 	for (int j = 0; j < tileset.length(); j++) {
 		if (tileset[j] == '\n') {
-			tileset=tileset.substr(0,j);
+			tileset = tileset.substr(0, j);
 			break;
 		}
 	}
@@ -159,35 +159,35 @@ Player *World::IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
 			*beforeCollision = dist *minv - dist + pos0;
 		return minp;
 	}
-	return NULL; /*
-	    float Distance = distance(Pos0, Pos1);
-	    int End = Distance + 1;
-	    vec3 LastPos = Pos0;
-	    for (int i = 0; i < End; i++)
-	    {
-	    float a = i / Distance;
-	    vec3 Pos = glm::mix(Pos0, Pos1, a);
-	    for (int p = 0; p < MAX_PLAYERS; p++)
-	    {
-	    if (p == except) continue;
-	    Player* player = players[p];
-	    float D = distance(Pos, player->pos);
-	    if (D < player->physSize / 2 + radius && D > 0.0f)
-	    {
-	    if (a > 0.0f)
-	    Pos0 = LastPos;
-	    else if (distance(Pos1, player->pos) > D)
-	    Pos0 = Pos1;
-	    if (pOutCollision)
-	    *pOutCollision = Pos0;
-	    if (pOutBeforeCollision)
-	    *pOutBeforeCollision = Pos0;
-	    return player;
-	    }
-	    }
-	    LastPos = Pos;
-	    }
-	    return NULL;*/
+	return NULL;
+	/*glm::vec3 pos00 = pos0;
+	float Distance = distance(pos00, pos1);
+	int End = Distance + 1;
+	glm::vec3 LastPos = pos00;
+	for (int i = 0; i < End; i++) {
+	 float a = i / Distance;
+	 glm::vec3 Pos = glm::mix(pos00, pos1, a);
+	 for (int p = 0; p < MAX_PLAYERS; p++) {
+	  if (p == except)
+	   continue;
+	  Player *player = players[p];
+	  float D = distance(Pos, player->pos);
+	  if (D < player->physSize / 2 + radius && D > 0.0f) {
+	   if (a > 0.0f)
+	    pos00 = LastPos;
+	   else if (distance(pos1, player->pos) > D)
+	    pos00 = pos1;
+	   if (collision)
+	    *collision = pos00;
+	   if (beforeCollision)
+	    *beforeCollision = pos00;
+	   return player;
+	  }
+	 }
+	 LastPos = Pos;
+	}
+	return NULL;
+	*/
 }
 // Code from original Teeworlds with small changes, Copyright Teeworlds team
 Tile *World::GetTile(const glm::vec3 &pos) const {

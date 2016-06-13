@@ -40,6 +40,22 @@ GLM_FUNC_DECL inline vec3 rotate(vec3 const &x, rot3 const &r) {
 	y = rotateZ(y, r.z);
 	return y;
 };
+template <typename genType>
+GLM_FUNC_DECL inline float sqr_distance(genType const &x, genType const &x2) {
+	return dot(x - x2, x - x2);
+};
+template <>
+GLM_FUNC_DECL inline float sqr_distance(vec2 const &x, vec2 const &x2) {
+	return dot(x - x2, x - x2);
+};
+template <>
+GLM_FUNC_DECL inline float sqr_distance(vec3 const &x, vec3 const &x2) {
+	return dot(x - x2, x - x2);
+};
+template <>
+GLM_FUNC_DECL inline float sqr_distance(vec4 const &x, vec4 const &x2) {
+	return dot(x - x2, x - x2);
+};
 };
 
 #endif

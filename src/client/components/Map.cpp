@@ -17,17 +17,19 @@ Map::~Map() {
 void Map::Tick() {
 	for (int i = 0; i < MAX_PLAYERS; i++)
 		if (g_World()->players && g_World()->players[i]) {
-			playerModels[i].Enable();
+			if (!playerModels[i].isEnabled())
+				playerModels[i].Enable();
 			playerModels[i].Sync(*g_World()->players[i]);
 			playerModels[i].UpdateMatrix();
-		} else
+		} else if (playerModels[i].isEnabled())
 			playerModels[i].Disable();
 }
 bool Map::Load(const std::string &name) {
 	g_World()->Load(name);
 	if (!g_World()->isValid())
 		return false;
-	terrain.texture = g_ImageLoader()->Load("mapres/" + g_World()->tileset + ".png");
+	terrain.texture =
+	    g_ImageLoader()->Load("mapres/" + g_World()->tileset + ".png");
 	for (Tile &buffer : g_World()->tilesById) {
 		if (!buffer.isVisible())
 			continue;

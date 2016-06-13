@@ -5,10 +5,17 @@
 
 const float PlayerModel::renderSize = 36.0f;
 const float PlayerModel::baseSize = 64.0;
-const int PlayerModel::eyescale = (int)(baseSize * 0.40);
-const float PlayerModel::separation = (0.075f * baseSize) - eyescale / 2;
+const int PlayerModel::eyeScale = (int)(baseSize * 0.40);
+const float PlayerModel::eyeSeparation = (0.075f * baseSize) - eyeScale / 2;
 const int PlayerModel::detalization = 32;
 const int PlayerModel::animSpeed = 300;
+const glm::vec3 PlayerModel::eyesPos =
+    glm::vec3(0, (0.285f * baseSize), ((0.05f) * baseSize) - eyeScale / 2);
+const glm::vec3 PlayerModel::lFootPos =
+    glm::vec3(-renderSize / 2, renderSize / 6,
+              -renderSize / 1.5f + renderSize / 4.8f - 5);
+const glm::vec3 PlayerModel::rFootPos = glm::vec3(
+    renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
 
 PlayerModel::PlayerModel() : Model3d() {
 	Sphere arm = Sphere()
@@ -38,10 +45,8 @@ PlayerModel::PlayerModel() : Model3d() {
 	lArm.rot = rot3(0, 0, -M_PI_2);
 	rArm.rot = rot3(0, 0, M_PI_2);
 	body.rot = rot3(0, 0, -M_PI_2);
-	rFoot.pos = glm::vec3(renderSize / 2, renderSize / 6,
-	                      -renderSize / 1.5f + renderSize / 4.8f - 5);
-	lFoot.pos = glm::vec3(-renderSize / 2, renderSize / 6,
-	                      -renderSize / 1.5f + renderSize / 4.8f - 5);
+	rFoot.pos = rFootPos;
+	lFoot.pos = lFootPos;
 	weapon = g_Resources()->weaponModels[0];
 	animState = ANIMSTATE_NONE;
 	animStart = 0;
@@ -116,13 +121,12 @@ void PlayerModel::Sync(const Player &data) {
 	pos = data.pos;
 	rot = data.rot;
 	eyes = g_Resources()->eyesModels[data.emote];
-	eyes.pos =
-	    glm::vec3(0, (0.285f * baseSize), ((0.05f) * baseSize) - eyescale / 2);
+	eyes.pos = eyesPos;
 	weapon = g_Resources()->weaponModels[data.weapon];
 	weapon.pos = weaponPos[data.weapon];
 	rArm.pos = weaponPos[data.weapon];
 
-	Texture &texture = g_Resources()->skinTextures["redstripe"];
+	Texture &texture = g_Resources()->skinTextures["default"];
 	if (g_Resources()->skinTextures.find(data.skin) !=
 	    g_Resources()->skinTextures.end())
 		texture = g_Resources()->skinTextures[data.skin];
@@ -143,6 +147,8 @@ void PlayerModel::Sync(const Player &data) {
 
 	// foot animations
 	bool animate = data.grounded && (abs(data.vel.x) > 1 || abs(data.vel.y) > 1);
+	if (animate)
+		animDir = glm::normalize(glm::vec2(rotate(data.vel, -data.rot)));
 	if (animate && animState == ANIMSTATE_NONE) {
 		animState++;
 		animStart = g_System()->GetTime();
@@ -153,7 +159,7 @@ void PlayerModel::Sync(const Player &data) {
 	if (animState == ANIMSTATE_LEFT_ONLY && dd >= 0.5f)
 		animState++;
 	dd *= 2 * M_PI;
-	float faseA = renderSize / 2 * sin(dd);
+	float faseA = renderSize / 2 * asin(sin(dd)) / M_PI_2;
 	float faseB = renderSize / 6 * cos(dd);
 	if (animState == ANIMSTATE_ALL && !animate && faseB > 0 && animFase < 0 &&
 	    faseA > 0)
@@ -161,20 +167,16 @@ void PlayerModel::Sync(const Player &data) {
 	if (animState == ANIMSTATE_RIGHT_ONLY && faseB < 0 && animFase > 0 &&
 	    faseA < 0)
 		animState = ANIMSTATE_NONE;
+
+	rFoot.pos = rFootPos;
 	if (animState == ANIMSTATE_ALL || animState == ANIMSTATE_RIGHT_ONLY)
-		rFoot.pos = glm::vec3(renderSize / 2, renderSize / 6 + faseA,
-		                      -renderSize / 1.5f + renderSize / 4.8f +
-		                          glm::max(0.0f, faseB) - 5);
-	else
-		rFoot.pos = glm::vec3(renderSize / 2, renderSize / 6,
-		                      -renderSize / 1.5f + renderSize / 4.8f - 5);
+		rFoot.pos += glm::vec3(0.5 * faseA * animDir.x, faseA * animDir.y,
+		                       glm::max(0.0f, faseB));
+	lFoot.pos = lFootPos;
 	if (animState == ANIMSTATE_ALL || animState == ANIMSTATE_LEFT_ONLY)
-		lFoot.pos = glm::vec3(-renderSize / 2, renderSize / 6 - faseA,
-		                      -renderSize / 1.5f + renderSize / 4.8f +
-		                          glm::max(0.0f, -faseB) - 5);
-	else
-		lFoot.pos = glm::vec3(-renderSize / 2, renderSize / 6,
-		                      -renderSize / 1.5f + renderSize / 4.8f - 5);
+		lFoot.pos += glm::vec3(-0.5 * faseA * animDir.x, -faseA * animDir.y,
+		                       glm::max(0.0f, -faseB));
+
 	animFase = faseA;
 
 	// hook and arm

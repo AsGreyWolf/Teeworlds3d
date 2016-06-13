@@ -26,7 +26,7 @@ int calcFPS(void *param) {
 	SDL_Delay(1000);
 	while (pSystem) {
 		g_Console()->Info("FPS = " + std::to_string(frames));
-		pSystem->fps = frames == 0 ? 60 : frames;
+		pSystem->fps = frames;
 		frames = 0;
 		SDL_Delay(1000);
 	}
@@ -63,7 +63,7 @@ void System::Tick() {
 	long tickTime = g_System()->GetTime();
 	tickCoeff = (tickTime - lasttickTime) * 1.0 / 1000;
 	if (tickCoeff > 1)
-		tickCoeff = 1.0f / 60;
+		tickCoeff = 1.0f;
 	lasttickTime = tickTime;
 	frames++;
 }

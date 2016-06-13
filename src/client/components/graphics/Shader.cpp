@@ -3,6 +3,7 @@
 #include <shared/Console.h>
 #include <shared/System.h>
 #include <fstream>
+#include <vector>
 
 std::string filetobuf(std::string file) {
 	std::ifstream in(file);
@@ -27,6 +28,15 @@ void logProgram(GLuint id) {
 	g_Console()->Err(std::string(infoLog));
 	delete[] infoLog;
 }
+bool endsWith(std::string const &fullString, std::string const &ending) {
+	if (fullString.length() >= ending.length()) {
+		return (0 ==
+		        fullString.compare(fullString.length() - ending.length(),
+		                           ending.length(), ending));
+	} else {
+		return false;
+	}
+}
 Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
                GLboolean colormask0, GLboolean colormask1, GLboolean colormask2,
                GLboolean colormask3, GLboolean depthmask, GLbitfield clear) {
@@ -43,13 +53,29 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 
 	std::string firstpath = g_System()->GetDataFile(filepath);
 
-	std::string vertexsource, fragmentsource, geometrysource;
+	std::string vertexsource, fragmentsource, geometrysource, libraries = "\n";
 	GLuint vertexshader, fragmentshader, geometryshader;
 	int IsCompiled_VS, IsCompiled_FS, IsCompiled_GS;
 	int IsLinked;
 	vertexsource = filetobuf(firstpath + ".vert");
 	fragmentsource = filetobuf(firstpath + ".frag");
 	geometrysource = filetobuf(firstpath + ".geom");
+	std::vector<std::string> libs;
+	g_System()->GetFilesInDirectory(libs, g_System()->GetDataFile("shaders"));
+	for (auto &s : libs) {
+		s = "shaders/" + s;
+		if (endsWith(s, ".slib")) {
+			std::string libsource = filetobuf(g_System()->GetDataFile(s));
+			if (libsource.length() == 0)
+				continue;
+			g_Console()->Info("Shader library loaded " + s);
+			libraries += libsource + "\n";
+		}
+	}
+	vertexsource = libraries + vertexsource;
+	fragmentsource = libraries + fragmentsource;
+	if (geometrysource.length() > 0)
+		geometrysource = libraries + geometrysource;
 
 	vertexshader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexshader, 1, (const GLchar **)&vertexsource, 0);

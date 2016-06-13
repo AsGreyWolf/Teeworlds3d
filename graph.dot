@@ -99,6 +99,7 @@
 			Texture->ShadowModel;
 			Shader3d->Particles;
 			ShaderParticle->Particles;
+			Primitives->Particles;
 	 	}
 	 	/*
 		Graphics->Model3d;
@@ -145,5 +146,6 @@
 		System->Texture;
 		Graphics->Texture;
 		System->ObjModel;
+		System->ShaderParticle;
 		*/
 }

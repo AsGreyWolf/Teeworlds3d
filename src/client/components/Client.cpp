@@ -7,6 +7,7 @@
 #include <client/components/Map.h>           //TODO: remove
 #include <client/components/Camera.h>        //TODO: remove
 #include <client/components/TextGenerator.h> //TODO: remove
+#include <client/components/ImageLoader.h>   //TODO: remove
 #include <client/components/Input.h>
 #include <client/components/graphics/models/Model3d.h>       //TODO: remove
 #include <client/components/graphics/models/PlayerModel.h>   //TODO: remove
@@ -52,21 +53,22 @@ Model2d *depthMap;
 Model2d *fps;
 Player *localPlayer;
 void Client::Start() {
-	g_Map()->Load("1234");
 	working = true;
 	state.ingame = true;
+
+	g_Map()->Load("1234");
 	auto skin = g_Resources()->skinTextures.end();
 	for (int i = 0; i < MAX_PLAYERS; i++) {
 		if (skin == g_Resources()->skinTextures.end())
 			skin = g_Resources()->skinTextures.begin();
 		g_World()->players[i] = new Player(i);
-		g_World()->players[i]->nickname = g_World()->players[i]->skin = (*skin).first;
-		g_World()->players[i]->pos = glm::vec3(rand() % 4080, rand() % 4080, 400.0);
-		g_World()->players[i]->weapon = rand() % NUM_WEAPONS;
-		g_World()->players[i]->emote = rand() % NUM_EMOTES;
-		g_World()->players[i]->rot =
-		    rot3(rand() * M_PI / RAND_MAX * 2, rand() * M_PI / RAND_MAX * 2,
-		         rand() * M_PI / RAND_MAX * 2);
+		Player *player = g_World()->players[i];
+		player->nickname = g_World()->players[i]->skin = (*skin).first;
+		player->pos = glm::vec3(rand() % 4080, rand() % 4080, 400.0);
+		player->weapon = rand() % NUM_WEAPONS;
+		player->emote = rand() % NUM_EMOTES;
+		player->rot = rot3(rand() * M_PI / RAND_MAX * 2, rand() * M_PI / RAND_MAX * 2,
+		                   rand() * M_PI / RAND_MAX * 2);
 		skin++;
 	}
 	localPlayer = g_World()->players[0];
@@ -76,7 +78,7 @@ void Client::Start() {
 	depthMap->position =
 	    g_Graphics()->screen.p00 + g_Graphics()->screen.p11 * 0.25f;
 	depthMap->texture = g_ShaderShadow()->texture;
-	depthMap->Add(Quad(g_Graphics()->screen / 4, quad2(0, 1, 1, -1)));
+	depthMap->Add(Quad(g_Graphics()->screen / 4, quad2(0, 0, 1, 1)));
 	depthMap->Enable();
 	fps = new Model2d();
 	fps->position = g_Graphics()->screen.p11 + g_Graphics()->screen.p00 * 0.125f;
@@ -85,6 +87,7 @@ void Client::Start() {
 }
 void Client::Stop() {
 	delete depthMap;
+	delete fps;
 	working = false;
 };
 bool Client::isRunning() { return working; }
