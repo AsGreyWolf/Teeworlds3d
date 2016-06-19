@@ -1,6 +1,6 @@
  digraph tee3d {
- 	subgraph cluster_0 { 
- 		label="shared"; 
+ 	subgraph cluster_0 {
+ 		label="shared";
  		SharedComponent [shape=house color=red];
  		Console [shape=house];
 	 	System [shape=house];
@@ -19,8 +19,8 @@
 		System->World;
 		System->Console;
  	}
- 	subgraph cluster_1 { 
- 		label="client"; 
+ 	subgraph cluster_1 {
+ 		label="client";
 	 	ClientComponent [shape=component color=red];
 	 	Client [shape=component];
 	 	Graphics [shape=component];
@@ -30,6 +30,7 @@
 	 	Map [shape=component];
 	 	TextGenerator [shape=component];
 	 	ImageLoader [shape=component];
+	 	Loading [shape=component];
 
 		ClientComponent->Camera[color=red arrowhead=none arrowtail=empty dir=back];
 		ClientComponent->Client[color=red arrowhead=none arrowtail=empty dir=back];
@@ -39,15 +40,20 @@
 		ClientComponent->Map[color=red arrowhead=none arrowtail=empty dir=back];
 		ClientComponent->TextGenerator[color=red arrowhead=none arrowtail=empty dir=back];
 		ClientComponent->ImageLoader[color=red arrowhead=none arrowtail=empty dir=back];
+		ClientComponent->Loading[color=red arrowhead=none arrowtail=empty dir=back];
 
 		Input->Client;
 		Input->Camera;
 
 		ImageLoader->Map;
 		ImageLoader->Resources->Map;
+		Loading->Map;
+		Loading->Resources;
+		Graphics->Loading;
+		Resources->Loading;
 
 	 	subgraph cluster_2 {
-	 		label="graphics"; 
+	 		label="graphics";
 			Shader [shape=diamond color=red];
 			Shader3d [shape=diamond];
 			ShaderShadow [shape=diamond];
@@ -123,7 +129,9 @@
 		PlayerModel->Map;
 		Primitives->Map;
 		Texture->TextGenerator;
-		Texture->ImageLoader;*/
+		Texture->ImageLoader;
+		Model2d->Loading;
+		Primitives->Loading;*/
  	}
  	/*
 	SharedComponent->ClientComponent[color=red arrowhead=none arrowtail=empty dir=back];
@@ -138,7 +146,8 @@
 	System->TextGenerator;
 	Console->ImageLoader;
 	System->ImageLoader;
-	
+	System->Loading;
+
 		Player->PlayerModel;
 		System->PlayerModel;
 		Console->Shader;

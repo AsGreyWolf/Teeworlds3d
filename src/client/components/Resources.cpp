@@ -1,6 +1,7 @@
 #include "Resources.h"
 
 #include <shared/System.h>
+#include <client/components/Loading.h>
 #include <client/components/ImageLoader.h>
 #include <client/components/graphics/geometry/Primitives.h>
 #include <client/components/graphics/geometry/ObjModel.h>
@@ -24,10 +25,12 @@ Resources::Resources() : ClientComponent() {
 	std::vector<std::string> skins;
 	g_System()->GetFilesInDirectory(skins, g_System()->GetDataFile("skins"));
 	for (unsigned int i = 0; i < skins.size(); i++) {
-		Texture skintex=g_ImageLoader()->Load("skins/" + skins[i]);
-		skins[i].resize(skins[i].size() - 4);
-		skinTextures.insert(skinTextures.begin(),
-		                    std::pair<std::string, Texture>(skins[i], skintex));
+		std::string skin = skins[i];
+		skinTextures[skin.substr(0, skin.size() - 4)] = textureRGB;
+		g_Loading()->Push([&, skin](){
+			Texture skintex=g_ImageLoader()->Load("skins/" + skin);
+			skinTextures[skin.substr(0, skin.size() - 4)] = skintex;
+		});
 	}
 	texturePos8.reserve(8 * 8);
 	for (int j = 0; j < 8; j++)
@@ -70,37 +73,47 @@ Resources::Resources() : ClientComponent() {
 	                     glm::vec3(0, 0, 0), glm::vec3(0, 0, 0),
 	                     glm::vec2(0.5f, 0.5f), glm::vec2(0, 1)));
 
-	weaponModels.reserve(NUM_WEAPONS);
+	weaponModels.resize(NUM_WEAPONS);
 	for (int i = 0; i < NUM_WEAPONS; i++) {
-		Model3d buffer;
-		buffer.Add(ObjModel(weaponFiles[i]));
-		buffer.texture =
-		    g_ImageLoader()->Load(std::string(weaponFiles[i]) + ".png", TEXTURE_ANISOTROPY);
-		weaponModels.push_back(buffer);
+		g_Loading()->Push([&,i](){
+			Model3d buffer;
+			buffer.Add(ObjModel(weaponFiles[i]));
+			buffer.texture =
+			    g_ImageLoader()->Load(std::string(weaponFiles[i]) + ".png", TEXTURE_ANISOTROPY);
+			weaponModels[i]=buffer;
+		});
 	}
-	eyesModels.reserve(NUM_EMOTES);
+	eyesModels.resize(NUM_EMOTES);
 	for (int i = 0; i < NUM_EMOTES; i++) {
-		Model3d buffer(false);
-		buffer.Add(Quad(
-		    quad3(glm::vec3(-PlayerModel::eyeScale - PlayerModel::eyeSeparation, 0,
-		                    PlayerModel::eyeScale),
-		          glm::vec3(0 - PlayerModel::eyeSeparation, 0, PlayerModel::eyeScale),
-		          glm::vec3(0 - PlayerModel::eyeSeparation, 0, 0),
-		          glm::vec3(-PlayerModel::eyeScale - PlayerModel::eyeSeparation, 0, 0)),
-		    glm::vec3(0, 1, 0), texturePos8x4[26 + i].reflectX()));
-		buffer.Add(Quad(
-		    quad3(glm::vec3(0 + PlayerModel::eyeSeparation, 0, PlayerModel::eyeScale),
-		          glm::vec3(PlayerModel::eyeScale + PlayerModel::eyeSeparation, 0,
-		                    PlayerModel::eyeScale),
-		          glm::vec3(PlayerModel::eyeScale + PlayerModel::eyeSeparation, 0, 0),
-		          glm::vec3(PlayerModel::eyeSeparation, 0, 0)),
-		    glm::vec3(0, 1, 0), texturePos8x4[26 + i]));
-		buffer.texture = skinTextures["default"];
-		eyesModels.push_back(buffer);
+		g_Loading()->Push([&,i](){
+			Model3d buffer(false);
+			buffer.Add(Quad(
+			    quad3(glm::vec3(-PlayerModel::eyeScale - PlayerModel::eyeSeparation, 0,
+			                    PlayerModel::eyeScale),
+			          glm::vec3(0 - PlayerModel::eyeSeparation, 0, PlayerModel::eyeScale),
+			          glm::vec3(0 - PlayerModel::eyeSeparation, 0, 0),
+			          glm::vec3(-PlayerModel::eyeScale - PlayerModel::eyeSeparation, 0, 0)),
+			    glm::vec3(0, 1, 0), texturePos8x4[26 + i].reflectX()));
+			buffer.Add(Quad(
+			    quad3(glm::vec3(0 + PlayerModel::eyeSeparation, 0, PlayerModel::eyeScale),
+			          glm::vec3(PlayerModel::eyeScale + PlayerModel::eyeSeparation, 0,
+			                    PlayerModel::eyeScale),
+			          glm::vec3(PlayerModel::eyeScale + PlayerModel::eyeSeparation, 0, 0),
+			          glm::vec3(PlayerModel::eyeSeparation, 0, 0)),
+			    glm::vec3(0, 1, 0), texturePos8x4[26 + i]));
+			buffer.texture = skinTextures["default"];
+			eyesModels[i] = buffer;
+		});
 	}
-	hookHead.Add(ObjModel("models/hook0"));
-	hookBody.Add(ObjModel("models/hook"));
-	hookBody.texture = hookHead.texture = g_ImageLoader()->Load("models/hook.png");
+	g_Loading()->Push([&](){
+		hookHead.Add(ObjModel("models/hook0"));
+	});
+	g_Loading()->Push([&](){
+		hookBody.Add(ObjModel("models/hook"));
+	});
+	g_Loading()->Push([&](){
+		hookBody.texture = hookHead.texture = g_ImageLoader()->Load("models/hook.png");
+	});
 }
 Resources::~Resources() {
 	skinTextures.clear();

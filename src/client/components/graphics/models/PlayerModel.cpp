@@ -146,7 +146,7 @@ void PlayerModel::Sync(const Player &data) {
 	weapon.color.a = data.color.a;
 
 	// foot animations
-	bool animate = data.grounded && (abs(data.vel.x) > 1 || abs(data.vel.y) > 1);
+	bool animate = data.grounded && (fabs(data.vel.x) > 1 || fabs(data.vel.y) > 1);
 	if (animate)
 		animDir = glm::normalize(glm::vec2(rotate(data.vel, -data.rot)));
 	if (animate && animState == ANIMSTATE_NONE) {
@@ -185,7 +185,7 @@ void PlayerModel::Sync(const Player &data) {
 		float hookLen = glm::length(hookRelativePos);
 		glm::vec3 hookDir = glm::normalize(hookRelativePos);
 		rot3 hookRot = hookDir;
-		int i = 0;
+		size_t i = 0;
 		if (i == hook.size())
 			hook.push_back(g_Resources()->hookHead);
 		for (float partPos = -10; partPos >= -hookLen; partPos -= 10) {

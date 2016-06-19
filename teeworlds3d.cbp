@@ -438,6 +438,8 @@
 		<Unit filename="src/client/components/ImageLoader.h" />
 		<Unit filename="src/client/components/Input.cpp" />
 		<Unit filename="src/client/components/Input.h" />
+		<Unit filename="src/client/components/Loader.cpp" />
+		<Unit filename="src/client/components/Loader.h" />
 		<Unit filename="src/client/components/Map.cpp" />
 		<Unit filename="src/client/components/Map.h" />
 		<Unit filename="src/client/components/Resources.cpp" />

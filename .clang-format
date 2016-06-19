@@ -1,11 +1,9 @@
-{
-	"BasedOnStyle": "LLVM",
-	"AccessModifierOffset": -1,
-	"AlignAfterOpenBracket": true,
-	"AlignOperands": true,
-	"Cpp11BracedListStyle": true,
-	"IndentWidth": 1,
-	"Standard": "Cpp11",
-	"TabWidth": 1,
-	"UseTab": "ForIndentation"
-}
+BasedOnStyle: LLVM
+AccessModifierOffset: -1
+AlignAfterOpenBracket: true
+AlignOperands: true
+Cpp11BracedListStyle: true
+IndentWidth: 1
+Standard: Cpp11
+TabWidth: 1
+UseTab: ForIndentation

@@ -7,7 +7,7 @@
 
 ///<summary>Client state</summary>
 struct STATE {
-	const bool operator!=(const STATE s) { return ingame != s.ingame; }
+	inline bool operator!=(const STATE s) const { return ingame != s.ingame; }
 	bool ingame = false;
 };
 ///<summary>Component which may be used only on Client side</summary>

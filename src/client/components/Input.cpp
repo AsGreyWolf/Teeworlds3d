@@ -3,7 +3,7 @@
 class Input *pInput;
 Input *g_Input() { return pInput ? pInput : new Input(); }
 
-Input::Input() {
+Input::Input() : ClientComponent() {
 	pInput = this;
 	keyboard.resize(SDLK_POWER + 1);
 	mouse.resize(SDL_BUTTON_RIGHT + 1);

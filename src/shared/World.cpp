@@ -49,14 +49,14 @@ void World::Load(const std::string &name) {
 	worldSize.z = (int)(buf);
 
 	tilesById.clear();
-	tilesByPos = new Tile ***[(int)worldSize.x];
+	tilesByPos = new Tile ***[worldSize.x];
 
-	unsigned int i = 0;
-	for (int xi = 0; xi < worldSize.x; xi++) {
-		tilesByPos[xi] = new Tile **[(int)worldSize.y];
-		for (int yi = 0; yi < worldSize.y; yi++) {
-			tilesByPos[xi][yi] = new Tile *[(int)worldSize.z];
-			for (int zi = 0; zi < worldSize.z; zi++) {
+	size_t i = 0;
+	for (size_t xi = 0; xi < worldSize.x; xi++) {
+		tilesByPos[xi] = new Tile **[worldSize.y];
+		for (size_t yi = 0; yi < worldSize.y; yi++) {
+			tilesByPos[xi][yi] = new Tile *[worldSize.z];
+			for (size_t zi = 0; zi < worldSize.z; zi++) {
 				// TODO: remove whitespaces
 				Tile tile;
 				tilesById.push_back(tile);
@@ -102,7 +102,7 @@ void World::Load(const std::string &name) {
 			buffer.hasZ = true;
 	}
 	file >> tileset;
-	for (int j = 0; j < tileset.length(); j++) {
+	for (size_t j = 0; j < tileset.length(); j++) {
 		if (tileset[j] == '\n') {
 			tileset = tileset.substr(0, j);
 			break;
@@ -113,8 +113,8 @@ void World::UnLoad() {
 	tileset = "";
 	tilesById.clear();
 	if (tilesByPos) {
-		for (int xi = 0; xi < worldSize.x; xi++) {
-			for (int yi = 0; yi < worldSize.y; yi++)
+		for (size_t xi = 0; xi < worldSize.x; xi++) {
+			for (size_t yi = 0; yi < worldSize.y; yi++)
 				delete[] tilesByPos[xi][yi];
 			delete[] tilesByPos[xi];
 		}
@@ -197,13 +197,13 @@ Tile *World::GetTile(const glm::vec3 &pos) const {
 	return GetTile(x, y, z);
 }
 Tile *World::GetTile(int x, int y, int z) const {
-	return x < 0 ? NULL : x >= worldSize.x
+	return x < 0 ? NULL : (size_t)x >= worldSize.x
 	                          ? NULL
 	                          : y < 0 ? NULL
-	                                  : y >= worldSize.y
+	                                  : (size_t)y >= worldSize.y
 	                                        ? NULL
 	                                        : z < 0 ? NULL
-	                                                : z >= worldSize.z
+	                                                : (size_t)z >= worldSize.z
 	                                                      ? NULL
 	                                                      : tilesByPos[x][y][z];
 }

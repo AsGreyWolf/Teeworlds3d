@@ -415,10 +415,13 @@
 			}
 		},
 		{
-			"file": "/home/asgreywolf/Загрузки/tor-browser_en-US/Browser/Downloads/Пустой документ",
+			"contents": "#include <iostream>\n#include <string>\n#include <vector>\n#include <map>\n#include <algorithm>\n#include <cmath>\n#include <map>\n#include <iomanip>\n#include <cctype>\n#include <cstdlib>\n#include <deque>\n#include <set>\n#include <climits>\n\nusing namespace std;\ntypedef long long lint;\n\nint main() {\n	\n}",
+			"file": "/home/asgreywolf/Рабочий стол/a.cpp",
+			"file_size": 1246,
+			"file_write_time": 131104647030268055,
 			"settings":
 			{
-				"buffer_size": 60,
+				"buffer_size": 294,
 				"line_ending": "Unix"
 			}
 		}
@@ -1305,30 +1308,88 @@
 				},
 				{
 					"buffer": 4,
-					"file": "/home/asgreywolf/Загрузки/tor-browser_en-US/Browser/Downloads/Пустой документ",
+					"file": "/home/asgreywolf/Рабочий стол/a.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 60,
+						"buffer_size": 294,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								60
+								292,
+								292
 							]
 						],
 						"settings":
 						{
 							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content"
+							],
 							"encoding_helper_encoding": "UTF-8",
 							"encoding_thread_running": true,
 							"glsv_configured": true,
 							"glsv_enabled": 1,
 							"glsv_spec": 0,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/C++/C++.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

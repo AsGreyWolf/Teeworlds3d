@@ -34,10 +34,10 @@ Texture TextGenerator::Generate(std::string data, int size) {
 	if (font) {
 		TTF_SetFontOutline(font, 0);
 		SDL_Surface *surface =
-		    TTF_RenderUTF8_Blended(font, data.c_str(), SDL_Color{255, 255, 255});
+		    TTF_RenderUTF8_Blended(font, data.c_str(), SDL_Color{255, 255, 255, 255});
 		TTF_SetFontOutline(font, outline);
 		SDL_Surface *shadowSurface =
-		    TTF_RenderUTF8_Blended(font, data.c_str(), SDL_Color{96, 96, 96});
+		    TTF_RenderUTF8_Blended(font, data.c_str(), SDL_Color{96, 96, 96, 255});
 		if (surface && shadowSurface) {
 			SDL_Rect dest;
 			dest.x = outline;
