@@ -446,6 +446,8 @@
 		<Unit filename="src/client/components/Resources.h" />
 		<Unit filename="src/client/components/TextGenerator.cpp" />
 		<Unit filename="src/client/components/TextGenerator.h" />
+		<Unit filename="src/client/components/UI.cpp" />
+		<Unit filename="src/client/components/UI.h" />
 		<Unit filename="src/client/components/graphics/Model.cpp" />
 		<Unit filename="src/client/components/graphics/Model.h" />
 		<Unit filename="src/client/components/graphics/Shader.cpp" />
@@ -482,6 +484,8 @@
 		<Unit filename="src/client/components/graphics/shaders/ShaderParticle.h" />
 		<Unit filename="src/client/components/graphics/shaders/ShaderShadow.cpp" />
 		<Unit filename="src/client/components/graphics/shaders/ShaderShadow.h" />
+		<Unit filename="src/client/components/ui/View.cpp" />
+		<Unit filename="src/client/components/ui/View.h" />
 		<Unit filename="src/shared/Console.cpp" />
 		<Unit filename="src/shared/Console.h" />
 		<Unit filename="src/shared/SharedComponent.cpp" />

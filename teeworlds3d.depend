@@ -820,7 +820,7 @@
 	<gtx/closest_point.hpp>
 	<tools/quad2.h>
 
-1466362038 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
+1466363352 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
 	"Client.h"
 	<shared/Console.h>
 	<shared/System.h>
@@ -1312,4 +1312,15 @@
 	<client/components/Graphics.h>
 	<client/components/Resources.h>
 	<client/components/graphics/geometry/Primitives.h>
+
+1466359313 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/UI.cpp
+	"UI.h"
+	<client/components/ui/View.h>
+
+1466357950 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/UI.h
+	"../ClientComponent.h"
+	<set>
+
+1466363976 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/View.h
+	<tools/vmath.h>
 

@@ -23,6 +23,7 @@ public:
 	#define FILL_PARENT glm::vec2(-1, -1);
 	glm::vec2 size;
 	quad2 container;
+	int layer = 0;
 	bool visible = true;
 
 protected:
