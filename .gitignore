@@ -226,3 +226,4 @@ math/
 *.exe
 *.dll
 !other/*.dll
+.imdone/

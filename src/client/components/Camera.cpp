@@ -6,7 +6,7 @@
 class Camera *pCamera;
 Camera *g_Camera() { return pCamera ? pCamera : new Camera(); }
 
-Camera::Camera() : ClientComponent() {
+Camera::Camera() : ClientComponent(), Positioned() {
 	pCamera = this;
 	pos = glm::vec3(0.0, 0.0, 0.0);
 	rot = rot3(0.0, 0.0, 0.0);
