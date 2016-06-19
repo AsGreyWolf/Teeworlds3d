@@ -14,13 +14,13 @@ Geometry3d Line(const glm::vec3 &v1, const glm::vec3 &v2, const glm::vec3 &n1,
 }
 Geometry3d Quad(const quad3 &v, const glm::vec3 &n, const quad2 &t) {
 	Geometry3d geom;
-	geom.Push(v.p1, n, t.p10);
-	geom.Push(v.p2, n, t.p00);
-	geom.Push(v.p3, n, t.p01);
+	geom.Push(v.p1, n, t.v10());
+	geom.Push(v.p2, n, t.v00());
+	geom.Push(v.p3, n, t.v01());
 
-	geom.Push(v.p1, n, t.p10);
-	geom.Push(v.p3, n, t.p01);
-	geom.Push(v.p4, n, t.p11);
+	geom.Push(v.p1, n, t.v10());
+	geom.Push(v.p3, n, t.v01());
+	geom.Push(v.p4, n, t.v11());
 	return geom;
 }
 
@@ -38,13 +38,13 @@ Geometry2d Line(const glm::vec2 &v1, const glm::vec2 &v2, const glm::vec2 &t1,
 }
 Geometry2d Quad(const quad2 &v, const quad2 &t) {
 	Geometry2d geom;
-	geom.Push(v.p00, t.p00);
-	geom.Push(v.p10, t.p10);
-	geom.Push(v.p01, t.p01);
+	geom.Push(v.v00(), t.v00());
+	geom.Push(v.v10(), t.v10());
+	geom.Push(v.v01(), t.v01());
 
-	geom.Push(v.p01, t.p01);
-	geom.Push(v.p10, t.p10);
-	geom.Push(v.p11, t.p11);
+	geom.Push(v.v01(), t.v01());
+	geom.Push(v.v10(), t.v10());
+	geom.Push(v.v11(), t.v11());
 	return geom;
 }
 // void Model2d::AddRectangle(const quad2 &in, const quad2 &out) {

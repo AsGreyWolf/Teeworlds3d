@@ -21,10 +21,10 @@ public:
 		p4 = v4;
 	}
 	quad3(const quad2 &data, float depth = 0) {
-		p1 = glm::vec3(-data.p00.x, depth, data.p00.y);
-		p2 = glm::vec3(-data.p10.x, depth, data.p10.y);
-		p3 = glm::vec3(-data.p11.x, depth, data.p11.y);
-		p4 = glm::vec3(-data.p01.x, depth, data.p01.y);
+		p1 = glm::vec3(-data.v00().x, depth, data.v00().y);
+		p2 = glm::vec3(-data.v10().x, depth, data.v10().y);
+		p3 = glm::vec3(-data.v11().x, depth, data.v11().y);
+		p4 = glm::vec3(-data.v01().x, depth, data.v01().y);
 	}
 	quad3(const quad3 &second)
 	    : quad3(second.p1, second.p2, second.p3, second.p4) {}

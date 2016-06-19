@@ -76,13 +76,15 @@ void Client::Start() {
 
 	depthMap = new Model2d();
 	depthMap->position =
-	    g_Graphics()->screen.p00 + g_Graphics()->screen.p11 * 0.25f;
+	    g_Graphics()->screen.v00();
 	depthMap->texture = g_ShaderShadow()->texture;
-	depthMap->Add(Quad(g_Graphics()->screen / 4, quad2(0, 0, 1, 1)));
+	depthMap->Add(Quad(quad2(0, 0, 0.5f, 0.5f), quad2(0, 0, 1, 1)));
 	depthMap->Enable();
 	fps = new Model2d();
-	fps->position = g_Graphics()->screen.p11 + g_Graphics()->screen.p00 * 0.125f;
-	fps->Add(Quad(g_Graphics()->screen * 0.125f, quad2(0, 1, 1, -1)));
+	fps->texture =
+	    g_TextGenerator()->Generate("FPS: 60");
+	fps->position = g_Graphics()->screen.v11();
+	fps->Add(Quad(quad2(-0.125f * fps->texture.aspect, -0.125f, 0.125f * fps->texture.aspect, 0.125f), quad2(0, 1, 1, -1)));
 	fps->Enable();
 }
 void Client::Stop() {

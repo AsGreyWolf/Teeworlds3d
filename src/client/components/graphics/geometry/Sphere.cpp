@@ -53,16 +53,16 @@ Sphere::operator Geometry3d() {
 	std::vector<glm::vec3>::iterator v = vertices.begin();
 	std::vector<glm::vec3>::iterator n = normals.begin();
 	std::vector<glm::vec2>::iterator t = texcoords.begin();
-	float tcsizex = texcoord.p10.x - texcoord.p00.x;
-	float tcsizey = texcoord.p01.y - texcoord.p00.y;
+	float tcsizex = texcoord.w;
+	float tcsizey = texcoord.h;
 	if (reversed)
 		for (r = 0; r < rings; r++)
 			for (s = 0; s < sectors; s++) {
 				float const z = -sin(-M_PI_2 + M_PI * r * R);
 				float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
 				float const y = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
-				*t++ = glm::vec2(texcoord.p00.x + s * S * tcsizex,
-				                 texcoord.p00.y + r * R * tcsizey);
+				*t++ = glm::vec2(texcoord.x + s * S * tcsizex,
+				                 texcoord.y + r * R * tcsizey);
 				*v++ = glm::vec3(-x * radius * scale.x, y * radius * scale.y,
 				                 z * radius * scale.z) +
 				       position;
@@ -74,8 +74,8 @@ Sphere::operator Geometry3d() {
 				float const z = -sin(-M_PI_2 + M_PI * r * R);
 				float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
 				float const y = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
-				*t++ = glm::vec2(texcoord.p00.x + s * S * tcsizex,
-				                 texcoord.p00.y + r * R * tcsizey);
+				*t++ = glm::vec2(texcoord.x + s * S * tcsizex,
+				                 texcoord.y + r * R * tcsizey);
 				*v++ = glm::vec3(x * radius * scale.x, y * radius * scale.y,
 				                 z * radius * scale.z) +
 				       position;

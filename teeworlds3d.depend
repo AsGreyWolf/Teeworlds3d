@@ -731,7 +731,7 @@
 	<intrin.h>
 	<limits>
 
-1463771226 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/quad2.h
+1466362672 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/quad2.h
 	<algorithm>
 	<cmath>
 	<glm.hpp>
@@ -754,7 +754,7 @@
 	<tools/vmath.h>
 	<tools/Positioned.h>
 
-1465663403 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Camera.cpp
+1466356203 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Camera.cpp
 	"Camera.h"
 	<shared/System.h>
 	<client/components/Input.h>
@@ -811,7 +811,7 @@
 	<memory>
 	<tools/vmath.h>
 
-1463771228 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/quad3.h
+1466361978 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/quad3.h
 	<cmath>
 	<glm.hpp>
 	<gtc/type_ptr.hpp>
@@ -820,7 +820,7 @@
 	<gtx/closest_point.hpp>
 	<tools/quad2.h>
 
-1466148131 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
+1466362038 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
 	"Client.h"
 	<shared/Console.h>
 	<shared/System.h>
@@ -1177,7 +1177,7 @@
 1463771083 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/ObjModel.h
 	<client/components/graphics/geometry/Geometry3d.h>
 
-1463771086 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Primitives.cpp
+1466362415 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Primitives.cpp
 	"Primitives.h"
 
 1463771088 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Primitives.h
@@ -1197,7 +1197,7 @@
 	<vector>
 	<tools/vmath.h>
 
-1463771090 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Sphere.cpp
+1466362720 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Sphere.cpp
 	"Sphere.h"
 
 1463771072 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/geometry/Geometry2d.cpp
@@ -1305,4 +1305,11 @@
 	<client/components/graphics/models/Model2d.h>
 	<functional>
 	<queue>
+
+1466341430 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Loading.cpp
+	"Loading.h"
+	<shared/System.h>
+	<client/components/Graphics.h>
+	<client/components/Resources.h>
+	<client/components/graphics/geometry/Primitives.h>
 
