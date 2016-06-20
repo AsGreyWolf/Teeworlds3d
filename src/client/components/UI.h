@@ -2,6 +2,7 @@
 #define UI_H
 
 #include "../ClientComponent.h"
+#include <client/components/ui/Layout.h>
 #include <set>
 
 class View;
@@ -17,6 +18,8 @@ public:
 
 	void RegisterView(View *view);
 	void UnregisterView(View *view);
+
+	Layout *screenLayout;
 
 private:
 	std::set<View *> registredViews;

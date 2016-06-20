@@ -49,7 +49,7 @@ void Shader3d::Render() {
 	                   (const float *)glm::value_ptr(g_ShaderShadow()->matrix));
 	glActiveTexture(GL_TEXTURE1);
 	glEnable(GL_TEXTURE_2D);
-	g_ShaderShadow()->texture.Bind();
+	g_ShaderShadow()->shadowMap.Bind();
 	glActiveTexture(GL_TEXTURE0);
 
 	for (Model *model : registredModels)

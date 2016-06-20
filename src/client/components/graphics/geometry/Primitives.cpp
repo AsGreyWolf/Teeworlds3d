@@ -38,13 +38,13 @@ Geometry2d Line(const glm::vec2 &v1, const glm::vec2 &v2, const glm::vec2 &t1,
 }
 Geometry2d Quad(const quad2 &v, const quad2 &t) {
 	Geometry2d geom;
-	geom.Push(v.v00(), t.v00());
-	geom.Push(v.v10(), t.v10());
-	geom.Push(v.v01(), t.v01());
+	geom.Push(v.v00(), t.v01());
+	geom.Push(v.v10(), t.v11());
+	geom.Push(v.v01(), t.v00());
 
-	geom.Push(v.v01(), t.v01());
-	geom.Push(v.v10(), t.v10());
-	geom.Push(v.v11(), t.v11());
+	geom.Push(v.v01(), t.v00());
+	geom.Push(v.v10(), t.v11());
+	geom.Push(v.v11(), t.v10());
 	return geom;
 }
 // void Model2d::AddRectangle(const quad2 &in, const quad2 &out) {

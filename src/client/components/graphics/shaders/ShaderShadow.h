@@ -17,7 +17,7 @@ public:
 	void Render() override;
 	void SetMatrix(const glm::mat4 &modelMatrix);
 	glm::mat4 matrix;
-	Texture texture;
+	Texture shadowMap;
 
 private:
 	GLuint viewProjectionMatrixUniform;

@@ -2,18 +2,14 @@
 
 #include <shared/Console.h>
 #include <shared/System.h>                   //TODO: remove
-#include <client/components/Graphics.h>      //TODO: remove
 #include <client/components/Resources.h>     //TODO: remove
-#include <client/components/Map.h>           //TODO: remove
+#include <client/components/Map.h>
 #include <client/components/Camera.h>        //TODO: remove
 #include <client/components/TextGenerator.h> //TODO: remove
-#include <client/components/ImageLoader.h>   //TODO: remove
+#include <client/components/UI.h>
 #include <client/components/Input.h>
-#include <client/components/graphics/models/Model3d.h>       //TODO: remove
-#include <client/components/graphics/models/PlayerModel.h>   //TODO: remove
-#include <client/components/graphics/models/Model2d.h>       //TODO: remove
+#include <client/components/ui/Image.h>       //TODO: remove
 #include <client/components/graphics/shaders/ShaderShadow.h> //TODO: remove
-#include <client/components/graphics/geometry/Primitives.h>  //TODO: remove
 #include <shared/World.h>                                    //TODO: remove
 
 class Client *pClient;
@@ -49,8 +45,8 @@ Client::~Client() {
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	pClient = NULL;
 }
-Model2d *depthMap;
-Model2d *fps;
+Image *depthMap;
+Image *fps; // TODO: Label
 Player *localPlayer;
 void Client::Start() {
 	working = true;
@@ -74,18 +70,16 @@ void Client::Start() {
 	localPlayer = g_World()->players[0];
 	// localPlayer->color = glm::vec4(0, 0, 0, 0.3f);
 
-	depthMap = new Model2d();
-	depthMap->position =
-	    g_Graphics()->screen.v00();
-	depthMap->texture = g_ShaderShadow()->texture;
-	depthMap->Add(Quad(quad2(0, 0, 0.5f, 0.5f), quad2(0, 0, 1, 1)));
-	depthMap->Enable();
-	fps = new Model2d();
+	depthMap = new Image();
+	depthMap->texture = g_ShaderShadow()->shadowMap;
+	depthMap->size = glm::vec2(0.5f, 0.5f);
+	g_UI()->screenLayout->Add(depthMap);
+	fps = new Image();
+	fps->align = glm::uvec2(ALIGN_RIGHT, ALIGN_TOP);
 	fps->texture =
 	    g_TextGenerator()->Generate("FPS: 60");
-	fps->position = g_Graphics()->screen.v11();
-	fps->Add(Quad(quad2(-0.125f * fps->texture.aspect, -0.125f, 0.125f * fps->texture.aspect, 0.125f), quad2(0, 1, 1, -1)));
-	fps->Enable();
+	fps->size = glm::vec2(0.125f * fps->texture.aspect, 0.125f);
+	g_UI()->screenLayout->Add(fps);
 }
 void Client::Stop() {
 	delete depthMap;
@@ -99,7 +93,7 @@ void Client::Tick() {
 	oldstate = ClientComponent::state;
 
 	fps->texture =
-	    g_TextGenerator()->Generate("FPS: " + std::to_string(g_System()->fps));
+	    g_TextGenerator()->Generate("FPS: " + std::to_string((int)(1.0f / g_System()->tickCoeff)));
 	if (g_Input()->mouseWheel > 0) {
 		localPlayer->weapon++;
 		localPlayer->weapon %= NUM_WEAPONS;

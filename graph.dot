@@ -31,6 +31,7 @@
 	 	TextGenerator [shape=component];
 	 	ImageLoader [shape=component];
 	 	Loading [shape=component];
+	 	UI [shape=component];
 
 		ClientComponent->Camera[color=red arrowhead=none arrowtail=empty dir=back];
 		ClientComponent->Client[color=red arrowhead=none arrowtail=empty dir=back];
@@ -41,16 +42,19 @@
 		ClientComponent->TextGenerator[color=red arrowhead=none arrowtail=empty dir=back];
 		ClientComponent->ImageLoader[color=red arrowhead=none arrowtail=empty dir=back];
 		ClientComponent->Loading[color=red arrowhead=none arrowtail=empty dir=back];
+		ClientComponent->UI[color=red arrowhead=none arrowtail=empty dir=back];
 
 		Input->Client;
 		Input->Camera;
-
 		ImageLoader->Map;
 		ImageLoader->Resources->Map;
 		Loading->Map;
 		Loading->Resources;
 		Graphics->Loading;
 		Resources->Loading;
+		Graphics->UI;
+		UI->Client;
+		Map->Client;
 
 	 	subgraph cluster_2 {
 	 		label="graphics";
@@ -119,6 +123,7 @@
 		Graphics->ShaderShadow;
 		Camera->ShaderParticle;
 		Graphics->ShaderParticle;
+		Loading->PlayerModel;
 
 		PlayerModel->Resources;
 		Texture->Resources;
@@ -131,7 +136,25 @@
 		Texture->TextGenerator;
 		Texture->ImageLoader;
 		Model2d->Loading;
-		Primitives->Loading;*/
+		Primitives->Loading;
+		*/
+		subgraph cluster_3 {
+			label="ui";
+			View[color=red];
+			Layout;
+			Image;
+			View->Layout[color=red arrowhead=none arrowtail=empty dir=back];
+			View->Image[color=red arrowhead=none arrowtail=empty dir=back];
+		}
+		/*
+		Texture->Image;
+		Model2d->Image;
+		Primitives->Image;
+
+		UI->View;
+
+		Layout->UI;
+		*/
  	}
  	/*
 	SharedComponent->ClientComponent[color=red arrowhead=none arrowtail=empty dir=back];

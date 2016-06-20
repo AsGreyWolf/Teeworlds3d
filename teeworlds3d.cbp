@@ -484,6 +484,10 @@
 		<Unit filename="src/client/components/graphics/shaders/ShaderParticle.h" />
 		<Unit filename="src/client/components/graphics/shaders/ShaderShadow.cpp" />
 		<Unit filename="src/client/components/graphics/shaders/ShaderShadow.h" />
+		<Unit filename="src/client/components/ui/Image.cpp" />
+		<Unit filename="src/client/components/ui/Image.h" />
+		<Unit filename="src/client/components/ui/Layout.cpp" />
+		<Unit filename="src/client/components/ui/Layout.h" />
 		<Unit filename="src/client/components/ui/View.cpp" />
 		<Unit filename="src/client/components/ui/View.h" />
 		<Unit filename="src/shared/Console.cpp" />

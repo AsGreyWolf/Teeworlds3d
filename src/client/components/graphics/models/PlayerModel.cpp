@@ -1,6 +1,7 @@
 #include "PlayerModel.h"
 #include <client/components/graphics/geometry/Sphere.h>
 #include <client/components/Resources.h>
+#include <client/components/Loading.h>
 #include <shared/System.h>
 
 const float PlayerModel::renderSize = 36.0f;
@@ -18,28 +19,30 @@ const glm::vec3 PlayerModel::rFootPos = glm::vec3(
     renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
 
 PlayerModel::PlayerModel() : Model3d() {
-	Sphere arm = Sphere()
-	                 .SetRadius(renderSize / 8)
-	                 .SetTexCoord(g_Resources()->texturePos8x4[6])
-	                 .SetRings(detalization)
-	                 .SetSectors(detalization);
-	lArm.Add(arm);
-	rArm.Add(arm.SetReversed(true));
-	Sphere foot = Sphere()
-	                  .SetRadius(renderSize / 2.4f)
-	                  .SetTexCoord(g_Resources()->texturePos8x4[14] >>
-	                               g_Resources()->texturePos8x4[15])
-	                  .SetRings(detalization)
-	                  .SetSectors(detalization)
-	                  .SetScale(glm::vec3(0.7f, 1, 0.5f));
-	lFoot.Add(foot);
-	rFoot.Add(foot.SetReversed(true));
-	body.Add(Sphere()
-	             .SetRadius(renderSize / 2)
-	             .SetTexCoord(g_Resources()->texturePos8x4[0] >>
-	                          g_Resources()->texturePos8x4[21])
-	             .SetRings(detalization)
-	             .SetSectors(detalization));
+	g_Loading()->Push([&](){
+		Sphere arm = Sphere()
+		                 .SetRadius(renderSize / 8)
+		                 .SetTexCoord(g_Resources()->texturePos8x4[6])
+		                 .SetRings(detalization)
+		                 .SetSectors(detalization);
+		lArm.Add(arm);
+		rArm.Add(arm.SetReversed(true));
+		Sphere foot = Sphere()
+		                  .SetRadius(renderSize / 2.4f)
+		                  .SetTexCoord(g_Resources()->texturePos8x4[14] >>
+		                               g_Resources()->texturePos8x4[15])
+		                  .SetRings(detalization)
+		                  .SetSectors(detalization)
+		                  .SetScale(glm::vec3(0.7f, 1, 0.5f));
+		lFoot.Add(foot);
+		rFoot.Add(foot.SetReversed(true));
+		body.Add(Sphere()
+		             .SetRadius(renderSize / 2)
+		             .SetTexCoord(g_Resources()->texturePos8x4[0] >>
+		                          g_Resources()->texturePos8x4[21])
+		             .SetRings(detalization)
+		             .SetSectors(detalization));
+	});
 	lFoot.rot = rot3(0, 0, 5.0f / 180 * M_PI);
 	rFoot.rot = rot3(0, 0, -5.0f / 180 * M_PI);
 	lArm.rot = rot3(0, 0, -M_PI_2);
