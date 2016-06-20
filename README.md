@@ -3,6 +3,8 @@ Teeworlds3d
 
 Teeworlds-like 3d game
 
+## Building
+
 You should:
 
 - **Optionally:** export .blend models (from datasrc folder) into obj using triangle polygons with normals and UV coords and without materials in the data/models folder
@@ -15,4 +17,13 @@ You should:
 
 - **On windows:** copy the DLLs from other folders in current folder
 
-More on [WIKI](https://github.com/AsGreyWolf/Teeworlds3d/wiki/Building)
+More info on [WIKI](https://github.com/AsGreyWolf/Teeworlds3d/wiki/Building)
+
+## Structure
+
+![Class structure](graph.dot.png)
+
+## Performance
+
+Performance gprof graph (-O0):
+![Performance gprof graph](out.dot.png)
