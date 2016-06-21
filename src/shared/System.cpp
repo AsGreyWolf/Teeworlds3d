@@ -5,6 +5,7 @@
 #include <codecvt>
 #include <Windows.h>
 #include <direct.h>
+#include <cstdlib>
 #define GetCurrentDir(a, b) GetCurrentDirectory(b, a)
 #else
 #include <unistd.h>
@@ -80,7 +81,7 @@ void System::GetFilesInDirectory(std::vector<std::string> &out,
 	char str[FILENAME_MAX];
 	str[0] = 0;
 	strcpy(str, (directory + "/*").c_str());
-	LPWSTR wstr = (LPWSTR) new WCHAR(FILENAME_MAX);
+	LPWSTR wstr = (LPWSTR)malloc(FILENAME_MAX*sizeof(WCHAR));
 	MultiByteToWideChar(CP_ACP, 0, str, strlen(str) + 1, wstr, FILENAME_MAX);
 	if ((dir = FindFirstFileW(wstr, &file_data)) == INVALID_HANDLE_VALUE)
 		return;
@@ -95,7 +96,7 @@ void System::GetFilesInDirectory(std::vector<std::string> &out,
 			continue;
 		out.push_back(file_name);
 	} while (FindNextFileW(dir, &file_data));
-	delete[](WCHAR *)wstr;
+	free(wstr);
 	FindClose(dir);
 #else
 	DIR *dp;

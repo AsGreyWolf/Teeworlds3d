@@ -78,7 +78,8 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 		geometrysource = libraries + geometrysource;
 
 	vertexshader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexshader, 1, (const GLchar **)&vertexsource, 0);
+	const GLchar* ptr = vertexsource.c_str();
+	glShaderSource(vertexshader, 1, (const GLchar **)&ptr, 0);
 	glCompileShader(vertexshader);
 	glGetShaderiv(vertexshader, GL_COMPILE_STATUS, &IsCompiled_VS);
 	if (IsCompiled_VS == GL_FALSE) {
@@ -87,7 +88,8 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 	}
 
 	fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentshader, 1, (const GLchar **)&fragmentsource, 0);
+	ptr = fragmentsource.c_str();
+	glShaderSource(fragmentshader, 1, (const GLchar **)&ptr, 0);
 	glCompileShader(fragmentshader);
 	glGetShaderiv(fragmentshader, GL_COMPILE_STATUS, &IsCompiled_FS);
 	if (IsCompiled_FS == GL_FALSE) {
@@ -97,7 +99,8 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 
 	if (geometrysource.length() > 0) {
 		geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
-		glShaderSource(geometryshader, 1, (const GLchar **)&geometrysource, 0);
+		ptr = geometrysource.c_str();
+		glShaderSource(geometryshader, 1, (const GLchar **)&ptr, 0);
 		glCompileShader(geometryshader);
 		glGetShaderiv(geometryshader, GL_COMPILE_STATUS, &IsCompiled_GS);
 		if (IsCompiled_GS == GL_FALSE) {

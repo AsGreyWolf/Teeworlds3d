@@ -11,12 +11,13 @@ if "%1"=="debug" SET DEBUG="true"
 @call SET LIB=%ProgramFiles(x86)%\Microsoft SDKs\Windows\7.1A\Lib;%LIB%
 
 @call SET INCLUDEPATH=-I"%BAT_PATH%src" -I"%BAT_PATH%other/glew/include" -I"%BAT_PATH%other/glm" -I"%BAT_PATH%other/sdl/include"
-@call SET SRCFILES="%BAT_PATH%src/shared/*.cpp" "%BAT_PATH%src/shared/world/*.cpp" "%BAT_PATH%src/client/*.cpp" "%BAT_PATH%src/client/components/*.cpp" "%BAT_PATH%src/client/components/graphics/*.cpp" "%BAT_PATH%src/client/components/graphics/models/*.cpp" "%BAT_PATH%src/client/components/graphics/shaders/*.cpp" "%BAT_PATH%src/client/components/ui/*.cpp"
+@call SET SRCFILES="%BAT_PATH%src/shared/*.cpp" "%BAT_PATH%src/shared/world/*.cpp" "%BAT_PATH%src/client/*.cpp" "%BAT_PATH%src/client/components/*.cpp" "%BAT_PATH%src/client/components/graphics/*.cpp" "%BAT_PATH%src/client/components/graphics/models/*.cpp" "%BAT_PATH%src/client/components/graphics/shaders/*.cpp"  "%BAT_PATH%src/client/components/graphics/geometry/*.cpp" "%BAT_PATH%src/client/components/ui/*.cpp"
 @call SET LIBFILES= "glew32s.lib" "SDL2_image.lib" "SDL2_ttf.lib" "SDL2main.lib" "SDL2.lib" "GLu32.lib" "OpenGL32.lib" "kernel32.lib" "user32.lib" "gdi32.lib"
 if not "%ISVS15%"=="" (
 @call SET LIBFILES=%LIBFILES% "legacy_stdio_definitions.lib"
 )
 @call SET SDL_LIB=%BAT_PATH%other\sdl\lib32
+@call SET GLEW_LIB=%BAT_PATH%other\glew\lib\Win32
 @call SET OUTFILE=%BAT_PATH%teeworlds3d.exe
 
 
@@ -39,9 +40,9 @@ if "%DEBUG%"=="" (
 if errorlevel 1 GOTO err
 @call echo --------------------------LINKING--------------------------
 if "%DEBUG%"=="" (
-@call link /analyze- /NODEFAULTLIB:libcmt.lib /OPT:REF /verbose:lib /OUT:"%OUTFILE%" /SUBSYSTEM:CONSOLE,5.01 /MACHINE:X86 /NOLOGO /LIBPATH:"%SDL_LIB%" "*.obj" %LIBFILES%
+@call link /analyze- /NODEFAULTLIB:libcmt.lib /OPT:REF /verbose:lib /OUT:"%OUTFILE%" /SUBSYSTEM:CONSOLE,5.01 /MACHINE:X86 /NOLOGO /LIBPATH:"%SDL_LIB%" /LIBPATH:"%GLEW_LIB%" "*.obj" %LIBFILES%
 ) else (
-@call link /analyze- /NODEFAULTLIB:libcmt.lib /DEBUG /verbose:lib /OUT:"%OUTFILE%" /SUBSYSTEM:CONSOLE,5.01 /MACHINE:X86 /NOLOGO /LIBPATH:"%SDL_LIB%" "*.obj" %LIBFILES%
+@call link /analyze- /NODEFAULTLIB:libcmt.lib /DEBUG /verbose:lib /OUT:"%OUTFILE%" /SUBSYSTEM:CONSOLE,5.01 /MACHINE:X86 /NOLOGO /LIBPATH:"%SDL_LIB%" /LIBPATH:"%GLEW_LIB%" "*.obj" %LIBFILES%
 )
 if errorlevel 1 GOTO err
 @call cd "%BAT_PATH%"

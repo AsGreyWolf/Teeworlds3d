@@ -12,6 +12,12 @@
 #include <tools/quad2.h>
 #include <tools/quad3.h>
 #include <tools/rot3.h>
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
+#ifndef M_PI_2
+	#define M_PI_2 1.57079632679
+#endif
 
 namespace glm {
 template <typename genType> GLM_FUNC_DECL inline bool zero(genType const &x) {
