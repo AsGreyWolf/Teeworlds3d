@@ -21,6 +21,7 @@ public:
 	Model2d &operator=(const Model2d &second);
 
 	void Add(const Geometry2d &geom);
+	void Clear();
 
 	Texture texture;
 	glm::vec2 position;
@@ -28,23 +29,22 @@ public:
 	float depth;
 
 protected:
-	class Data {
+	class Data : public Geometry2d {
 	public:
 		Data();
 		~Data();
 		void Validate();
 		void Render(int type);
-		void Add(const Geometry2d &geom);
+
+		bool valid = false;
 
 	private:
 		GLuint vao;
 		GLuint vbuffer;
 		GLuint tbuffer;
-		Geometry2d geometry;
-		bool valid = false;
 	};
 	typedef std::shared_ptr<Data> Model2dDataPtr;
-#define Model2dDataPtr() std::make_shared<Data>()
+	#define Model2dDataPtr() std::make_shared<Data>()
 
 	Model2dDataPtr data;
 	int type;

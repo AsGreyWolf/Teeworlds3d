@@ -14,9 +14,11 @@ public:
 	void Hide() override;
 	virtual void Validate() override;
 	void Add(View *view);
-	void Remove(View *view);
 
-private:
+	float margin[NUM_BORDERS] = {0, 0, 0, 0};
+
+protected:
+	quad2 workspace;
 	std::vector <View*> children;
 };
 

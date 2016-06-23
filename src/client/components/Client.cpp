@@ -70,15 +70,13 @@ void Client::Start() {
 	localPlayer = g_World()->players[0];
 	// localPlayer->color = glm::vec4(0, 0, 0, 0.3f);
 
-	depthMap = new Image();
-	depthMap->texture = g_ShaderShadow()->shadowMap;
+	depthMap =  new Image(g_ShaderShadow()->shadowMap);
 	depthMap->size = glm::vec2(0.5f, 0.5f);
 	g_UI()->screenLayout->Add(depthMap);
-	fps = new Image();
+	Texture fpsText=g_TextGenerator()->Generate("FPS: 60");
+	fps = new Image(fpsText); // TODO: Label
 	fps->align = glm::uvec2(ALIGN_RIGHT, ALIGN_TOP);
-	fps->texture =
-	    g_TextGenerator()->Generate("FPS: 60");
-	fps->size = glm::vec2(0.125f * fps->texture.aspect, 0.125f);
+	fps->size = glm::vec2(0.125f * fpsText.aspect, 0.125f);
 	g_UI()->screenLayout->Add(fps);
 }
 void Client::Stop() {
@@ -92,8 +90,7 @@ void Client::Tick() {
 		ClientComponent::StateChangeComponents(oldstate);
 	oldstate = ClientComponent::state;
 
-	fps->texture =
-	    g_TextGenerator()->Generate("FPS: " + std::to_string((int)(1.0f / g_System()->tickCoeff)));
+	fps->SetTexture(g_TextGenerator()->Generate("FPS: " + std::to_string((int)(1.0f / g_System()->tickCoeff))));
 	if (g_Input()->mouseWheel > 0) {
 		localPlayer->weapon++;
 		localPlayer->weapon %= NUM_WEAPONS;

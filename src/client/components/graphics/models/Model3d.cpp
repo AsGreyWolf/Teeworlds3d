@@ -91,7 +91,8 @@ void Model3d::Disable() {
 	if (shadow)
 		shadow->Disable();
 }
-void Model3d::Add(const Geometry3d &geom) { data->Add(geom); }
+void Model3d::Add(const Geometry3d &geom) { *data += geom; data->valid = false; }
+void Model3d::Clear() { data->Clear(); }
 void Model3d::UpdateMatrix(const glm::mat4 &parentMatrix) {
 	// position and rotation are buffered with matrix, don't calculate again if it
 	// not set
@@ -135,13 +136,12 @@ Model3d::Data::~Data() {
 	glDeleteBuffers(1, &nbuffer);
 	glDeleteBuffers(1, &tbuffer);
 	glDeleteVertexArrays(1, &vao);
-	geometry.Clear();
 }
 void Model3d::Data::Render(int type) {
 	Validate();
 	g_Graphics(); // TODO: fix
 	glBindVertexArray(vao);
-	glDrawArrays(type, 0, geometry.v.size());
+	glDrawArrays(type, 0, v.size());
 }
 void Model3d::Data::Validate() {
 	if (!valid) {
@@ -149,28 +149,24 @@ void Model3d::Data::Validate() {
 		glBindVertexArray(vao);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * geometry.v.size() * 3,
-		             geometry.v.size() > 0 ? &geometry.v[0] : NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * v.size() * 3,
+		             v.size() > 0 ? &v[0] : NULL, GL_STATIC_DRAW);
 		glVertexAttribPointer(SHADER_POS, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(SHADER_POS);
 
 		glBindBuffer(GL_ARRAY_BUFFER, tbuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * geometry.t.size() * 2,
-		             geometry.t.size() > 0 ? &geometry.t[0] : NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * t.size() * 2,
+		             t.size() > 0 ? &t[0] : NULL, GL_STATIC_DRAW);
 		glVertexAttribPointer(SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(SHADER_TEXMAP);
 
 		glBindBuffer(GL_ARRAY_BUFFER, nbuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * geometry.n.size() * 3,
-		             geometry.n.size() > 0 ? &geometry.n[0] : NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * n.size() * 3,
+		             n.size() > 0 ? &n[0] : NULL, GL_STATIC_DRAW);
 		glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(SHADER_NORMAL);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	valid = true;
-}
-void Model3d::Data::Add(const Geometry3d &geom) {
-	geometry += geom;
-	valid = false;
 }

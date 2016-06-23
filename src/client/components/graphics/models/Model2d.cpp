@@ -40,7 +40,8 @@ void Model2d::Render() {
 	g_Shader2d()->SetPosition(position, depth);
 	data->Render(type);
 }
-void Model2d::Add(const Geometry2d &geom) { data->Add(geom); }
+void Model2d::Add(const Geometry2d &geom) { *data += geom; data->valid = false; }
+void Model2d::Clear() { data->Clear(); }
 
 Model2d::Data::Data() {
 	g_Graphics(); // TODO: fix
@@ -59,7 +60,7 @@ void Model2d::Data::Render(int type) {
 	Validate();
 	g_Graphics(); // TODO: fix
 	glBindVertexArray(vao);
-	glDrawArrays(type, 0, geometry.v.size());
+	glDrawArrays(type, 0, v.size());
 }
 void Model2d::Data::Validate() {
 	if (!valid) {
@@ -67,22 +68,18 @@ void Model2d::Data::Validate() {
 		glBindVertexArray(vao);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * geometry.v.size() * 2,
-		             geometry.v.size() > 0 ? &geometry.v[0] : NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * v.size() * 2,
+		             v.size() > 0 ? &v[0] : NULL, GL_STATIC_DRAW);
 		glVertexAttribPointer(SHADER_POS, 2, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(SHADER_POS);
 
 		glBindBuffer(GL_ARRAY_BUFFER, tbuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * geometry.t.size() * 2,
-		             geometry.t.size() > 0 ? &geometry.t[0] : NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * t.size() * 2,
+		             t.size() > 0 ? &t[0] : NULL, GL_STATIC_DRAW);
 		glVertexAttribPointer(SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(SHADER_TEXMAP);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	valid = true;
-}
-void Model2d::Data::Add(const Geometry2d &geom) {
-	geometry += geom;
-	valid = false;
 }

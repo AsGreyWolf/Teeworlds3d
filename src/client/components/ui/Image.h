@@ -7,13 +7,13 @@
 
 class Image : public View {
 public:
-	Image();
+	Image(const Texture &texture);
 	Image(const Image &second);
 	virtual ~Image();
 
 	virtual void Validate() override;
 
-	Texture texture;
+	void SetTexture(const Texture &texture);
 
 private:
 	Model2d model;

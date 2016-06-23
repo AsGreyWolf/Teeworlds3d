@@ -18,6 +18,10 @@ void Layout::Hide() {
 }
 void Layout::Validate() {
 	View::Validate();
+	workspace = quad2(element.x + margin[BORDER_LEFT],
+	                  element.y + margin[BORDER_BOTTOM],
+	                  element.w - margin[BORDER_RIGHT] - margin[BORDER_LEFT],
+	                  element.h - margin[BORDER_TOP] - margin[BORDER_BOTTOM]);
 	int count = children.size();
 	float layerSize = (maxLayer - minLayer) / count;
 	for(int i=0; i < count; i++) {
@@ -29,7 +33,4 @@ void Layout::Validate() {
 }
 void Layout::Add(View *view) {
 	children.push_back(view);
-}
-void Layout::Remove(View *view) {
-	remove(children.begin(), children.end(), view);
 }

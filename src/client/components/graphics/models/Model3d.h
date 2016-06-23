@@ -23,6 +23,7 @@ public:
 	Model3d &operator=(const Model3d &second);
 
 	void Add(const Geometry3d &geom);
+	void Clear();
 	void ScaleAt(const glm::vec3 &to, const glm::vec3 &basic,
 	             const glm::vec3 &additional);
 
@@ -35,21 +36,20 @@ public:
 
 protected:
 	class ShadowModel;
-	class Data {
+	class Data : public Geometry3d {
 	public:
 		Data();
 		~Data();
 		void Validate();
 		void Render(int type);
-		void Add(const Geometry3d &geom);
+
+		bool valid = false;
 
 	private:
 		GLuint vao;
 		GLuint vbuffer;
 		GLuint nbuffer;
 		GLuint tbuffer;
-		Geometry3d geometry;
-		bool valid = false;
 	};
 	typedef std::shared_ptr<Data> Model3dDataPtr;
 	#define Model3dDataPtr() std::make_shared<Data>()

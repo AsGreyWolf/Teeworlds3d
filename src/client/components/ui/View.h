@@ -32,7 +32,6 @@ public:
 	virtual void Hide();
 	virtual void Validate();
 
-	float margin[NUM_BORDERS] = {0, 0, 0, 0};
 	float padding[NUM_BORDERS] = {0, 0, 0, 0};
 	glm::uvec2 align;
 	glm::vec2 size = glm::vec2(SIZE_FILL, SIZE_FILL);
@@ -42,7 +41,6 @@ public:
 
 protected:
 	quad2 element;
-	quad2 workspace;
 
 private:
 	bool visible = true;

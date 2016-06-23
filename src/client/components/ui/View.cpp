@@ -4,9 +4,8 @@
 View::View() {
 	g_UI()->RegisterView(this);
 }
-View::View(const View &second) {
+View::View(const View &second) : View() {
 	*this = second;
-	g_UI()->RegisterView(this);
 }
 View::~View() {
 	g_UI()->UnregisterView(this);
@@ -49,9 +48,4 @@ void View::Validate() {
 			break;
 	}
 	element = quad2(x, y, w, h);
-
-	workspace = quad2(element.x + margin[BORDER_LEFT],
-	                  element.y + margin[BORDER_BOTTOM],
-	                  element.w - margin[BORDER_RIGHT] - margin[BORDER_LEFT],
-	                  element.h - margin[BORDER_TOP] - margin[BORDER_BOTTOM]);
 }
