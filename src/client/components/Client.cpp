@@ -9,6 +9,7 @@
 #include <client/components/UI.h>
 #include <client/components/Input.h>
 #include <client/components/ui/Image.h>       //TODO: remove
+#include <client/components/ui/Layout.h>      //TODO: remove
 #include <client/components/graphics/shaders/ShaderShadow.h> //TODO: remove
 #include <shared/World.h>                                    //TODO: remove
 

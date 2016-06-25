@@ -76,8 +76,6 @@ Graphics::Graphics() : ClientComponent() {
 
 	glLineWidth(3);
 	glPointSize(3);
-
-	SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 Graphics::~Graphics() {
 	Shader::ClearShaders();
@@ -87,8 +85,6 @@ Graphics::~Graphics() {
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	pGraphics = NULL;
 }
-glm::mat4 orthoMatrix =
-    glm::ortho(-320.0f, 320.0f, -320.0f, 320.0f, 0.0f, 1.0f);
 void Graphics::Tick() {
 	Shader::RenderShaders();
 	SDL_GL_SwapWindow(window);

@@ -31,6 +31,7 @@ public:
 	Texture textureBlank;
 	Texture textureRGB;
 	Texture textureGame;
+	Texture textureCursor;
 	std::vector<quad2> gameCursor;
 
 	// models

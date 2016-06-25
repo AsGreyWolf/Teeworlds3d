@@ -22,6 +22,8 @@ Resources::Resources() : ClientComponent() {
 	textureBlank = g_ImageLoader()->Load(std::string("blank.png"), TEXTURE_ANISOTROPY);
 	textureGame =
 	    g_ImageLoader()->Load(std::string("game.png"), TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
+	textureCursor =
+	    g_ImageLoader()->Load(std::string("gui_cursor.png"), TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
 	std::vector<std::string> skins;
 	g_System()->GetFilesInDirectory(skins, g_System()->GetDataFile("skins"));
 	for (unsigned int i = 0; i < skins.size(); i++) {
