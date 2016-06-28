@@ -1,4 +1,5 @@
 #include "UI.h"
+#include <client/components/Input.h>
 #include <client/components/Graphics.h>
 #include <client/components/Resources.h>
 #include <client/components/ui/Image.h>
@@ -24,16 +25,17 @@ void UI::Tick() {
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 		cursorPosition.x = g_Graphics()->to_screen(x) + g_Graphics()->screen.x;
-		cursorPosition.y = - g_Graphics()->to_screen(y) + g_Graphics()->screen.y + g_Graphics()->screen.h - cursor->size.y;
+		cursorPosition.y = - g_Graphics()->to_screen(y) + g_Graphics()->screen.y + g_Graphics()->screen.h;
 		cursor->Show();
 		cursor->padding[BORDER_LEFT] = cursorPosition.x - g_Graphics()->screen.x;
-		cursor->padding[BORDER_BOTTOM] = cursorPosition.y - g_Graphics()->screen.y;
+		cursor->padding[BORDER_BOTTOM] = cursorPosition.y - g_Graphics()->screen.y - cursor->size.y;
 	} else {
 		cursor->Hide();
 	}
 	for(View *v : registredViews)
-		if(v->isVisible())
-			v->Validate();
+		v->Validate();
+	if (CursorEnabled() && g_Input()->mouse[SDL_BUTTON_LEFT])
+		screenLayout->Click(cursorPosition);
 }
 void UI::RegisterView(View *view) { registredViews.insert(view); }
 void UI::UnregisterView(View *view) { registredViews.erase(view); }

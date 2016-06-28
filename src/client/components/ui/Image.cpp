@@ -9,11 +9,15 @@ Image::Image(const Image &second) : View() {
 }
 Image::~Image() { }
 void Image::Validate() {
+	if (!isVisible()) {
+		model.Disable();
+		return;
+	}
 	View::Validate();
+	model.depth = minLayer;
 	model.Clear();
 	model.Add(Quad(element));
-	if(isVisible())
-		model.Enable();
+	model.Enable();
 }
 void Image::SetTexture(const Texture &t) {
 	model.texture = t;

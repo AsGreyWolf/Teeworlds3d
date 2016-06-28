@@ -731,7 +731,7 @@
 	<intrin.h>
 	<limits>
 
-1466447144 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/quad2.h
+1466949514 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/quad2.h
 	<algorithm>
 	<cmath>
 	<glm.hpp>
@@ -820,7 +820,7 @@
 	<gtx/closest_point.hpp>
 	<tools/quad2.h>
 
-1466881705 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
+1466951049 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
 	"Client.h"
 	<shared/Console.h>
 	<shared/System.h>
@@ -850,7 +850,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1466884256 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Graphics.cpp
+1466885033 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Graphics.cpp
 	"Graphics.h"
 	<shared/Console.h>
 	<client/components/graphics/Shader.h>
@@ -883,7 +883,7 @@
 	<fstream>
 	<vector>
 
-1466447144 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.cpp
+1467091284 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.cpp
 	"Shader3d.h"
 	<client/components/Camera.h>
 	<client/components/Graphics.h>
@@ -995,7 +995,7 @@
 	<glew.h>
 	<tools/vmath.h>
 
-1466447143 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Texture.cpp
+1467090699 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Texture.cpp
 	"Texture.h"
 	<shared/System.h>
 	<client/components/Graphics.h>
@@ -1032,7 +1032,7 @@
 	"../../../tools/Protocol.h"
 	"../../../tools/quad2.h"
 
-1466875323 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Resources.h
+1466885051 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Resources.h
 	"../ClientComponent.h"
 	<vector>
 	<string>
@@ -1087,7 +1087,7 @@
 
 1458652440 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/tools/singleton.h
 
-1466884785 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Input.cpp
+1466885044 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Input.cpp
 	"Input.h"
 
 1466875452 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Input.h
@@ -1312,38 +1312,57 @@
 	<client/components/Resources.h>
 	<client/components/graphics/geometry/Primitives.h>
 
-1466884884 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/UI.cpp
+1467097485 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/UI.cpp
 	"UI.h"
+	<client/components/Input.h>
 	<client/components/Graphics.h>
 	<client/components/Resources.h>
 	<client/components/ui/Image.h>
 	<client/components/ui/Layout.h>
 
-1466876210 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/UI.h
+1466885069 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/UI.h
 	"../ClientComponent.h"
+	<tools/vmath.h>
 	<set>
+
+1467097563 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/View.h
 	<tools/vmath.h>
 
-1466546138 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/View.h
-	<tools/vmath.h>
-
-1466720131 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Layout.h
+1466949539 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Layout.h
 	"View.h"
 	<vector>
 
-1466545355 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Image.h
+1467096985 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Image.h
 	"View.h"
 	<client/components/graphics/Texture.h>
 	<client/components/graphics/models/Model2d.h>
 
-1466718582 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/View.cpp
+1467097665 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/View.cpp
 	"View.h"
 	<client/components/UI.h>
 
-1466718357 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Image.cpp
+1467097710 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Image.cpp
 	"Image.h"
 	<client/components/graphics/geometry/Primitives.h>
 
-1466720139 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Layout.cpp
+1466950100 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Layout.cpp
+	"Layout.h"
+
+1466715458 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Widget.cpp
+	"Widget.h"
+
+1466715589 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Widget.h
+	"View.h"
+
+1466950090 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/HorizontalLayout.cpp
+	"HorizontalLayout.h"
+
+1466949550 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/HorizontalLayout.h
+	"Layout.h"
+
+1466950105 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/VerticalLayout.cpp
+	"VerticalLayout.h"
+
+1466949530 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/VerticalLayout.h
 	"Layout.h"
 

@@ -55,5 +55,6 @@ public:
 		return quad2(pos + c, size);
 	}
 	quad2 operator-(const glm::vec2 &c) const { return operator+(-c); }
+	bool contains(const glm::vec2 &c) const { return c.x >= x && c.x < x + w && c.y >= y && c.y < y + h; }
 };
 #endif

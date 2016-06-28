@@ -17,6 +17,7 @@ void Layout::Hide() {
 	}
 }
 void Layout::Validate() {
+	if (!isVisible()) return;
 	View::Validate();
 	workspace = quad2(element.x + margin[BORDER_LEFT],
 	                  element.y + margin[BORDER_BOTTOM],
@@ -30,6 +31,11 @@ void Layout::Validate() {
 		v.maxLayer = v.minLayer + layerSize;
 		v.container = workspace;
 	}
+}
+void Layout::OnClick(const glm::vec2 &position) {
+	int count = children.size();
+	for(int i=0; i < count; i++)
+		children[i]->Click(position);
 }
 void Layout::Add(View *view) {
 	children.push_back(view);

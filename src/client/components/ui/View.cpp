@@ -17,6 +17,7 @@ void View::Hide() {
 	visible = false;
 }
 void View::Validate() {
+	if (!isVisible()) return;
 	element = quad2(container.x + padding[BORDER_LEFT],
 	                container.y + padding[BORDER_BOTTOM],
 	                container.w - padding[BORDER_RIGHT] - padding[BORDER_LEFT],
@@ -48,4 +49,9 @@ void View::Validate() {
 			break;
 	}
 	element = quad2(x, y, w, h);
+}
+void View::Click(const glm::vec2 &position) {
+	if(!isVisible() || !element.contains(position))
+		return;
+	OnClick(position);
 }

@@ -48,17 +48,12 @@ void Shader3d::Render() {
 	glUniformMatrix4fv(shadowProjectionMatrixUniform, 1, GL_FALSE,
 	                   (const float *)glm::value_ptr(g_ShaderShadow()->matrix));
 	glActiveTexture(GL_TEXTURE1);
-	glEnable(GL_TEXTURE_2D);
 	g_ShaderShadow()->shadowMap.Bind();
 	glActiveTexture(GL_TEXTURE0);
 
 	for (Model *model : registredModels)
 		if (model->isEnabled())
 			model->Render();
-
-	glActiveTexture(GL_TEXTURE1);
-	glDisable(GL_TEXTURE_2D);
-	glActiveTexture(GL_TEXTURE0);
 }
 void Shader3d::SetLight(const bool light) {
 	glUniform1f(lightUniform, light ? 1.0f : 0.0f);

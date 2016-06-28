@@ -54,6 +54,7 @@
 		Resources->Loading;
 		Graphics->UI;
 		Resources->UI;
+		Input->UI;
 		UI->Client;
 		Map->Client;
 

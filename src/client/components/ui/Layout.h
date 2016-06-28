@@ -13,6 +13,7 @@ public:
 	void Show() override;
 	void Hide() override;
 	virtual void Validate() override;
+	virtual void OnClick(const glm::vec2 &position) override;
 	void Add(View *view);
 
 	float margin[NUM_BORDERS] = {0, 0, 0, 0};
