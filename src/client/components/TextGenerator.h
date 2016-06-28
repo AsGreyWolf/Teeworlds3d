@@ -10,6 +10,7 @@ enum FONTS {
 	FONT_NORMAL = 1,
 	FONT_BIG = 2,
 	FONT_DIVIDER = 40,
+	WIDTH_INFINITIVE = -1
 };
 
 class TextGenerator : public ClientComponent {
@@ -20,7 +21,7 @@ private:
 public:
 	~TextGenerator() override;
 
-	Texture Generate(std::string data, int size = FONT_NORMAL);
+	Texture Generate(const std::string &data, int size = FONT_NORMAL, float width = WIDTH_INFINITIVE);
 	TTF_Font *Font(int size = FONT_NORMAL);
 
 	static const std::string fontPath;

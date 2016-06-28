@@ -820,7 +820,7 @@
 	<gtx/closest_point.hpp>
 	<tools/quad2.h>
 
-1467108890 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
+1467124086 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
 	"Client.h"
 	<shared/Console.h>
 	<shared/System.h>
@@ -989,7 +989,7 @@
 
 1460482548 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/gtx/closest_point.inl
 
-1466447143 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Texture.h
+1467124056 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Texture.h
 	<SDL_image.h>
 	<string>
 	<memory>
@@ -1265,7 +1265,7 @@
 	<shared/Console.h>
 	<shared/System.h>
 
-1467108980 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/TextGenerator.h
+1467124317 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/TextGenerator.h
 	"../ClientComponent.h"
 	<client/components/graphics/Texture.h>
 	<SDL_ttf.h>
@@ -1281,7 +1281,7 @@
 	"../ClientComponent.h"
 	<client/components/graphics/Texture.h>
 
-1466447143 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/TextGenerator.cpp
+1467126726 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/TextGenerator.cpp
 	"TextGenerator.h"
 	<shared/Console.h>
 	<shared/System.h>
@@ -1367,11 +1367,12 @@
 1466949530 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/VerticalLayout.h
 	"Layout.h"
 
-1467108910 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Label.h
+1467110044 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Label.h
 	"Image.h"
 	<client/components/TextGenerator.h>
 
-1467108499 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Label.cpp
+1467124011 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Label.cpp
 	"Label.h"
+	<client/components/Graphics.h>
 	<client/components/graphics/Texture.h>
 

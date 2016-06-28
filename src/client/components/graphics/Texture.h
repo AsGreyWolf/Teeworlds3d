@@ -27,7 +27,7 @@ public:
 	void Bind() const;
 
 	float aspect = 1;
-	glm::vec2 size = glm::vec2(0, 0);
+	glm::uvec2 size = glm::uvec2(0, 0);
 	int flags = 0;
 
 protected:

@@ -163,6 +163,7 @@
 
 		UI->View;
 		TextGenerator->Label;
+		Graphics->Label;
 
 		Layout->UI;
 		Image->UI;
