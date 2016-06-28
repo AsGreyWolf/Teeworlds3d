@@ -145,15 +145,24 @@
 			View[color=red];
 			Layout;
 			Image;
-			View->Layout[color=red arrowhead=none arrowtail=empty dir=back];
+			Label;
+			HorizontalLayout;
+			VerticalLayout;
+			Widget;
+			View->Layout->HorizontalLayout[color=red arrowhead=none arrowtail=empty dir=back];
+			Layout->VerticalLayout[color=red arrowhead=none arrowtail=empty dir=back];
 			View->Image[color=red arrowhead=none arrowtail=empty dir=back];
+			Image->Label[color=red arrowhead=none arrowtail=empty dir=back];
+			View->Widget[color=red arrowhead=none arrowtail=empty dir=back];
 		}
 		/*
 		Texture->Image;
 		Model2d->Image;
 		Primitives->Image;
+		Texture->Label;
 
 		UI->View;
+		TextGenerator->Label;
 
 		Layout->UI;
 		Image->UI;

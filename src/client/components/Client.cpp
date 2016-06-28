@@ -8,6 +8,7 @@
 #include <client/components/TextGenerator.h> //TODO: remove
 #include <client/components/UI.h>
 #include <client/components/Input.h>
+#include <client/components/ui/Label.h>       //TODO: remove
 #include <client/components/ui/Image.h>       //TODO: remove
 #include <client/components/ui/Layout.h>      //TODO: remove
 #include <client/components/graphics/shaders/ShaderShadow.h> //TODO: remove
@@ -47,7 +48,7 @@ Client::~Client() {
 	pClient = NULL;
 }
 Image *depthMap;
-Image *fps; // TODO: Label
+Label *fps;
 Player *localPlayer;
 void Client::Start() {
 	working = true;
@@ -74,10 +75,8 @@ void Client::Start() {
 	depthMap =  new Image(g_ShaderShadow()->shadowMap);
 	depthMap->size = glm::vec2(0.5f, 0.5f);
 	g_UI()->screenLayout->Add(depthMap);
-	Texture fpsText=g_TextGenerator()->Generate("FPS: 60");
-	fps = new Image(fpsText); // TODO: Label
+	fps = new Label("FPS: 60", FONT_BIG);
 	fps->align = glm::uvec2(ALIGN_RIGHT, ALIGN_TOP);
-	fps->size = glm::vec2(0.125f * fpsText.aspect, 0.125f);
 	g_UI()->screenLayout->Add(fps);
 }
 void Client::Stop() {
@@ -91,7 +90,7 @@ void Client::Tick() {
 		ClientComponent::StateChangeComponents(oldstate);
 	oldstate = ClientComponent::state;
 
-	fps->SetTexture(g_TextGenerator()->Generate("FPS: " + std::to_string((int)(1.0f / g_System()->tickCoeff))));
+	fps->SetText("FPS: " + std::to_string((int)(1.0f / g_System()->tickCoeff)), FONT_BIG);
 	if (g_Input()->mouseWheel > 0) {
 		localPlayer->weapon++;
 		localPlayer->weapon %= NUM_WEAPONS;

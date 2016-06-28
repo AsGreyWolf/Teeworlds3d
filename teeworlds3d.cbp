@@ -488,6 +488,8 @@
 		<Unit filename="src/client/components/ui/HorizontalLayout.h" />
 		<Unit filename="src/client/components/ui/Image.cpp" />
 		<Unit filename="src/client/components/ui/Image.h" />
+		<Unit filename="src/client/components/ui/Label.cpp" />
+		<Unit filename="src/client/components/ui/Label.h" />
 		<Unit filename="src/client/components/ui/Layout.cpp" />
 		<Unit filename="src/client/components/ui/Layout.h" />
 		<Unit filename="src/client/components/ui/VerticalLayout.cpp" />

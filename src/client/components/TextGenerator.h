@@ -6,6 +6,12 @@
 #include <SDL_ttf.h>
 #include <map>
 
+enum FONTS {
+	FONT_NORMAL = 1,
+	FONT_BIG = 2,
+	FONT_DIVIDER = 40,
+};
+
 class TextGenerator : public ClientComponent {
 private:
 	TextGenerator();
@@ -14,11 +20,6 @@ private:
 public:
 	~TextGenerator() override;
 
-	enum FONTS {
-		FONT_NORMAL = 1,
-		FONT_BIG = 2,
-		FONT_DIVIDER = 20,
-	};
 	Texture Generate(std::string data, int size = FONT_NORMAL);
 	TTF_Font *Font(int size = FONT_NORMAL);
 

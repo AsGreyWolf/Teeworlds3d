@@ -15,7 +15,7 @@ public:
 
 	void SetTexture(const Texture &texture);
 
-private:
+protected:
 	Model2d model;
 };
 
