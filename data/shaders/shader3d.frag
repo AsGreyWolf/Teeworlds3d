@@ -43,7 +43,7 @@ void main(void) {
 	vec4 map = texture2D(tex, ex_TexMap);
 	if (map.a < 0.2)
 		discard;
-	gl_FragColor = map;
+	gl_FragData[0] = map;
 	if (lighting > 0.5f) {
 		float lightIntensity = (dot(ex_Normal, L));
 		/* shadow calc*/
@@ -63,9 +63,10 @@ void main(void) {
 			lightIntensity -= 2.5 * shadowIntensity / 3;
 		}
 		lightIntensity = clamp(lightIntensity, 0.0, 1.0);
-		gl_FragColor *= vec4(vec3(lightIntensity * 0.25 + 0.5), 1.0);
-		gl_FragColor += vec4(vec3(lightIntensity * 0.25), 0.0);
+		gl_FragData[0] *= vec4(vec3(lightIntensity * 0.25 + 0.5), 1.0);
+		gl_FragData[0] += vec4(vec3(lightIntensity * 0.25), 0.0);
 	}
-	gl_FragColor = dye(gl_FragColor, colorer);
+	gl_FragData[0] = dye(gl_FragData[0], colorer);
+	gl_FragData[1] = gl_FragData[0];
 	gl_FragDepth = unwrapDepth(ex_logDepth, 10000);
 }

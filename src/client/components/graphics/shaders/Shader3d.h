@@ -3,6 +3,7 @@
 
 #include "../Shader.h"
 #include <tools/vmath.h>
+#include <client/components/graphics/Texture.h>
 
 class Shader3d : public Shader {
 private:
@@ -15,6 +16,10 @@ public:
 	void SetLight(const bool light);
 	void SetColor(const glm::vec4 &color);
 	void SetMatrix(const glm::mat4 &modelMatrix, const glm::mat4 &normalMatrix);
+
+	Texture color0;
+	Texture color1;
+	Texture depth;
 
 private:
 	GLuint colorUniform;

@@ -16,7 +16,7 @@ void Image::Validate() {
 	View::Validate();
 	model.depth = minLayer;
 	model.Clear();
-	model.Add(Quad(element));
+	model.Add(Quad(element,quad2(0,1,1,-1)));
 	model.Enable();
 }
 void Image::SetTexture(const Texture &t) {

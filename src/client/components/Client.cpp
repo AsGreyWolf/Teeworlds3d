@@ -12,6 +12,7 @@
 #include <client/components/ui/Image.h>       //TODO: remove
 #include <client/components/ui/Layout.h>      //TODO: remove
 #include <client/components/graphics/shaders/ShaderShadow.h> //TODO: remove
+#include <client/components/graphics/shaders/Shader3d.h>     //TODO: remove
 #include <shared/World.h>                                    //TODO: remove
 
 class Client *pClient;
@@ -48,6 +49,7 @@ Client::~Client() {
 	pClient = NULL;
 }
 Image *depthMap;
+Image *screen;
 Label *fps;
 Player *localPlayer;
 void Client::Start() {
@@ -78,6 +80,8 @@ void Client::Start() {
 	fps = new Label("FPS: 60", FONT_BIG);
 	fps->align = glm::uvec2(ALIGN_RIGHT, ALIGN_TOP);
 	g_UI()->screenLayout->Add(fps);
+	g_UI()->screenLayout->Add(screen=new Image(g_Shader3d()->color0));
+	screen->size=glm::vec2(g_Shader3d()->color0.aspect*2,2.0f);
 }
 void Client::Stop() {
 	delete depthMap;

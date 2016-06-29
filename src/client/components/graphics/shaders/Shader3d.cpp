@@ -10,6 +10,7 @@
 Shader3d *pShader3d;
 Shader3d *g_Shader3d() { return pShader3d ? pShader3d : new Shader3d(); }
 
+unsigned int bufferList[] = {GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT};
 Shader3d::Shader3d()
     : Shader::Shader(std::string("shaders/shader3d"), g_Graphics()->screenSize,
                      GL_BACK, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE,
@@ -33,8 +34,26 @@ Shader3d::Shader3d()
 	    glGetUniformLocation(id, "shadowProjectionMatrix");
 	textureUniform = glGetUniformLocation(id, "tex");
 	shadowUniform = glGetUniformLocation(id, "shadow");
+	depth=Texture(NULL, g_Graphics()->screenSize.x, g_Graphics()->screenSize.y,
+						  TEXTURE_ANISOTROPY | TEXTURE_FILTERING | TEXTURE_DEPTH);
+	color0=Texture(NULL, g_Graphics()->screenSize.x, g_Graphics()->screenSize.y,
+						  TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
+	color1=Texture(NULL, g_Graphics()->screenSize.x, g_Graphics()->screenSize.y,
+						  TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
+	glGenFramebuffersEXT(1, &framebuffer);
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffer);
+	glDrawBuffers(2, bufferList);
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
+							  GL_TEXTURE_2D, color0, 0);
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT1_EXT,
+							  GL_TEXTURE_2D, color1, 0);
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+							  GL_TEXTURE_2D, depth, 0);
 }
-Shader3d::~Shader3d() { pShader3d = 0; }
+Shader3d::~Shader3d() {
+	glDeleteFramebuffers(1, &framebuffer);
+	pShader3d = 0;
+}
 void Shader3d::Render() {
 	Shader::Render();
 	glUniform1i(textureUniform, 0);
