@@ -17,8 +17,10 @@ public:
 	void SetColor(const glm::vec4 &color);
 	void SetMatrix(const glm::mat4 &modelMatrix, const glm::mat4 &normalMatrix);
 
-	Texture color0;
-	Texture color1;
+	Texture empty;
+	Texture color;
+	Texture position;
+	Texture normal;
 	Texture depth;
 
 private:
@@ -27,9 +29,7 @@ private:
 	GLuint viewProjectionMatrixUniform;
 	GLuint modelMatrixUniform;
 	GLuint normalMatrixUniform;
-	GLuint shadowProjectionMatrixUniform;
 	GLuint textureUniform;
-	GLuint shadowUniform;
 
 	glm::mat4 perspectiveMatrix;
 };

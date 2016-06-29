@@ -480,6 +480,8 @@
 		<Unit filename="src/client/components/graphics/shaders/Shader2d.h" />
 		<Unit filename="src/client/components/graphics/shaders/Shader3d.cpp" />
 		<Unit filename="src/client/components/graphics/shaders/Shader3d.h" />
+		<Unit filename="src/client/components/graphics/shaders/Shader3dComposer.cpp" />
+		<Unit filename="src/client/components/graphics/shaders/Shader3dComposer.h" />
 		<Unit filename="src/client/components/graphics/shaders/ShaderParticle.cpp" />
 		<Unit filename="src/client/components/graphics/shaders/ShaderParticle.h" />
 		<Unit filename="src/client/components/graphics/shaders/ShaderShadow.cpp" />

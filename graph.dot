@@ -62,6 +62,7 @@
 	 		label="graphics";
 			Shader [shape=diamond color=red];
 			Shader3d [shape=diamond];
+			Shader3dComposer [shape=diamond];
 			ShaderShadow [shape=diamond];
 			Shader2d [shape=diamond];
 			ShaderParticle [shape=diamond];
@@ -81,6 +82,7 @@
 			Model->ShadowModel[color=red arrowhead=none arrowtail=empty dir=back];
 			Model->Model2d[color=red arrowhead=none arrowtail=empty dir=back];
 			Shader->Shader3d[color=red arrowhead=none arrowtail=empty dir=back];
+			Shader->Shader3dComposer[color=red arrowhead=none arrowtail=empty dir=back];
 			Shader->ShaderShadow[color=red arrowhead=none arrowtail=empty dir=back];
 			Shader->ShaderParticle[color=red arrowhead=none arrowtail=empty dir=back];
 			Shader->Shader2d[color=red arrowhead=none arrowtail=empty dir=back];
@@ -101,7 +103,7 @@
 			Sphere->PlayerModel;
 			Model->Shader3d;
 			Texture->Shader3d;
-			ShaderShadow->Shader3d;
+			Shader3dComposer->Shader3d;
 			Model->Shader2d;
 			Texture->ShaderShadow;
 			Model->ShaderShadow;
@@ -112,6 +114,10 @@
 			Shader3d->Particles;
 			ShaderParticle->Particles;
 			Primitives->Particles;
+			Shader3d->Shader3dComposer;
+			ShaderShadow->Shader3dComposer;
+			Geometry2d->Shader3dComposer;
+			Primitives->Shader3dComposer;
 	 	}
 	 	/*
 		Graphics->Model3d;
@@ -119,7 +125,7 @@
 		Resources->PlayerModel;
 		Camera->Shader3d;
 		Graphics->Shader3d;
-		Graphics->Shader2d;
+		Graphics->Shader2d;``
 		Shader->Graphics;
 		Camera->ShaderShadow;
 		Graphics->ShaderShadow;

@@ -58,6 +58,15 @@ void Texture::SetPixels(const GLvoid *pixels) {
 	if (flags & TEXTURE_DEPTH)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, size.x, size.y, 0,
 		             GL_DEPTH_COMPONENT, GL_FLOAT, pixels);
+	else if ((flags & TEXTURE_FLOAT) && (flags & TEXTURE_3CORD))
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, size.x, size.y, 0, GL_RGB,
+		             GL_FLOAT, pixels);
+	else if (flags & TEXTURE_FLOAT)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, size.x, size.y, 0, GL_RGBA,
+		             GL_FLOAT, pixels);
+	else if (flags & TEXTURE_3CORD)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB,
+		             GL_UNSIGNED_BYTE, pixels);
 	else
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA,
 		             GL_UNSIGNED_BYTE, pixels);
