@@ -5,14 +5,13 @@
 #include <client/components/Resources.h>     //TODO: remove
 #include <client/components/Map.h>
 #include <client/components/Camera.h>        //TODO: remove
-#include <client/components/TextGenerator.h> //TODO: remove
 #include <client/components/UI.h>
 #include <client/components/Input.h>
 #include <client/components/ui/Label.h>       //TODO: remove
 #include <client/components/ui/Image.h>       //TODO: remove
 #include <client/components/ui/Layout.h>      //TODO: remove
 #include <client/components/graphics/shaders/ShaderShadow.h> //TODO: remove
-#include <client/components/graphics/shaders/Shader3d.h>     //TODO: remove
+#include <client/components/graphics/shaders/Shader3dComposer.h>     //TODO: remove
 #include <shared/World.h>                                    //TODO: remove
 
 class Client *pClient;
@@ -48,6 +47,7 @@ Client::~Client() {
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	pClient = NULL;
 }
+Image *scene;
 Image *depthMap;
 Label *fps;
 Player *localPlayer;
@@ -72,13 +72,15 @@ void Client::Start() {
 	}
 	localPlayer = g_World()->players[0];
 	// localPlayer->color = glm::vec4(0, 0, 0, 0.3f);
-
+	g_Shader3dComposer();
 	depthMap =  new Image(g_ShaderShadow()->shadowMap);
 	depthMap->size = glm::vec2(0.5f, 0.5f);
 	g_UI()->screenLayout->Add(depthMap);
 	fps = new Label("FPS: 60", FONT_BIG);
 	fps->align = glm::uvec2(ALIGN_RIGHT, ALIGN_TOP);
 	g_UI()->screenLayout->Add(fps);
+	scene = new Image(*g_Shader3dComposer(), FLIP_Y);
+	g_UI()->screenLayout->Add(scene);
 }
 void Client::Stop() {
 	delete depthMap;

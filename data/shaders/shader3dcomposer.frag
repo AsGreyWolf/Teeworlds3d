@@ -38,8 +38,11 @@ float blurShadow(float z, vec2 pos, vec2 v) {
 	return value * sqrt_value;
 }
 
-float outline(float depth, vec3 norm, vec2 dx){
-	if(dot(norm,texture2D(normalMap, ex_TexMap+dx).rgb)<0.7 || abs(depth-pow(10001,texture2D(depthMap, ex_TexMap+dx).r-1.0))>0.1)
+float outline(vec4 color,vec3 norm,float depth, vec2 dx){
+	vec4 newc=texture2D(colorMap, ex_TexMap+dx);
+	if(abs(newc.r - color.r) + abs(newc.g - color.g) + abs(newc.b - color.b) + abs(newc.a - color.a) > 0.1)
+		return 1.0;
+	if(dot(norm,texture2D(normalMap, ex_TexMap+dx).rgb)<0.7 || abs(depth-texture2D(depthMap, ex_TexMap+dx).r)>0.1)
 		return 1.0;
 	return 0.0;
 }
@@ -48,27 +51,27 @@ void main(void) {
 	vec4 color = texture2D(colorMap, ex_TexMap);
 	vec3 normal = texture2D(normalMap, ex_TexMap).rgb;
 	vec4 position = vec4(texture2D(positionMap, ex_TexMap).rgb,1.0);
-	float depth = pow(10001,texture2D(depthMap, ex_TexMap).r-1.0);
-	float dd=1.0/1000.0;
-	if(outline(depth,normal,vec2(0,dd))+outline(depth,normal,vec2(0,-dd))+outline(depth,normal,vec2(dd,0))+outline(depth,normal,vec2(-dd,0))>0.5)
-		color.rgb=vec3(0,0,0);
+	float depth = texture2D(depthMap, ex_TexMap).r;
+	float dd = 1.0 / 1000.0;
+	float outl = outline(color,normal,depth,vec2(0, dd)) + outline(color,normal,depth,vec2(0, -dd)) + outline(color,normal,depth,vec2(dd, 0)) + outline(color,normal,depth,vec2(-dd, 0));
+	if (outl > 0.5)
+		color.rgb -= vec3(1.0, 1.0, 1.0) * 4.0 * 0.05 / outl / depth;
 	{
 		float lightIntensity = (dot(normal, L));
 		/* shadow calc*/
-		vec4 shadowmap = shadowProjectionMatrix * position;
-		shadowmap.x = shadowmap.x / (abs(shadowmap.x) + 0.3);
-		shadowmap.y = shadowmap.y / (abs(shadowmap.y) + 0.3);
-		shadowmap = biasMatrix * shadowmap;
-		shadowmap /= shadowmap.w;
-		if (shadowmap.x >= 0.0 && shadowmap.x <= 1.0 && shadowmap.y >= 0.0 &&
-				shadowmap.y <= 1.0) {
-					float shadowIntensity =
-							blurShadow(shadowmap.z, shadowmap.xy, vec2(0.001, 0));
-					shadowIntensity +=
-							blurShadow(shadowmap.z, shadowmap.xy, vec2(0.0007, 0.0007));
-					shadowIntensity +=
-							blurShadow(shadowmap.z, shadowmap.xy, vec2(0.0007, -0.0007));
-					lightIntensity -= 2.5 * shadowIntensity / 3;
+		if (depth != 1.0) {
+			vec4 shadowmap = shadowProjectionMatrix * position;
+			shadowmap.x = shadowmap.x / (abs(shadowmap.x) + 0.3);
+			shadowmap.y = shadowmap.y / (abs(shadowmap.y) + 0.3);
+			shadowmap = biasMatrix * shadowmap;
+			shadowmap /= shadowmap.w;
+			if (shadowmap.x >= 0.0 && shadowmap.x <= 1.0 && shadowmap.y >= 0.0 &&
+			    shadowmap.y <= 1.0) {
+				float shadowIntensity = blurShadow(shadowmap.z, shadowmap.xy, vec2(0.001, 0));
+				shadowIntensity += blurShadow(shadowmap.z, shadowmap.xy, vec2(0.0007, 0.0007));
+				shadowIntensity += blurShadow(shadowmap.z, shadowmap.xy, vec2(0.0007, -0.0007));
+				lightIntensity -= 2.5 * shadowIntensity / 3;
+			}
 		}
 		lightIntensity = clamp(lightIntensity, 0.0, 1.0);
 		color *= vec4(vec3(lightIntensity * 0.25 + 0.5), 1.0); // diffuse & ambient

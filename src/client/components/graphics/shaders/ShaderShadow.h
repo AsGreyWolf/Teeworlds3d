@@ -23,7 +23,6 @@ private:
 	GLuint viewProjectionMatrixUniform;
 	GLuint modelMatrixUniform;
 	GLuint textureUniform;
-	GLuint FBO;
 	glm::mat4 orthoMatrix;
 };
 ShaderShadow *g_ShaderShadow();

@@ -4,13 +4,12 @@
 #include <client/components/Graphics.h>
 #include <client/components/graphics/Model.h>
 #include <client/components/graphics/Texture.h>
-#include <client/components/graphics/shaders/Shader3dComposer.h>
 #include <string>
 
 Shader3d *pShader3d;
 Shader3d *g_Shader3d() { return pShader3d ? pShader3d : new Shader3d(); }
 
-unsigned int bufferList[] = {GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT, GL_COLOR_ATTACHMENT2_EXT, GL_COLOR_ATTACHMENT3_EXT};
+unsigned static int bufferList[] = {GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT, GL_COLOR_ATTACHMENT2_EXT, GL_COLOR_ATTACHMENT3_EXT};
 Shader3d::Shader3d()
     : Shader::Shader(std::string("shaders/shader3d"), g_Graphics()->screenSize,
                      GL_BACK, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE,
@@ -54,8 +53,6 @@ Shader3d::Shader3d()
 							  GL_TEXTURE_2D, normal, 0);
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
 							  GL_TEXTURE_2D, depth, 0);
-
-	g_Shader3dComposer();
 }
 Shader3d::~Shader3d() {
 	glDeleteFramebuffers(1, &framebuffer);

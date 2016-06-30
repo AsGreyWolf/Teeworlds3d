@@ -18,11 +18,11 @@ Model3d::Model3d(bool l, int t) : Model() {
 	rot = glm::vec3(0, 1, 0);
 	color = glm::vec4(1, 1, 1, 0);
 	scale = glm::vec3(1, 1, 1);
+	g_Shader3d()->RegisterModel(this);
 	if (light)
 		shadow = new ShadowModel(*this);
 	else
 		shadow = NULL;
-	g_Shader3d()->RegisterModel(this);
 }
 Model3d::Model3d(const Model3d &second) : Model(second) {
 	bufferedModelMatrix = glm::mat4(1.0f);
