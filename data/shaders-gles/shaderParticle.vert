@@ -23,7 +23,7 @@ void main(void) {
 	gl_Position.w = 1.0;
 	gl_Position = viewProjectionMatrix * modelMatrix * gl_Position;
 
-	ex_size = size * 10000.0 / 32.0 * (1.0 - gl_Position.z / gl_Position.w);
+	ex_size = size * 10000 / 32.0 * (1.0 - gl_Position.z / gl_Position.w);
 	gl_PointSize = ex_size;
 
 	ex_logDepth = wrapDepth(gl_Position);

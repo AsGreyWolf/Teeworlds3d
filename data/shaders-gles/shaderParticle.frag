@@ -13,5 +13,5 @@ void main(void) {
 	gl_FragDepth = unwrapDepth(
 	    ex_logDepth -
 	        sqrt(max(0.0, 1.0 - pos.x * pos.x - pos.y * pos.y)) * ex_size / 16.0,
-	    10000.0);
+	    10000);
 }

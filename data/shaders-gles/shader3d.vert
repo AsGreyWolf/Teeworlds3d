@@ -1,11 +1,11 @@
-attribute vec3 in_Position;
-attribute vec2 in_TexMap;
-attribute vec3 in_Normal;
+in vec3 in_Position;
+in vec2 in_TexMap;
+in vec3 in_Normal;
 
-varying vec4 ex_WorldPosition;
-varying vec2 ex_TexMap;
-varying vec3 ex_Normal;
-varying float ex_logDepth;
+out vec4 ex_WorldPosition;
+out vec2 ex_TexMap;
+out vec3 ex_Normal;
+//out float ex_logDepth;
 
 uniform mat4 viewProjectionMatrix;
 uniform mat4 modelMatrix;
@@ -17,6 +17,6 @@ void main(void) {
 	ex_TexMap = in_TexMap;
 	ex_Normal = normalize((normalMatrix * vec4(in_Normal, 1.0)).xyz);
 
-	ex_logDepth = wrapDepth(gl_Position);
-	gl_Position.z = wrapZ(ex_logDepth, 10000.0);
+	//ex_logDepth = wrapDepth(gl_Position);
+	//gl_Position.z = wrapZ(ex_logDepth, 10000.0);
 }

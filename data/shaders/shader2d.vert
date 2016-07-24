@@ -1,7 +1,7 @@
-in vec2 in_Position;
-in vec2 in_TexMap;
+attribute vec2 in_Position;
+attribute vec2 in_TexMap;
 
-out vec2 ex_TexMap;
+varying vec2 ex_TexMap;
 
 uniform vec3 pos;
 uniform float aspect;

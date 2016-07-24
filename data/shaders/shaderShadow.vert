@@ -1,7 +1,7 @@
-in vec3 in_Position;
-in vec2 in_TexMap;
+attribute vec3 in_Position;
+attribute vec2 in_TexMap;
 
-out vec2 ex_TexMap;
+varying vec2 ex_TexMap;
 
 uniform mat4 viewProjectionMatrix;
 uniform mat4 modelMatrix;
