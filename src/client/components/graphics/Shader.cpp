@@ -59,7 +59,7 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 	int IsLinked;
 	vertexsource = filetobuf(firstpath + ".vert");
 	fragmentsource = filetobuf(firstpath + ".frag");
-	geometrysource = filetobuf(firstpath + ".geom");
+	// geometrysource = filetobuf(firstpath + ".geom");
 	std::vector<std::string> libs;
 	g_System()->GetFilesInDirectory(libs, g_System()->GetDataFile("shaders"));
 	for (auto &s : libs) {
@@ -74,8 +74,8 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 	}
 	vertexsource = libraries + vertexsource;
 	fragmentsource = libraries + fragmentsource;
-	if (geometrysource.length() > 0)
-		geometrysource = libraries + geometrysource;
+	// if (geometrysource.length() > 0)
+	// 	geometrysource = libraries + geometrysource;
 
 	vertexshader = glCreateShader(GL_VERTEX_SHADER);
 	const GLchar* ptr = vertexsource.c_str();
@@ -97,23 +97,24 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 		return;
 	}
 
-	if (geometrysource.length() > 0) {
-		geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
-		ptr = geometrysource.c_str();
-		glShaderSource(geometryshader, 1, (const GLchar **)&ptr, 0);
-		glCompileShader(geometryshader);
-		glGetShaderiv(geometryshader, GL_COMPILE_STATUS, &IsCompiled_GS);
-		if (IsCompiled_GS == GL_FALSE) {
-			logShader(geometryshader);
-			return;
-		}
-	}
+	// TODO: REMOVE
+	// if (geometrysource.length() > 0) {
+	// 	geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
+	// 	ptr = geometrysource.c_str();
+	// 	glShaderSource(geometryshader, 1, (const GLchar **)&ptr, 0);
+	// 	glCompileShader(geometryshader);
+	// 	glGetShaderiv(geometryshader, GL_COMPILE_STATUS, &IsCompiled_GS);
+	// 	if (IsCompiled_GS == GL_FALSE) {
+	// 		logShader(geometryshader);
+	// 		return;
+	// 	}
+	// }
 
 	id = glCreateProgram();
 	glAttachShader(id, vertexshader);
 	glAttachShader(id, fragmentshader);
-	if (geometrysource.length() > 0)
-		glAttachShader(id, geometryshader);
+	// if (geometrysource.length() > 0)
+	// 	glAttachShader(id, geometryshader);
 	glLinkProgram(id);
 	glGetProgramiv(id, GL_LINK_STATUS, (int *)&IsLinked);
 	if (IsLinked == GL_FALSE) {
@@ -132,7 +133,7 @@ Shader::~Shader() {
 void Shader::RegisterModel(Model *model) { registredModels.insert(model); }
 void Shader::UnregisterModel(Model *model) { registredModels.erase(model); }
 void Shader::Render() {
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	glCullFace(culling);
 	glColorMask(colormask[0], colormask[1], colormask[2], colormask[3]);
 	glDepthMask(depthmask);

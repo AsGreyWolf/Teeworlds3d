@@ -5,7 +5,6 @@ Input *g_Input() { return pInput ? pInput : new Input(); }
 
 Input::Input() : ClientComponent() {
 	pInput = this;
-	keyboard.resize(SDLK_POWER + 1);
 	mouse.resize(SDL_BUTTON_RIGHT + 1);
 	quit = 0;
 	mouseX = 0;

@@ -17,7 +17,6 @@ public:
 	void SetColor(const glm::vec4 &color);
 	void SetMatrix(const glm::mat4 &modelMatrix, const glm::mat4 &normalMatrix);
 
-	Texture empty;
 	Texture color;
 	Texture position;
 	Texture normal;

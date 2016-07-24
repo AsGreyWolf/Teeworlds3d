@@ -1,9 +1,10 @@
-varying vec2 ex_TexMap;
+in vec2 ex_TexMap;
+out vec4 gl_FragColor;
 
 uniform sampler2D tex;
 
 void main(void) {
-	vec4 map = texture2D(tex, ex_TexMap);
+	vec4 map = texture(tex, ex_TexMap);
 	if (map.a < 0.2)
 		discard;
 	gl_FragColor = vec4(map.xyz, map.a);

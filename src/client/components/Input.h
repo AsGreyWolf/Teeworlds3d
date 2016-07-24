@@ -3,6 +3,7 @@
 
 #include "../ClientComponent.h"
 #include <vector>
+#include <map>
 
 class Input : public ClientComponent {
 private:
@@ -12,7 +13,7 @@ private:
 public:
 	~Input() override;
 	void Tick() override;
-	std::vector<char> keyboard;
+	std::map<unsigned int, char> keyboard; // TODO: performance tweak, map is slow
 	std::vector<char> mouse;
 	bool quit;
 	int mouseX;

@@ -48,7 +48,7 @@ public:
 	quad2 reflectX() const { return quad2(x + w, y, -w, h); }
 	quad2 reflectY() const { return quad2(x, y + h, w, -h); }
 	quad2 operator*(float a) const {
-		return quad2(x, y, w * a, h * a);
+		return quad2(pos, size * a);
 	}
 	quad2 operator/(float a) const { return operator*(1.0f / a); }
 	quad2 operator+(const glm::vec2 &c) const {

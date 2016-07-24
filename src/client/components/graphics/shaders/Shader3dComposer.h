@@ -15,6 +15,7 @@ public:
 
 private:
 	GLuint shadowProjectionMatrixUniform;
+	GLuint cameraUniform;
 };
 Shader3dComposer *g_Shader3dComposer();
 

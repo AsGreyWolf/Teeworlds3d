@@ -5,6 +5,13 @@
 #include <client/components/Graphics.h>
 #include <client/components/graphics/Model.h>
 
+#ifndef GL_POINT_SPRITE
+#define GL_POINT_SPRITE 0x8861
+#endif
+#ifndef GL_PROGRAM_POINT_SIZE
+#define GL_PROGRAM_POINT_SIZE 0x8642
+#endif
+
 ShaderParticle *pShaderParticle;
 ShaderParticle *g_ShaderParticle() {
 	return pShaderParticle ? pShaderParticle : new ShaderParticle();

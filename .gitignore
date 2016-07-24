@@ -227,3 +227,11 @@ math/
 *.dll
 !other/*.dll
 .imdone/
+
+*.zip
+android/bin/*
+android/gen/*
+*.apk
+android/obj/*
+android/libs/*
+android/jni/src

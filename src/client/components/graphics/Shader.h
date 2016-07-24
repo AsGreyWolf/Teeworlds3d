@@ -6,7 +6,11 @@
 #include <set>
 #include <memory>
 #define GLEW_STATIC
-#include <glew.h>
+#ifdef __ANDROID__
+	#include <GLES3/gl3.h>
+#else
+	#include <glew.h>
+#endif
 #include <tools/vmath.h>
 
 class Model;
@@ -29,13 +33,13 @@ public:
 
 private:
 	GLuint id;
+
+protected:
 	GLenum culling;
 	GLboolean colormask[4];
 	GLboolean depthmask;
 	GLbitfield clear;
 	glm::vec2 viewport;
-
-protected:
 	GLuint framebuffer = 0;
 	std::set<Model *> registredModels;
 

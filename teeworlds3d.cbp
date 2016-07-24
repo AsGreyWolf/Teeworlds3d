@@ -522,7 +522,9 @@
 		<Unit filename="src/tools/vmath.h" />
 		<Extensions>
 			<code_completion />
-			<debugger />
+			<debugger>
+				<search_path add="/home/asgreywolf/Рабочий стол/Teeworlds3d/" />
+			</debugger>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

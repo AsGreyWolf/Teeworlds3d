@@ -3,7 +3,7 @@
 #include <client/components/graphics/geometry/Primitives.h>
 #include <string>
 
-unsigned static int bufferList[] = {GL_COLOR_ATTACHMENT0_EXT};
+unsigned static int bufferList[] = {GL_COLOR_ATTACHMENT0};
 
 template<typename T>
 std::vector<T> make_vector(const T &a) {
@@ -46,10 +46,10 @@ ShaderTexture::ShaderTexture(const std::string &file, const glm::uvec2 &size, co
 	}
 
 	out = Texture(NULL, size.x, size.y, 0);
-	glGenFramebuffersEXT(1, &framebuffer);
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffer);
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	glDrawBuffers(1, bufferList);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 							  GL_TEXTURE_2D, out, 0);
 }
 ShaderTexture::~ShaderTexture() {

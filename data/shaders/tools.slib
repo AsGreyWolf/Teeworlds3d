@@ -1,4 +1,5 @@
-#version 120
+#version 300 es
+precision mediump float;
 
 #define M_PI 3.1415926535897932384626433832795
 mat4 biasMatrix = mat4(0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5,
@@ -22,9 +23,9 @@ float wrapZ(float logDepth, float range) {
 	return log2(max(1e-6, logDepth)) * 2.0 / log2(range + 1.0) - 1.0;
 }
 vec4 dye(vec4 base, vec4 colorer) {
-	if (colorer.a > 0) {
+	if (colorer.a > 0.0) {
 		float max = base.r + base.g + base.b;
-		max /= 3;
+		max /= 3.0;
 		return vec4(max, max, max, base.a) * colorer;
 	} else {
 		return base * vec4(colorer.r, colorer.g, colorer.b, 1.0);

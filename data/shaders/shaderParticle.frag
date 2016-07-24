@@ -9,9 +9,9 @@ void main(void) {
 	if (map.a < 0.2)
 		discard;
 	gl_FragColor = dye(map, colorer);
-	vec2 pos = gl_PointCoord.st * 2.0 - vec2(1, 1);
+	vec2 pos = gl_PointCoord.st * 2.0 - vec2(1.0, 1.0);
 	gl_FragDepth = unwrapDepth(
 	    ex_logDepth -
-	        sqrt(max(0.0, 1.0 - pos.x * pos.x - pos.y * pos.y)) * ex_size / 16,
+	        sqrt(max(0.0, 1.0 - pos.x * pos.x - pos.y * pos.y)) * ex_size / 16.0,
 	    10000);
 }

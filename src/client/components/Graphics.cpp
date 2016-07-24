@@ -2,6 +2,9 @@
 
 #include <shared/Console.h>
 #include <client/components/graphics/Shader.h>
+#ifdef __ANDROID__
+	#include <tools/android.h>
+#endif
 
 class Graphics *pGraphics;
 Graphics *g_Graphics() { return pGraphics ? pGraphics : new Graphics(); }
@@ -47,35 +50,32 @@ Graphics::Graphics() : ClientComponent() {
 		return; // TODO: exceptions
 	}
 	SDL_GL_SetSwapInterval(0);
+	#ifndef __ANDROID__
 	glewInit();
+	#endif
 	g_Console()->Info("Initialized OpenGL " +
 	                  std::string((char *)glGetString(GL_VERSION)));
 
-	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_BLEND);
 	glBlendEquation(GL_FUNC_ADD);
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	#ifndef __ANDROID__
 	glEnable(GL_MULTISAMPLE);
+	#endif
 	glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
 	glEnable(GL_DEPTH_TEST);
-	glLoadIdentity();
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glClearColor(0, 0.75f, 1, 1);
 
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-	glPolygonMode(GL_FRONT, GL_FILL);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	glHint(GL_FOG_HINT, GL_NICEST);
 	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
 	glLineWidth(3);
+	#ifndef __ANDROID__
 	glPointSize(3);
+	#endif
 }
 Graphics::~Graphics() {
 	Shader::ClearShaders();

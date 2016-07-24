@@ -9,7 +9,7 @@
 Shader3d *pShader3d;
 Shader3d *g_Shader3d() { return pShader3d ? pShader3d : new Shader3d(); }
 
-unsigned static int bufferList[] = {GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT, GL_COLOR_ATTACHMENT2_EXT, GL_COLOR_ATTACHMENT3_EXT};
+unsigned static int bufferList[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
 Shader3d::Shader3d()
     : Shader::Shader(std::string("shaders/shader3d"), g_Graphics()->screenSize,
                      GL_BACK, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE,
@@ -30,28 +30,24 @@ Shader3d::Shader3d()
 	modelMatrixUniform = glGetUniformLocation(id, "modelMatrix");
 	normalMatrixUniform = glGetUniformLocation(id, "normalMatrix");
 	textureUniform = glGetUniformLocation(id, "tex");
-	depth=Texture(NULL, g_Graphics()->screenSize.x, g_Graphics()->screenSize.y,
+	depth=Texture(NULL, viewport.x, viewport.y,
 						  TEXTURE_DEPTH);
-	empty=Texture(NULL, g_Graphics()->screenSize.x, g_Graphics()->screenSize.y,
-						  TEXTURE_3CORD);
-	color=Texture(NULL, g_Graphics()->screenSize.x, g_Graphics()->screenSize.y,
+	color=Texture(NULL, viewport.x, viewport.y,
 						  0);
-	position=Texture(NULL, g_Graphics()->screenSize.x, g_Graphics()->screenSize.y,
-						  TEXTURE_FLOAT | TEXTURE_3CORD);
-	normal=Texture(NULL, g_Graphics()->screenSize.x, g_Graphics()->screenSize.y,
-						  TEXTURE_FLOAT | TEXTURE_3CORD);
-	glGenFramebuffersEXT(1, &framebuffer);
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffer);
-	glDrawBuffers(4, bufferList);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
-							  GL_TEXTURE_2D, empty, 0);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT1_EXT,
+	position=Texture(NULL, viewport.x, viewport.y,
+						  TEXTURE_FLOAT);
+	normal=Texture(NULL, viewport.x, viewport.y,
+						  TEXTURE_FLOAT);
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	glDrawBuffers(3, bufferList);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 							  GL_TEXTURE_2D, color, 0);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT2_EXT,
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1,
 							  GL_TEXTURE_2D, position, 0);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT3_EXT,
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2,
 							  GL_TEXTURE_2D, normal, 0);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
 							  GL_TEXTURE_2D, depth, 0);
 }
 Shader3d::~Shader3d() {

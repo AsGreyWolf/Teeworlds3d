@@ -3,6 +3,13 @@
 #include <shared/System.h>
 #include <client/components/Graphics.h>
 
+#ifndef GL_MAX_TEXTURE_MAX_ANISOTROPY
+#define GL_MAX_TEXTURE_MAX_ANISOTROPY 0x84FF
+#endif
+#ifndef GL_TEXTURE_MAX_ANISOTROPY
+#define GL_TEXTURE_MAX_ANISOTROPY 0x84FE
+#endif
+
 Texture::Texture() {}
 Texture::Texture(const Texture &second) { operator=(second); }
 Texture &Texture::operator=(const Texture &second) {
@@ -43,9 +50,9 @@ Texture::Texture(SDL_Surface *surface, int fl) : flags(fl) {
 void Texture::SetPixels(const GLvoid *pixels) {
 	Bind();
 	int anisotropyI;
-	glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &anisotropyI);
+	glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &anisotropyI);
 	if (flags & TEXTURE_ANISOTROPY)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyI);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY, anisotropyI);
 	if (flags & TEXTURE_FILTERING) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -57,7 +64,7 @@ void Texture::SetPixels(const GLvoid *pixels) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	if (flags & TEXTURE_DEPTH)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, size.x, size.y, 0,
-		             GL_DEPTH_COMPONENT, GL_FLOAT, pixels);
+		             GL_DEPTH_COMPONENT, GL_UNSIGNED_SHORT, pixels);
 	else if ((flags & TEXTURE_FLOAT) && (flags & TEXTURE_3CORD))
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, size.x, size.y, 0, GL_RGB,
 		             GL_FLOAT, pixels);

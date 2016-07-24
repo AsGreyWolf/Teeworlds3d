@@ -13,6 +13,9 @@
 #include <client/components/graphics/shaders/ShaderShadow.h> //TODO: remove
 #include <client/components/graphics/shaders/Shader3dComposer.h>     //TODO: remove
 #include <shared/World.h>                                    //TODO: remove
+#ifdef __ANDROID__
+	#include <tools/android.h>
+#endif
 
 class Client *pClient;
 Client *g_Client() { return pClient ? pClient : new Client(); }

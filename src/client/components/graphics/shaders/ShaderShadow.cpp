@@ -16,7 +16,7 @@ ShaderShadow::ShaderShadow()
           GL_FRONT, GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE,
           GL_DEPTH_BUFFER_BIT) {
 	pShaderShadow = this;
-	shadowMap = Texture(NULL, g_Graphics()->screenSize.x, g_Graphics()->screenSize.x,
+	shadowMap = Texture(NULL, viewport.x, viewport.y,
 	                  TEXTURE_ANISOTROPY | TEXTURE_FILTERING | TEXTURE_DEPTH);
 
 	orthoMatrix = glm::ortho(-320.0f, 320.0f, -320.0f, 320.0f, -1000.0f, 0.0f);
@@ -30,11 +30,10 @@ ShaderShadow::ShaderShadow()
 	modelMatrixUniform = glGetUniformLocation(id, "modelMatrix");
 	textureUniform = glGetUniformLocation(id, "tex");
 
-	glGenFramebuffersEXT(1, &framebuffer);
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebuffer);
-	glDrawBuffer(GL_NONE);
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	glReadBuffer(GL_NONE);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
 	                          GL_TEXTURE_2D, shadowMap, 0);
 }
 ShaderShadow::~ShaderShadow() {

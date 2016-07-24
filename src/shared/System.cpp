@@ -17,6 +17,9 @@
 #include <SDL.h>
 #include <SDL_thread.h>
 #include <shared/Console.h>
+#ifdef __ANDROID__
+#include <tools/android.h>
+#endif
 
 class System *pSystem;
 System *g_System() { return pSystem ? pSystem : new System(); }
@@ -36,7 +39,11 @@ int calcFPS(void *param) {
 SDL_Thread *fpsThread;
 System::System() : SharedComponent() {
 	srand(time(NULL));
+	#ifdef __ANDROID__
+	PATH_CUR = "/sdcard/Android/data/tee3d/"; // TODO: package name && unpack
+	#else
 	PATH_CUR = std::string(SDL_GetBasePath());
+	#endif
 	PATH_DATA = PATH_CUR + "data/";
 	pSystem = this;
 	fps = 60;

@@ -1,0 +1,53 @@
+#version 120
+
+#define M_PI 3.1415926535897932384626433832795
+mat4 biasMatrix = mat4(0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5,
+                       0.0, 0.5, 0.5, 0.5, 1.0);
+
+float rand(vec2 co) {
+	return fract(sin(dot(normalize(co.xy), vec2(12.9898, 78.233))) * 43758.5453);
+}
+float rand(float c) {
+	return fract(sin(dot(normalize(vec2(c, c * c)), vec2(12.9898, 78.233))) *
+	             43758.5453);
+}
+bool inField(vec2 v) {
+	return (v.x >= 0.0 && v.x <= 1.0 && v.y >= 0.0 && v.y <= 1.0);
+}
+float unwrapDepth(float logDepth, float range) {
+	return log2(logDepth) / log2(range + 1.0);
+}
+float wrapDepth(vec4 position) { return 1.0 + position.w; }
+float wrapZ(float logDepth, float range) {
+	return log2(max(1e-6, logDepth)) * 2.0 / log2(range + 1.0) - 1.0;
+}
+vec4 dye(vec4 base, vec4 colorer) {
+	if (colorer.a > 0.0) {
+		float max = base.r + base.g + base.b;
+		max /= 3.0;
+		return vec4(max, max, max, base.a) * colorer;
+	} else {
+		return base * vec4(colorer.r, colorer.g, colorer.b, 1.0);
+	}
+}
+float gamma = 2.2;
+float fromSRGB(in float v){
+	return pow(v,1.0/gamma);
+}
+vec4 fromSRGB(in vec4 v){
+	vec4 o=v;
+	o.r=fromSRGB(o.r);
+	o.g=fromSRGB(o.g);
+	o.b=fromSRGB(o.b);
+	return o;
+}
+float toSRGB(in float v){
+	return pow(v,gamma);
+}
+vec4 toSRGB(in vec4 v){
+	vec4 o=v;
+	o.r=toSRGB(o.r);
+	o.g=toSRGB(o.g);
+	o.b=toSRGB(o.b);
+	return o;
+}
