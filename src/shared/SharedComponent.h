@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 #include <list>
+#ifdef __ANDROID__
+	#include <tools/android.h> // NDK fix
+#endif
 
 class SharedComponent {
 public:

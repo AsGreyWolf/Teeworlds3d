@@ -16,6 +16,10 @@ void main(void) {
 	if (map.a < 0.2)
 		discard;
 	//gl_FragDepth = unwrapDepth(ex_logDepth, 10000.0);
+	if (lighting < 0.5)
+		normal = vec4(0.0, 0.0, 0.0, 1.0);
+	else
+		normal = vec4(ex_Normal, 1.0);
 	normal = vec4(ex_Normal, 1.0);
 	position = vec4(ex_WorldPosition.xyz/ex_WorldPosition.w, 1.0);
 	color = dye(map, colorer);

@@ -2,7 +2,7 @@
 #include <client/components/Input.h>
 #include <client/components/Graphics.h>
 #include <client/components/Resources.h>
-#include <client/components/ui/Image.h>
+#include <client/components/ui/Panel.h>
 #include <client/components/ui/Layout.h>
 
 class UI *pUI;
@@ -12,7 +12,7 @@ UI::UI() : ClientComponent() {
 	pUI = this;
 	screenLayout = new Layout();
 	screenLayout->container = g_Graphics()->screen;
-	cursor = new Image(g_Resources()->textureCursor);
+	cursor = new Panel(g_Resources()->textureCursor);
 	cursor->size = glm::vec2(0.1f, 0.1f);
 	screenLayout->Add(cursor);
 	SDL_ShowCursor(0);

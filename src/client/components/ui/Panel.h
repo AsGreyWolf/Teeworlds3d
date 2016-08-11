@@ -5,20 +5,22 @@
 #include <client/components/graphics/Texture.h>
 #include <client/components/graphics/models/Model2d.h>
 
-enum IMAGE_MODE {
+enum PANEL_FLAGS {
 	FLIP_X = 0x01,
 	FLIP_Y = 0x02,
 };
 
-class Image : public View {
+class Panel : public View {
 public:
-	Image(const Texture &texture, int flags = 0);
-	Image(const Image &second);
-	virtual ~Image();
+	Panel(const Texture &texture, int flags = 0);
+	Panel(int flags = 0);
+	Panel(const Panel &second);
+	virtual ~Panel();
 
 	virtual void Validate() override;
 
-	void SetTexture(const Texture &texture);
+	Texture texture;
+	glm::vec4 color;
 
 protected:
 	int flags;

@@ -2,7 +2,7 @@
 #define LOADING_H
 
 #include "../ClientComponent.h"
-#include <client/components/graphics/models/Model2d.h>
+#include <client/components/ui/Panel.h>
 #include <functional>
 #include <queue>
 
@@ -19,7 +19,7 @@ public:
 
 private:
 	std::queue< std::function<void ()> > queue;
-	Model2d status;
+	Panel status;
 	size_t processed = 0;
 };
 Loading *g_Loading();

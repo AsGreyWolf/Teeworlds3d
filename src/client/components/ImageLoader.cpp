@@ -2,9 +2,6 @@
 #include <shared/Console.h>
 #include <shared/System.h>
 #include <SDL_image.h>
-#ifdef __ANDROID__
-#include <tools/android.h>
-#endif
 
 class ImageLoader *pImageLoader;
 ImageLoader *g_ImageLoader() {

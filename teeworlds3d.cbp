@@ -496,6 +496,8 @@
 		<Unit filename="src/client/components/ui/Label.h" />
 		<Unit filename="src/client/components/ui/Layout.cpp" />
 		<Unit filename="src/client/components/ui/Layout.h" />
+		<Unit filename="src/client/components/ui/Panel.cpp" />
+		<Unit filename="src/client/components/ui/Panel.h" />
 		<Unit filename="src/client/components/ui/VerticalLayout.cpp" />
 		<Unit filename="src/client/components/ui/VerticalLayout.h" />
 		<Unit filename="src/client/components/ui/View.cpp" />
@@ -516,6 +518,7 @@
 		<Unit filename="src/shared/world/Tile.h" />
 		<Unit filename="src/tools/Positioned.h" />
 		<Unit filename="src/tools/Protocol.h" />
+		<Unit filename="src/tools/android.h" />
 		<Unit filename="src/tools/quad2.h" />
 		<Unit filename="src/tools/quad3.h" />
 		<Unit filename="src/tools/rot3.h" />

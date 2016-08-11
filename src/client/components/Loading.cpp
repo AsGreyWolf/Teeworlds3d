@@ -1,22 +1,25 @@
 #include "Loading.h"
 #include <shared/System.h>
-#include <client/components/Graphics.h>
+#include <client/components/UI.h>
+#include <client/components/ui/Layout.h>
 #include <client/components/Resources.h>
-#include <client/components/graphics/geometry/Primitives.h>
 
 class Loading *pLoading;
 Loading *g_Loading() { return pLoading ? pLoading : new Loading(); }
 
 Loading::Loading() : ClientComponent() {
 	pLoading = this;
-	status.Add(Quad(g_Graphics()->screen));
-	status.texture = g_Resources()->textureBlank;
+	g_UI()->screenLayout->Add(&status);
+	status.Hide();
 }
-Loading::~Loading() { pLoading = 0; }
+Loading::~Loading() {
+	pLoading = 0;
+	g_UI()->screenLayout->Remove(&status);
+}
 void Loading::Tick() {
-	if(!queue.empty() && !status.isEnabled()){
+	if(!queue.empty() && !status.isVisible()){
 		processed = 0;
-		status.Enable();
+		status.Show();
 	}
 	else if(!queue.empty()){
 		float statusValue = processed * 1.0f / (processed + queue.size());
@@ -29,7 +32,7 @@ void Loading::Tick() {
 		}
 	}
 	else
-		status.Disable();
+		status.Hide();
 }
 void Loading::Push(const std::function<void ()> &f) {
 	queue.push(f);

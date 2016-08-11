@@ -2,9 +2,6 @@
 #include <shared/Console.h>
 #include <shared/System.h>
 #include <client/components/Graphics.h>
-#ifdef __ANDROID__
-#include <tools/android.h>
-#endif
 
 class TextGenerator *pTextGenerator;
 TextGenerator *g_TextGenerator() {

@@ -17,9 +17,6 @@
 #include <SDL.h>
 #include <SDL_thread.h>
 #include <shared/Console.h>
-#ifdef __ANDROID__
-#include <tools/android.h>
-#endif
 
 class System *pSystem;
 System *g_System() { return pSystem ? pSystem : new System(); }

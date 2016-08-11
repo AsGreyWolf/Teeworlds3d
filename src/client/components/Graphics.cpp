@@ -2,9 +2,6 @@
 
 #include <shared/Console.h>
 #include <client/components/graphics/Shader.h>
-#ifdef __ANDROID__
-	#include <tools/android.h>
-#endif
 
 class Graphics *pGraphics;
 Graphics *g_Graphics() { return pGraphics ? pGraphics : new Graphics(); }
@@ -20,7 +17,7 @@ Graphics::Graphics() : ClientComponent() {
 	screenSize = glm::vec2(w, h);
 	screenAspect = (float)w / h;
 	screen = quad2(-1 * screenAspect, -1, 2 * screenAspect, 2);
-	
+
 	SDL_version ver;
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		g_Console()->Err("Unable to initialize SDL Video: " +

@@ -1,4 +1,5 @@
 #include "Layout.h"
+#include <algorithm>
 
 Layout::Layout() : View() { }
 Layout::Layout(const Layout &second) : Layout() {
@@ -39,4 +40,7 @@ void Layout::OnClick(const glm::vec2 &position) {
 }
 void Layout::Add(View *view) {
 	children.push_back(view);
+}
+void Layout::Remove(View *view) {
+	std::remove(children.begin(), children.end(), view);
 }

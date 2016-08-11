@@ -37,13 +37,18 @@ float blurShadow(float z, vec2 pos, vec2 v) {
 	value += calcShadow(z, pos) * correction;
 	return value * sqrt_value;
 }
-
+bool validNormal(vec3 normal){
+	return normal.x != 0.0 || normal.y != 0.0 || normal.z != 0.0;
+}
 float outline(vec4 color,vec3 norm,vec3 position, vec2 dx){
-	vec4 newc=texture(colorMap, ex_TexMap+dx);
-	if(abs(newc.r - color.r) + abs(newc.g - color.g) + abs(newc.b - color.b) + abs(newc.a - color.a) > 0.1)
-		return 1.0;
+	vec3 norm2 = texture(normalMap, ex_TexMap+dx).rgb;
+	if(!validNormal(norm) || !validNormal(norm2))
+		return 0.0;
 	vec3 deltaPosition = position-texture(positionMap, ex_TexMap+dx).rgb;
-	if(dot(norm,texture(normalMap, ex_TexMap+dx).rgb)<0.4 || dot(deltaPosition,deltaPosition)>10000.0*10000.0)
+	if(dot(norm,norm2)<0.4 || dot(deltaPosition,deltaPosition)>10000.0*10000.0)
+		return 1.0;
+	vec4 color2=texture(colorMap, ex_TexMap+dx);
+	if(abs(color2.r - color.r) + abs(color2.g - color.g) + abs(color2.b - color.b) + abs(color2.a - color.a) > 0.1)
 		return 1.0;
 	return 0.0;
 }
@@ -59,6 +64,7 @@ void main(void) {
 	float depth = sqrt(dot(deltaPosition,deltaPosition)/10000.0);
 	if (outl > 0.5)
 		color.rgb -= vec3(1.0,1.0,1.0)  / depth * 4.0 / outl;
+	if (validNormal(normal))
 	{
 		float lightIntensity = (dot(normal, L));
 		/* shadow calc*/

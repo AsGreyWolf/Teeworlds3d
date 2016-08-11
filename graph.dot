@@ -151,21 +151,21 @@
 			label="ui";
 			View[color=red];
 			Layout;
-			Image;
+			Panel;
 			Label;
 			HorizontalLayout;
 			VerticalLayout;
 			Widget;
 			View->Layout->HorizontalLayout[color=red arrowhead=none arrowtail=empty dir=back];
 			Layout->VerticalLayout[color=red arrowhead=none arrowtail=empty dir=back];
-			View->Image[color=red arrowhead=none arrowtail=empty dir=back];
-			Image->Label[color=red arrowhead=none arrowtail=empty dir=back];
+			View->Panel[color=red arrowhead=none arrowtail=empty dir=back];
+			Panel->Label[color=red arrowhead=none arrowtail=empty dir=back];
 			View->Widget[color=red arrowhead=none arrowtail=empty dir=back];
 		}
 		/*
-		Texture->Image;
-		Model2d->Image;
-		Primitives->Image;
+		Texture->Panel;
+		Model2d->Panel;
+		Primitives->Panel;
 		Texture->Label;
 
 		UI->View;
@@ -173,7 +173,7 @@
 		Graphics->Label;
 
 		Layout->UI;
-		Image->UI;
+		Panel->UI;
 		*/
  	}
  	/*
