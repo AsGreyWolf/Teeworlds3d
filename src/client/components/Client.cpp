@@ -161,6 +161,10 @@ void Client::Tick() {
 	if (g_Input()->keyboard[SDLK_F2])
 		for (int i = 1; i < MAX_PLAYERS; i++)
 			g_World()->players[i]->hookState = HOOK_IDLE;
+	if (g_Input()->keyboard[SDLK_F3])
+		g_UI()->EnableCursor();
+	if (g_Input()->keyboard[SDLK_F4])
+		g_UI()->DisableCursor();
 	if (g_Input()->quit)
 		Stop();
 }

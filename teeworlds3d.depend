@@ -2,11 +2,11 @@
 1472938595 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/ClientComponent.cpp
 	"ClientComponent.h"
 
-1472938598 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/ClientComponent.h
+1472995311 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/ClientComponent.h
 	"../shared/SharedComponent.h"
 	<SDL.h>
 
-1472938617 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/SharedComponent.h
+1472995294 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/SharedComponent.h
 	<list>
 	<stdint.h>
 	<tools/android.h>
@@ -833,7 +833,7 @@
 	<gtx/rotate_vector.hpp>
 	<tools/quad2.h>
 
-1472938553 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
+1472996346 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Client.cpp
 	"Client.h"
 	<client/components/Camera.h>
 	<client/components/Input.h>
@@ -874,7 +874,7 @@
 	<client/components/graphics/Texture.h>
 	<tools/vmath.h>
 
-1472938497 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Shader.h
+1472990709 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Shader.h
 	<list>
 	<map>
 	<memory>
@@ -893,7 +893,7 @@
 	<client/components/graphics/models/ShadowModel.h>
 	<client/components/graphics/shaders/Shader3d.h>
 
-1472941402 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Shader.cpp
+1472992398 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/Shader.cpp
 	"Shader.h"
 	<client/components/graphics/Texture.h>
 	<fstream>
@@ -901,7 +901,7 @@
 	<shared/System.h>
 	<vector>
 
-1472938442 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.cpp
+1472991341 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.cpp
 	"Shader3d.h"
 	<client/components/Camera.h>
 	<client/components/Graphics.h>
@@ -948,7 +948,7 @@
 	<iostream>
 	<android/log.h>
 
-1472938616 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/SharedComponent.cpp
+1472995303 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/SharedComponent.cpp
 	"SharedComponent.h"
 	<list>
 
@@ -1031,7 +1031,7 @@
 	<client/components/graphics/Texture.h>
 	<tools/vmath.h>
 
-1472940667 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderShadow.cpp
+1472991763 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderShadow.cpp
 	"ShaderShadow.h"
 	<client/components/Camera.h>
 	<client/components/Graphics.h>
@@ -1070,7 +1070,7 @@
 	<client/components/graphics/models/PlayerModel.h>
 	<shared/System.h>
 
-1472938439 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader2d.cpp
+1472990981 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader2d.cpp
 	"Shader2d.h"
 	<client/components/Graphics.h>
 	<client/components/graphics/Model.h>
@@ -1124,7 +1124,7 @@
 	<shared/world/Player.h>
 	<tools/vmath.h>
 
-1472938422 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/PlayerModel.cpp
+1472996391 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/models/PlayerModel.cpp
 	"PlayerModel.h"
 	<client/components/Loading.h>
 	<client/components/Resources.h>
@@ -1137,15 +1137,16 @@
 
 1467366663 /home/asgreywolf/Рабочий стол/Teeworlds3d/other/glm/detail/type_vec4_avx2.inl
 
-1472938574 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Map.h
+1472995742 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Map.h
 	"../ClientComponent.h"
 	<client/components/graphics/models/Model3d.h>
 	<client/components/graphics/models/PlayerModel.h>
 	<string>
 	<vector>
 
-1472938572 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Map.cpp
+1472996096 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Map.cpp
 	"Map.h"
+	<SDL_thread.h>
 	<client/components/ImageLoader.h>
 	<client/components/Loading.h>
 	<client/components/Resources.h>
@@ -1240,7 +1241,7 @@
 	"../Shader.h"
 	<tools/vmath.h>
 
-1472940663 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderParticle.cpp
+1472991616 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderParticle.cpp
 	"ShaderParticle.h"
 	<client/components/Camera.h>
 	<client/components/Graphics.h>
@@ -1347,7 +1348,7 @@
 	<set>
 	<tools/vmath.h>
 
-1472938540 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/View.h
+1472983106 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/View.h
 	<tools/vmath.h>
 
 1472938524 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Layout.h
@@ -1359,7 +1360,7 @@
 	<client/components/graphics/Texture.h>
 	<client/components/graphics/models/Model2d.h>
 
-1472938536 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/View.cpp
+1472983136 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/View.cpp
 	"View.h"
 	<client/components/UI.h>
 
@@ -1367,7 +1368,7 @@
 	"Image.h"
 	<client/components/graphics/geometry/Primitives.h>
 
-1472938520 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Layout.cpp
+1472983291 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/ui/Layout.cpp
 	"Layout.h"
 	<algorithm>
 
@@ -1402,7 +1403,7 @@
 	"ShaderTexture.h"
 	<tools/vmath.h>
 
-1472940648 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader3dComposer.cpp
+1472991325 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/Shader3dComposer.cpp
 	"Shader3dComposer.h"
 	<client/components/Camera.h>
 	<client/components/Graphics.h>
@@ -1410,13 +1411,13 @@
 	<client/components/graphics/shaders/ShaderShadow.h>
 	<string>
 
-1472938487 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderTexture.h
+1472991905 /home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderTexture.h
 	"../Shader.h"
 	<client/components/graphics/Texture.h>
 	<client/components/graphics/geometry/Geometry2d.h>
 	<tools/vmath.h>
 
-1472940745 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderTexture.cpp
+1472991945 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/graphics/shaders/ShaderTexture.cpp
 	"ShaderTexture.h"
 	<client/components/graphics/geometry/Primitives.h>
 	<string>

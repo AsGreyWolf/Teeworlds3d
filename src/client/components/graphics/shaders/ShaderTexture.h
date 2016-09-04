@@ -21,8 +21,8 @@ public:
 	operator const Texture &() const { return out; };
 
 protected:
-	std::vector<std::string> colorUniforms;
 	std::vector<Texture> colorTextures;
+	std::vector<Uniform<int>> colorUniforms;
 
 private:
 	Texture out;

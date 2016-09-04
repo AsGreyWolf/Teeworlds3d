@@ -132,23 +132,6 @@ void Shader::ClearShaders() {
 	while (!registred.empty())
 		delete registred.back();
 }
-GLuint Shader::Uniform(const std::string &name) {
-	auto cached = std::find(uniformNames.begin(), uniformNames.end(), name);
-	if (cached == uniformNames.end()) {
-		uniformNames.push_back(name);
-		uniformIds.push_back(glGetUniformLocation(*this, name.c_str()));
-		cached = uniformNames.end() - 1;
-	}
-	return uniformIds[cached - uniformNames.begin()];
-	// GLuint Shader::Uniform(const std::string &name) {
-	// 	auto cached = uniforms.find(name);
-	// 	if (cached == uniforms.end()) {
-	// 		uniforms[name] = glGetUniformLocation(*this, name.c_str());
-	// 		cached = uniforms.find(name);
-	// 	}
-	// 	return (*cached).second;
-	// }
-}
 void Shader::SetAttribute(const std::string &name, SHADER_BINDINGS id) {
 	glBindAttribLocation(*this, id, name.c_str());
 }
@@ -167,28 +150,31 @@ void Shader::AddOutputTexture(Texture &t) {
 	glReadBuffer(GL_NONE);
 	glDrawBuffers(colorTargets.size(), colorTargets.data());
 }
-
-template <> void Shader::SetUniform(const std::string &name, const int &value) {
-	glUniform1i(Uniform(name), value);
+template <typename T>
+Shader::Uniform<T>::Uniform(const Shader &shader, const std::string &name) {
+	id = glGetUniformLocation(shader, name.c_str());
+}
+template class Shader::Uniform<int>;
+template <> void Shader::Uniform<int>::Set(const value_type &value) {
+	glUniform1i(id, value);
 };
-template <>
-void Shader::SetUniform(const std::string &name, const float &value) {
-	glUniform1f(Uniform(name), value);
+template class Shader::Uniform<float>;
+template <> void Shader::Uniform<float>::Set(const value_type &value) {
+	glUniform1f(id, value);
 };
-template <>
-void Shader::SetUniform(const std::string &name, const glm::vec2 &value) {
-	glUniform2f(Uniform(name), value.r, value.g);
+template class Shader::Uniform<glm::vec2>;
+template <> void Shader::Uniform<glm::vec2>::Set(const value_type &value) {
+	glUniform2f(id, value.r, value.g);
 };
-template <>
-void Shader::SetUniform(const std::string &name, const glm::vec3 &value) {
-	glUniform3f(Uniform(name), value.r, value.g, value.b);
+template class Shader::Uniform<glm::vec3>;
+template <> void Shader::Uniform<glm::vec3>::Set(const value_type &value) {
+	glUniform3f(id, value.r, value.g, value.b);
 };
-template <>
-void Shader::SetUniform(const std::string &name, const glm::vec4 &value) {
-	glUniform4f(Uniform(name), value.r, value.g, value.b, value.a);
+template class Shader::Uniform<glm::vec4>;
+template <> void Shader::Uniform<glm::vec4>::Set(const value_type &value) {
+	glUniform4f(id, value.r, value.g, value.b, value.a);
 };
-template <>
-void Shader::SetUniform(const std::string &name, const glm::mat4 &value) {
-	glUniformMatrix4fv(Uniform(name), 1, GL_FALSE,
-	                   (const float *)glm::value_ptr(value));
+template class Shader::Uniform<glm::mat4>;
+template <> void Shader::Uniform<glm::mat4>::Set(const value_type &value) {
+	glUniformMatrix4fv(id, 1, GL_FALSE, (const float *)glm::value_ptr(value));
 };

@@ -18,16 +18,20 @@ Shader2d::Shader2d()
 Shader2d::~Shader2d() { pShader2d = 0; }
 void Shader2d::Render() {
 	Shader::Render();
-	SetUniform("tex", 0);
-	SetUniform("aspect", g_Graphics()->screenAspect);
+	static Uniform<int> texture(*this, "tex");
+	texture.Set(0);
+	static Uniform<float> aspect(*this, "aspect");
+	aspect.Set(g_Graphics()->screenAspect);
 
 	for (Model *model : registredModels)
 		if (model->isEnabled())
 			model->Render();
 }
 void Shader2d::SetColor(const glm::vec4 &color) {
-	SetUniform("colorer", color);
+	static Uniform<glm::vec4> colorer(*this, "colorer");
+	colorer.Set(color);
 }
 void Shader2d::SetPosition(const glm::vec2 &pos, float depth) {
-	SetUniform("pos", glm::vec3(pos, depth));
+	static Uniform<glm::vec3> position(*this, "pos");
+	position.Set(glm::vec3(pos, depth));
 }

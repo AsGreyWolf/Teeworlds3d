@@ -45,6 +45,8 @@ public:
 	float minLayer = 0.0f;
 	float maxLayer = 1.0f;
 
+	static View *focused;
+
 protected:
 	quad2 element;
 

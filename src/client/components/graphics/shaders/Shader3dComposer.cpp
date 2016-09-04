@@ -22,7 +22,9 @@ Shader3dComposer::Shader3dComposer()
 Shader3dComposer::~Shader3dComposer() { pShader3dComposer = 0; }
 void Shader3dComposer::Render() {
 	glUseProgram(*this);
-	SetUniform("shadowProjectionMatrix", g_ShaderShadow()->matrix);
-	SetUniform("camera", g_Camera()->pos);
+	static Uniform<glm::mat4> spMatrix(*this, "shadowProjectionMatrix");
+	spMatrix.Set(g_ShaderShadow()->matrix);
+	static Uniform<glm::vec3> camera(*this, "camera");
+	camera.Set(g_Camera()->pos);
 	ShaderTexture::Render();
 }

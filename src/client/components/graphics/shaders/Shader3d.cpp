@@ -30,24 +30,29 @@ Shader3d::Shader3d()
 Shader3d::~Shader3d() { pShader3d = 0; }
 void Shader3d::Render() {
 	Shader::Render();
-	SetUniform("tex", 0);
-	SetUniform("viewProjectionMatrix",
-	           perspectiveMatrix * glm::lookAt(g_Camera()->pos,
-	                                           g_Camera()->pos + g_Camera()->look,
-	                                           g_Camera()->up));
+	static Uniform<int> texture(*this, "tex");
+	texture.Set(0);
+	static Uniform<glm::mat4> vpMatrix(*this, "viewProjectionMatrix");
+	vpMatrix.Set(perspectiveMatrix *
+	             glm::lookAt(g_Camera()->pos, g_Camera()->pos + g_Camera()->look,
+	                         g_Camera()->up));
 
 	for (Model *model : registredModels)
 		if (model->isEnabled())
 			model->Render();
 }
 void Shader3d::SetLight(const bool light) {
-	SetUniform("lighting", light ? 1.0f : 0.0f);
+	static Uniform<float> lighting(*this, "lighting");
+	lighting.Set(light ? 1.0f : 0.0f);
 }
 void Shader3d::SetColor(const glm::vec4 &color) {
-	SetUniform("colorer", color);
+	static Uniform<glm::vec4> colorer(*this, "colorer");
+	colorer.Set(color);
 }
 void Shader3d::SetMatrix(const glm::mat4 &modelMatrix,
                          const glm::mat4 &normalMatrix) {
-	SetUniform("normalMatrix", normalMatrix);
-	SetUniform("modelMatrix", modelMatrix);
+	static Uniform<glm::mat4> nMatrix(*this, "normalMatrix");
+	nMatrix.Set(normalMatrix);
+	static Uniform<glm::mat4> mMatrix(*this, "modelMatrix");
+	mMatrix.Set(modelMatrix);
 }

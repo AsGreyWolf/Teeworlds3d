@@ -27,16 +27,19 @@ ShaderShadow::ShaderShadow()
 ShaderShadow::~ShaderShadow() { pShaderShadow = 0; }
 void ShaderShadow::Render() {
 	Shader::Render();
-	SetUniform("tex", 0);
+	static Uniform<int> texture(*this, "tex");
+	texture.Set(0);
 	glm::vec3 pos = g_Camera()->pos;
 	pos.z = 0;
 	matrix = orthoMatrix *
 	         glm::lookAt(pos, pos + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
-	SetUniform("viewProjectionMatrix", matrix);
+	static Uniform<glm::mat4> vpMatrix(*this, "viewProjectionMatrix");
+	vpMatrix.Set(matrix);
 	for (Model *model : registredModels)
 		if (model->isEnabled())
 			model->Render();
 }
 void ShaderShadow::SetMatrix(const glm::mat4 &modelMatrix) {
-	SetUniform("modelMatrix", modelMatrix);
+	static Uniform<glm::mat4> mMatrix(*this, "modelMatrix");
+	mMatrix.Set(modelMatrix);
 }

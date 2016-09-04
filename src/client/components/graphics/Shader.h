@@ -33,15 +33,21 @@ public:
 	void RegisterModel(Model *model);
 	void UnregisterModel(Model *model);
 
-	GLuint Uniform(const std::string &name);
-	template <typename T> void SetUniform(const std::string &name, const T &value);
 	void SetAttribute(const std::string &name, SHADER_BINDINGS id);
 	void AddOutputTexture(Texture &t);
 
+	template <typename T> class Uniform {
+		GLuint id;
+
+	public:
+		using value_type = T;
+		Uniform(const Shader &shader, const std::string &name);
+		void Set(const value_type &value);
+		inline operator GLuint() const { return id; }
+	};
+
 private:
 	GLuint id;
-	std::vector<std::string> uniformNames;
-	std::vector<GLuint> uniformIds;
 	std::vector<GLuint> colorTargets;
 
 protected:

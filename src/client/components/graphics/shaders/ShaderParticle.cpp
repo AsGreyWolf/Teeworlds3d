@@ -31,12 +31,14 @@ void ShaderParticle::Render() {
 	Shader::Render();
 	glEnable(GL_POINT_SPRITE);
 	glEnable(GL_PROGRAM_POINT_SIZE);
-	SetUniform<int>("time", g_System()->GetTime());
-	SetUniform("tex", 0);
-	SetUniform("viewProjectionMatrix",
-	           perspectiveMatrix * glm::lookAt(g_Camera()->pos,
-	                                           g_Camera()->pos + g_Camera()->look,
-	                                           g_Camera()->up));
+	static Uniform<int> time(*this, "time");
+	time.Set(g_System()->GetTime());
+	static Uniform<int> texture(*this, "tex");
+	texture.Set(0);
+	static Uniform<glm::mat4> vpMatrix(*this, "viewProjectionMatrix");
+	vpMatrix.Set(perspectiveMatrix *
+	             glm::lookAt(g_Camera()->pos, g_Camera()->pos + g_Camera()->look,
+	                         g_Camera()->up));
 
 	for (Model *model : registredModels)
 		if (model->isEnabled())
@@ -46,14 +48,26 @@ void ShaderParticle::Render() {
 	glDisable(GL_POINT_SPRITE);
 }
 void ShaderParticle::SetColor(const glm::vec4 &color) {
-	SetUniform("colorer", color);
+	static Uniform<glm::vec4> colorer(*this, "colorer");
+	colorer.Set(color);
 }
 void ShaderParticle::SetMatrix(const glm::mat4 &modelMatrix) {
-	SetUniform("modelMatrix", modelMatrix);
+	static Uniform<glm::mat4> mMatrix(*this, "modelMatrix");
+	mMatrix.Set(modelMatrix);
 }
-void ShaderParticle::SetSize(float size) { SetUniform("size", size); }
-void ShaderParticle::SetGravity(float gravity) {
-	SetUniform("gravity", gravity);
+void ShaderParticle::SetSize(float s) {
+	static Uniform<float> size(*this, "size");
+	size.Set(s);
 }
-void ShaderParticle::SetTTL(float time) { SetUniform("ttl", time); }
-void ShaderParticle::SetVel(const glm::vec3 &vel) { SetUniform("vel", vel); }
+void ShaderParticle::SetGravity(float g) {
+	static Uniform<float> gravity(*this, "gravity");
+	gravity.Set(g);
+}
+void ShaderParticle::SetTTL(float t) {
+	static Uniform<float> ttl(*this, "ttl");
+	ttl.Set(t);
+}
+void ShaderParticle::SetVel(const glm::vec3 &v) {
+	static Uniform<glm::vec3> vel(*this, "vel");
+	vel.Set(v);
+}

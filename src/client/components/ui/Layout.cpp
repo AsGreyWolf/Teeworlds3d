@@ -14,6 +14,7 @@ void Layout::Hide() {
 	for (View *v : children) {
 		v->Hide();
 	}
+	View::Hide();
 }
 void Layout::Validate() {
 	if (!isVisible())
