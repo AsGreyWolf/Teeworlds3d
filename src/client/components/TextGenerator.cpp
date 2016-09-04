@@ -1,7 +1,7 @@
 #include "TextGenerator.h"
+#include <client/components/Graphics.h>
 #include <shared/Console.h>
 #include <shared/System.h>
-#include <client/components/Graphics.h>
 
 class TextGenerator *pTextGenerator;
 TextGenerator *g_TextGenerator() {
@@ -28,17 +28,19 @@ TextGenerator::~TextGenerator() {
 	TTF_Quit();
 	pTextGenerator = 0;
 }
-Texture TextGenerator::Generate(const std::string &data, int size, float width) {
+Texture TextGenerator::Generate(const std::string &data, int size,
+                                float width) {
 	Texture texture;
 	TTF_Font *font = Font(size);
 	if (font) {
 		TTF_SetFontOutline(font, 0);
 		int w = width == 0 ? INT_MAX : g_Graphics()->to_pixels(width);
-		SDL_Surface *surface =
-		    TTF_RenderUTF8_Blended_Wrapped(font, data.c_str(), SDL_Color{255, 255, 255, 255}, w); // TODO: fix shadow wrapping
+		SDL_Surface *surface = TTF_RenderUTF8_Blended_Wrapped(
+		    font, data.c_str(), SDL_Color{255, 255, 255, 255},
+		    w); // TODO: fix shadow wrapping
 		TTF_SetFontOutline(font, outline);
-		SDL_Surface *shadowSurface =
-		    TTF_RenderUTF8_Blended_Wrapped(font, data.c_str(), SDL_Color{96, 96, 96, 255}, w);
+		SDL_Surface *shadowSurface = TTF_RenderUTF8_Blended_Wrapped(
+		    font, data.c_str(), SDL_Color{96, 96, 96, 255}, w);
 		if (surface && shadowSurface) {
 			SDL_Rect dest;
 			dest.x = outline;

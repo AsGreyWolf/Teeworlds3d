@@ -13,7 +13,7 @@ public:
 	void Show() override;
 	void Hide() override;
 	virtual void Validate() override;
-	virtual void OnClick(const glm::vec2 &position) override;
+	virtual View *Select(const glm::vec2 &position) override;
 	void Add(View *view);
 	void Remove(View *view);
 
@@ -21,7 +21,7 @@ public:
 
 protected:
 	quad2 workspace;
-	std::vector <View*> children;
+	std::vector<View *> children;
 };
 
 #endif

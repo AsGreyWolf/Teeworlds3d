@@ -3,15 +3,13 @@
 
 #include "View.h"
 
-template <typename T>
-class Widget : public View {
+template <typename T> class Widget : public View {
 public:
 	using value_type = T;
-	Widget(value_type *value);
-	// TODO: cursor events: click, drag, etc
+	Widget(value_type &value);
 
 protected:
-	value_type *value;
+	value_type &value;
 };
 
 #endif

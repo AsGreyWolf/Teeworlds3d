@@ -1,7 +1,7 @@
 #include "Camera.h"
 
-#include <shared/System.h>
 #include <client/components/Input.h>
+#include <shared/System.h>
 
 class Camera *pCamera;
 Camera *g_Camera() { return pCamera ? pCamera : new Camera(); }

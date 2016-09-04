@@ -1,27 +1,25 @@
 #include "Client.h"
 
-#include <shared/Console.h>
-#include <shared/System.h>                   //TODO: remove
-#include <client/components/Resources.h>     //TODO: remove
-#include <client/components/Map.h>
-#include <client/components/Camera.h>        //TODO: remove
-#include <client/components/UI.h>
+#include <client/components/Camera.h> //TODO: remove
 #include <client/components/Input.h>
-#include <client/components/ui/Label.h>       //TODO: remove
-#include <client/components/ui/Panel.h>       //TODO: remove
-#include <client/components/ui/Layout.h>      //TODO: remove
-#include <client/components/graphics/shaders/ShaderShadow.h> //TODO: remove
-#include <client/components/graphics/shaders/Shader3dComposer.h>     //TODO: remove
-#include <shared/World.h>                                    //TODO: remove
+#include <client/components/Map.h>
+#include <client/components/Resources.h> //TODO: remove
+#include <client/components/UI.h>
+#include <client/components/graphics/shaders/Shader3dComposer.h> //TODO: remove
+#include <client/components/graphics/shaders/ShaderShadow.h>     //TODO: remove
+#include <client/components/ui/Label.h>                          //TODO: remove
+#include <client/components/ui/Layout.h>                         //TODO: remove
+#include <client/components/ui/Panel.h>                          //TODO: remove
+#include <shared/Console.h>
+#include <shared/System.h> //TODO: remove
+#include <shared/World.h>  //TODO: remove
 
 class Client *pClient;
 Client *g_Client() { return pClient ? pClient : new Client(); }
 
-STATE oldstate;
 int main(int argc, char *argv[]) {
 	SDL_SetMainReady();
 	SDL_Init(0);
-	oldstate = ClientComponent::state;
 	g_Client()->Start();
 	while (g_Client()->isRunning()) {
 		ClientComponent::TickComponents();
@@ -73,7 +71,7 @@ void Client::Start() {
 	localPlayer = g_World()->players[0];
 	// localPlayer->color = glm::vec4(0, 0, 0, 0.3f);
 	g_Shader3dComposer();
-	depthMap =  new Panel(g_ShaderShadow()->shadowMap);
+	depthMap = new Panel(g_ShaderShadow()->shadowMap);
 	depthMap->size = glm::vec2(0.5f, 0.5f);
 	g_UI()->screenLayout->Add(depthMap);
 	fps = new Label("FPS: 60", FONT_BIG);
@@ -93,11 +91,13 @@ void Client::Stop() {
 };
 bool Client::isRunning() { return working; }
 void Client::Tick() {
-	if (oldstate != ClientComponent::state)
-		ClientComponent::StateChangeComponents(oldstate);
-	oldstate = ClientComponent::state;
+	static STATE lastState = ClientComponent::state;
+	if (lastState != ClientComponent::state)
+		ClientComponent::StateChangeComponents(lastState);
+	lastState = ClientComponent::state;
 
-	fps->SetText("FPS: " + std::to_string((int)(1.0f / g_System()->tickCoeff)), FONT_BIG);
+	fps->SetText("FPS: " + std::to_string((int)(1.0f / g_System()->tickCoeff)),
+	             FONT_BIG);
 	if (g_Input()->mouseWheel > 0) {
 		localPlayer->weapon++;
 		localPlayer->weapon %= NUM_WEAPONS;

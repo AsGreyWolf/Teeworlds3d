@@ -2,8 +2,8 @@
 #define SHADER3D_H
 
 #include "../Shader.h"
-#include <tools/vmath.h>
 #include <client/components/graphics/Texture.h>
+#include <tools/vmath.h>
 
 class Shader3d : public Shader {
 private:
@@ -23,13 +23,6 @@ public:
 	Texture depth;
 
 private:
-	GLuint colorUniform;
-	GLuint lightUniform;
-	GLuint viewProjectionMatrixUniform;
-	GLuint modelMatrixUniform;
-	GLuint normalMatrixUniform;
-	GLuint textureUniform;
-
 	glm::mat4 perspectiveMatrix;
 };
 Shader3d *g_Shader3d();

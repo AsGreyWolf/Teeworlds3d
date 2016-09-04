@@ -23,8 +23,8 @@ public:
 	///<summary>Returns time in ms</summary>
 	long GetTime() const;
 	///<summary>Fills out with filenames in the directory</summary>
-	void GetFilesInDirectory(std::vector<std::string> &out,
-	                         const std::string &directory) const;
+	std::vector<std::string>
+	GetFilesInDirectory(const std::string &directory) const;
 	///<summary>Returns filename in data folder</summary>
 	///<param name="str">Filename</param>
 	std::string GetDataFile(const std::string &str) const;

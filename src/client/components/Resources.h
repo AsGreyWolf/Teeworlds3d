@@ -3,13 +3,13 @@
 
 #include "../ClientComponent.h"
 
-#include <vector>
-#include <string>
-#include <map>
-#include <tools/Protocol.h>
-#include <tools/vmath.h>
 #include <client/components/graphics/Texture.h>
 #include <client/components/graphics/models/Model3d.h>
+#include <map>
+#include <string>
+#include <tools/Protocol.h>
+#include <tools/vmath.h>
+#include <vector>
 
 class Texture;
 

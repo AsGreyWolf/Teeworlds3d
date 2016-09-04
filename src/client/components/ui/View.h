@@ -28,11 +28,15 @@ public:
 	virtual ~View();
 
 	inline bool isVisible() const { return visible; }
-	void Click(const glm::vec2 &position);
 	virtual void Show();
 	virtual void Hide();
 	virtual void Validate();
-	virtual void OnClick(const glm::vec2 &position) { };
+	virtual View *Select(const glm::vec2 &position);
+	virtual void OnClick(const glm::vec2 &position){};
+	virtual void OnMouseDown(const glm::vec2 &position){};
+	virtual void OnMouseUp(const glm::vec2 &position){};
+	virtual void OnDrag(const glm::vec2 &position){};
+	virtual void OnDrop(const glm::vec2 &position){};
 
 	float padding[NUM_BORDERS] = {0, 0, 0, 0};
 	glm::uvec2 align;

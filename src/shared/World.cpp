@@ -1,8 +1,8 @@
 #include "World.h"
 
 #include <fstream>
-#include <shared/System.h>
 #include <shared/Console.h>
+#include <shared/System.h>
 #include <shared/world/Player.h>
 #include <shared/world/Tile.h>
 
@@ -154,9 +154,9 @@ Player *World::IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
 	}
 	if (minp != NULL) {
 		if (collision)
-			*collision = dist *minv + pos0;
+			*collision = dist * minv + pos0;
 		if (beforeCollision)
-			*beforeCollision = dist *minv - dist + pos0;
+			*beforeCollision = dist * minv - dist + pos0;
 		return minp;
 	}
 	return NULL;
@@ -197,15 +197,16 @@ Tile *World::GetTile(const glm::vec3 &pos) const {
 	return GetTile(x, y, z);
 }
 Tile *World::GetTile(int x, int y, int z) const {
-	return x < 0 ? NULL : (size_t)x >= worldSize.x
-	                          ? NULL
-	                          : y < 0 ? NULL
-	                                  : (size_t)y >= worldSize.y
-	                                        ? NULL
-	                                        : z < 0 ? NULL
-	                                                : (size_t)z >= worldSize.z
-	                                                      ? NULL
-	                                                      : tilesByPos[x][y][z];
+	return x < 0 ? NULL
+	             : (size_t)x >= worldSize.x
+	                   ? NULL
+	                   : y < 0 ? NULL
+	                           : (size_t)y >= worldSize.y
+	                                 ? NULL
+	                                 : z < 0 ? NULL
+	                                         : (size_t)z >= worldSize.z
+	                                               ? NULL
+	                                               : tilesByPos[x][y][z];
 }
 Tile *World::IntersectLine(const glm::vec3 &pos0, const glm::vec3 &pos1,
                            glm::vec3 *collision,

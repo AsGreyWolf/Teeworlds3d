@@ -2,16 +2,16 @@
 
 #include <ctime>
 #ifdef WIN32
-#include <codecvt>
 #include <Windows.h>
-#include <direct.h>
+#include <codecvt>
 #include <cstdlib>
+#include <direct.h>
 #define GetCurrentDir(a, b) GetCurrentDirectory(b, a)
 #else
-#include <unistd.h>
-#include <sys/types.h>
 #include <dirent.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
 #define GetCurrentDir(a, b) getcwd(a, b)
 #endif
 #include <SDL.h>
@@ -36,11 +36,11 @@ int calcFPS(void *param) {
 SDL_Thread *fpsThread;
 System::System() : SharedComponent() {
 	srand(time(NULL));
-	#ifdef __ANDROID__
+#ifdef __ANDROID__
 	PATH_CUR = "/sdcard/Android/data/tee3d/"; // TODO: package name && unpack
-	#else
+#else
 	PATH_CUR = std::string(SDL_GetBasePath());
-	#endif
+#endif
 	PATH_DATA = PATH_CUR + "data/";
 	pSystem = this;
 	fps = 60;
@@ -77,15 +77,16 @@ std::string System::GetDataFile(const std::string &str) const {
 	return PATH_DATA + str;
 }
 long System::GetTime() const { return SDL_GetTicks(); };
-void System::GetFilesInDirectory(std::vector<std::string> &out,
-                                 const std::string &directory) const {
+std::vector<std::string>
+System::GetFilesInDirectory(const std::string &directory) const {
+	std::vector<std::string> out;
 #ifdef WIN32
 	HANDLE dir;
 	WIN32_FIND_DATAW file_data;
 	char str[FILENAME_MAX];
 	str[0] = 0;
 	strcpy(str, (directory + "/*").c_str());
-	LPWSTR wstr = (LPWSTR)malloc(FILENAME_MAX*sizeof(WCHAR));
+	LPWSTR wstr = (LPWSTR)malloc(FILENAME_MAX * sizeof(WCHAR));
 	MultiByteToWideChar(CP_ACP, 0, str, strlen(str) + 1, wstr, FILENAME_MAX);
 	if ((dir = FindFirstFileW(wstr, &file_data)) == INVALID_HANDLE_VALUE)
 		return;
@@ -106,7 +107,7 @@ void System::GetFilesInDirectory(std::vector<std::string> &out,
 	DIR *dp;
 	struct dirent *dirp;
 	if ((dp = opendir(directory.c_str())) == NULL) {
-		return;
+		return out;
 	}
 
 	while ((dirp = readdir(dp)) != NULL) {
@@ -116,8 +117,8 @@ void System::GetFilesInDirectory(std::vector<std::string> &out,
 			out.push_back(std::string(dirp->d_name));
 	}
 	closedir(dp);
-	return;
 #endif
+	return out;
 };
 
 #ifdef WIN32

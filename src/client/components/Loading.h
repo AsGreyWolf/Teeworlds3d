@@ -15,10 +15,10 @@ public:
 	~Loading() override;
 	void Tick() override;
 
-	void Push(const std::function<void ()> &f);
+	void Push(const std::function<void()> &f);
 
 private:
-	std::queue< std::function<void ()> > queue;
+	std::queue<std::function<void()>> queue;
 	Panel status;
 	size_t processed = 0;
 };

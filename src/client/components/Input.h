@@ -2,8 +2,8 @@
 #define INPUT_H
 
 #include "../ClientComponent.h"
-#include <vector>
 #include <map>
+#include <vector>
 
 class Input : public ClientComponent {
 private:

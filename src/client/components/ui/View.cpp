@@ -1,23 +1,14 @@
 #include "View.h"
 #include <client/components/UI.h>
 
-View::View() {
-	g_UI()->RegisterView(this);
-}
-View::View(const View &second) : View() {
-	*this = second;
-}
-View::~View() {
-	g_UI()->UnregisterView(this);
-}
-void View::Show() {
-	visible = true;
-}
-void View::Hide() {
-	visible = false;
-}
+View::View() { g_UI()->RegisterView(this); }
+View::View(const View &second) : View() { *this = second; }
+View::~View() { g_UI()->UnregisterView(this); }
+void View::Show() { visible = true; }
+void View::Hide() { visible = false; }
 void View::Validate() {
-	if (!isVisible()) return;
+	if (!isVisible())
+		return;
 	element = quad2(container.x + padding[BORDER_LEFT],
 	                container.y + padding[BORDER_BOTTOM],
 	                container.w - padding[BORDER_RIGHT] - padding[BORDER_LEFT],
@@ -31,27 +22,27 @@ void View::Validate() {
 	if (size.x >= 0)
 		w = size.x;
 	switch (align.x) {
-		case ALIGN_CENTER:
-			x = element.x + element.w / 2 - w / 2;
-			break;
-		case ALIGN_RIGHT:
-			x = element.x + element.w - w;
-			break;
+	case ALIGN_CENTER:
+		x = element.x + element.w / 2 - w / 2;
+		break;
+	case ALIGN_RIGHT:
+		x = element.x + element.w - w;
+		break;
 	}
 	if (size.y >= 0)
 		h = size.y;
 	switch (align.y) {
-		case ALIGN_CENTER:
-			y = element.y + element.h / 2 - h / 2;
-			break;
-		case ALIGN_TOP:
-			y = element.y + element.h - h;
-			break;
+	case ALIGN_CENTER:
+		y = element.y + element.h / 2 - h / 2;
+		break;
+	case ALIGN_TOP:
+		y = element.y + element.h - h;
+		break;
 	}
 	element = quad2(x, y, w, h);
 }
-void View::Click(const glm::vec2 &position) {
-	if(!isVisible() || !element.contains(position))
-		return;
-	OnClick(position);
+View *View::Select(const glm::vec2 &position) {
+	if (!isVisible() || !element.contains(position))
+		return NULL;
+	return this;
 }

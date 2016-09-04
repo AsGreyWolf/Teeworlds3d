@@ -1,7 +1,7 @@
 #include "ObjModel.h"
 #include <fstream>
-#include <sstream>
 #include <shared/System.h>
+#include <sstream>
 
 Geometry3d ObjModel(const std::string &filename, const glm::vec3 &position) {
 	Geometry3d geom;
@@ -20,7 +20,7 @@ Geometry3d ObjModel(const std::string &filename, const glm::vec3 &position) {
 		if (!(iss >> com)) {
 			continue;
 		}
-		if (com.compare("v") == 0) {
+		if (com == "v") {
 			glm::vec3 v;
 			if (!(iss >> v.x >> v.y >> v.z)) {
 				continue;
@@ -29,20 +29,20 @@ Geometry3d ObjModel(const std::string &filename, const glm::vec3 &position) {
 			buf *= 32;
 			buf += position;
 			verts.push_back(buf);
-		} else if (com.compare("vn") == 0) {
+		} else if (com == "vn") {
 			glm::vec3 vn;
 			if (!(iss >> vn.x >> vn.y >> vn.z)) {
 				continue;
 			}
 			norms.push_back(vn);
-		} else if (com.compare("vt") == 0) {
+		} else if (com == "vt") {
 			glm::vec2 vt;
 			if (!(iss >> vt.x >> vt.y)) {
 				continue;
 			}
 			vt.y = 1 - vt.y;
 			texs.push_back(vt);
-		} else if (com.compare("f") == 0) {
+		} else if (com == "f") {
 			if (norms.size() > 0 && texs.size() > 0) {
 				int v1, v2, v3, t1, t2, t3, n1, n2, n3;
 				char c;

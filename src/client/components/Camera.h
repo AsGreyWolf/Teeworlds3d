@@ -2,8 +2,8 @@
 #define CAMERA_H
 
 #include "../ClientComponent.h"
-#include <tools/vmath.h>
 #include <tools/Positioned.h>
+#include <tools/vmath.h>
 
 class Camera : public ClientComponent, public Positioned {
 private:

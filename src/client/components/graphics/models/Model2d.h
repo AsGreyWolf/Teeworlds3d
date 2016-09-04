@@ -5,13 +5,13 @@
 #include <vector>
 #define GLEW_STATIC
 #ifdef __ANDROID__
-	#include <GLES3/gl3.h>
+#include <GLES3/gl3.h>
 #else
-	#include <glew.h>
+#include <glew.h>
 #endif
-#include <tools/vmath.h>
 #include <client/components/graphics/Texture.h>
 #include <client/components/graphics/geometry/Geometry2d.h>
+#include <tools/vmath.h>
 
 class Texture;
 
@@ -48,7 +48,7 @@ protected:
 		GLuint tbuffer;
 	};
 	typedef std::shared_ptr<Data> Model2dDataPtr;
-	#define Model2dDataPtr() std::make_shared<Data>()
+#define Model2dDataPtr() std::make_shared<Data>()
 
 	Model2dDataPtr data;
 	int type;

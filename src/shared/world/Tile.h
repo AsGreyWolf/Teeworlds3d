@@ -1,8 +1,8 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include <vector>
 #include <tools/vmath.h>
+#include <vector>
 
 class Tile {
 public:

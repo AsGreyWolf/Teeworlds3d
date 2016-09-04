@@ -490,8 +490,6 @@
 		<Unit filename="src/client/components/graphics/shaders/ShaderTexture.h" />
 		<Unit filename="src/client/components/ui/HorizontalLayout.cpp" />
 		<Unit filename="src/client/components/ui/HorizontalLayout.h" />
-		<Unit filename="src/client/components/ui/Image.cpp" />
-		<Unit filename="src/client/components/ui/Image.h" />
 		<Unit filename="src/client/components/ui/Label.cpp" />
 		<Unit filename="src/client/components/ui/Label.h" />
 		<Unit filename="src/client/components/ui/Layout.cpp" />

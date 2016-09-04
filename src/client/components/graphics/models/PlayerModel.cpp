@@ -1,7 +1,7 @@
 #include "PlayerModel.h"
-#include <client/components/graphics/geometry/Sphere.h>
-#include <client/components/Resources.h>
 #include <client/components/Loading.h>
+#include <client/components/Resources.h>
+#include <client/components/graphics/geometry/Sphere.h>
 #include <shared/System.h>
 
 const float PlayerModel::renderSize = 36.0f;
@@ -19,7 +19,7 @@ const glm::vec3 PlayerModel::rFootPos = glm::vec3(
     renderSize / 2, renderSize / 6, -renderSize / 1.5f + renderSize / 4.8f - 5);
 
 PlayerModel::PlayerModel() : Model3d() {
-	g_Loading()->Push([&](){
+	g_Loading()->Push([&]() {
 		Sphere arm = Sphere()
 		                 .SetRadius(renderSize / 8)
 		                 .SetTexCoord(g_Resources()->texturePos8x4[6])

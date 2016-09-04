@@ -12,10 +12,7 @@ void main(void) {
 	if (map.a < 0.2)
 		discard;
 	gl_FragDepth = unwrapDepth(ex_logDepth, 10000.0);
-	if (lighting < 0.5)
-		gl_FragData[2] = vec4(0.0, 0.0, 0.0, 1.0);
-	else
-		gl_FragData[2] = vec4(ex_Normal, 1.0);
-	gl_FragData[1] = vec4(ex_WorldPosition.xyz/ex_WorldPosition.w, 1.0);
 	gl_FragData[0] = dye(map, colorer);
+	gl_FragData[1] = vec4(ex_WorldPosition.xyz/ex_WorldPosition.w, 1.0);
+	gl_FragData[2] = vec4(ex_Normal*lighting, 1.0);
 }

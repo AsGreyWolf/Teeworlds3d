@@ -1,11 +1,11 @@
 #include "Resources.h"
 
-#include <shared/System.h>
-#include <client/components/Loading.h>
 #include <client/components/ImageLoader.h>
-#include <client/components/graphics/geometry/Primitives.h>
+#include <client/components/Loading.h>
 #include <client/components/graphics/geometry/ObjModel.h>
+#include <client/components/graphics/geometry/Primitives.h>
 #include <client/components/graphics/models/PlayerModel.h> //TODO: REMOVE !!!!
+#include <shared/System.h>
 
 const char *Resources::weaponFiles[NUM_WEAPONS] = {
     "models/hammer",  "models/gun",   "models/shotgun",
@@ -19,18 +19,19 @@ Resources::Resources() : ClientComponent() {
 	pResources = this;
 	// textures
 	textureRGB = g_ImageLoader()->Load(std::string("rgb.png"), TEXTURE_ANISOTROPY);
-	textureBlank = g_ImageLoader()->Load(std::string("blank.png"), TEXTURE_ANISOTROPY);
-	textureGame =
-	    g_ImageLoader()->Load(std::string("game.png"), TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
-	textureCursor =
-	    g_ImageLoader()->Load(std::string("gui_cursor.png"), TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
-	std::vector<std::string> skins;
-	g_System()->GetFilesInDirectory(skins, g_System()->GetDataFile("skins"));
+	textureBlank =
+	    g_ImageLoader()->Load(std::string("blank.png"), TEXTURE_ANISOTROPY);
+	textureGame = g_ImageLoader()->Load(std::string("game.png"),
+	                                    TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
+	textureCursor = g_ImageLoader()->Load(std::string("gui_cursor.png"),
+	                                      TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
+	std::vector<std::string> skins =
+	    g_System()->GetFilesInDirectory(g_System()->GetDataFile("skins"));
 	for (unsigned int i = 0; i < skins.size(); i++) {
 		std::string skin = skins[i];
 		skinTextures[skin.substr(0, skin.size() - 4)] = textureRGB;
-		g_Loading()->Push([&, skin](){
-			Texture skintex=g_ImageLoader()->Load("skins/" + skin);
+		g_Loading()->Push([&, skin]() {
+			Texture skintex = g_ImageLoader()->Load("skins/" + skin);
 			skinTextures[skin.substr(0, skin.size() - 4)] = skintex;
 		});
 	}
@@ -77,44 +78,44 @@ Resources::Resources() : ClientComponent() {
 
 	weaponModels.resize(NUM_WEAPONS);
 	for (int i = 0; i < NUM_WEAPONS; i++) {
-		g_Loading()->Push([&,i](){
+		g_Loading()->Push([&, i]() {
 			Model3d buffer;
 			buffer.Add(ObjModel(weaponFiles[i]));
-			buffer.texture =
-			    g_ImageLoader()->Load(std::string(weaponFiles[i]) + ".png", TEXTURE_ANISOTROPY);
-			weaponModels[i]=buffer;
+			buffer.texture = g_ImageLoader()->Load(std::string(weaponFiles[i]) + ".png",
+			                                       TEXTURE_ANISOTROPY);
+			weaponModels[i] = buffer;
 		});
 	}
 	eyesModels.resize(NUM_EMOTES);
 	for (int i = 0; i < NUM_EMOTES; i++) {
-		g_Loading()->Push([&,i](){
+		g_Loading()->Push([&, i]() {
 			Model3d buffer(false);
+			buffer.Add(
+			    Quad(quad3(glm::vec3(-PlayerModel::eyeScale - PlayerModel::eyeSeparation,
+			                         0, PlayerModel::eyeScale),
+			               glm::vec3(0 - PlayerModel::eyeSeparation, 0,
+			                         PlayerModel::eyeScale),
+			               glm::vec3(0 - PlayerModel::eyeSeparation, 0, 0),
+			               glm::vec3(-PlayerModel::eyeScale - PlayerModel::eyeSeparation,
+			                         0, 0)),
+			         glm::vec3(0, 1, 0), texturePos8x4[26 + i].reflectX()));
 			buffer.Add(Quad(
-			    quad3(glm::vec3(-PlayerModel::eyeScale - PlayerModel::eyeSeparation, 0,
-			                    PlayerModel::eyeScale),
-			          glm::vec3(0 - PlayerModel::eyeSeparation, 0, PlayerModel::eyeScale),
-			          glm::vec3(0 - PlayerModel::eyeSeparation, 0, 0),
-			          glm::vec3(-PlayerModel::eyeScale - PlayerModel::eyeSeparation, 0, 0)),
-			    glm::vec3(0, 1, 0), texturePos8x4[26 + i].reflectX()));
-			buffer.Add(Quad(
-			    quad3(glm::vec3(0 + PlayerModel::eyeSeparation, 0, PlayerModel::eyeScale),
-			          glm::vec3(PlayerModel::eyeScale + PlayerModel::eyeSeparation, 0,
-			                    PlayerModel::eyeScale),
-			          glm::vec3(PlayerModel::eyeScale + PlayerModel::eyeSeparation, 0, 0),
-			          glm::vec3(PlayerModel::eyeSeparation, 0, 0)),
+			    quad3(
+			        glm::vec3(0 + PlayerModel::eyeSeparation, 0, PlayerModel::eyeScale),
+			        glm::vec3(PlayerModel::eyeScale + PlayerModel::eyeSeparation, 0,
+			                  PlayerModel::eyeScale),
+			        glm::vec3(PlayerModel::eyeScale + PlayerModel::eyeSeparation, 0, 0),
+			        glm::vec3(PlayerModel::eyeSeparation, 0, 0)),
 			    glm::vec3(0, 1, 0), texturePos8x4[26 + i]));
 			buffer.texture = skinTextures["default"];
 			eyesModels[i] = buffer;
 		});
 	}
-	g_Loading()->Push([&](){
-		hookHead.Add(ObjModel("models/hook0"));
-	});
-	g_Loading()->Push([&](){
-		hookBody.Add(ObjModel("models/hook"));
-	});
-	g_Loading()->Push([&](){
-		hookBody.texture = hookHead.texture = g_ImageLoader()->Load("models/hook.png");
+	g_Loading()->Push([&]() { hookHead.Add(ObjModel("models/hook0")); });
+	g_Loading()->Push([&]() { hookBody.Add(ObjModel("models/hook")); });
+	g_Loading()->Push([&]() {
+		hookBody.texture = hookHead.texture =
+		    g_ImageLoader()->Load("models/hook.png");
 	});
 }
 Resources::~Resources() {

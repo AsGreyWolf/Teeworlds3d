@@ -49,7 +49,7 @@ LOCAL_SRC_FILES := ../SDL/src/main/android/SDL_android_main.c \
 	client/components/graphics/shaders/ShaderShadow.cpp \
 	client/components/graphics/shaders/ShaderTexture.cpp \
 	client/components/ui/HorizontalLayout.cpp \
-	client/components/ui/Image.cpp \
+	client/components/ui/Panel.cpp \
 	client/components/ui/Label.cpp \
 	client/components/ui/Layout.cpp \
 	client/components/ui/VerticalLayout.cpp \

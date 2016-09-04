@@ -5,18 +5,18 @@
 #include <cmath>
 #define GLM_FORCE_RADIANS
 #include <glm.hpp>
-#include <gtc/type_ptr.hpp>
 #include <gtc/matrix_transform.hpp>
-#include <gtx/rotate_vector.hpp>
+#include <gtc/type_ptr.hpp>
 #include <gtx/closest_point.hpp>
+#include <gtx/rotate_vector.hpp>
 #include <tools/quad2.h>
 #include <tools/quad3.h>
 #include <tools/rot3.h>
 #ifndef M_PI
-    #define M_PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846
 #endif
 #ifndef M_PI_2
-	#define M_PI_2 1.57079632679
+#define M_PI_2 1.57079632679
 #endif
 
 namespace glm {

@@ -1,19 +1,21 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <string>
 #include <list>
-#include <set>
+#include <map>
 #include <memory>
+#include <set>
+#include <string>
 #define GLEW_STATIC
 #ifdef __ANDROID__
-	#include <GLES3/gl3.h>
+#include <GLES3/gl3.h>
 #else
-	#include <glew.h>
+#include <glew.h>
 #endif
 #include <tools/vmath.h>
 
 class Model;
+class Texture;
 
 enum SHADER_BINDINGS { SHADER_POS = 0, SHADER_TEXMAP, SHADER_NORMAL };
 
@@ -31,8 +33,16 @@ public:
 	void RegisterModel(Model *model);
 	void UnregisterModel(Model *model);
 
+	GLuint Uniform(const std::string &name);
+	template <typename T> void SetUniform(const std::string &name, const T &value);
+	void SetAttribute(const std::string &name, SHADER_BINDINGS id);
+	void AddOutputTexture(Texture &t);
+
 private:
 	GLuint id;
+	std::vector<std::string> uniformNames;
+	std::vector<GLuint> uniformIds;
+	std::vector<GLuint> colorTargets;
 
 protected:
 	GLenum culling;

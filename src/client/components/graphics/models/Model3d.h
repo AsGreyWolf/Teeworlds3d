@@ -5,14 +5,14 @@
 #include <vector>
 #define GLEW_STATIC
 #ifdef __ANDROID__
-	#include <GLES3/gl3.h>
+#include <GLES3/gl3.h>
 #else
-	#include <glew.h>
+#include <glew.h>
 #endif
-#include <tools/vmath.h>
-#include <tools/Positioned.h>
 #include <client/components/graphics/Texture.h>
 #include <client/components/graphics/geometry/Geometry3d.h>
+#include <tools/Positioned.h>
+#include <tools/vmath.h>
 
 class Model3d : public Model, public Positioned {
 public:
@@ -56,7 +56,7 @@ protected:
 		GLuint tbuffer;
 	};
 	typedef std::shared_ptr<Data> Model3dDataPtr;
-	#define Model3dDataPtr() std::make_shared<Data>()
+#define Model3dDataPtr() std::make_shared<Data>()
 
 	Model3dDataPtr data;
 	ShadowModel *shadow;

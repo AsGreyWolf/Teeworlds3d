@@ -4,9 +4,9 @@
 #include "SharedComponent.h"
 
 #include <string>
-#include <vector>
-#include <tools/vmath.h>
 #include <tools/Protocol.h>
+#include <tools/vmath.h>
+#include <vector>
 
 class Player;
 class Tile;

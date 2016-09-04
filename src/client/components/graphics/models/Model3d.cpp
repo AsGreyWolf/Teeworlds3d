@@ -1,8 +1,8 @@
 #include "Model3d.h"
 
 #include <client/components/Graphics.h>
-#include <client/components/graphics/shaders/Shader3d.h>
 #include <client/components/graphics/models/ShadowModel.h>
+#include <client/components/graphics/shaders/Shader3d.h>
 
 Model3d::Model3d(bool l, int t) : Model() {
 	bufferedModelMatrix = glm::mat4(1.0f);
@@ -91,7 +91,10 @@ void Model3d::Disable() {
 	if (shadow)
 		shadow->Disable();
 }
-void Model3d::Add(const Geometry3d &geom) { *data += geom; data->valid = false; }
+void Model3d::Add(const Geometry3d &geom) {
+	*data += geom;
+	data->valid = false;
+}
 void Model3d::Clear() { data->Clear(); }
 void Model3d::UpdateMatrix(const glm::mat4 &parentMatrix) {
 	// position and rotation are buffered with matrix, don't calculate again if it

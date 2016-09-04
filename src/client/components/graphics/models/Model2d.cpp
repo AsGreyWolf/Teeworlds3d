@@ -40,7 +40,10 @@ void Model2d::Render() {
 	g_Shader2d()->SetPosition(position, depth);
 	data->Render(type);
 }
-void Model2d::Add(const Geometry2d &geom) { *data += geom; data->valid = false; }
+void Model2d::Add(const Geometry2d &geom) {
+	*data += geom;
+	data->valid = false;
+}
 void Model2d::Clear() { data->Clear(); }
 
 Model2d::Data::Data() {

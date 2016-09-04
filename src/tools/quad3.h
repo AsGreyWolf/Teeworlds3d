@@ -4,10 +4,10 @@
 #include <cmath>
 #define GLM_FORCE_RADIANS
 #include <glm.hpp>
-#include <gtc/type_ptr.hpp>
 #include <gtc/matrix_transform.hpp>
-#include <gtx/rotate_vector.hpp>
+#include <gtc/type_ptr.hpp>
 #include <gtx/closest_point.hpp>
+#include <gtx/rotate_vector.hpp>
 #include <tools/quad2.h>
 
 class quad3 {

@@ -61,8 +61,8 @@ Sphere::operator Geometry3d() {
 				float const z = -sin(-M_PI_2 + M_PI * r * R);
 				float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
 				float const y = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
-				*t++ = glm::vec2(texcoord.x + s * S * tcsizex,
-				                 texcoord.y + r * R * tcsizey);
+				*t++ =
+				    glm::vec2(texcoord.x + s * S * tcsizex, texcoord.y + r * R * tcsizey);
 				*v++ = glm::vec3(-x * radius * scale.x, y * radius * scale.y,
 				                 z * radius * scale.z) +
 				       position;
@@ -74,8 +74,8 @@ Sphere::operator Geometry3d() {
 				float const z = -sin(-M_PI_2 + M_PI * r * R);
 				float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
 				float const y = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
-				*t++ = glm::vec2(texcoord.x + s * S * tcsizex,
-				                 texcoord.y + r * R * tcsizey);
+				*t++ =
+				    glm::vec2(texcoord.x + s * S * tcsizex, texcoord.y + r * R * tcsizey);
 				*v++ = glm::vec3(x * radius * scale.x, y * radius * scale.y,
 				                 z * radius * scale.z) +
 				       position;

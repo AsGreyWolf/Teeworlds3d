@@ -18,7 +18,4 @@ private:
 	bool enabled = false;
 };
 
-typedef std::shared_ptr<Model> ModelPtr;
-#define ModelPtr(a) std::make_shared<Model>(a);
-
 #endif

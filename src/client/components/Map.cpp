@@ -1,11 +1,11 @@
 #include "Map.h"
-#include <tools/Protocol.h>
-#include <shared/World.h>
-#include <shared/world/Tile.h>
+#include <client/components/ImageLoader.h>
 #include <client/components/Loading.h>
 #include <client/components/Resources.h>
-#include <client/components/ImageLoader.h>
 #include <client/components/graphics/geometry/Primitives.h>
+#include <shared/World.h>
+#include <shared/world/Tile.h>
+#include <tools/Protocol.h>
 
 class Map *pMap;
 Map *g_Map() { return pMap ? pMap : new Map(); }
@@ -30,7 +30,7 @@ bool Map::Load(const std::string &name) {
 	if (!g_World()->isValid())
 		return false;
 
-	g_Loading()->Push([&](){
+	g_Loading()->Push([&]() {
 		terrain.texture =
 		    g_ImageLoader()->Load("mapres/" + g_World()->tileset + ".png");
 		for (Tile &buffer : g_World()->tilesById) {

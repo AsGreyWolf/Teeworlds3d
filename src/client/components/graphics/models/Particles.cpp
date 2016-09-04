@@ -36,6 +36,7 @@ void Particles::Render() {
 void Particles::Add(int c) {
 	for (int i = 0; i < c; i++) {
 		particleCount++;
-		Model3d::Add(Point(glm::vec3(particleCount, particleCount * particleCount, particleCount * particleCount * particleCount)));
+		Model3d::Add(Point(glm::vec3(particleCount, particleCount * particleCount,
+		                             particleCount * particleCount * particleCount)));
 	}
 }

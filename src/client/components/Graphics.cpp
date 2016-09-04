@@ -1,7 +1,7 @@
 #include "Graphics.h"
 
-#include <shared/Console.h>
 #include <client/components/graphics/Shader.h>
+#include <shared/Console.h>
 
 class Graphics *pGraphics;
 Graphics *g_Graphics() { return pGraphics ? pGraphics : new Graphics(); }
@@ -32,9 +32,8 @@ Graphics::Graphics() : ClientComponent() {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	if ((window = SDL_CreateWindow("", 50, 50, w, h,
-	                               SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN)) ==
-	    NULL) {
+	if ((window = SDL_CreateWindow(
+	         "", 50, 50, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN)) == NULL) {
 		g_Console()->Err("Could not create window: " + std::string(SDL_GetError()));
 		return; // need exceptions
 	}
@@ -47,9 +46,9 @@ Graphics::Graphics() : ClientComponent() {
 		return; // TODO: exceptions
 	}
 	SDL_GL_SetSwapInterval(0);
-	#ifndef __ANDROID__
+#ifndef __ANDROID__
 	glewInit();
-	#endif
+#endif
 	g_Console()->Info("Initialized OpenGL " +
 	                  std::string((char *)glGetString(GL_VERSION)));
 
@@ -57,9 +56,9 @@ Graphics::Graphics() : ClientComponent() {
 	glBlendEquation(GL_FUNC_ADD);
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	#ifndef __ANDROID__
+#ifndef __ANDROID__
 	glEnable(GL_MULTISAMPLE);
-	#endif
+#endif
 	glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
 	glEnable(GL_DEPTH_TEST);
 
@@ -70,9 +69,9 @@ Graphics::Graphics() : ClientComponent() {
 	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
 
 	glLineWidth(3);
-	#ifndef __ANDROID__
+#ifndef __ANDROID__
 	glPointSize(3);
-	#endif
+#endif
 }
 Graphics::~Graphics() {
 	Shader::ClearShaders();

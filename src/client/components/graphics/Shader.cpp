@@ -1,8 +1,9 @@
 #include "Shader.h"
 
+#include <client/components/graphics/Texture.h>
+#include <fstream>
 #include <shared/Console.h>
 #include <shared/System.h>
-#include <fstream>
 #include <vector>
 
 std::string filetobuf(std::string file) {
@@ -51,17 +52,9 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 	this->clear = clear;
 	this->viewport = viewport;
 
-	std::string firstpath = g_System()->GetDataFile(filepath);
-
-	std::string vertexsource, fragmentsource, geometrysource, libraries = "\n";
-	GLuint vertexshader, fragmentshader, geometryshader;
-	int IsCompiled_VS, IsCompiled_FS, IsCompiled_GS;
-	int IsLinked;
-	vertexsource = filetobuf(firstpath + ".vert");
-	fragmentsource = filetobuf(firstpath + ".frag");
-	// geometrysource = filetobuf(firstpath + ".geom");
-	std::vector<std::string> libs;
-	g_System()->GetFilesInDirectory(libs, g_System()->GetDataFile("shaders"));
+	std::string libraries = "\n";
+	std::vector<std::string> libs =
+	    g_System()->GetFilesInDirectory(g_System()->GetDataFile("shaders"));
 	for (auto &s : libs) {
 		s = "shaders/" + s;
 		if (endsWith(s, ".slib")) {
@@ -72,50 +65,37 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 			libraries += libsource + "\n";
 		}
 	}
-	vertexsource = libraries + vertexsource;
-	fragmentsource = libraries + fragmentsource;
-	// if (geometrysource.length() > 0)
-	// 	geometrysource = libraries + geometrysource;
+	std::string absolutepath = g_System()->GetDataFile(filepath);
+	std::string vertexsource = libraries + filetobuf(absolutepath + ".vert");
+	std::string fragmentsource = libraries + filetobuf(absolutepath + ".frag");
 
-	vertexshader = glCreateShader(GL_VERTEX_SHADER);
-	const GLchar* ptr = vertexsource.c_str();
+	GLuint vertexshader = glCreateShader(GL_VERTEX_SHADER);
+	const GLchar *ptr = vertexsource.c_str();
 	glShaderSource(vertexshader, 1, (const GLchar **)&ptr, 0);
 	glCompileShader(vertexshader);
+	int IsCompiled_VS;
 	glGetShaderiv(vertexshader, GL_COMPILE_STATUS, &IsCompiled_VS);
 	if (IsCompiled_VS == GL_FALSE) {
 		logShader(vertexshader);
 		return;
 	}
 
-	fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
+	GLuint fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
 	ptr = fragmentsource.c_str();
 	glShaderSource(fragmentshader, 1, (const GLchar **)&ptr, 0);
 	glCompileShader(fragmentshader);
+	int IsCompiled_FS;
 	glGetShaderiv(fragmentshader, GL_COMPILE_STATUS, &IsCompiled_FS);
 	if (IsCompiled_FS == GL_FALSE) {
 		logShader(fragmentshader);
 		return;
 	}
 
-	// TODO: REMOVE
-	// if (geometrysource.length() > 0) {
-	// 	geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
-	// 	ptr = geometrysource.c_str();
-	// 	glShaderSource(geometryshader, 1, (const GLchar **)&ptr, 0);
-	// 	glCompileShader(geometryshader);
-	// 	glGetShaderiv(geometryshader, GL_COMPILE_STATUS, &IsCompiled_GS);
-	// 	if (IsCompiled_GS == GL_FALSE) {
-	// 		logShader(geometryshader);
-	// 		return;
-	// 	}
-	// }
-
 	id = glCreateProgram();
 	glAttachShader(id, vertexshader);
 	glAttachShader(id, fragmentshader);
-	// if (geometrysource.length() > 0)
-	// 	glAttachShader(id, geometryshader);
 	glLinkProgram(id);
+	int IsLinked;
 	glGetProgramiv(id, GL_LINK_STATUS, (int *)&IsLinked);
 	if (IsLinked == GL_FALSE) {
 		logProgram(id);
@@ -125,6 +105,8 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 	g_Console()->Info("Shader loaded " + filepath);
 }
 Shader::~Shader() {
+	if (framebuffer)
+		glDeleteFramebuffers(1, &framebuffer);
 	glDeleteProgram(id);
 	id = 0;
 	registredModels.clear();
@@ -150,3 +132,63 @@ void Shader::ClearShaders() {
 	while (!registred.empty())
 		delete registred.back();
 }
+GLuint Shader::Uniform(const std::string &name) {
+	auto cached = std::find(uniformNames.begin(), uniformNames.end(), name);
+	if (cached == uniformNames.end()) {
+		uniformNames.push_back(name);
+		uniformIds.push_back(glGetUniformLocation(*this, name.c_str()));
+		cached = uniformNames.end() - 1;
+	}
+	return uniformIds[cached - uniformNames.begin()];
+	// GLuint Shader::Uniform(const std::string &name) {
+	// 	auto cached = uniforms.find(name);
+	// 	if (cached == uniforms.end()) {
+	// 		uniforms[name] = glGetUniformLocation(*this, name.c_str());
+	// 		cached = uniforms.find(name);
+	// 	}
+	// 	return (*cached).second;
+	// }
+}
+void Shader::SetAttribute(const std::string &name, SHADER_BINDINGS id) {
+	glBindAttribLocation(*this, id, name.c_str());
+}
+void Shader::AddOutputTexture(Texture &t) {
+	if (!framebuffer)
+		glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	if (t.flags & TEXTURE_DEPTH) {
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, t,
+		                       0);
+	} else {
+		GLuint id = GL_COLOR_ATTACHMENT0 + colorTargets.size();
+		glFramebufferTexture2D(GL_FRAMEBUFFER, id, GL_TEXTURE_2D, t, 0);
+		colorTargets.push_back(id);
+	}
+	glReadBuffer(GL_NONE);
+	glDrawBuffers(colorTargets.size(), colorTargets.data());
+}
+
+template <> void Shader::SetUniform(const std::string &name, const int &value) {
+	glUniform1i(Uniform(name), value);
+};
+template <>
+void Shader::SetUniform(const std::string &name, const float &value) {
+	glUniform1f(Uniform(name), value);
+};
+template <>
+void Shader::SetUniform(const std::string &name, const glm::vec2 &value) {
+	glUniform2f(Uniform(name), value.r, value.g);
+};
+template <>
+void Shader::SetUniform(const std::string &name, const glm::vec3 &value) {
+	glUniform3f(Uniform(name), value.r, value.g, value.b);
+};
+template <>
+void Shader::SetUniform(const std::string &name, const glm::vec4 &value) {
+	glUniform4f(Uniform(name), value.r, value.g, value.b, value.a);
+};
+template <>
+void Shader::SetUniform(const std::string &name, const glm::mat4 &value) {
+	glUniformMatrix4fv(Uniform(name), 1, GL_FALSE,
+	                   (const float *)glm::value_ptr(value));
+};

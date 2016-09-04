@@ -5,10 +5,10 @@
 #include <cmath>
 #define GLM_FORCE_RADIANS
 #include <glm.hpp>
-#include <gtc/type_ptr.hpp>
 #include <gtc/matrix_transform.hpp>
-#include <gtx/rotate_vector.hpp>
+#include <gtc/type_ptr.hpp>
 #include <gtx/closest_point.hpp>
+#include <gtx/rotate_vector.hpp>
 
 class rot3 {
 public:
@@ -30,7 +30,6 @@ public:
 		return *this;
 	};
 
-	
 	rot3 operator+() const {
 		rot3 second;
 		second.data = +data;

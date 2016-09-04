@@ -1,7 +1,7 @@
 #include "Player.h"
 
-#include <shared/World.h>
 #include <shared/System.h>
+#include <shared/World.h>
 #include <shared/world/Tile.h>
 
 Player::Player(glm::uint8_t id) {

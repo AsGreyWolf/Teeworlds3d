@@ -1,8 +1,8 @@
 #ifndef GEOMETRY2D_H
 #define GEOMETRY2D_H
 
-#include <vector>
 #include <tools/vmath.h>
+#include <vector>
 
 struct Geometry2d {
 	Geometry2d(){};

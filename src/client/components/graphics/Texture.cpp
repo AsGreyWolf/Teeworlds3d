@@ -1,7 +1,7 @@
 #include "Texture.h"
 
-#include <shared/System.h>
 #include <client/components/Graphics.h>
+#include <shared/System.h>
 
 #ifndef GL_MAX_TEXTURE_MAX_ANISOTROPY
 #define GL_MAX_TEXTURE_MAX_ANISOTROPY 0x84FF
@@ -11,19 +11,11 @@
 #endif
 
 Texture::Texture() {}
-Texture::Texture(const Texture &second) { operator=(second); }
-Texture &Texture::operator=(const Texture &second) {
-	data = second.data;
-	aspect = second.aspect;
-	size = second.size;
-	flags = second.flags;
-	return *this;
-}
-Texture::Texture(const GLvoid *pixels, int w, int h, int fl) : flags(fl) {
+Texture::Texture(const GLvoid *pixels, glm::uvec2 s, int fl) : flags(fl) {
 	g_Graphics(); // TODO: fix
 	data = TextureDataPtr();
-	aspect = 1.0f * w / h;
-	size = glm::vec2(w, h);
+	aspect = 1.0f * s.x / s.y;
+	size = s;
 	SetPixels(pixels);
 }
 Texture::Texture(SDL_Surface *surface, int fl) : flags(fl) {
@@ -55,30 +47,39 @@ void Texture::SetPixels(const GLvoid *pixels) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY, anisotropyI);
 	if (flags & TEXTURE_FILTERING) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+		                flags & TEXTURE_MIPMAP ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
 	} else {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+		                flags & TEXTURE_MIPMAP ? GL_NEAREST_MIPMAP_NEAREST
+		                                       : GL_NEAREST);
 	}
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+	                flags & TEXTURE_REPEAT ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+	                flags & TEXTURE_REPEAT ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 	if (flags & TEXTURE_DEPTH)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, size.x, size.y, 0,
 		             GL_DEPTH_COMPONENT, GL_UNSIGNED_SHORT, pixels);
-	else if ((flags & TEXTURE_FLOAT) && (flags & TEXTURE_3CORD))
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, size.x, size.y, 0, GL_RGB,
-		             GL_FLOAT, pixels);
 	else if (flags & TEXTURE_FLOAT)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, size.x, size.y, 0, GL_RGBA,
-		             GL_FLOAT, pixels);
-	else if (flags & TEXTURE_3CORD)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB,
-		             GL_UNSIGNED_BYTE, pixels);
+		glTexImage2D(
+		    GL_TEXTURE_2D, 0,
+		    flags & TEXTURE_3CORD ? GL_RGB32F
+		                          : flags & TEXTURE_1CORD ? GL_R32F : GL_RGBA32F,
+		    size.x, size.y, 0,
+		    flags & TEXTURE_3CORD ? GL_RGB : flags & TEXTURE_1CORD ? GL_RED : GL_RGBA,
+		    GL_FLOAT, pixels);
 	else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA,
-		             GL_UNSIGNED_BYTE, pixels);
+		glTexImage2D(
+		    GL_TEXTURE_2D, 0,
+		    flags & TEXTURE_3CORD ? GL_RGB : flags & TEXTURE_1CORD ? GL_RED : GL_RGBA,
+		    size.x, size.y, 0,
+		    flags & TEXTURE_3CORD ? GL_RGB : flags & TEXTURE_1CORD ? GL_RED : GL_RGBA,
+		    GL_UNSIGNED_BYTE, pixels);
+	if (flags & TEXTURE_MIPMAP)
+		glGenerateMipmap(GL_TEXTURE_2D);
 }
-Texture::~Texture() { data.reset(); }
 void Texture::Bind() const {
 	if (data)
 		glBindTexture(GL_TEXTURE_2D, *data);

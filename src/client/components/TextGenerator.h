@@ -2,16 +2,12 @@
 #define TEXTGENERATOR_H
 
 #include "../ClientComponent.h"
-#include <client/components/graphics/Texture.h>
 #include <SDL_ttf.h>
+#include <client/components/graphics/Texture.h>
 #include <map>
 
-enum FONTS {
-	FONT_NORMAL = 1,
-	FONT_BIG = 2,
-	FONT_DIVIDER = 40,
-	WIDTH_INFINITIVE = -1
-};
+enum FONTS { FONT_NORMAL = 1, FONT_BIG = 2, FONT_DIVIDER = 40 };
+#define WIDTH_INFINITIVE (-1)
 
 class TextGenerator : public ClientComponent {
 private:
@@ -21,7 +17,8 @@ private:
 public:
 	~TextGenerator() override;
 
-	Texture Generate(const std::string &data, int size = FONT_NORMAL, float width = WIDTH_INFINITIVE);
+	Texture Generate(const std::string &data, int size = FONT_NORMAL,
+	                 float width = WIDTH_INFINITIVE);
 	TTF_Font *Font(int size = FONT_NORMAL);
 
 	static const std::string fontPath;

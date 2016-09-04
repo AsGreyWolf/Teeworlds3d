@@ -1,10 +1,10 @@
 #ifndef SHAREDCOMPONENT_H
 #define SHAREDCOMPONENT_H
 
-#include <stdint.h>
 #include <list>
+#include <stdint.h>
 #ifdef __ANDROID__
-	#include <tools/android.h> // NDK fix
+#include <tools/android.h> // NDK fix
 #endif
 
 class SharedComponent {

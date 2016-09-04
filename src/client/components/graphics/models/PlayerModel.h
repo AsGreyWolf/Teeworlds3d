@@ -5,13 +5,13 @@
 #include <vector>
 #define GLEW_STATIC
 #ifdef __ANDROID__
-	#include <GLES3/gl3.h>
+#include <GLES3/gl3.h>
 #else
-	#include <glew.h>
+#include <glew.h>
 #endif
-#include <tools/vmath.h>
-#include <shared/world/Player.h>
 #include <client/components/graphics/Texture.h>
+#include <shared/world/Player.h>
+#include <tools/vmath.h>
 
 class PlayerModel : public Model3d {
 public:

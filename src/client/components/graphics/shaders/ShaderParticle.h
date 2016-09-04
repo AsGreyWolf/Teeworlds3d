@@ -22,16 +22,6 @@ public:
 	void SetVel(const glm::vec3 &vel);
 
 private:
-	GLuint colorUniform;
-	GLuint viewProjectionMatrixUniform;
-	GLuint modelMatrixUniform;
-	GLuint textureUniform;
-	GLuint timeUniform;
-	GLuint sizeUniform;
-	GLuint gravityUniform;
-	GLuint ttlUniform;
-	GLuint velUniform;
-
 	glm::mat4 perspectiveMatrix;
 };
 ShaderParticle *g_ShaderParticle();

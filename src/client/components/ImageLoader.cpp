@@ -1,7 +1,7 @@
 #include "ImageLoader.h"
+#include <SDL_image.h>
 #include <shared/Console.h>
 #include <shared/System.h>
-#include <SDL_image.h>
 
 class ImageLoader *pImageLoader;
 ImageLoader *g_ImageLoader() {

@@ -1,8 +1,8 @@
 #ifndef GEOMETRY3D_H
 #define GEOMETRY3D_H
 
-#include <vector>
 #include <tools/vmath.h>
+#include <vector>
 
 struct Geometry3d {
 	Geometry3d(){};

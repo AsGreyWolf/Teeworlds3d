@@ -8,22 +8,27 @@
 
 class ShaderTexture : public Shader {
 public:
-	ShaderTexture(const std::string &file, const glm::uvec2 &size, const std::vector<std::string> &uniforms, const std::vector<Texture> &textures);
-	ShaderTexture(const std::string &file, const glm::uvec2 &size, const std::string &uniform, const Texture &texture);
+	ShaderTexture(const std::string &file, const glm::uvec2 &size,
+	              const std::vector<std::string> &uniforms,
+	              const std::vector<Texture> &textures,
+	              int flags = TEXTURE_DEFAULT);
+	ShaderTexture(const std::string &file, const glm::uvec2 &size,
+	              const std::string &uniform, const Texture &texture,
+	              int flags = TEXTURE_DEFAULT);
 	~ShaderTexture() override;
 	virtual void Render() override;
 
-	operator const Texture&() const { return out; };
+	operator const Texture &() const { return out; };
 
 protected:
-	std::vector<GLuint> colorUniforms;
+	std::vector<std::string> colorUniforms;
 	std::vector<Texture> colorTextures;
 
 private:
 	Texture out;
 
 	Geometry2d screen;
-	GLuint VAO,vbuffer,tbuffer;
+	GLuint VAO, vbuffer, tbuffer;
 };
 
 #endif

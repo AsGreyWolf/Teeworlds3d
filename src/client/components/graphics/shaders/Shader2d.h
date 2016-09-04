@@ -14,12 +14,6 @@ public:
 	void Render() override;
 	void SetColor(const glm::vec4 &color);
 	void SetPosition(const glm::vec2 &pos, float depth);
-
-private:
-	GLuint colorUniform;
-	GLuint aspectUniform;
-	GLuint positionUniform;
-	GLuint textureUniform;
 };
 Shader2d *g_Shader2d();
 

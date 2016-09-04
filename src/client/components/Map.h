@@ -2,10 +2,10 @@
 #define MAP_H
 
 #include "../ClientComponent.h"
-#include <string>
-#include <vector>
 #include <client/components/graphics/models/Model3d.h>
 #include <client/components/graphics/models/PlayerModel.h>
+#include <string>
+#include <vector>
 
 class Map : public ClientComponent {
 private:

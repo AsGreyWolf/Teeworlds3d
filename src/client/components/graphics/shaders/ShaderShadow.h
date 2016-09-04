@@ -2,8 +2,8 @@
 #define SHADERSHADOW_H
 
 #include "../Shader.h"
-#include <tools/vmath.h>
 #include <client/components/graphics/Texture.h>
+#include <tools/vmath.h>
 
 class Texture;
 
@@ -20,9 +20,6 @@ public:
 	Texture shadowMap;
 
 private:
-	GLuint viewProjectionMatrixUniform;
-	GLuint modelMatrixUniform;
-	GLuint textureUniform;
 	glm::mat4 orthoMatrix;
 };
 ShaderShadow *g_ShaderShadow();

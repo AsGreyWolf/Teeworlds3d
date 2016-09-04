@@ -2,8 +2,8 @@
 #define UI_H
 
 #include "../ClientComponent.h"
-#include <tools/vmath.h>
 #include <set>
+#include <tools/vmath.h>
 
 class Layout;
 class View;
@@ -22,7 +22,7 @@ public:
 
 	void EnableCursor();
 	void DisableCursor();
-	inline bool CursorEnabled() const { return cursorEnabled; };
+	bool CursorEnabled() const;
 
 	Layout *screenLayout;
 	glm::vec2 cursorPosition;
@@ -30,7 +30,6 @@ public:
 private:
 	std::set<View *> registredViews;
 	View *cursor;
-	bool cursorEnabled;
 };
 UI *g_UI();
 
