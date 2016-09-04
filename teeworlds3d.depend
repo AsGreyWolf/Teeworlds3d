@@ -952,7 +952,7 @@
 	"SharedComponent.h"
 	<list>
 
-1472938620 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/System.cpp
+1472941052 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/shared/System.cpp
 	"System.h"
 	<ctime>
 	<Windows.h>
@@ -1061,7 +1061,7 @@
 	<tools/vmath.h>
 	<vector>
 
-1472938576 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Resources.cpp
+1472974976 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/Resources.cpp
 	"Resources.h"
 	<client/components/ImageLoader.h>
 	<client/components/Loading.h>
@@ -1334,7 +1334,7 @@
 	<client/components/ui/Layout.h>
 	<shared/System.h>
 
-1472938590 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/UI.cpp
+1472944412 source:/home/asgreywolf/Рабочий стол/Teeworlds3d/src/client/components/UI.cpp
 	"UI.h"
 	<client/components/Graphics.h>
 	<client/components/Input.h>
