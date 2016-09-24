@@ -1,7 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "SharedComponent.h"
+#include "AsyncComponent.h"
 
 #include <string>
 #include <tools/Protocol.h>
@@ -10,9 +10,10 @@
 
 class Player;
 class Tile;
+class Projectile;
 
 ///<summary>World and all physical objects</summary>
-class World : public SharedComponent {
+class World : public AsyncComponent {
 private:
 	World();
 	friend World *g_World();
@@ -20,8 +21,8 @@ private:
 public:
 	~World() override;
 
-	///<summary>Tick the component(graphics thread)</summary>
-	void Tick() override;
+	///<summary>Tick the component(async)</summary>
+	void AsyncTick() override;
 
 	///<summary>Loads the map</summary>
 	///<param name="name">Filename in data/maps folder</param>
@@ -60,6 +61,8 @@ public:
 	std::vector<Tile> tilesById;
 	///<summary>Players array</summary>
 	Player *players[MAX_PLAYERS];
+	///<summary>Projectiles array</summary>
+	std::vector<Projectile *> projectiles;
 
 private:
 	///<summary>Array of the tiles sorted by position</summary>

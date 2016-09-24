@@ -12,8 +12,10 @@ struct STATE {
 };
 ///<summary>Component which may be used only on Client side</summary>
 class ClientComponent : public SharedComponent {
-public:
+protected:
 	ClientComponent();
+
+public:
 	virtual ~ClientComponent();
 	virtual void Message(int type, char *value);
 	virtual void StateChange(const STATE &lastState);

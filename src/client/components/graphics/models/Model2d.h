@@ -37,20 +37,20 @@ protected:
 	public:
 		Data();
 		~Data();
-		void Validate();
+		void Invalidate();
 		void Render(int type);
 
-		bool valid = false;
-
 	private:
+		void Validate();
+		bool valid = false;
 		GLuint vao;
 		GLuint vbuffer;
 		GLuint tbuffer;
 	};
-	typedef std::shared_ptr<Data> Model2dDataPtr;
-#define Model2dDataPtr() std::make_shared<Data>()
+	using dataPtr = std::shared_ptr<Data>;
+	inline dataPtr make_dataPtr() { return std::make_shared<Data>(); }
 
-	Model2dDataPtr data;
+	dataPtr data;
 	int type;
 };
 

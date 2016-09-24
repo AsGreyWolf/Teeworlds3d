@@ -5,8 +5,10 @@
 #include <tools/vmath.h>
 
 class Model {
-public:
+protected:
 	Model();
+
+public:
 	Model(const Model &second);
 	virtual ~Model();
 	virtual void Render();

@@ -14,6 +14,8 @@ public:
 	Sphere &SetScale(const glm::vec3 &scale);
 	Sphere &SetReversed(bool reversed);
 	operator Geometry3d();
+
+private:
 	float radius;
 	glm::vec3 position;
 	quad2 texcoord;

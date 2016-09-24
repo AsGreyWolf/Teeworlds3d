@@ -50,10 +50,10 @@ private:
 	private:
 		GLuint id = 0;
 	};
-	typedef std::shared_ptr<Data> TextureDataPtr;
-#define TextureDataPtr(a) std::make_shared<Data>(a);
+	using dataPtr = std::shared_ptr<Data>;
+	inline dataPtr make_dataPtr() { return std::make_shared<Data>(); }
 
-	TextureDataPtr data;
+	dataPtr data;
 };
 
 #endif

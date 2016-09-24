@@ -5,7 +5,7 @@
 
 Model2d::Model2d(int t) {
 	type = t;
-	data = Model2dDataPtr();
+	data = make_dataPtr();
 	position = glm::vec2(0, 0);
 	color = glm::vec4(1, 1, 1, 0);
 	depth = 0.0f;
@@ -42,7 +42,7 @@ void Model2d::Render() {
 }
 void Model2d::Add(const Geometry2d &geom) {
 	*data += geom;
-	data->valid = false;
+	data->Invalidate();
 }
 void Model2d::Clear() { data->Clear(); }
 
@@ -65,6 +65,7 @@ void Model2d::Data::Render(int type) {
 	glBindVertexArray(vao);
 	glDrawArrays(type, 0, v.size());
 }
+void Model2d::Data::Invalidate() { valid = false; }
 void Model2d::Data::Validate() {
 	if (!valid) {
 		g_Graphics(); // TODO: fix

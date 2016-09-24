@@ -13,7 +13,7 @@
 Texture::Texture() {}
 Texture::Texture(const GLvoid *pixels, glm::uvec2 s, int fl) : flags(fl) {
 	g_Graphics(); // TODO: fix
-	data = TextureDataPtr();
+	data = make_dataPtr();
 	aspect = 1.0f * s.x / s.y;
 	size = s;
 	SetPixels(pixels);
@@ -32,7 +32,7 @@ Texture::Texture(SDL_Surface *surface, int fl) : flags(fl) {
 		return;
 	}
 
-	data = TextureDataPtr();
+	data = make_dataPtr();
 	aspect = 1.0f * converted->w / converted->h;
 	size = glm::vec2(converted->w, converted->h);
 	SetPixels(converted->pixels);

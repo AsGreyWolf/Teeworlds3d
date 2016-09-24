@@ -1,6 +1,10 @@
 #include "System.h"
 
+#include <SDL.h>
+#include <SDL_thread.h>
 #include <ctime>
+#include <mutex>
+#include <shared/Console.h>
 #ifdef WIN32
 #include <Windows.h>
 #include <codecvt>
@@ -14,26 +18,14 @@
 #include <unistd.h>
 #define GetCurrentDir(a, b) getcwd(a, b)
 #endif
-#include <SDL.h>
-#include <SDL_thread.h>
-#include <shared/Console.h>
 
 class System *pSystem;
 System *g_System() { return pSystem ? pSystem : new System(); }
 
-int frames = 0;
-int calcFPS(void *param) {
-	SDL_SetThreadPriority(SDL_THREAD_PRIORITY_HIGH);
-	SDL_Delay(1000);
-	while (pSystem) {
-		g_Console()->Info("FPS = " + std::to_string(frames));
-		pSystem->fps = frames;
-		frames = 0;
-		SDL_Delay(1000);
-	}
-	return 0;
-}
-SDL_Thread *fpsThread;
+Mutex System::mutex;
+static int frames = 0;
+static long lastTickTime;
+static DelayedThread *fpsThread;
 System::System() : SharedComponent() {
 	srand(time(NULL));
 #ifdef __ANDROID__
@@ -45,7 +37,7 @@ System::System() : SharedComponent() {
 	pSystem = this;
 	fps = 60;
 	tickCoeff = 1.0f / fps;
-	lasttickTime = g_System()->GetTime();
+	lastTickTime = g_System()->GetTime();
 	if (SDL_Init(SDL_INIT_TIMER) != 0) {
 		g_Console()->Err("Unable to initialize SDL Timer: " +
 		                 std::string(SDL_GetError()));
@@ -55,21 +47,28 @@ System::System() : SharedComponent() {
 	SDL_GetVersion(&ver);
 	g_Console()->Info("Initialized SDL Timer " + std::to_string(ver.major) + "." +
 	                  std::to_string(ver.minor) + "." + std::to_string(ver.patch));
-	fpsThread = SDL_CreateThread(calcFPS, "fpsThread", (void *)NULL);
+	fpsThread = new DelayedThread(
+	    [&]() {
+		    g_Console()->Info("FPS = " + std::to_string(frames));
+		    pSystem->fps = frames;
+		    frames = 0;
+		   },
+	    1000);
+	fpsThread->Start();
 };
 System::~System() {
+	std::unique_lock<Mutex>(mutex);
+	delete fpsThread;
 	pSystem = 0;
-	int r;
-	SDL_WaitThread(fpsThread, &r);
 	SDL_QuitSubSystem(SDL_INIT_TIMER);
 };
 void System::Tick() {
 	SharedComponent::Tick();
 	long tickTime = g_System()->GetTime();
-	tickCoeff = (tickTime - lasttickTime) * 1.0 / 1000;
+	tickCoeff = (tickTime - lastTickTime) * 1.0 / 1000;
 	if (tickCoeff > 1)
 		tickCoeff = 1.0f;
-	lasttickTime = tickTime;
+	lastTickTime = tickTime;
 	frames++;
 }
 std::string System::GetPath() const { return PATH_CUR; };
@@ -120,6 +119,62 @@ System::GetFilesInDirectory(const std::string &directory) const {
 #endif
 	return out;
 };
+
+int ThreadRunner(void *t) {
+	DelayedThread *thread = (DelayedThread *)t;
+	int time = 0;
+	while (true) {
+		int delay = 0;
+		{
+			std::unique_lock<Mutex>(thread->m);
+			if (!thread->d) {
+				return 0;
+			}
+			delay = thread->d;
+		}
+		thread->f();
+		{
+			std::unique_lock<Mutex>(System::mutex);
+			if (!pSystem) {
+				return 0;
+			}
+			int newTime = pSystem->GetTime();
+			SDL_Delay(std::max(delay - (newTime - time), 0));
+			time += delay;
+		}
+	}
+}
+DelayedThread::DelayedThread(const std::function<void()> &func, long delay)
+    : f(func), d(delay) {}
+DelayedThread::~DelayedThread() { Stop(); }
+void DelayedThread::Start() {
+	t = SDL_CreateThread(
+	    ThreadRunner,
+	    (std::string("ThreadRunner") + std::to_string((size_t)(void *)&f)).c_str(),
+	    (void *)this);
+}
+void DelayedThread::Stop() {
+	{
+		std::unique_lock<Mutex>(m);
+		d = 0;
+	}
+	int r;
+	if (t)
+		SDL_WaitThread(t, &r);
+	t = NULL;
+}
+
+Mutex::Mutex() { m = SDL_CreateMutex(); }
+Mutex::~Mutex() { SDL_DestroyMutex(m); }
+Mutex::Mutex(Mutex &&second) noexcept { m = second.m; }
+Mutex &&Mutex::operator=(Mutex &&second) noexcept {
+	m = second.m;
+	return std::move(*this);
+}
+void Mutex::lock() { SDL_LockMutex(m); }
+bool Mutex::try_lock() { return SDL_TryLockMutex(m) == 0; }
+void Mutex::unlock() { SDL_UnlockMutex(m); }
+Mutex::native_handle_type Mutex::native_handle() { return m; }
 
 #ifdef WIN32
 #ifdef VS15

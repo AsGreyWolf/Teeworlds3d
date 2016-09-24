@@ -4,31 +4,38 @@
 #include <shared/Console.h>
 #include <shared/System.h>
 #include <shared/world/Player.h>
+#include <shared/world/Projectile.h>
 #include <shared/world/Tile.h>
 
 class World *pWorld;
 World *g_World() { return pWorld ? pWorld : new World(); }
 
-World::World() : SharedComponent() {
+World::World() : AsyncComponent(1000 / 60) {
 	pWorld = this;
 	tilesByPos = 0;
 	UnLoad();
 	for (int i = 0; i < MAX_PLAYERS; i++)
 		pWorld->players[i] = 0;
+	Start();
 };
 World::~World() {
+	Stop();
 	UnLoad();
 	for (int i = 0; i < MAX_PLAYERS; i++)
 		if (players[i])
 			delete players[i];
 	pWorld = 0;
 };
-void World::Tick() {
-	SharedComponent::Tick();
-	if (!tileset.empty())
-		for (int i = 0; i < MAX_PLAYERS; i++)
-			if (pWorld->players[i])
-				pWorld->players[i]->Tick();
+void World::AsyncTick() {
+	AsyncComponent::AsyncTick();
+	if (!tileset.empty()) {
+		for (Player *p : players)
+			if (p)
+				p->Tick();
+		for (Projectile *p : projectiles)
+			if (p)
+				p->Tick();
+	}
 }
 void World::Load(const std::string &name) {
 	std::string path = g_System()->GetDataFile("maps/" + name + ".map");

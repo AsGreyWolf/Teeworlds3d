@@ -53,7 +53,6 @@ void Player::Tick() {
 	bool tuningPlayerHooking = true;
 
 	long time = g_System()->GetTime();
-	float coeff = (float)(g_System()->tickCoeff * 60);
 
 	World *world = g_World();
 
@@ -74,7 +73,7 @@ void Player::Tick() {
 	                               pos.z - physSize / 2 - 5));
 	if (buf && buf->isPhys())
 		grounded = true;
-	vel.z -= coeff * tuningGravity;
+	vel.z -= tuningGravity;
 	float MaxSpeed = grounded ? tuningGroundSpeed : tuningAirSpeed;
 	float Accel = grounded ? tuningGroundAccel : tuningAirAccel;
 	float Friction = grounded ? tuningGroundFriction : tuningAirFriction;
@@ -110,9 +109,9 @@ void Player::Tick() {
 	{
 		glm::vec2 nvel(vel.x, vel.y);
 		if (glm::zero(dir))
-			nvel *= pow(Friction, coeff);
+			nvel *= Friction;
 		else {
-			nvel += coeff * dir * Accel;
+			nvel += dir * Accel;
 			if (glm::length(nvel) > MaxSpeed)
 				nvel = glm::normalize(nvel) * MaxSpeed;
 		}
@@ -130,7 +129,7 @@ void Player::Tick() {
 	} else if (hookState == HOOK_RETRACT_END) {
 		hookState = HOOK_RETRACTED;
 	} else if (hookState == HOOK_FLYING) {
-		glm::vec3 newPos = hookPos + hookDir * tuningHookFireSpeed * coeff;
+		glm::vec3 newPos = hookPos + hookDir * tuningHookFireSpeed;
 		if (glm::distance(pos, newPos) > tuningHookLength) {
 			hookState = HOOK_RETRACT_START;
 			newPos = pos + glm::normalize(newPos - pos) * tuningHookLength;
@@ -194,7 +193,7 @@ void Player::Tick() {
 				hookVel.y *= 0.95f;
 			else
 				hookVel.y *= 0.75f;
-			glm::vec3 newVel = vel + hookVel * coeff;
+			glm::vec3 newVel = vel + hookVel;
 			if (glm::length(newVel) < tuningHookDragSpeed ||
 			    glm::length(newVel) < glm::length(vel))
 				vel = newVel;
@@ -217,8 +216,8 @@ void Player::Tick() {
 			float velocity = 0.5f;
 			if (!glm::zero(vel))
 				velocity = 1 - (glm::dot(glm::normalize(vel), dir) + 1) / 2;
-			vel += coeff * dir * a * (velocity * 0.75f);
-			vel *= pow(0.85f, coeff);
+			vel += dir * a * (velocity * 0.75f);
+			vel *= 0.85f;
 		}
 		if (hookedPlayer == i && tuningPlayerHooking) {
 			glm::vec3 dir = glm::normalize(pos - player->pos);
@@ -226,12 +225,12 @@ void Player::Tick() {
 				float accel = tuningHookDragAccel * (distance / tuningHookLength);
 				float dragSpeed = tuningHookDragSpeed;
 				{
-					player->vel += accel * dir * 1.5f * coeff;
+					player->vel += accel * dir * 1.5f;
 					if (glm::length(player->vel) > dragSpeed)
 						player->vel = glm::normalize(player->vel) * dragSpeed;
 				}
 				{
-					vel += -accel * dir * 0.25f * coeff;
+					vel += -accel * dir * 0.25f;
 					if (glm::length(vel) > dragSpeed)
 						vel = glm::normalize(vel) * dragSpeed;
 				}

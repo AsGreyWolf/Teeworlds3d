@@ -22,8 +22,10 @@ enum ALIGN {
 #define SIZE_FILL (-1.0f)
 
 class View {
-public:
+protected:
 	View();
+
+public:
 	View(const View &second);
 	virtual ~View();
 

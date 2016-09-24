@@ -8,8 +8,10 @@
 #endif
 
 class SharedComponent {
-public:
+protected:
 	SharedComponent();
+
+public:
 	virtual ~SharedComponent();
 
 	virtual void Tick();

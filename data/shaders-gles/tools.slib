@@ -1,5 +1,7 @@
 #version 300 es
-precision mediump float;
+precision lowp float;
+precision lowp int;
+precision lowp sampler2D;
 
 #define M_PI 3.1415926535897932384626433832795
 mat4 biasMatrix = mat4(0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5,

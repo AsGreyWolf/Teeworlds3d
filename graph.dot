@@ -2,22 +2,29 @@
  	subgraph cluster_0 {
  		label="shared";
  		SharedComponent [shape=house color=red];
+ 		AsyncComponent [shape=house color=red];
  		Console [shape=house];
 	 	System [shape=house];
 	 	World [shape=house];
 	 	Tile;
 	 	Player;
+		Projectile;
 		SharedComponent->Console[color=red arrowhead=none arrowtail=empty dir=back];
 		SharedComponent->System[color=red arrowhead=none arrowtail=empty dir=back];
-		SharedComponent->World[color=red arrowhead=none arrowtail=empty dir=back];
+		SharedComponent->AsyncComponent->World[color=red arrowhead=none arrowtail=empty dir=back];
 		World->Player;
 		System->Player;
 		Tile->Player;
+		World->Projectile;
+		System->Projectile;
 		Player->World;
 		Tile->World;
+		Projectile->World;
 		Console->World;
 		System->World;
 		System->Console;
+		System->AsyncComponent;
+		Console->AsyncComponent;
  	}
  	subgraph cluster_1 {
  		label="client";

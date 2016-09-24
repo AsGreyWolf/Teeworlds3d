@@ -2,7 +2,7 @@
 #define INPUT_H
 
 #include "../ClientComponent.h"
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 class Input : public ClientComponent {
@@ -13,7 +13,8 @@ private:
 public:
 	~Input() override;
 	void Tick() override;
-	std::map<unsigned int, char> keyboard; // TODO: performance tweak, map is slow
+	std::unordered_map<unsigned int, char>
+	    keyboard; // TODO: performance tweak, map is slow
 	std::vector<char> mouse;
 	bool quit;
 	int mouseX;

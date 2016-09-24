@@ -1,5 +1,6 @@
 in vec2 ex_TexMap;
-out vec4 gl_FragColor;
+out vec4 FragColor;
+
 uniform vec3 camera;
 uniform sampler2D colorMap;
 uniform sampler2D positionMap;
@@ -86,5 +87,5 @@ void main(void) {
 		color *= vec4(vec3(lightIntensity * 0.25 + 0.5), 1.0); // diffuse & ambient
 		color += vec4(vec3(lightIntensity * 0.25), 0.0); // discoloration
 	}
-	gl_FragColor = color;
+	FragColor = color;
 }

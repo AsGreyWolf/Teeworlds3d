@@ -502,6 +502,8 @@
 		<Unit filename="src/client/components/ui/View.h" />
 		<Unit filename="src/client/components/ui/Widget.cpp" />
 		<Unit filename="src/client/components/ui/Widget.h" />
+		<Unit filename="src/shared/AsyncComponent.cpp" />
+		<Unit filename="src/shared/AsyncComponent.h" />
 		<Unit filename="src/shared/Console.cpp" />
 		<Unit filename="src/shared/Console.h" />
 		<Unit filename="src/shared/SharedComponent.cpp" />
@@ -513,6 +515,8 @@
 		<Unit filename="src/shared/world/Player.cpp" />
 		<Unit filename="src/shared/world/Player.h" />
 		<Unit filename="src/shared/world/Positioned.h" />
+		<Unit filename="src/shared/world/Projectile.cpp" />
+		<Unit filename="src/shared/world/Projectile.h" />
 		<Unit filename="src/shared/world/Tile.h" />
 		<Unit filename="src/tools/Positioned.h" />
 		<Unit filename="src/tools/Protocol.h" />

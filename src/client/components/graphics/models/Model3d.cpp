@@ -13,7 +13,7 @@ Model3d::Model3d(bool l, int t) : Model() {
 	normalMatrix = glm::transpose(glm::inverse(modelMatrix));
 	light = l;
 	type = t;
-	data = Model3dDataPtr();
+	data = make_dataPtr();
 	pos = glm::vec3(0, 0, 0);
 	rot = glm::vec3(0, 1, 0);
 	color = glm::vec4(1, 1, 1, 0);
@@ -93,7 +93,7 @@ void Model3d::Disable() {
 }
 void Model3d::Add(const Geometry3d &geom) {
 	*data += geom;
-	data->valid = false;
+	data->Invalidate();
 }
 void Model3d::Clear() { data->Clear(); }
 void Model3d::UpdateMatrix(const glm::mat4 &parentMatrix) {
@@ -146,6 +146,7 @@ void Model3d::Data::Render(int type) {
 	glBindVertexArray(vao);
 	glDrawArrays(type, 0, v.size());
 }
+void Model3d::Data::Invalidate() { valid = false; }
 void Model3d::Data::Validate() {
 	if (!valid) {
 		g_Graphics(); // TODO: fix
