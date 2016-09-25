@@ -53,13 +53,14 @@ void Projectile::Reset() {
 	            this);
 }
 void Projectile::Tick() {
+	auto time = g_System()->GetTime();
 	float Pt = prevTime - startTime;
-	float Ct = g_System()->GetTime() - startTime;
+	float Ct = time - startTime;
 	glm::vec3 PrevPos = GetPos(Pt);
 	glm::vec3 CurPos = GetPos(Ct);
-	Tile *collide = g_World()->IntersectLine(PrevPos, CurPos, &CurPos, 0);
+	Tile *collide = g_World()->IntersectLine(PrevPos, CurPos, &CurPos, nullptr);
 	Player *targetPlayer =
-	    g_World()->IntersectPlayer(PrevPos, CurPos, &CurPos, 0, owner, 6.0f);
+	    g_World()->IntersectPlayer(PrevPos, CurPos, &CurPos, nullptr, owner, 6.0f);
 	life--;
 	if (targetPlayer || collide || life < 0) { // TODO: || GameLayerClipped(CurPos)
 		// if (life >= 0 || weapon == WEAPON_GRENADE)
@@ -74,4 +75,5 @@ void Projectile::Tick() {
 
 		Reset();
 	}
+	prevTime = time;
 }

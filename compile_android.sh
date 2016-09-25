@@ -1,3 +1,5 @@
+rm -r android/jni/src
+ln -s $(realpath src) android/jni/src
 cd android/jni
 ndk-build
 cd ..

@@ -13,7 +13,7 @@ Map *g_Map() { return pMap ? pMap : new Map(); }
 Map::Map() : ClientComponent() { pMap = this; }
 Map::~Map() {
 	playerModels.clear();
-	pMap = 0;
+	pMap = nullptr;
 }
 void Map::Tick() {
 	for (int i = 0; i < MAX_PLAYERS; i++)

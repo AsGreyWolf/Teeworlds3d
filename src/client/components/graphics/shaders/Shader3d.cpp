@@ -20,14 +20,14 @@ Shader3d::Shader3d()
 	SetAttribute("in_TexMap", SHADER_TEXMAP);
 	SetAttribute("in_Normal", SHADER_NORMAL);
 
-	AddOutputTexture(color = Texture(NULL, viewport));
-	AddOutputTexture(position =
-	                     Texture(NULL, viewport, TEXTURE_FLOAT | TEXTURE_3CORD));
-	AddOutputTexture(normal =
-	                     Texture(NULL, viewport, TEXTURE_FLOAT | TEXTURE_3CORD));
-	AddOutputTexture(depth = Texture(NULL, viewport, TEXTURE_DEPTH));
+	AddOutputTexture(color = Texture(nullptr, viewport));
+	AddOutputTexture(
+	    position = Texture(nullptr, viewport, TEXTURE_FLOAT | TEXTURE_3CORD));
+	AddOutputTexture(
+	    normal = Texture(nullptr, viewport, TEXTURE_FLOAT | TEXTURE_3CORD));
+	AddOutputTexture(depth = Texture(nullptr, viewport, TEXTURE_DEPTH));
 }
-Shader3d::~Shader3d() { pShader3d = 0; }
+Shader3d::~Shader3d() { pShader3d = nullptr; }
 void Shader3d::Render() {
 	Shader::Render();
 	static Uniform<int> texture(*this, "tex");

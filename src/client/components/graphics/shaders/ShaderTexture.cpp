@@ -24,20 +24,20 @@ ShaderTexture::ShaderTexture(const std::string &file, const glm::uvec2 &size,
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, vbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * screen.v.size() * 2,
-	             &screen.v[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(SHADER_POS, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	             screen.v.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(SHADER_POS, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 	glEnableVertexAttribArray(SHADER_POS);
 	glBindBuffer(GL_ARRAY_BUFFER, tbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * screen.t.size() * 2,
-	             &screen.t[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	             screen.t.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 	glEnableVertexAttribArray(SHADER_TEXMAP);
 	glBindVertexArray(0);
 
 	colorTextures = textures;
 	for (const std::string &uniform : uniforms)
 		colorUniforms.push_back(Uniform<int>(*this, uniform));
-	AddOutputTexture(out = Texture(NULL, size, flags));
+	AddOutputTexture(out = Texture(nullptr, size, flags));
 }
 ShaderTexture::~ShaderTexture() {
 	glDeleteBuffers(1, &vbuffer);

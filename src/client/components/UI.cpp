@@ -18,7 +18,7 @@ UI::UI() : ClientComponent() {
 	SDL_ShowCursor(0);
 	DisableCursor();
 }
-UI::~UI() { pUI = 0; }
+UI::~UI() { pUI = nullptr; }
 void UI::Tick() {
 	if (CursorEnabled()) {
 		int x, y;
@@ -39,7 +39,7 @@ void UI::Tick() {
 		bool buttonState = g_Input()->mouse[SDL_BUTTON_LEFT];
 		static bool prevButtonState = false;
 		View *target = screenLayout->Select(cursorPosition);
-		static View *clickedTarget = NULL;
+		static View *clickedTarget = nullptr;
 		static glm::vec2 prevCursorPosition;
 		if (target && buttonState && !prevButtonState) {
 			target->OnMouseDown(cursorPosition);
@@ -51,7 +51,7 @@ void UI::Tick() {
 				target->OnClick(cursorPosition);
 			else
 				target->OnDrop(cursorPosition);
-			clickedTarget = NULL;
+			clickedTarget = nullptr;
 		}
 		if (clickedTarget && buttonState && cursorPosition != prevCursorPosition) {
 			clickedTarget->OnDrag(cursorPosition);

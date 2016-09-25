@@ -16,7 +16,7 @@
 
 class Model3d : public Model, public Positioned {
 public:
-	Model3d(bool lighting = true, int type = GL_TRIANGLES);
+	explicit Model3d(bool lighting = true, int type = GL_TRIANGLES);
 	Model3d(const Model3d &second);
 	virtual ~Model3d() override;
 	virtual void Render() override;

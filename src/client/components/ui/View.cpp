@@ -1,7 +1,7 @@
 #include "View.h"
 #include <client/components/UI.h>
 
-View *View::focused = NULL;
+View *View::focused = nullptr;
 View::View() { g_UI()->RegisterView(this); }
 View::View(const View &second) : View() { *this = second; }
 View::~View() { g_UI()->UnregisterView(this); }
@@ -9,7 +9,7 @@ void View::Show() { visible = true; }
 void View::Hide() {
 	visible = false;
 	if (focused == this)
-		focused = NULL;
+		focused = nullptr;
 }
 void View::Validate() {
 	if (!isVisible())
@@ -48,6 +48,6 @@ void View::Validate() {
 }
 View *View::Select(const glm::vec2 &position) {
 	if (!isVisible() || !element.contains(position))
-		return NULL;
+		return nullptr;
 	return this;
 }

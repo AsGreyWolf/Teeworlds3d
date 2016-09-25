@@ -43,7 +43,7 @@ Client::Client() : ClientComponent() {
 }
 Client::~Client() {
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
-	pClient = NULL;
+	pClient = nullptr;
 }
 Panel *scene;
 Panel *depthMap;

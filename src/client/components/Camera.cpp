@@ -12,7 +12,7 @@ Camera::Camera() : ClientComponent(), Positioned() {
 	rot = rot3(0.0, 0.0, 0.0);
 	UpdateVectors();
 }
-Camera::~Camera() { pCamera = NULL; }
+Camera::~Camera() { pCamera = nullptr; }
 void Camera::Tick() {
 	RotateX(-g_Input()->mouseY * 0.01);
 	RotateZ(-g_Input()->mouseX * 0.01);

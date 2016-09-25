@@ -22,15 +22,3 @@ Geometry2d &Geometry2d::operator+=(const Geometry2d &geom) {
 	Push(geom.v, geom.t);
 	return *this;
 }
-Geometry2d::Geometry2d(Geometry2d &geom) { (*this) = geom; }
-Geometry2d::Geometry2d(Geometry2d &&geom) { (*this) = std::move(geom); }
-Geometry2d &Geometry2d::operator=(Geometry2d &geom) {
-	this->v = geom.v;
-	this->t = geom.t;
-	return *this;
-}
-Geometry2d &Geometry2d::operator=(Geometry2d &&geom) {
-	this->v = std::move(geom.v);
-	this->t = std::move(geom.t);
-	return *this;
-}

@@ -1,11 +1,11 @@
 #include "AsyncComponent.h"
 #include <shared/Console.h>
-AsyncComponent::AsyncComponent(long delay) {
+AsyncComponent::AsyncComponent(const std::string &tag, long delay) {
 	frames = 0;
 	t = new DelayedThread([this]() { AsyncTick(); }, delay);
 	fps = new DelayedThread(
-	    [this]() {
-		    g_Console()->Info("FPS = " + std::to_string(frames));
+	    [this, tag]() {
+		    g_Console()->Info("[" + tag + "] FPS = " + std::to_string(frames));
 		    frames = 0;
 		   },
 	    1000);

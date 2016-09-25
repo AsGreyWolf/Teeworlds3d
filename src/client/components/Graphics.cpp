@@ -33,15 +33,15 @@ Graphics::Graphics() : ClientComponent() {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	if ((window = SDL_CreateWindow(
-	         "", 50, 50, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN)) == NULL) {
+	         "", 50, 50, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN)) == nullptr) {
 		g_Console()->Err("Could not create window: " + std::string(SDL_GetError()));
 		return; // need exceptions
 	}
-	if ((renderer = SDL_CreateRenderer(window, -1, 0)) == NULL) {
+	if ((renderer = SDL_CreateRenderer(window, -1, 0)) == nullptr) {
 		g_Console()->Err("Could not get renderer: " + std::string(SDL_GetError()));
 		return; // TODO: need exceptions
 	}
-	if ((context = SDL_GL_CreateContext(window)) == NULL) {
+	if ((context = SDL_GL_CreateContext(window)) == nullptr) {
 		g_Console()->Err("Could not get context: " + std::string(SDL_GetError()));
 		return; // TODO: exceptions
 	}
@@ -79,7 +79,7 @@ Graphics::~Graphics() {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
-	pGraphics = NULL;
+	pGraphics = nullptr;
 }
 void Graphics::Tick() {
 	Shader::RenderShaders();
@@ -88,7 +88,7 @@ void Graphics::Tick() {
 int Graphics::to_pixels(float coord) { return coord * screenSize.y / 2; }
 float Graphics::to_screen(int pix) { return pix * 2.0f / screenSize.y; }
 SDL_Surface *Graphics::to_RGBA(SDL_Surface *src) {
-	if (src == NULL)
-		return NULL;
+	if (!src)
+		return nullptr;
 	return SDL_ConvertSurfaceFormat(src, SDL_PIXELFORMAT_ABGR8888, 0);
 }

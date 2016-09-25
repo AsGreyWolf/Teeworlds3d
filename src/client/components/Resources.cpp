@@ -27,8 +27,7 @@ Resources::Resources() : ClientComponent() {
 	                                      TEXTURE_ANISOTROPY | TEXTURE_FILTERING);
 	std::vector<std::string> skins =
 	    g_System()->GetFilesInDirectory(g_System()->GetDataFile("skins"));
-	for (unsigned int i = 0; i < skins.size(); i++) {
-		std::string skin = skins[i];
+	for (const std::string &skin : skins) {
 		skinTextures[skin.substr(0, skin.size() - 4)] = textureRGB;
 		g_Loading()->Push([&, skin]() {
 			Texture skintex = g_ImageLoader()->Load("skins/" + skin);
@@ -129,5 +128,5 @@ Resources::~Resources() {
 	gameCursor.clear();
 
 	weaponModels.clear();
-	pResources = 0;
+	pResources = nullptr;
 }

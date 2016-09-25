@@ -22,12 +22,11 @@
 class System *pSystem;
 System *g_System() { return pSystem ? pSystem : new System(); }
 
-Mutex System::mutex;
 static int frames = 0;
 static long prevTickTime;
 static DelayedThread *fpsThread;
 System::System() : SharedComponent() {
-	srand(time(NULL));
+	srand(time(nullptr));
 #ifdef __ANDROID__
 	PATH_CUR = "/sdcard/Android/data/tee3d/"; // TODO: package name && unpack
 #else
@@ -59,7 +58,7 @@ System::System() : SharedComponent() {
 System::~System() {
 	std::unique_lock<Mutex>(mutex);
 	delete fpsThread;
-	pSystem = 0;
+	pSystem = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_TIMER);
 };
 void System::Tick() {
@@ -105,11 +104,11 @@ System::GetFilesInDirectory(const std::string &directory) const {
 #else
 	DIR *dp;
 	struct dirent *dirp;
-	if ((dp = opendir(directory.c_str())) == NULL) {
+	if ((dp = opendir(directory.c_str())) == nullptr) {
 		return out;
 	}
 
-	while ((dirp = readdir(dp)) != NULL) {
+	while ((dirp = readdir(dp)) != nullptr) {
 		if (dirp->d_name[0] == '.')
 			continue;
 		if (dirp->d_type != DT_DIR)
@@ -120,13 +119,13 @@ System::GetFilesInDirectory(const std::string &directory) const {
 	return out;
 };
 
-int ThreadRunner(void *t) {
-	DelayedThread *thread = (DelayedThread *)t;
+int ThreadRunner(void *param) {
+	DelayedThread *thread = (DelayedThread *)param;
 	int time = 0;
 	while (true) {
 		int delay = 0;
 		{
-			std::unique_lock<Mutex>(thread->m);
+			auto lock = std::unique_lock<Mutex>(thread->m);
 			if (!thread->d) {
 				return 0;
 			}
@@ -134,17 +133,13 @@ int ThreadRunner(void *t) {
 		}
 		thread->f();
 		{
-			std::unique_lock<Mutex>(System::mutex);
-			if (!pSystem) {
-				return 0;
-			}
-			int newTime = pSystem->GetTime();
+			int newTime = SDL_GetTicks();
 			SDL_Delay(std::max(delay - (newTime - time), 0));
 			time += delay;
 		}
 	}
 }
-DelayedThread::DelayedThread(const std::function<void()> &func, long delay)
+DelayedThread::DelayedThread(const std::function<void()> func, long delay)
     : f(func), d(delay) {}
 DelayedThread::~DelayedThread() { Stop(); }
 void DelayedThread::Start() {
@@ -161,16 +156,12 @@ void DelayedThread::Stop() {
 	int r;
 	if (t)
 		SDL_WaitThread(t, &r);
-	t = NULL;
+	t = nullptr;
 }
 
-Mutex::Mutex() { m = SDL_CreateMutex(); }
+Mutex::Mutex() noexcept { m = SDL_CreateMutex(); }
 Mutex::~Mutex() { SDL_DestroyMutex(m); }
 Mutex::Mutex(Mutex &&second) noexcept { m = second.m; }
-Mutex &&Mutex::operator=(Mutex &&second) noexcept {
-	m = second.m;
-	return std::move(*this);
-}
 void Mutex::lock() { SDL_LockMutex(m); }
 bool Mutex::try_lock() { return SDL_TryLockMutex(m) == 0; }
 void Mutex::unlock() { SDL_UnlockMutex(m); }

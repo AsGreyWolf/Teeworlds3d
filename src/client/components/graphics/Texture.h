@@ -26,7 +26,7 @@ enum TEXTURE_FLAGS {
 
 class Texture {
 public:
-	Texture(SDL_Surface *surface, int flags = TEXTURE_DEFAULT);
+	explicit Texture(SDL_Surface *surface, int flags = TEXTURE_DEFAULT);
 	Texture(const GLvoid *pixels, glm::uvec2 size, int flags = TEXTURE_DEFAULT);
 	Texture();
 	operator GLuint() const { return *data; };

@@ -13,7 +13,7 @@ Loading::Loading() : ClientComponent() {
 	status.Hide();
 }
 Loading::~Loading() {
-	pLoading = 0;
+	pLoading = nullptr;
 	g_UI()->screenLayout->Remove(&status);
 }
 void Loading::Tick() {

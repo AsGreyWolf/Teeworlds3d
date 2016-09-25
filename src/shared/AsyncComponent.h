@@ -3,10 +3,11 @@
 
 #include "SharedComponent.h"
 #include <shared/System.h>
+#include <string>
 
 class AsyncComponent : public SharedComponent {
 protected:
-	AsyncComponent(long delay);
+	AsyncComponent(const std::string &tag, long delay);
 	void Start();
 	void Stop();
 

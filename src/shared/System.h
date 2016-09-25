@@ -15,13 +15,12 @@ class Mutex {
 public:
 	using native_handle_type = SDL_mutex *;
 
-	Mutex();
+	Mutex() noexcept;
 	Mutex(const Mutex &second) = delete;
 	Mutex(Mutex &&second) noexcept;
 	~Mutex();
 
 	Mutex &operator=(const Mutex &second) = delete;
-	Mutex &&operator=(Mutex &&second) noexcept;
 
 	void lock();
 	bool try_lock();
@@ -37,7 +36,7 @@ class DelayedThread {
 	friend int ThreadRunner(void *param);
 
 public:
-	DelayedThread(const std::function<void()> &func, long delay);
+	DelayedThread(const std::function<void()> func, long delay);
 	~DelayedThread();
 
 	void Start();
@@ -74,7 +73,6 @@ public:
 private:
 	std::string PATH_CUR;
 	std::string PATH_DATA;
-	static Mutex mutex;
 };
 System *g_System();
 

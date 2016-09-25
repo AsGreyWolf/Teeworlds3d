@@ -27,17 +27,3 @@ Geometry3d &Geometry3d::operator+=(const Geometry3d &geom) {
 	Push(geom.v, geom.n, geom.t);
 	return *this;
 }
-Geometry3d::Geometry3d(Geometry3d &geom) { (*this) = geom; }
-Geometry3d::Geometry3d(Geometry3d &&geom) { (*this) = std::move(geom); }
-Geometry3d &Geometry3d::operator=(Geometry3d &geom) {
-	this->v = geom.v;
-	this->n = geom.n;
-	this->t = geom.t;
-	return *this;
-}
-Geometry3d &Geometry3d::operator=(Geometry3d &&geom) {
-	this->v = std::move(geom.v);
-	this->n = std::move(geom.n);
-	this->t = std::move(geom.t);
-	return *this;
-}

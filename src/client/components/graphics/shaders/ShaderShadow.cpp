@@ -20,11 +20,11 @@ ShaderShadow::ShaderShadow()
 	SetAttribute("in_Position", SHADER_POS);
 	SetAttribute("in_TexMap", SHADER_TEXMAP);
 
-	AddOutputTexture(shadowMap = Texture(NULL, viewport, TEXTURE_ANISOTROPY |
-	                                                         TEXTURE_FILTERING |
-	                                                         TEXTURE_DEPTH));
+	AddOutputTexture(shadowMap = Texture(nullptr, viewport, TEXTURE_ANISOTROPY |
+	                                                            TEXTURE_FILTERING |
+	                                                            TEXTURE_DEPTH));
 }
-ShaderShadow::~ShaderShadow() { pShaderShadow = 0; }
+ShaderShadow::~ShaderShadow() { pShaderShadow = nullptr; }
 void ShaderShadow::Render() {
 	Shader::Render();
 	static Uniform<int> texture(*this, "tex");

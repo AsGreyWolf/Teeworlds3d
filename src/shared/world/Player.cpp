@@ -136,7 +136,7 @@ void Player::Tick() {
 		}
 		bool goingToHitGround = false;
 		bool goingToRetract = false;
-		Tile *hit = world->IntersectLine(hookPos, newPos, &newPos, 0);
+		Tile *hit = world->IntersectLine(hookPos, newPos, &newPos, nullptr);
 		if (hit && hit->isPhys()) {
 			if (hit->isNoHook())
 				goingToRetract = true;
@@ -250,8 +250,8 @@ void Player::Tick() {
 	vel.y = vel.y * (1.0f / RampValue);
 	if (tuningPlayerColision) {
 		glm::vec3 collidePos;
-		if (world->IntersectPlayer(pos, NewPos, NULL, &collidePos, id,
-		                           physSize / 2) != NULL)
+		if (world->IntersectPlayer(pos, NewPos, nullptr, &collidePos, id,
+		                           physSize / 2) != nullptr)
 			NewPos = collidePos;
 	}
 	pos = NewPos;

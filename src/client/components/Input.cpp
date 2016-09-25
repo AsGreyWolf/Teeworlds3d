@@ -11,7 +11,7 @@ Input::Input() : ClientComponent() {
 	mouseY = 0;
 	mouseWheel = 0;
 }
-Input::~Input() { pInput = 0; }
+Input::~Input() { pInput = nullptr; }
 void Input::Tick() {
 	quit = 0;
 	mouseX = 0;

@@ -30,13 +30,11 @@ void logProgram(GLuint id) {
 	delete[] infoLog;
 }
 bool endsWith(std::string const &fullString, std::string const &ending) {
-	if (fullString.length() >= ending.length()) {
+	if (fullString.length() >= ending.length())
 		return (0 ==
 		        fullString.compare(fullString.length() - ending.length(),
 		                           ending.length(), ending));
-	} else {
-		return false;
-	}
+	return false;
 }
 Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
                GLboolean colormask0, GLboolean colormask1, GLboolean colormask2,
@@ -71,7 +69,7 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 
 	GLuint vertexshader = glCreateShader(GL_VERTEX_SHADER);
 	const GLchar *ptr = vertexsource.c_str();
-	glShaderSource(vertexshader, 1, (const GLchar **)&ptr, 0);
+	glShaderSource(vertexshader, 1, &ptr, nullptr);
 	glCompileShader(vertexshader);
 	int IsCompiled_VS;
 	glGetShaderiv(vertexshader, GL_COMPILE_STATUS, &IsCompiled_VS);
@@ -82,7 +80,7 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 
 	GLuint fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
 	ptr = fragmentsource.c_str();
-	glShaderSource(fragmentshader, 1, (const GLchar **)&ptr, 0);
+	glShaderSource(fragmentshader, 1, &ptr, nullptr);
 	glCompileShader(fragmentshader);
 	int IsCompiled_FS;
 	glGetShaderiv(fragmentshader, GL_COMPILE_STATUS, &IsCompiled_FS);
@@ -96,7 +94,7 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 	glAttachShader(id, fragmentshader);
 	glLinkProgram(id);
 	int IsLinked;
-	glGetProgramiv(id, GL_LINK_STATUS, (int *)&IsLinked);
+	glGetProgramiv(id, GL_LINK_STATUS, &IsLinked);
 	if (IsLinked == GL_FALSE) {
 		logProgram(id);
 		id = 0;
@@ -176,5 +174,5 @@ template <> void Shader::Uniform<glm::vec4>::Set(const value_type &value) {
 };
 template class Shader::Uniform<glm::mat4>;
 template <> void Shader::Uniform<glm::mat4>::Set(const value_type &value) {
-	glUniformMatrix4fv(id, 1, GL_FALSE, (const float *)glm::value_ptr(value));
+	glUniformMatrix4fv(id, 1, GL_FALSE, glm::value_ptr(value));
 };

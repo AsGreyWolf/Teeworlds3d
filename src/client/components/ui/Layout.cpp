@@ -35,7 +35,7 @@ void Layout::Validate() {
 }
 View *Layout::Select(const glm::vec2 &position) {
 	int count = children.size();
-	View *v = NULL;
+	View *v = nullptr;
 	for (int i = 0; i < count && !(v = children[i]->Select(position)); i++)
 		;
 	return v;

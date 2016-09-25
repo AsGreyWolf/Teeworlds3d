@@ -9,8 +9,9 @@ public:
 	glm::vec3 pos;
 	///<summary>Rotation(rads)</summary>
 	rot3 rot;
-	inline void LookAt(const glm::vec3 &to, const float *fixedX = NULL,
-	                   const float *fixedY = NULL, const float *fixedZ = NULL) {
+	inline void LookAt(const glm::vec3 &to, const float *fixedX = nullptr,
+	                   const float *fixedY = nullptr,
+	                   const float *fixedZ = nullptr) {
 		rot3 buffer = rot3(to - pos);
 		if (fixedX)
 			buffer.x = *fixedX;

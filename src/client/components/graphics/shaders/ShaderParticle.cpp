@@ -26,7 +26,7 @@ ShaderParticle::ShaderParticle()
 	                                     1.0f, 10000.0f);
 	SetAttribute("in_Position", SHADER_POS);
 }
-ShaderParticle::~ShaderParticle() { pShaderParticle = 0; }
+ShaderParticle::~ShaderParticle() { pShaderParticle = nullptr; }
 void ShaderParticle::Render() {
 	Shader::Render();
 	glEnable(GL_POINT_SPRITE);

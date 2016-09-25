@@ -6,7 +6,7 @@
 
 class Label : public Panel {
 public:
-	Label(const std::string &str, int size = FONT_NORMAL);
+	explicit Label(const std::string &str, int size = FONT_NORMAL);
 	Label(const Label &second);
 
 	void SetText(const std::string &str, int size = FONT_NORMAL);

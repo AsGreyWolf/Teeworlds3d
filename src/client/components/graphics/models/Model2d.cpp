@@ -73,14 +73,14 @@ void Model2d::Data::Validate() {
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * v.size() * 2,
-		             v.size() > 0 ? &v[0] : NULL, GL_STATIC_DRAW);
-		glVertexAttribPointer(SHADER_POS, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		             v.empty() ? nullptr : v.data(), GL_STATIC_DRAW);
+		glVertexAttribPointer(SHADER_POS, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glEnableVertexAttribArray(SHADER_POS);
 
 		glBindBuffer(GL_ARRAY_BUFFER, tbuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * t.size() * 2,
-		             t.size() > 0 ? &t[0] : NULL, GL_STATIC_DRAW);
-		glVertexAttribPointer(SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		             t.empty() ? nullptr : t.data(), GL_STATIC_DRAW);
+		glVertexAttribPointer(SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glEnableVertexAttribArray(SHADER_TEXMAP);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

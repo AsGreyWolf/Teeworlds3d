@@ -3,6 +3,7 @@
 
 #include "AsyncComponent.h"
 
+#include <array>
 #include <string>
 #include <tools/Protocol.h>
 #include <tools/vmath.h>
@@ -44,10 +45,10 @@ public:
 	///<param name="beforeCollision">last point before colision</param>
 	Tile *IntersectLine(const glm::vec3 &pos0, const glm::vec3 &pos1,
 	                    glm::vec3 *collision, glm::vec3 *beforeCollision) const;
-	void MovePoint(glm::vec3 *pos, glm::vec3 *vel, float elasticity,
+	void MovePoint(glm::vec3 *position, glm::vec3 *velocity, float elasticity,
 	               int *bounces) const;
 	bool TestBox(const glm::vec3 &pos, const glm::vec3 &size) const;
-	void MoveBox(glm::vec3 *pos, glm::vec3 *vel, const glm::vec3 &size,
+	void MoveBox(glm::vec3 *position, glm::vec3 *velocity, const glm::vec3 &size,
 	             float elasticity) const;
 	Player *IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
 	                        glm::vec3 *collision, glm::vec3 *beforeCollision,
@@ -60,13 +61,13 @@ public:
 	///<summary>Vector of the tiles sorted by id</summary>
 	std::vector<Tile> tilesById;
 	///<summary>Players array</summary>
-	Player *players[MAX_PLAYERS];
+	std::array<Player *, MAX_PLAYERS> players;
 	///<summary>Projectiles array</summary>
 	std::vector<Projectile *> projectiles;
 
 private:
 	///<summary>Array of the tiles sorted by position</summary>
-	Tile ****tilesByPos;
+	std::vector<std::vector<std::vector<Tile *>>> tilesByPos;
 };
 World *g_World();
 

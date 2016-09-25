@@ -5,7 +5,7 @@
 
 class Model3d::ShadowModel : public Model {
 public:
-	ShadowModel(Model3d &parent);
+	explicit ShadowModel(Model3d &parent);
 	~ShadowModel() override;
 	void Render() override;
 

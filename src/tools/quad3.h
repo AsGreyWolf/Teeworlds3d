@@ -20,21 +20,16 @@ public:
 		p3 = v3;
 		p4 = v4;
 	}
-	quad3(const quad2 &data, float depth = 0) {
+	explicit quad3(const quad2 &data, float depth = 0) {
 		p1 = glm::vec3(-data.v00().x, depth, data.v00().y);
 		p2 = glm::vec3(-data.v10().x, depth, data.v10().y);
 		p3 = glm::vec3(-data.v11().x, depth, data.v11().y);
 		p4 = glm::vec3(-data.v01().x, depth, data.v01().y);
 	}
-	quad3(const quad3 &second)
-	    : quad3(second.p1, second.p2, second.p3, second.p4) {}
-	quad3 &operator=(const quad3 &second) {
-		p1 = second.p1;
-		p2 = second.p2;
-		p3 = second.p3;
-		p4 = second.p4;
-		return *this;
-	}
+	quad3(const quad3 &second) = default;
+	quad3(quad3 &&second) noexcept = default;
+	quad3 &operator=(const quad3 &second) = default;
+	quad3 &operator=(quad3 &&second) noexcept = default;
 	quad3 operator*(float a) const {
 		return quad3(p1 * a, p2 * a, p3 * a, p4 * a);
 	}

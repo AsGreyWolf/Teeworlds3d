@@ -15,7 +15,7 @@ Shader2d::Shader2d()
 	SetAttribute("in_Position", SHADER_POS);
 	SetAttribute("in_TexMap", SHADER_TEXMAP);
 }
-Shader2d::~Shader2d() { pShader2d = 0; }
+Shader2d::~Shader2d() { pShader2d = nullptr; }
 void Shader2d::Render() {
 	Shader::Render();
 	static Uniform<int> texture(*this, "tex");

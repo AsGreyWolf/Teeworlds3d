@@ -10,21 +10,18 @@
 class World *pWorld;
 World *g_World() { return pWorld ? pWorld : new World(); }
 
-World::World() : AsyncComponent(1000 / 60) {
+World::World() : AsyncComponent("WORLD", 1000 / 60) {
 	pWorld = this;
-	tilesByPos = 0;
 	UnLoad();
-	for (int i = 0; i < MAX_PLAYERS; i++)
-		pWorld->players[i] = 0;
 	Start();
 };
 World::~World() {
 	Stop();
 	UnLoad();
-	for (int i = 0; i < MAX_PLAYERS; i++)
-		if (players[i])
-			delete players[i];
-	pWorld = 0;
+	for (auto p : players)
+		if (p)
+			delete p;
+	pWorld = nullptr;
 };
 void World::AsyncTick() {
 	AsyncComponent::AsyncTick();
@@ -56,13 +53,12 @@ void World::Load(const std::string &name) {
 	worldSize.z = (int)(buf);
 
 	tilesById.clear();
-	tilesByPos = new Tile ***[worldSize.x];
-
+	tilesByPos.resize(worldSize.x);
 	size_t i = 0;
 	for (size_t xi = 0; xi < worldSize.x; xi++) {
-		tilesByPos[xi] = new Tile **[worldSize.y];
+		tilesByPos[xi].resize(worldSize.y);
 		for (size_t yi = 0; yi < worldSize.y; yi++) {
-			tilesByPos[xi][yi] = new Tile *[worldSize.z];
+			tilesByPos[xi][yi].resize(worldSize.z);
 			for (size_t zi = 0; zi < worldSize.z; zi++) {
 				// TODO: remove whitespaces
 				Tile tile;
@@ -119,14 +115,7 @@ void World::Load(const std::string &name) {
 void World::UnLoad() {
 	tileset = "";
 	tilesById.clear();
-	if (tilesByPos) {
-		for (size_t xi = 0; xi < worldSize.x; xi++) {
-			for (size_t yi = 0; yi < worldSize.y; yi++)
-				delete[] tilesByPos[xi][yi];
-			delete[] tilesByPos[xi];
-		}
-		delete[] tilesByPos;
-	}
+	tilesByPos.clear();
 	worldSize = glm::vec3(0, 0, 0);
 }
 bool World::isValid() const { return !tileset.empty(); }
@@ -135,10 +124,10 @@ Player *World::IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
                                int except, float radius) const {
 	glm::vec3 pos = pos1 - pos0;
 	float minv;
-	Player *minp = NULL;
+	Player *minp = nullptr;
 	float len = glm::length(pos);
 	if (len <= 0)
-		return NULL;
+		return nullptr;
 	glm::vec3 dist = glm::normalize(pos);
 	for (int i = 0; i < MAX_PLAYERS; i++) {
 		if (i == except)
@@ -154,19 +143,19 @@ Player *World::IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
 		if (glm::isnan(v) || v > len || v < 0) {
 			continue;
 		}
-		if (minp == NULL || minv > v) {
+		if (minp == nullptr || minv > v) {
 			minv = v;
 			minp = p;
 		}
 	}
-	if (minp != NULL) {
+	if (minp != nullptr) {
 		if (collision)
 			*collision = dist * minv + pos0;
 		if (beforeCollision)
 			*beforeCollision = dist * minv - dist + pos0;
 		return minp;
 	}
-	return NULL;
+	return nullptr;
 	/*glm::vec3 pos00 = pos0;
 	float Distance = distance(pos00, pos1);
 	int End = Distance + 1;
@@ -204,15 +193,15 @@ Tile *World::GetTile(const glm::vec3 &pos) const {
 	return GetTile(x, y, z);
 }
 Tile *World::GetTile(int x, int y, int z) const {
-	return x < 0 ? NULL
+	return x < 0 ? nullptr
 	             : (size_t)x >= worldSize.x
-	                   ? NULL
-	                   : y < 0 ? NULL
+	                   ? nullptr
+	                   : y < 0 ? nullptr
 	                           : (size_t)y >= worldSize.y
-	                                 ? NULL
-	                                 : z < 0 ? NULL
+	                                 ? nullptr
+	                                 : z < 0 ? nullptr
 	                                         : (size_t)z >= worldSize.z
-	                                               ? NULL
+	                                               ? nullptr
 	                                               : tilesByPos[x][y][z];
 }
 Tile *World::IntersectLine(const glm::vec3 &pos0, const glm::vec3 &pos1,
@@ -239,7 +228,7 @@ Tile *World::IntersectLine(const glm::vec3 &pos0, const glm::vec3 &pos1,
 		*collision = pos1;
 	if (beforeCollision)
 		*beforeCollision = pos1;
-	return NULL;
+	return nullptr;
 }
 void World::MovePoint(glm::vec3 *position, glm::vec3 *velocity,
                       float elasticity, int *bounces) const {

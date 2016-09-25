@@ -21,10 +21,8 @@ Texture::Texture(const GLvoid *pixels, glm::uvec2 s, int fl) : flags(fl) {
 Texture::Texture(SDL_Surface *surface, int fl) : flags(fl) {
 	SDL_Surface *converted = g_Graphics()->to_RGBA(surface);
 
-	if (converted == NULL) {
-		SDL_FreeSurface(converted);
+	if (!converted)
 		return;
-	}
 	GLint maxTexSize;
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTexSize);
 	if (converted->w > maxTexSize) {

@@ -19,7 +19,7 @@ Shader3dComposer::Shader3dComposer()
            g_ShaderShadow()->shadowMap}) {
 	pShader3dComposer = this;
 }
-Shader3dComposer::~Shader3dComposer() { pShader3dComposer = 0; }
+Shader3dComposer::~Shader3dComposer() { pShader3dComposer = nullptr; }
 void Shader3dComposer::Render() {
 	glUseProgram(*this);
 	static Uniform<glm::mat4> spMatrix(*this, "shadowProjectionMatrix");

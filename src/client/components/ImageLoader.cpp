@@ -21,12 +21,12 @@ ImageLoader::ImageLoader() : ClientComponent() {
 }
 ImageLoader::~ImageLoader() {
 	IMG_Quit();
-	pImageLoader = 0;
+	pImageLoader = nullptr;
 }
 Texture ImageLoader::Load(std::string path, int flags) {
 	Texture t;
 	SDL_Surface *temp;
-	if ((temp = IMG_Load(g_System()->GetDataFile(path).c_str())) == NULL) {
+	if ((temp = IMG_Load(g_System()->GetDataFile(path).c_str())) == nullptr) {
 		g_Console()->Err("Error Loading Texture: " + path + " : " +
 		                 std::string(IMG_GetError()));
 		return t;

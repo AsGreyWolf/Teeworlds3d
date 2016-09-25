@@ -17,10 +17,10 @@ class Texture;
 
 class Model2d : public Model {
 public:
-	Model2d(int type = GL_TRIANGLES);
+	explicit Model2d(int type = GL_TRIANGLES);
 	Model2d(const Model2d &second);
-	~Model2d() override;
-	void Render() override;
+	virtual ~Model2d() override;
+	virtual void Render() override;
 
 	Model2d &operator=(const Model2d &second);
 

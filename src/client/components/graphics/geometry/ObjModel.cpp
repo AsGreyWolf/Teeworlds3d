@@ -43,7 +43,7 @@ Geometry3d ObjModel(const std::string &filename, const glm::vec3 &position) {
 			vt.y = 1 - vt.y;
 			texs.push_back(vt);
 		} else if (com == "f") {
-			if (norms.size() > 0 && texs.size() > 0) {
+			if (!norms.empty() && !texs.empty()) {
 				int v1, v2, v3, t1, t2, t3, n1, n2, n3;
 				char c;
 				if (!(iss >> v1 >> c >> t1 >> c >> n1 >> v2 >> c >> t2 >> c >> n2 >> v3 >>
@@ -53,7 +53,7 @@ Geometry3d ObjModel(const std::string &filename, const glm::vec3 &position) {
 				geom.Push(verts[v1 - 1], norms[n1 - 1], texs[t1 - 1]);
 				geom.Push(verts[v2 - 1], norms[n2 - 1], texs[t2 - 1]);
 				geom.Push(verts[v3 - 1], norms[n3 - 1], texs[t3 - 1]);
-			} else if (norms.size() > 0) {
+			} else if (!norms.empty()) {
 				int v1, v2, v3, n1, n2, n3;
 				char c;
 				if (!(iss >> v1 >> c >> c >> n1 >> v2 >> c >> c >> n2 >> v3 >> c >> c >>
@@ -63,7 +63,7 @@ Geometry3d ObjModel(const std::string &filename, const glm::vec3 &position) {
 				geom.Push(verts[v1 - 1], norms[n1 - 1], glm::vec2(0, 0));
 				geom.Push(verts[v2 - 1], norms[n2 - 1], glm::vec2(0, 0));
 				geom.Push(verts[v3 - 1], norms[n3 - 1], glm::vec2(0, 0));
-			} else if (texs.size() > 0) {
+			} else if (!texs.empty()) {
 				int v1, v2, v3, t1, t2, t3;
 				char c;
 				if (!(iss >> v1 >> c >> t1 >> c >> v2 >> c >> t2 >> c >> v3 >> c >> t3)) {

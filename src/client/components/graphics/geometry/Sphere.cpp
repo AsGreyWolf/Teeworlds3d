@@ -50,9 +50,9 @@ Sphere::operator Geometry3d() {
 	vertices.resize(rings * sectors);
 	normals.resize(rings * sectors);
 	texcoords.resize(rings * sectors);
-	std::vector<glm::vec3>::iterator v = vertices.begin();
-	std::vector<glm::vec3>::iterator n = normals.begin();
-	std::vector<glm::vec2>::iterator t = texcoords.begin();
+	auto v = vertices.begin();
+	auto n = normals.begin();
+	auto t = texcoords.begin();
 	float tcsizex = texcoord.w;
 	float tcsizey = texcoord.h;
 	if (reversed)

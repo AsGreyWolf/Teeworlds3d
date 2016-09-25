@@ -16,7 +16,7 @@ protected:
 	ClientComponent();
 
 public:
-	virtual ~ClientComponent();
+	virtual ~ClientComponent() override;
 	virtual void Message(int type, char *value);
 	virtual void StateChange(const STATE &prevState);
 

@@ -22,7 +22,7 @@ Model3d::Model3d(bool l, int t) : Model() {
 	if (light)
 		shadow = new ShadowModel(*this);
 	else
-		shadow = NULL;
+		shadow = nullptr;
 }
 Model3d::Model3d(const Model3d &second) : Model(second) {
 	bufferedModelMatrix = glm::mat4(1.0f);
@@ -154,20 +154,20 @@ void Model3d::Data::Validate() {
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * v.size() * 3,
-		             v.size() > 0 ? &v[0] : NULL, GL_STATIC_DRAW);
-		glVertexAttribPointer(SHADER_POS, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		             v.empty() ? nullptr : v.data(), GL_STATIC_DRAW);
+		glVertexAttribPointer(SHADER_POS, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glEnableVertexAttribArray(SHADER_POS);
 
 		glBindBuffer(GL_ARRAY_BUFFER, tbuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * t.size() * 2,
-		             t.size() > 0 ? &t[0] : NULL, GL_STATIC_DRAW);
-		glVertexAttribPointer(SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		             t.empty() ? nullptr : t.data(), GL_STATIC_DRAW);
+		glVertexAttribPointer(SHADER_TEXMAP, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glEnableVertexAttribArray(SHADER_TEXMAP);
 
 		glBindBuffer(GL_ARRAY_BUFFER, nbuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * n.size() * 3,
-		             n.size() > 0 ? &n[0] : NULL, GL_STATIC_DRAW);
-		glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		             n.empty() ? nullptr : n.data(), GL_STATIC_DRAW);
+		glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glEnableVertexAttribArray(SHADER_NORMAL);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
