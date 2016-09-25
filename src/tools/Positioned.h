@@ -13,16 +13,19 @@ public:
 	                   const float *fixedY = nullptr,
 	                   const float *fixedZ = nullptr) {
 		rot3 buffer = rot3(to - pos);
-		if (fixedX)
+		if (fixedX != nullptr) {
 			buffer.x = *fixedX;
-		if (fixedY)
+		}
+		if (fixedY != nullptr) {
 			buffer.y = *fixedY;
-		if (fixedZ) {
+		}
+		if (fixedZ != nullptr) {
 			float z = *fixedZ;
 			if ((buffer.z < z - M_PI_2 || buffer.z > z + M_PI_2) &&
 			    (buffer.z < z - M_PI_2 + 2 * M_PI || buffer.z > z + M_PI_2 + 2 * M_PI) &&
-			    (buffer.z < z - M_PI_2 - 2 * M_PI || buffer.z > z + M_PI_2 - 2 * M_PI))
+			    (buffer.z < z - M_PI_2 - 2 * M_PI || buffer.z > z + M_PI_2 - 2 * M_PI)) {
 				buffer.x = -buffer.x;
+			}
 			buffer.z = z;
 		}
 		rot = buffer;

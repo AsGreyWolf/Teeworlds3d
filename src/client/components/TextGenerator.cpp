@@ -5,7 +5,7 @@
 
 class TextGenerator *pTextGenerator;
 TextGenerator *g_TextGenerator() {
-	return pTextGenerator ? pTextGenerator : new TextGenerator();
+	return pTextGenerator != nullptr ? pTextGenerator : new TextGenerator();
 }
 
 const std::string TextGenerator::fontPath = "font.ttf";
@@ -23,8 +23,9 @@ TextGenerator::TextGenerator() : ClientComponent() {
 	                  std::to_string(ver.minor) + "." + std::to_string(ver.patch));
 }
 TextGenerator::~TextGenerator() {
-	for (auto &font : fonts)
+	for (auto &font : fonts) {
 		TTF_CloseFont(font.second);
+	}
 	TTF_Quit();
 	pTextGenerator = nullptr;
 }
@@ -32,7 +33,7 @@ Texture TextGenerator::Generate(const std::string &data, int size,
                                 float width) {
 	Texture texture;
 	TTF_Font *font = Font(size);
-	if (font) {
+	if (font != nullptr) {
 		TTF_SetFontOutline(font, 0);
 		int w = width == 0 ? INT_MAX : g_Graphics()->to_pixels(width);
 		SDL_Surface *surface = TTF_RenderUTF8_Blended_Wrapped(
@@ -41,7 +42,7 @@ Texture TextGenerator::Generate(const std::string &data, int size,
 		TTF_SetFontOutline(font, outline);
 		SDL_Surface *shadowSurface = TTF_RenderUTF8_Blended_Wrapped(
 		    font, data.c_str(), SDL_Color{96, 96, 96, 255}, w);
-		if (surface && shadowSurface) {
+		if (surface != nullptr && shadowSurface != nullptr) {
 			SDL_Rect dest;
 			dest.x = outline;
 			dest.y = outline;
@@ -50,22 +51,26 @@ Texture TextGenerator::Generate(const std::string &data, int size,
 			SDL_BlitSurface(surface, nullptr, shadowSurface, &dest);
 			texture = Texture(shadowSurface);
 		}
-		if (surface)
+		if (surface != nullptr) {
 			SDL_FreeSurface(surface);
-		if (shadowSurface)
+		}
+		if (shadowSurface != nullptr) {
 			SDL_FreeSurface(shadowSurface);
+		}
 	}
 	return texture;
 }
 TTF_Font *TextGenerator::Font(int size) {
 	auto key = fonts.find(size);
-	if (key != fonts.end())
+	if (key != fonts.end()) {
 		return key->second;
+	}
 	int pt = 1;
-	while (pt < g_Graphics()->to_pixels(size * 1.0f / FONT_DIVIDER))
+	while (pt < g_Graphics()->to_pixels(size * 1.0f / FONT_DIVIDER)) {
 		pt <<= 1;
+	}
 	TTF_Font *font = TTF_OpenFont(g_System()->GetDataFile(fontPath).c_str(), pt);
-	if (!font) {
+	if (font == nullptr) {
 		g_Console()->Err("Error Loading Font: " + fontPath + "(" +
 		                 std::to_string(size) + ") : " + std::string(TTF_GetError()));
 		return font;

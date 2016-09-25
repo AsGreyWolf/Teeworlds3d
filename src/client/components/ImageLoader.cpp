@@ -5,7 +5,7 @@
 
 class ImageLoader *pImageLoader;
 ImageLoader *g_ImageLoader() {
-	return pImageLoader ? pImageLoader : new ImageLoader();
+	return pImageLoader != nullptr ? pImageLoader : new ImageLoader();
 }
 
 ImageLoader::ImageLoader() : ClientComponent() {

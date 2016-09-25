@@ -12,7 +12,7 @@ enum PANEL_FLAGS {
 
 class Panel : public View {
 public:
-	explicit Panel(const Texture &texture, int flags = 0);
+	explicit Panel(Texture texture, int flags = 0);
 	explicit Panel(int flags = 0);
 	Panel(const Panel &second);
 	virtual ~Panel();

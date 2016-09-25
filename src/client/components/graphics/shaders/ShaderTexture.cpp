@@ -35,8 +35,9 @@ ShaderTexture::ShaderTexture(const std::string &file, const glm::uvec2 &size,
 	glBindVertexArray(0);
 
 	colorTextures = textures;
-	for (const std::string &uniform : uniforms)
+	for (const std::string &uniform : uniforms) {
 		colorUniforms.push_back(Uniform<int>(*this, uniform));
+	}
 	AddOutputTexture(out = Texture(nullptr, size, flags));
 }
 ShaderTexture::~ShaderTexture() {

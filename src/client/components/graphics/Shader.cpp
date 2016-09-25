@@ -8,15 +8,16 @@
 
 std::string filetobuf(std::string file) {
 	std::ifstream in(file);
-	if (!in.good())
+	if (!in.good()) {
 		return "";
+	}
 	return std::string((std::istreambuf_iterator<char>(in)),
 	                   std::istreambuf_iterator<char>());
 }
 void logShader(GLuint id) {
 	int maxLength;
 	glGetShaderiv(id, GL_INFO_LOG_LENGTH, &maxLength);
-	char *infoLog = new char[maxLength];
+	auto infoLog = new char[maxLength];
 	glGetShaderInfoLog(id, maxLength, &maxLength, infoLog);
 	g_Console()->Err(std::string(infoLog));
 	delete[] infoLog;
@@ -24,16 +25,17 @@ void logShader(GLuint id) {
 void logProgram(GLuint id) {
 	int maxLength;
 	glGetProgramiv(id, GL_INFO_LOG_LENGTH, &maxLength);
-	char *infoLog = new char[maxLength];
+	auto infoLog = new char[maxLength];
 	glGetProgramInfoLog(id, maxLength, &maxLength, infoLog);
 	g_Console()->Err(std::string(infoLog));
 	delete[] infoLog;
 }
 bool endsWith(std::string const &fullString, std::string const &ending) {
-	if (fullString.length() >= ending.length())
+	if (fullString.length() >= ending.length()) {
 		return (0 ==
 		        fullString.compare(fullString.length() - ending.length(),
 		                           ending.length(), ending));
+	}
 	return false;
 }
 Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
@@ -57,8 +59,9 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 		s = "shaders/" + s;
 		if (endsWith(s, ".slib")) {
 			std::string libsource = filetobuf(g_System()->GetDataFile(s));
-			if (libsource.length() == 0)
+			if (libsource.length() == 0) {
 				continue;
+			}
 			g_Console()->Info("Shader library loaded " + s);
 			libraries += libsource + "\n";
 		}
@@ -103,8 +106,9 @@ Shader::Shader(const std::string &filepath, glm::vec2 viewport, GLenum culling,
 	g_Console()->Info("Shader loaded " + filepath);
 }
 Shader::~Shader() {
-	if (framebuffer)
+	if (framebuffer != 0u) {
 		glDeleteFramebuffers(1, &framebuffer);
+	}
 	glDeleteProgram(id);
 	id = 0;
 	registredModels.clear();
@@ -123,21 +127,24 @@ void Shader::Render() {
 }
 std::list<Shader *> Shader::registred;
 void Shader::RenderShaders() {
-	for (Shader *&shader : registred)
+	for (Shader *&shader : registred) {
 		shader->Render();
+	}
 }
 void Shader::ClearShaders() {
-	while (!registred.empty())
+	while (!registred.empty()) {
 		delete registred.back();
+	}
 }
 void Shader::SetAttribute(const std::string &name, SHADER_BINDINGS id) {
 	glBindAttribLocation(*this, id, name.c_str());
 }
 void Shader::AddOutputTexture(Texture &t) {
-	if (!framebuffer)
+	if (framebuffer == 0u) {
 		glGenFramebuffers(1, &framebuffer);
+	}
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	if (t.flags & TEXTURE_DEPTH) {
+	if ((t.flags & TEXTURE_DEPTH) != 0) {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, t,
 		                       0);
 	} else {

@@ -3,8 +3,8 @@
 #include <shared/World.h>
 
 Projectile::Projectile(int type, int owner, const glm::vec3 &pos,
-                       const glm::vec3 &rot, int life, int damage,
-                       bool explosive, float force, int sound, int weapon) {
+                       const rot3 &rot, int life, int damage, bool explosive,
+                       float force, int sound, int weapon) {
 	this->type = type;
 	this->owner = owner;
 	this->pos = pos;
@@ -62,7 +62,8 @@ void Projectile::Tick() {
 	Player *targetPlayer =
 	    g_World()->IntersectPlayer(PrevPos, CurPos, &CurPos, nullptr, owner, 6.0f);
 	life--;
-	if (targetPlayer || collide || life < 0) { // TODO: || GameLayerClipped(CurPos)
+	if ((targetPlayer != nullptr) || (collide != nullptr) ||
+	    life < 0) { // TODO: || GameLayerClipped(CurPos)
 		// if (life >= 0 || weapon == WEAPON_GRENADE)
 		// TODO: GameServer()->CreateSound(CurPos, m_SoundImpact);
 

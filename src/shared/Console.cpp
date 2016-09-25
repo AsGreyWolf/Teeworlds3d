@@ -7,7 +7,7 @@
 #endif
 
 class Console *pConsole;
-Console *g_Console() { return pConsole ? pConsole : new Console(); }
+Console *g_Console() { return pConsole != nullptr ? pConsole : new Console(); }
 
 Console::Console() : SharedComponent() { pConsole = this; };
 Console::~Console() { pConsole = nullptr; };

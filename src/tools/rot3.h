@@ -20,7 +20,7 @@ public:
 	rot3(float x, float y, float z) : x(data.x), y(data.y), z(data.z) {
 		data = glm::vec3(x, y, z);
 	};
-	rot3(const glm::vec3 &v) : x(data.x), y(data.y), z(data.z) {
+	explicit rot3(const glm::vec3 &v) : x(data.x), y(data.y), z(data.z) {
 		glm::vec2 xy = glm::normalize(glm::vec2(v.x, v.y));
 		data = glm::vec3(asin(glm::normalize(v).z), 0,
 		                 xy.x > 0.0 ? -acos(xy.y) : acos(xy.y));

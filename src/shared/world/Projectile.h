@@ -6,7 +6,7 @@
 
 class Projectile : Positioned {
 public:
-	Projectile(int type, int owner, const glm::vec3 &pos, const glm::vec3 &rot,
+	Projectile(int type, int owner, const glm::vec3 &pos, const rot3 &rot,
 	           int life, int damage, bool explosive, float force, int sound,
 	           int weapon);
 	glm::vec3 GetPos(float time);

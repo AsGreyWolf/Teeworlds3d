@@ -50,6 +50,6 @@ template <typename genType>
 GLM_FUNC_DECL inline float sqr_distance(genType const &x, genType const &x2) {
 	return dot(x - x2, x - x2);
 };
-};
+} // namespace glm
 
 #endif

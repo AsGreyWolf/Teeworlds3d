@@ -13,7 +13,9 @@ const char *Resources::weaponFiles[NUM_WEAPONS] = {
 };
 
 class Resources *pResources;
-Resources *g_Resources() { return pResources ? pResources : new Resources(); }
+Resources *g_Resources() {
+	return pResources != nullptr ? pResources : new Resources();
+}
 
 Resources::Resources() : ClientComponent() {
 	pResources = this;
@@ -35,24 +37,32 @@ Resources::Resources() : ClientComponent() {
 		});
 	}
 	texturePos8.reserve(8 * 8);
-	for (int j = 0; j < 8; j++)
-		for (int i = 0; i < 8; i++)
+	for (int j = 0; j < 8; j++) {
+		for (int i = 0; i < 8; i++) {
 			texturePos8.push_back(quad2(1.0f * i / 8, 1.0f * j / 8, 1.0f / 8, 1.0f / 8));
+		}
+	}
 	texturePos16.reserve(16 * 16);
-	for (int j = 0; j < 16; j++)
-		for (int i = 0; i < 16; i++)
+	for (int j = 0; j < 16; j++) {
+		for (int i = 0; i < 16; i++) {
 			texturePos16.push_back(
 			    quad2(1.0f * i / 16, 1.0f * j / 16, 1.0f / 16, 1.0f / 16));
+		}
+	}
 	texturePos8x4.reserve(8 * 4);
-	for (int j = 0; j < 4; j++)
-		for (int i = 0; i < 8; i++)
+	for (int j = 0; j < 4; j++) {
+		for (int i = 0; i < 8; i++) {
 			texturePos8x4.push_back(
 			    quad2(1.0f * i / 8, 1.0f * j / 4, 1.0f / 8, 1.0f / 4));
+		}
+	}
 	texturePos16x8.reserve(16 * 8);
-	for (int j = 0; j < 8; j++)
-		for (int i = 0; i < 16; i++)
+	for (int j = 0; j < 8; j++) {
+		for (int i = 0; i < 16; i++) {
 			texturePos16x8.push_back(
 			    quad2(1.0f * i / 16, 1.0f * j / 8, 1.0f / 16, 1.0f / 8));
+		}
+	}
 
 	gameCursor.reserve(NUM_WEAPONS);
 	gameCursor.push_back(texturePos16x8[0]);

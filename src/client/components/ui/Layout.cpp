@@ -3,7 +3,7 @@
 
 Layout::Layout() : View() {}
 Layout::Layout(const Layout &second) : Layout() { *this = second; }
-Layout::~Layout() {}
+Layout::~Layout() = default;
 void Layout::Show() {
 	View::Show();
 	for (View *v : children) {
@@ -17,8 +17,9 @@ void Layout::Hide() {
 	View::Hide();
 }
 void Layout::Validate() {
-	if (!isVisible())
+	if (!isVisible()) {
 		return;
+	}
 	View::Validate();
 	workspace =
 	    quad2(element.x + margin[BORDER_LEFT], element.y + margin[BORDER_BOTTOM],
@@ -36,8 +37,10 @@ void Layout::Validate() {
 View *Layout::Select(const glm::vec2 &position) {
 	int count = children.size();
 	View *v = nullptr;
-	for (int i = 0; i < count && !(v = children[i]->Select(position)); i++)
+	for (int i = 0; i < count && ((v = children[i]->Select(position)) == nullptr);
+	     i++) {
 		;
+	}
 	return v;
 }
 void Layout::Add(View *view) { children.push_back(view); }

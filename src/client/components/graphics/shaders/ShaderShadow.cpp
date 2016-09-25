@@ -6,7 +6,7 @@
 
 ShaderShadow *pShaderShadow;
 ShaderShadow *g_ShaderShadow() {
-	return pShaderShadow ? pShaderShadow : new ShaderShadow();
+	return pShaderShadow != nullptr ? pShaderShadow : new ShaderShadow();
 }
 
 ShaderShadow::ShaderShadow()
@@ -35,9 +35,11 @@ void ShaderShadow::Render() {
 	         glm::lookAt(pos, pos + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 	static Uniform<glm::mat4> vpMatrix(*this, "viewProjectionMatrix");
 	vpMatrix.Set(matrix);
-	for (Model *model : registredModels)
-		if (model->isEnabled())
+	for (Model *model : registredModels) {
+		if (model->isEnabled()) {
 			model->Render();
+		}
+	}
 }
 void ShaderShadow::SetMatrix(const glm::mat4 &modelMatrix) {
 	static Uniform<glm::mat4> mMatrix(*this, "modelMatrix");

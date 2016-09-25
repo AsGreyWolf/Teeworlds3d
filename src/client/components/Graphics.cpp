@@ -4,7 +4,9 @@
 #include <shared/Console.h>
 
 class Graphics *pGraphics;
-Graphics *g_Graphics() { return pGraphics ? pGraphics : new Graphics(); }
+Graphics *g_Graphics() {
+	return pGraphics != nullptr ? pGraphics : new Graphics();
+}
 
 Graphics::Graphics() : ClientComponent() {
 	pGraphics = this;
@@ -15,7 +17,7 @@ Graphics::Graphics() : ClientComponent() {
 		h = 1;
 	}
 	screenSize = glm::vec2(w, h);
-	screenAspect = (float)w / h;
+	screenAspect = w * 1.0f / h;
 	screen = quad2(-1 * screenAspect, -1, 2 * screenAspect, 2);
 
 	SDL_version ver;
@@ -88,7 +90,8 @@ void Graphics::Tick() {
 int Graphics::to_pixels(float coord) { return coord * screenSize.y / 2; }
 float Graphics::to_screen(int pix) { return pix * 2.0f / screenSize.y; }
 SDL_Surface *Graphics::to_RGBA(SDL_Surface *src) {
-	if (!src)
+	if (src == nullptr) {
 		return nullptr;
+	}
 	return SDL_ConvertSurfaceFormat(src, SDL_PIXELFORMAT_ABGR8888, 0);
 }

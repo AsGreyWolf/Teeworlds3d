@@ -7,15 +7,17 @@
 #include <string>
 
 Shader3d *pShader3d;
-Shader3d *g_Shader3d() { return pShader3d ? pShader3d : new Shader3d(); }
+Shader3d *g_Shader3d() {
+	return pShader3d != nullptr ? pShader3d : new Shader3d();
+}
 
 Shader3d::Shader3d()
     : Shader::Shader("shaders/shader3d", g_Graphics()->screenSize, GL_BACK,
                      GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE,
                      GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) {
 	pShader3d = this;
-	perspectiveMatrix = glm::perspective((float)M_PI_2, g_Graphics()->screenAspect,
-	                                     1.0f, 10000.0f);
+	perspectiveMatrix = glm::perspective(
+	    static_cast<float>(M_PI_2), g_Graphics()->screenAspect, 1.0f, 10000.0f);
 	SetAttribute("in_Position", SHADER_POS);
 	SetAttribute("in_TexMap", SHADER_TEXMAP);
 	SetAttribute("in_Normal", SHADER_NORMAL);
@@ -37,9 +39,11 @@ void Shader3d::Render() {
 	             glm::lookAt(g_Camera()->pos, g_Camera()->pos + g_Camera()->look,
 	                         g_Camera()->up));
 
-	for (Model *model : registredModels)
-		if (model->isEnabled())
+	for (Model *model : registredModels) {
+		if (model->isEnabled()) {
 			model->Render();
+		}
+	}
 }
 void Shader3d::SetLight(const bool light) {
 	static Uniform<float> lighting(*this, "lighting");

@@ -5,7 +5,9 @@
 #include <string>
 
 Shader2d *pShader2d;
-Shader2d *g_Shader2d() { return pShader2d ? pShader2d : new Shader2d(); }
+Shader2d *g_Shader2d() {
+	return pShader2d != nullptr ? pShader2d : new Shader2d();
+}
 
 Shader2d::Shader2d()
     : Shader::Shader("shaders/shader2d", g_Graphics()->screenSize, GL_BACK,
@@ -23,9 +25,11 @@ void Shader2d::Render() {
 	static Uniform<float> aspect(*this, "aspect");
 	aspect.Set(g_Graphics()->screenAspect);
 
-	for (Model *model : registredModels)
-		if (model->isEnabled())
+	for (Model *model : registredModels) {
+		if (model->isEnabled()) {
 			model->Render();
+		}
+	}
 }
 void Shader2d::SetColor(const glm::vec4 &color) {
 	static Uniform<glm::vec4> colorer(*this, "colorer");

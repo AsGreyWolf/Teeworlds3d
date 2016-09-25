@@ -4,7 +4,7 @@
 #include <shared/System.h>
 
 class Camera *pCamera;
-Camera *g_Camera() { return pCamera ? pCamera : new Camera(); }
+Camera *g_Camera() { return pCamera != nullptr ? pCamera : new Camera(); }
 
 Camera::Camera() : ClientComponent(), Positioned() {
 	pCamera = this;

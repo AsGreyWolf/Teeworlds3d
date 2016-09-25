@@ -7,4 +7,4 @@ template <typename T> std::string to_string(T value) {
 	os << value;
 	return os.str();
 }
-};
+} // namespace std

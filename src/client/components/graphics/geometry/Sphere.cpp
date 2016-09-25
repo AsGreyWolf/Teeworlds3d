@@ -39,8 +39,8 @@ Sphere &Sphere::SetReversed(bool reversed) {
 }
 Sphere::operator Geometry3d() {
 	Geometry3d g;
-	float const R = 1. / (float)(rings - 1);
-	float const S = 1. / (float)(sectors - 1);
+	float const R = 1.0f / (rings - 1);
+	float const S = 1.0f / (sectors - 1);
 	int r, s;
 
 	std::vector<glm::vec3> vertices;
@@ -55,8 +55,8 @@ Sphere::operator Geometry3d() {
 	auto t = texcoords.begin();
 	float tcsizex = texcoord.w;
 	float tcsizey = texcoord.h;
-	if (reversed)
-		for (r = 0; r < rings; r++)
+	if (reversed) {
+		for (r = 0; r < rings; r++) {
 			for (s = 0; s < sectors; s++) {
 				float const z = -sin(-M_PI_2 + M_PI * r * R);
 				float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
@@ -68,8 +68,9 @@ Sphere::operator Geometry3d() {
 				       position;
 				*n++ = glm::vec3(-x, y, z);
 			}
-	else
-		for (r = 0; r < rings; r++)
+		}
+	} else {
+		for (r = 0; r < rings; r++) {
 			for (s = 0; s < sectors; s++) {
 				float const z = -sin(-M_PI_2 + M_PI * r * R);
 				float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
@@ -81,9 +82,11 @@ Sphere::operator Geometry3d() {
 				       position;
 				*n++ = glm::vec3(x, y, z);
 			}
+		}
+	}
 
-	if (reversed)
-		for (r = 0; r < rings - 1; r++)
+	if (reversed) {
+		for (r = 0; r < rings - 1; r++) {
 			for (s = 0; s < sectors - 1; s++) {
 				g.Push(vertices[r * sectors + s + 1], normals[r * sectors + s + 1],
 				       texcoords[r * sectors + s + 1]);
@@ -99,8 +102,9 @@ Sphere::operator Geometry3d() {
 				g.Push(vertices[r * sectors + (s)], normals[r * sectors + (s)],
 				       texcoords[r * sectors + (s)]);
 			}
-	else
-		for (r = 0; r < rings - 1; r++)
+		}
+	} else {
+		for (r = 0; r < rings - 1; r++) {
 			for (s = 0; s < sectors - 1; s++) {
 				g.Push(vertices[r * sectors + s], normals[r * sectors + s],
 				       texcoords[r * sectors + s]);
@@ -117,5 +121,7 @@ Sphere::operator Geometry3d() {
 				g.Push(vertices[r * sectors + (s + 1)], normals[r * sectors + (s + 1)],
 				       texcoords[r * sectors + (s + 1)]);
 			}
+		}
+	}
 	return g;
 }

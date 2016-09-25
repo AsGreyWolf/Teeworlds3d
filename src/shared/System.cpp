@@ -20,7 +20,7 @@
 #endif
 
 class System *pSystem;
-System *g_System() { return pSystem ? pSystem : new System(); }
+System *g_System() { return pSystem != nullptr ? pSystem : new System(); }
 
 static int frames = 0;
 static long prevTickTime;
@@ -65,8 +65,9 @@ void System::Tick() {
 	SharedComponent::Tick();
 	long tickTime = g_System()->GetTime();
 	tickCoeff = (tickTime - prevTickTime) * 1.0 / 1000;
-	if (tickCoeff > 1)
+	if (tickCoeff > 1) {
 		tickCoeff = 1.0f;
+	}
 	prevTickTime = tickTime;
 	frames++;
 }
@@ -109,10 +110,12 @@ System::GetFilesInDirectory(const std::string &directory) const {
 	}
 
 	while ((dirp = readdir(dp)) != nullptr) {
-		if (dirp->d_name[0] == '.')
+		if (dirp->d_name[0] == '.') {
 			continue;
-		if (dirp->d_type != DT_DIR)
+		}
+		if (dirp->d_type != DT_DIR) {
 			out.push_back(std::string(dirp->d_name));
+		}
 	}
 	closedir(dp);
 #endif
@@ -120,13 +123,13 @@ System::GetFilesInDirectory(const std::string &directory) const {
 };
 
 int ThreadRunner(void *param) {
-	DelayedThread *thread = (DelayedThread *)param;
+	DelayedThread *thread = reinterpret_cast<DelayedThread *>(param);
 	int time = 0;
 	while (true) {
 		int delay = 0;
 		{
 			auto lock = std::unique_lock<Mutex>(thread->m);
-			if (!thread->d) {
+			if (thread->d == 0) {
 				return 0;
 			}
 			delay = thread->d;
@@ -154,8 +157,10 @@ void DelayedThread::Stop() {
 		d = 0;
 	}
 	int r;
-	if (t)
+	if (t != nullptr) {
 		SDL_WaitThread(t, &r);
+		t = nullptr;
+	}
 	t = nullptr;
 }
 

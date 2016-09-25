@@ -6,7 +6,7 @@
 
 const float PlayerModel::renderSize = 36.0f;
 const float PlayerModel::baseSize = 64.0;
-const int PlayerModel::eyeScale = (int)(baseSize * 0.40);
+const int PlayerModel::eyeScale = static_cast<int>(baseSize * 0.40);
 const float PlayerModel::eyeSeparation = (0.075f * baseSize) - eyeScale / 2;
 const int PlayerModel::detalization = 32;
 const int PlayerModel::animSpeed = 300;
@@ -68,7 +68,7 @@ PlayerModel::PlayerModel(const PlayerModel &second) : Model3d(second) {
 	animFase = second.animFase;
 	hook = second.hook;
 }
-PlayerModel::~PlayerModel() {}
+PlayerModel::~PlayerModel() = default;
 void PlayerModel::Enable() {
 	Model3d::Enable();
 	lArm.Enable();
@@ -88,14 +88,16 @@ void PlayerModel::Disable() {
 	body.Disable();
 	eyes.Disable();
 	weapon.Disable();
-	for (Model3d &part : hook)
+	for (Model3d &part : hook) {
 		part.Disable();
+	}
 }
 void PlayerModel::UpdateMatrix(const glm::mat4 &parentMatrix) {
 	modelMatrix = parentMatrix;
 	modelMatrix = glm::translate(modelMatrix, pos);
-	for (Model3d &part : hook)
+	for (Model3d &part : hook) {
 		part.UpdateMatrix(modelMatrix);
+	}
 	lArm.UpdateMatrix(modelMatrix);
 	modelMatrix = glm::rotate(modelMatrix, rot.z, glm::vec3(0, 0, 1));
 	lFoot.UpdateMatrix(modelMatrix);
@@ -118,7 +120,7 @@ PlayerModel &PlayerModel::operator=(const PlayerModel &second) {
 	eyes = second.eyes;
 	weapon = second.weapon;
 	hook = second.hook;
-	return (PlayerModel &)Model3d::operator=(second);
+	return dynamic_cast<PlayerModel &>(Model3d::operator=(second));
 }
 void PlayerModel::Sync(const Player &data) {
 	pos = data.pos;
@@ -131,8 +133,9 @@ void PlayerModel::Sync(const Player &data) {
 
 	Texture &texture = g_Resources()->skinTextures["default"];
 	if (g_Resources()->skinTextures.find(data.skin) !=
-	    g_Resources()->skinTextures.end())
+	    g_Resources()->skinTextures.end()) {
 		texture = g_Resources()->skinTextures[data.skin];
+	}
 	lFoot.texture = texture;
 	rFoot.texture = texture;
 	lArm.texture = texture;
@@ -140,8 +143,8 @@ void PlayerModel::Sync(const Player &data) {
 	eyes.texture = texture;
 	body.texture = texture;
 
-	lFoot.color = data.color * (data.jumped & 2 ? 0.5f : 1.0f);
-	rFoot.color = data.color * (data.jumped & 2 ? 0.5f : 1.0f);
+	lFoot.color = data.color * ((data.jumped & 2) != 0 ? 0.5f : 1.0f);
+	rFoot.color = data.color * ((data.jumped & 2) != 0 ? 0.5f : 1.0f);
 	lArm.color = data.color;
 	rArm.color = data.color;
 	body.color = data.color;
@@ -150,8 +153,9 @@ void PlayerModel::Sync(const Player &data) {
 
 	// foot animations
 	bool animate = data.grounded && (fabs(data.vel.x) > 1 || fabs(data.vel.y) > 1);
-	if (animate)
+	if (animate) {
 		animDir = glm::normalize(glm::vec2(rotate(data.vel, -data.rot)));
+	}
 	if (animate && animState == ANIMSTATE_NONE) {
 		animState++;
 		animStart = g_System()->GetTime();
@@ -159,26 +163,31 @@ void PlayerModel::Sync(const Player &data) {
 	float dd = g_System()->GetTime() - animStart;
 	/// TODO: animSpeed by velocity
 	dd /= (animSpeed);
-	if (animState == ANIMSTATE_LEFT_ONLY && dd >= 0.5f)
+	if (animState == ANIMSTATE_LEFT_ONLY && dd >= 0.5f) {
 		animState++;
+	}
 	dd *= 2 * M_PI;
 	float faseA = renderSize / 2 * asin(sin(dd)) / M_PI_2;
 	float faseB = renderSize / 6 * cos(dd);
 	if (animState == ANIMSTATE_ALL && !animate && faseB > 0 && animFase < 0 &&
-	    faseA > 0)
+	    faseA > 0) {
 		animState++;
+	}
 	if (animState == ANIMSTATE_RIGHT_ONLY && faseB < 0 && animFase > 0 &&
-	    faseA < 0)
+	    faseA < 0) {
 		animState = ANIMSTATE_NONE;
+	}
 
 	rFoot.pos = rFootPos;
-	if (animState == ANIMSTATE_ALL || animState == ANIMSTATE_RIGHT_ONLY)
+	if (animState == ANIMSTATE_ALL || animState == ANIMSTATE_RIGHT_ONLY) {
 		rFoot.pos += glm::vec3(0.5 * faseA * animDir.x, faseA * animDir.y,
 		                       glm::max(0.0f, faseB));
+	}
 	lFoot.pos = lFootPos;
-	if (animState == ANIMSTATE_ALL || animState == ANIMSTATE_LEFT_ONLY)
+	if (animState == ANIMSTATE_ALL || animState == ANIMSTATE_LEFT_ONLY) {
 		lFoot.pos += glm::vec3(-0.5 * faseA * animDir.x, -faseA * animDir.y,
 		                       glm::max(0.0f, -faseB));
+	}
 
 	animFase = faseA;
 
@@ -187,21 +196,24 @@ void PlayerModel::Sync(const Player &data) {
 		glm::vec3 hookRelativePos = data.hookPos - data.pos;
 		float hookLen = glm::length(hookRelativePos);
 		glm::vec3 hookDir = glm::normalize(hookRelativePos);
-		rot3 hookRot = hookDir;
+		rot3 hookRot = rot3(hookDir);
 		size_t i = 0;
-		if (i == hook.size())
+		if (i == hook.size()) {
 			hook.push_back(g_Resources()->hookHead);
+		}
 		for (float partPos = -10; partPos >= -hookLen; partPos -= 10) {
 			hook[i].Enable();
 			hook[i].pos = hookRelativePos + hookDir * partPos;
 			hook[i].rot = hookRot;
 			hook[i].color.a = data.color.a;
 			i++;
-			if (i == hook.size())
+			if (i == hook.size()) {
 				hook.push_back(g_Resources()->hookBody);
+			}
 		}
-		while (i != hook.size())
+		while (i != hook.size()) {
 			hook.pop_back();
+		}
 		lArm.pos = hookDir * renderSize / 2.0f;
 	} else {
 		hook.clear();

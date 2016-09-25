@@ -5,7 +5,7 @@
 #include <shared/System.h>
 
 class Loading *pLoading;
-Loading *g_Loading() { return pLoading ? pLoading : new Loading(); }
+Loading *g_Loading() { return pLoading != nullptr ? pLoading : new Loading(); }
 
 Loading::Loading() : ClientComponent() {
 	pLoading = this;
@@ -29,7 +29,8 @@ void Loading::Tick() {
 			queue.pop();
 			processed++;
 		}
-	} else
+	} else {
 		status.Hide();
+	}
 }
 void Loading::Push(const std::function<void()> &f) { queue.push(f); }

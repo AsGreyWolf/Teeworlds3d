@@ -8,12 +8,14 @@ View::~View() { g_UI()->UnregisterView(this); }
 void View::Show() { visible = true; }
 void View::Hide() {
 	visible = false;
-	if (focused == this)
+	if (focused == this) {
 		focused = nullptr;
+	}
 }
 void View::Validate() {
-	if (!isVisible())
+	if (!isVisible()) {
 		return;
+	}
 	element = quad2(container.x + padding[BORDER_LEFT],
 	                container.y + padding[BORDER_BOTTOM],
 	                container.w - padding[BORDER_RIGHT] - padding[BORDER_LEFT],
@@ -24,8 +26,9 @@ void View::Validate() {
 	float y = element.y;
 	float w = element.w;
 	float h = element.h;
-	if (size.x >= 0)
+	if (size.x >= 0) {
 		w = size.x;
+	}
 	switch (align.x) {
 	case ALIGN_CENTER:
 		x = element.x + element.w / 2 - w / 2;
@@ -34,8 +37,9 @@ void View::Validate() {
 		x = element.x + element.w - w;
 		break;
 	}
-	if (size.y >= 0)
+	if (size.y >= 0) {
 		h = size.y;
+	}
 	switch (align.y) {
 	case ALIGN_CENTER:
 		y = element.y + element.h / 2 - h / 2;
@@ -47,7 +51,8 @@ void View::Validate() {
 	element = quad2(x, y, w, h);
 }
 View *View::Select(const glm::vec2 &position) {
-	if (!isVisible() || !element.contains(position))
+	if (!isVisible() || !element.contains(position)) {
 		return nullptr;
+	}
 	return this;
 }

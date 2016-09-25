@@ -13,15 +13,7 @@ Particles::Particles(const Particles &second) : Model3d(second) {
 	g_ShaderParticle()->RegisterModel(this);
 	Particles::operator=(second);
 }
-Particles &Particles::operator=(const Particles &second) {
-	Model3d::operator=(second);
-	particleSize = second.particleSize;
-	particleCount = second.particleCount;
-	particleGravity = second.particleGravity;
-	particleTtl = second.particleTtl;
-	particleVel = second.particleVel;
-	return *this;
-}
+Particles &Particles::operator=(const Particles &second) = default;
 Particles::~Particles() { g_ShaderParticle()->UnregisterModel(this); }
 void Particles::Render() {
 	texture.Bind();

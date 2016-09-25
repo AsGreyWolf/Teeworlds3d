@@ -7,7 +7,7 @@
 Model3d::Model3d(bool l, int t) : Model() {
 	bufferedModelMatrix = glm::mat4(1.0f);
 	bufferedPos = glm::vec3(0, 0, 0);
-	bufferedRot = glm::vec3(0, 1, 0);
+	bufferedRot = rot3(glm::vec3(0, 1, 0));
 	bufferedParentMatrix = glm::mat4(1.0f);
 	modelMatrix = glm::mat4(1.0f);
 	normalMatrix = glm::transpose(glm::inverse(modelMatrix));
@@ -15,19 +15,20 @@ Model3d::Model3d(bool l, int t) : Model() {
 	type = t;
 	data = make_dataPtr();
 	pos = glm::vec3(0, 0, 0);
-	rot = glm::vec3(0, 1, 0);
+	rot = rot3(glm::vec3(0, 1, 0));
 	color = glm::vec4(1, 1, 1, 0);
 	scale = glm::vec3(1, 1, 1);
 	g_Shader3d()->RegisterModel(this);
-	if (light)
+	if (light) {
 		shadow = new ShadowModel(*this);
-	else
+	} else {
 		shadow = nullptr;
+	}
 }
 Model3d::Model3d(const Model3d &second) : Model(second) {
 	bufferedModelMatrix = glm::mat4(1.0f);
 	bufferedPos = glm::vec3(0, 0, 0);
-	bufferedRot = glm::vec3(0, 1, 0);
+	bufferedRot = rot3(glm::vec3(0, 1, 0));
 	bufferedParentMatrix = glm::mat4(1.0f);
 	modelMatrix = glm::mat4(1.0f);
 	normalMatrix = glm::transpose(glm::inverse(modelMatrix));
@@ -39,10 +40,11 @@ Model3d::Model3d(const Model3d &second) : Model(second) {
 	color = second.color;
 	scale = second.scale;
 	texture = second.texture;
-	if (light)
+	if (light) {
 		shadow = new ShadowModel(*this);
-	else
-		shadow = NULL;
+	} else {
+		shadow = nullptr;
+	}
 	g_Shader3d()->RegisterModel(this);
 }
 Model3d &Model3d::operator=(const Model3d &second) {
@@ -56,22 +58,25 @@ Model3d &Model3d::operator=(const Model3d &second) {
 	scale = second.scale;
 	texture = second.texture;
 	if (light) {
-		if (!shadow)
+		if (shadow == nullptr) {
 			shadow = new ShadowModel(*this);
-		if (isEnabled())
+		}
+		if (isEnabled()) {
 			shadow->Enable();
-		else
+		} else {
 			shadow->Disable();
-	} else if (shadow) {
+		}
+	} else if (shadow != nullptr) {
 		delete shadow;
-		shadow = NULL;
+		shadow = nullptr;
 	}
 	return *this;
 }
 Model3d::~Model3d() {
 	g_Shader3d()->UnregisterModel(this);
-	if (shadow)
+	if (shadow != nullptr) {
 		delete shadow;
+	}
 	data.reset();
 }
 void Model3d::Render() {
@@ -83,13 +88,15 @@ void Model3d::Render() {
 }
 void Model3d::Enable() {
 	Model::Enable();
-	if (shadow)
+	if (shadow != nullptr) {
 		shadow->Enable();
+	}
 }
 void Model3d::Disable() {
 	Model::Disable();
-	if (shadow)
+	if (shadow != nullptr) {
 		shadow->Disable();
+	}
 }
 void Model3d::Add(const Geometry3d &geom) {
 	*data += geom;

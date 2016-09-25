@@ -8,7 +8,8 @@
 
 Shader3dComposer *pShader3dComposer;
 Shader3dComposer *g_Shader3dComposer() {
-	return pShader3dComposer ? pShader3dComposer : new Shader3dComposer();
+	return pShader3dComposer != nullptr ? pShader3dComposer
+	                                    : new Shader3dComposer();
 }
 
 Shader3dComposer::Shader3dComposer()

@@ -14,7 +14,7 @@
 
 ShaderParticle *pShaderParticle;
 ShaderParticle *g_ShaderParticle() {
-	return pShaderParticle ? pShaderParticle : new ShaderParticle();
+	return pShaderParticle != nullptr ? pShaderParticle : new ShaderParticle();
 }
 
 ShaderParticle::ShaderParticle()
@@ -22,8 +22,8 @@ ShaderParticle::ShaderParticle()
                      GL_BACK, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE,
                      GL_NONE) {
 	pShaderParticle = this;
-	perspectiveMatrix = glm::perspective((float)M_PI_2, g_Graphics()->screenAspect,
-	                                     1.0f, 10000.0f);
+	perspectiveMatrix = glm::perspective(
+	    static_cast<float>(M_PI_2), g_Graphics()->screenAspect, 1.0f, 10000.0f);
 	SetAttribute("in_Position", SHADER_POS);
 }
 ShaderParticle::~ShaderParticle() { pShaderParticle = nullptr; }
@@ -40,9 +40,11 @@ void ShaderParticle::Render() {
 	             glm::lookAt(g_Camera()->pos, g_Camera()->pos + g_Camera()->look,
 	                         g_Camera()->up));
 
-	for (Model *model : registredModels)
-		if (model->isEnabled())
+	for (Model *model : registredModels) {
+		if (model->isEnabled()) {
 			model->Render();
+		}
+	}
 
 	glDisable(GL_PROGRAM_POINT_SIZE);
 	glDisable(GL_POINT_SPRITE);
