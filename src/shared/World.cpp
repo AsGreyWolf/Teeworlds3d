@@ -170,7 +170,7 @@ Player *World::IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
 	/*glm::vec3 pos00 = pos0;
 	float Distance = distance(pos00, pos1);
 	int End = Distance + 1;
-	glm::vec3 LastPos = pos00;
+	glm::vec3 PrevPos = pos00;
 	for (int i = 0; i < End; i++) {
 	 float a = i / Distance;
 	 glm::vec3 Pos = glm::mix(pos00, pos1, a);
@@ -181,7 +181,7 @@ Player *World::IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
 	  float D = distance(Pos, player->pos);
 	  if (D < player->physSize / 2 + radius && D > 0.0f) {
 	   if (a > 0.0f)
-	    pos00 = LastPos;
+	    pos00 = PrevPos;
 	   else if (distance(pos1, player->pos) > D)
 	    pos00 = pos1;
 	   if (collision)
@@ -191,7 +191,7 @@ Player *World::IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
 	   return player;
 	  }
 	 }
-	 LastPos = Pos;
+	 PrevPos = Pos;
 	}
 	return NULL;
 	*/
@@ -220,7 +220,7 @@ Tile *World::IntersectLine(const glm::vec3 &pos0, const glm::vec3 &pos1,
                            glm::vec3 *beforeCollision) const {
 	float distance = glm::distance(pos0, pos1);
 	int end = distance + 1;
-	glm::vec3 last = pos0;
+	glm::vec3 prev = pos0;
 	Tile *buf;
 	for (int i = 0; i < end; i++) {
 		float a = i / distance;
@@ -230,10 +230,10 @@ Tile *World::IntersectLine(const glm::vec3 &pos0, const glm::vec3 &pos1,
 			if (collision)
 				*collision = pos;
 			if (beforeCollision)
-				*beforeCollision = last;
+				*beforeCollision = prev;
 			return buf;
 		}
-		last = pos;
+		prev = pos;
 	}
 	if (collision)
 		*collision = pos1;

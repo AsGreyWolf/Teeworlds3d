@@ -13,7 +13,7 @@ private:
 public:
 	~Camera() override;
 	void Tick() override;
-	void StateChange(const STATE &lastState) override;
+	void StateChange(const STATE &prevState) override;
 
 	void UpdateVectors();
 	void RotateX(float rad);

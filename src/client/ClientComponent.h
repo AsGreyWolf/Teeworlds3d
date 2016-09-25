@@ -18,11 +18,11 @@ protected:
 public:
 	virtual ~ClientComponent();
 	virtual void Message(int type, char *value);
-	virtual void StateChange(const STATE &lastState);
+	virtual void StateChange(const STATE &prevState);
 
 	static void ClearComponents();
 	static void MessageComponents(int type, char *value);
-	static void StateChangeComponents(const STATE &lastState);
+	static void StateChangeComponents(const STATE &prevState);
 
 	static STATE state;
 

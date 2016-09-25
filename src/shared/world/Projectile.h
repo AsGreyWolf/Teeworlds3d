@@ -24,7 +24,7 @@ private:
 	int startTime;
 	bool explosive;
 
-	int lastTime;
+	int prevTime;
 };
 
 #endif

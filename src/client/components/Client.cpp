@@ -91,10 +91,10 @@ void Client::Stop() {
 };
 bool Client::isRunning() { return working; }
 void Client::Tick() {
-	static STATE lastState = ClientComponent::state;
-	if (lastState != ClientComponent::state)
-		ClientComponent::StateChangeComponents(lastState);
-	lastState = ClientComponent::state;
+	static STATE prevState = ClientComponent::state;
+	if (prevState != ClientComponent::state)
+		ClientComponent::StateChangeComponents(prevState);
+	prevState = ClientComponent::state;
 
 	fps->SetText("FPS: " + std::to_string((int)(1.0f / g_System()->tickCoeff)),
 	             FONT_BIG);

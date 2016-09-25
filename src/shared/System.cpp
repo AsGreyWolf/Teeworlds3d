@@ -24,7 +24,7 @@ System *g_System() { return pSystem ? pSystem : new System(); }
 
 Mutex System::mutex;
 static int frames = 0;
-static long lastTickTime;
+static long prevTickTime;
 static DelayedThread *fpsThread;
 System::System() : SharedComponent() {
 	srand(time(NULL));
@@ -37,7 +37,7 @@ System::System() : SharedComponent() {
 	pSystem = this;
 	fps = 60;
 	tickCoeff = 1.0f / fps;
-	lastTickTime = g_System()->GetTime();
+	prevTickTime = g_System()->GetTime();
 	if (SDL_Init(SDL_INIT_TIMER) != 0) {
 		g_Console()->Err("Unable to initialize SDL Timer: " +
 		                 std::string(SDL_GetError()));
@@ -65,10 +65,10 @@ System::~System() {
 void System::Tick() {
 	SharedComponent::Tick();
 	long tickTime = g_System()->GetTime();
-	tickCoeff = (tickTime - lastTickTime) * 1.0 / 1000;
+	tickCoeff = (tickTime - prevTickTime) * 1.0 / 1000;
 	if (tickCoeff > 1)
 		tickCoeff = 1.0f;
-	lastTickTime = tickTime;
+	prevTickTime = tickTime;
 	frames++;
 }
 std::string System::GetPath() const { return PATH_CUR; };

@@ -26,9 +26,9 @@ void Camera::UpdateVectors() {
 	look = glm::rotate(glm::vec3(0.0, 1.0, 0.0), rot);
 	right = glm::rotate(glm::vec3(1.0, 0.0, 0.0), rot);
 }
-void Camera::StateChange(const STATE &lastState) {
-	ClientComponent::StateChange(lastState);
-	if (!lastState.ingame && state.ingame) {
+void Camera::StateChange(const STATE &prevState) {
+	ClientComponent::StateChange(prevState);
+	if (!prevState.ingame && state.ingame) {
 		rot = rot3(0.0, 0.0, 0.0);
 		pos = glm::vec3(0.0, 0.0, 0.0);
 		UpdateVectors();

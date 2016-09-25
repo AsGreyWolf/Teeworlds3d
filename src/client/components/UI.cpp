@@ -37,15 +37,15 @@ void UI::Tick() {
 		v->Validate();
 	if (CursorEnabled()) {
 		bool buttonState = g_Input()->mouse[SDL_BUTTON_LEFT];
-		static bool lastButtonState = false;
+		static bool prevButtonState = false;
 		View *target = screenLayout->Select(cursorPosition);
 		static View *clickedTarget = NULL;
-		static glm::vec2 lastCursorPosition;
-		if (target && buttonState && !lastButtonState) {
+		static glm::vec2 prevCursorPosition;
+		if (target && buttonState && !prevButtonState) {
 			target->OnMouseDown(cursorPosition);
 			clickedTarget = target;
-			lastCursorPosition = cursorPosition;
-		} else if (target && lastButtonState && !buttonState) {
+			prevCursorPosition = cursorPosition;
+		} else if (target && prevButtonState && !buttonState) {
 			target->OnMouseUp(cursorPosition);
 			if (clickedTarget == target)
 				target->OnClick(cursorPosition);
@@ -53,11 +53,11 @@ void UI::Tick() {
 				target->OnDrop(cursorPosition);
 			clickedTarget = NULL;
 		}
-		if (clickedTarget && buttonState && cursorPosition != lastCursorPosition) {
+		if (clickedTarget && buttonState && cursorPosition != prevCursorPosition) {
 			clickedTarget->OnDrag(cursorPosition);
 		}
-		lastButtonState = buttonState;
-		lastCursorPosition = cursorPosition;
+		prevButtonState = buttonState;
+		prevCursorPosition = cursorPosition;
 	}
 }
 void UI::RegisterView(View *view) { registredViews.insert(view); }

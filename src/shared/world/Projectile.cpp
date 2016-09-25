@@ -16,7 +16,7 @@ Projectile::Projectile(int type, int owner, const glm::vec3 &pos,
 	this->sound = sound;
 	this->weapon = weapon;
 	startTime = g_System()->GetTime();
-	lastTime = startTime;
+	prevTime = startTime;
 	g_World()->projectiles.push_back(this);
 }
 glm::vec3 Projectile::GetPos(float time) {
@@ -53,7 +53,7 @@ void Projectile::Reset() {
 	            this);
 }
 void Projectile::Tick() {
-	float Pt = lastTime - startTime;
+	float Pt = prevTime - startTime;
 	float Ct = g_System()->GetTime() - startTime;
 	glm::vec3 PrevPos = GetPos(Pt);
 	glm::vec3 CurPos = GetPos(Ct);
