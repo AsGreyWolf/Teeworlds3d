@@ -1,3 +1,3 @@
 Checks:
-	'*,-cppcoreguidelines-pro-type-union-accessz,-google-readability-todo,-google-runtime-int,-misc-unused-parameters,-readability-inconsistent-declaration-parameter-name,-llvm-include-order,-llvm-header-guard,-modernize-use-override,-clang-analyzer-alpha.security*'
+	'*,-cppcoreguidelines-pro-type-union-accessz,-google-readability-todo,-google-runtime-int,-misc-unused-parameters,-readability-inconsistent-declaration-parameter-name,-llvm-include-order,-llvm-header-guard,-modernize-use-override,-cppcoreguidelines-pro-type-union-access,-clang-analyzer-alpha.security*'
 HeaderFilterRegex: 'src/'

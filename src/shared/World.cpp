@@ -211,17 +211,16 @@ Tile *World::GetTile(const glm::vec3 &pos) const {
 	return GetTile(x, y, z);
 }
 Tile *World::GetTile(int x, int y, int z) const {
-	return x < 0
-	           ? nullptr
-	           : static_cast<size_t>(x) >= worldSize.x
-	                 ? nullptr
-	                 : y < 0 ? nullptr
-	                         : static_cast<size_t>(y) >= worldSize.y
-	                               ? nullptr
-	                               : z < 0 ? nullptr
-	                                       : static_cast<size_t>(z) >= worldSize.z
-	                                             ? nullptr
-	                                             : tilesByPos[x][y][z];
+	return x < 0 ? nullptr : static_cast<size_t>(x) >= worldSize.x
+	                             ? nullptr
+	                             : y < 0 ? nullptr
+	                                     : static_cast<size_t>(y) >= worldSize.y
+	                                           ? nullptr
+	                                           : z < 0 ? nullptr
+	                                                   : static_cast<size_t>(z) >=
+	                                                             worldSize.z
+	                                                         ? nullptr
+	                                                         : tilesByPos[x][y][z];
 }
 Tile *World::IntersectLine(const glm::vec3 &pos0, const glm::vec3 &pos1,
                            glm::vec3 *collision,

@@ -154,8 +154,7 @@ void Player::Tick() {
 		}
 		if (tuningPlayerHooking) {
 			float distance = 0.0f;
-			for (int i = 0; i < MAX_PLAYERS; i++) {
-				Player *player = world->players[i];
+			for (auto player : world->players) {
 				if (player == this) {
 					continue;
 				}
@@ -164,7 +163,7 @@ void Player::Tick() {
 				if (glm::distance(player->pos, closestPoint) < physSize + 2.0f) {
 					if (hookedPlayer == -1 || glm::distance(hookPos, player->pos) < distance) {
 						hookState = HOOK_GRABBED;
-						hookedPlayer = i;
+						hookedPlayer = player->id;
 						distance = glm::distance(hookPos, player->pos);
 					}
 				}
@@ -182,7 +181,7 @@ void Player::Tick() {
 	}
 	if (hookState == HOOK_GRABBED) {
 		if (hookedPlayer != -1) {
-			Player *player = world->players[hookedPlayer];
+			Player *player = world->players.at(hookedPlayer);
 			if (player != nullptr) {
 				hookPos = player->pos;
 			} else {
@@ -212,15 +211,14 @@ void Player::Tick() {
 				vel = newVel;
 			}
 		}
-		if (hookedPlayer != -1 &&
-		    (time - hookTime > 1250 || (world->players[hookedPlayer] == nullptr))) {
+		if (hookedPlayer != -1 && (time - hookTime > 1250 ||
+		                           (world->players.at(hookedPlayer) == nullptr))) {
 			hookedPlayer = -1;
 			hookState = HOOK_RETRACTED;
 			hookPos = pos;
 		}
 	}
-	for (int i = 0; i < MAX_PLAYERS; i++) { // TODO: clipping
-		Player *player = world->players[i];
+	for (auto player : world->players) { // TODO: clipping
 		if (player == this || (player == nullptr)) {
 			continue;
 		}
@@ -235,7 +233,7 @@ void Player::Tick() {
 			vel += dir * a * (velocity * 0.75f);
 			vel *= 0.85f;
 		}
-		if (hookedPlayer == i && tuningPlayerHooking) {
+		if (hookedPlayer == player->id && tuningPlayerHooking) {
 			glm::vec3 dir = glm::normalize(pos - player->pos);
 			if (distance > physSize * 1.50f) {
 				float accel = tuningHookDragAccel * (distance / tuningHookLength);
