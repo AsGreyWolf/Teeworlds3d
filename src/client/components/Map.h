@@ -23,6 +23,7 @@ private:
 	Model3d terrain;
 	PlayerModel blankPlayer;
 	std::vector<PlayerModel> playerModels;
+	std::vector<Model3d> projectileModels;
 };
 Map *g_Map();
 

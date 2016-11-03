@@ -4,14 +4,13 @@
 #include "AsyncComponent.h"
 
 #include <array>
+#include <set>
+#include <shared/world/Player.h>
+#include <shared/world/Projectile.h>
+#include <shared/world/Tile.h>
 #include <string>
 #include <tools/Protocol.h>
 #include <tools/vmath.h>
-#include <vector>
-
-class Player;
-class Tile;
-class Projectile;
 
 ///<summary>World and all physical objects</summary>
 class World : public AsyncComponent {
@@ -19,16 +18,19 @@ private:
 	World();
 	friend World *g_World();
 
-public:
-	~World() override;
-
+protected:
 	///<summary>Tick the component(async)</summary>
 	void AsyncTick() override;
+
+public:
+	~World() override;
 
 	///<summary>Loads the map</summary>
 	///<param name="name">Filename in data/maps folder</param>
 	void Load(const std::string &name);
 	void UnLoad();
+	void Spawn(const Projectile &proj);
+	int Spawn(const Player &player);
 	bool isValid() const;
 	///<summary>Returns tile by point</summary>
 	///<param name="pos">Coords of point</param>
@@ -50,9 +52,9 @@ public:
 	bool TestBox(const glm::vec3 &pos, const glm::vec3 &size) const;
 	void MoveBox(glm::vec3 *position, glm::vec3 *velocity, const glm::vec3 &size,
 	             float elasticity) const;
-	Player *IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
-	                        glm::vec3 *collision, glm::vec3 *beforeCollision,
-	                        int except, float radius) const;
+	const Player *IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
+	                              glm::vec3 *collision, glm::vec3 *beforeCollision,
+	                              int except, float radius) const;
 
 	///<summary>Size in blocks</summary>
 	glm::uvec3 worldSize;
@@ -61,9 +63,9 @@ public:
 	///<summary>Vector of the tiles sorted by id</summary>
 	std::vector<Tile> tilesById;
 	///<summary>Players array</summary>
-	std::array<Player *, MAX_PLAYERS> players;
+	std::vector<Player> players;
 	///<summary>Projectiles array</summary>
-	std::vector<Projectile *> projectiles;
+	std::vector<Projectile> projectiles;
 
 private:
 	///<summary>Array of the tiles sorted by position</summary>

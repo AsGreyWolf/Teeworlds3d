@@ -1468,19 +1468,19 @@
 	"ParallelComponent.h"
 	<shared/Console.h>
 
-1474788160 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/ClientComponent.cpp
+1474871155 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/ClientComponent.cpp
 	"ClientComponent.h"
 
-1474812204 /home/asgreywolf/Desktop/Teeworlds3d/src/client/ClientComponent.h
+1474871155 /home/asgreywolf/Desktop/Teeworlds3d/src/client/ClientComponent.h
 	"../shared/SharedComponent.h"
 	<SDL.h>
 
-1473272486 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/SharedComponent.h
+1474871349 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/SharedComponent.h
 	<list>
 	<stdint.h>
 	<tools/android.h>
 
-1474811906 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/android.h
+1474871372 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/android.h
 	<sstream>
 	<string>
 
@@ -1835,20 +1835,20 @@
 	"begin_code.h"
 	"close_code.h"
 
-1474812286 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Camera.cpp
+1474871176 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Camera.cpp
 	"Camera.h"
 	<client/components/Input.h>
 	<shared/System.h>
 
-1474788195 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Camera.h
+1474871291 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Camera.h
 	"../ClientComponent.h"
 	<tools/Positioned.h>
 	<tools/vmath.h>
 
-1474811946 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/Positioned.h
+1474871374 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/Positioned.h
 	<tools/vmath.h>
 
-1472938645 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/vmath.h
+1474871376 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/vmath.h
 	<cmath>
 	<glm.hpp>
 	<gtc/matrix_transform.hpp>
@@ -2326,7 +2326,7 @@
 
 1467366663 /home/asgreywolf/Desktop/Teeworlds3d/other/glm/gtx/rotate_vector.inl
 
-1472938638 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/quad2.h
+1474871367 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/quad2.h
 	<algorithm>
 	<cmath>
 	<glm.hpp>
@@ -2335,7 +2335,7 @@
 	<gtx/closest_point.hpp>
 	<gtx/rotate_vector.hpp>
 
-1474818040 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/quad3.h
+1474871371 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/quad3.h
 	<cmath>
 	<glm.hpp>
 	<gtc/matrix_transform.hpp>
@@ -2344,7 +2344,7 @@
 	<gtx/rotate_vector.hpp>
 	<tools/quad2.h>
 
-1472938643 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/rot3.h
+1474871369 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/rot3.h
 	<algorithm>
 	<cmath>
 	<glm.hpp>
@@ -2353,18 +2353,18 @@
 	<gtx/closest_point.hpp>
 	<gtx/rotate_vector.hpp>
 
-1474653510 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Input.h
+1474871297 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Input.h
 	"../ClientComponent.h"
 	<unordered_map>
 	<vector>
 
-1474799886 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.h
+1474871353 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.h
 	"SharedComponent.h"
 	<functional>
 	<string>
 	<vector>
 
-1474812454 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp
+1475348360 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp
 	"Client.h"
 	<client/components/Camera.h>
 	<client/components/Input.h>
@@ -2379,19 +2379,20 @@
 	<shared/Console.h>
 	<shared/System.h>
 	<shared/World.h>
+	<shared/world/Projectile.h>
 
-1472938555 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.h
+1474871169 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.h
 	"../ClientComponent.h"
 	<tools/vmath.h>
 
-1472996462 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Map.h
+1475333869 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Map.h
 	"../ClientComponent.h"
 	<client/components/graphics/models/Model3d.h>
 	<client/components/graphics/models/PlayerModel.h>
 	<string>
 	<vector>
 
-1474815056 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Model3d.h
+1474871244 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Model3d.h
 	"../Model.h"
 	<vector>
 	<GLES3/gl3.h>
@@ -2401,7 +2402,7 @@
 	<tools/Positioned.h>
 	<tools/vmath.h>
 
-1473074577 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Model.h
+1474871246 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Model.h
 	<memory>
 	<tools/vmath.h>
 
@@ -2413,7 +2414,7 @@
 	<OpenGL/glu.h>
 	<GL/glu.h>
 
-1474813304 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Texture.h
+1474871209 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Texture.h
 	<SDL_image.h>
 	<memory>
 	<string>
@@ -2427,11 +2428,11 @@
 	"begin_code.h"
 	"close_code.h"
 
-1474813931 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Geometry3d.h
+1474871193 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Geometry3d.h
 	<tools/vmath.h>
 	<vector>
 
-1472938425 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/PlayerModel.h
+1474871229 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/PlayerModel.h
 	"Model3d.h"
 	<vector>
 	<GLES3/gl3.h>
@@ -2440,15 +2441,15 @@
 	<shared/world/Player.h>
 	<tools/vmath.h>
 
-1472939016 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Player.h
+1475343442 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Player.h
 	<string>
 	<tools/Positioned.h>
 	<tools/Protocol.h>
 	<tools/vmath.h>
 
-1472938636 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/Protocol.h
+1474871369 /home/asgreywolf/Desktop/Teeworlds3d/src/tools/Protocol.h
 
-1472938581 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Resources.h
+1474871303 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Resources.h
 	"../ClientComponent.h"
 	<client/components/graphics/Texture.h>
 	<client/components/graphics/models/Model3d.h>
@@ -2458,22 +2459,22 @@
 	<tools/vmath.h>
 	<vector>
 
-1472938592 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/UI.h
+1474871174 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/UI.h
 	"../ClientComponent.h"
 	<set>
 	<tools/vmath.h>
 
-1472938463 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader3dComposer.h
+1474871265 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader3dComposer.h
 	"ShaderTexture.h"
 	<tools/vmath.h>
 
-1472991905 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderTexture.h
+1474871262 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderTexture.h
 	"../Shader.h"
 	<client/components/graphics/Texture.h>
 	<client/components/graphics/geometry/Geometry2d.h>
 	<tools/vmath.h>
 
-1472990709 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Shader.h
+1474871203 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Shader.h
 	<list>
 	<map>
 	<memory>
@@ -2483,28 +2484,28 @@
 	<glew.h>
 	<tools/vmath.h>
 
-1474813833 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Geometry2d.h
+1474871187 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Geometry2d.h
 	<tools/vmath.h>
 	<vector>
 
-1472938474 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderShadow.h
+1474871254 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderShadow.h
 	"../Shader.h"
 	<client/components/graphics/Texture.h>
 	<tools/vmath.h>
 
-1474819599 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Label.h
+1474871312 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Label.h
 	"Panel.h"
 	<client/components/TextGenerator.h>
 
-1474819640 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Panel.h
+1474871338 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Panel.h
 	"View.h"
 	<client/components/graphics/Texture.h>
 	<client/components/graphics/models/Model2d.h>
 
-1473074557 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/View.h
+1474871326 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/View.h
 	<tools/vmath.h>
 
-1474815100 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Model2d.h
+1474871226 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Model2d.h
 	"../Model.h"
 	<vector>
 	<GLES3/gl3.h>
@@ -2513,7 +2514,7 @@
 	<client/components/graphics/geometry/Geometry2d.h>
 	<tools/vmath.h>
 
-1472938587 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/TextGenerator.h
+1474871289 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/TextGenerator.h
 	"../ClientComponent.h"
 	<SDL_ttf.h>
 	<client/components/graphics/Texture.h>
@@ -2524,122 +2525,125 @@
 	"begin_code.h"
 	"close_code.h"
 
-1472938524 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Layout.h
+1474871310 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Layout.h
 	"View.h"
 	<vector>
 
-1472938614 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/Console.h
+1474871352 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/Console.h
 	"SharedComponent.h"
 	<string>
 
-1474821937 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.h
+1475347239 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.h
 	"AsyncComponent.h"
 	<array>
+	<set>
+	<shared/world/Player.h>
+	<shared/world/Projectile.h>
+	<shared/world/Tile.h>
 	<string>
 	<tools/Protocol.h>
 	<tools/vmath.h>
-	<vector>
 
 1474730097 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/ParallelComponent.h
 	"SharedComponent.h"
 	<shared/System.h>
 
-1474812566 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Graphics.cpp
+1474871158 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Graphics.cpp
 	"Graphics.h"
 	<client/components/graphics/Shader.h>
 	<shared/Console.h>
 
-1472938558 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Graphics.h
+1474871286 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Graphics.h
 	"../ClientComponent.h"
 	<GLES3/gl3.h>
 	<glew.h>
 	<tools/vmath.h>
 
-1474813694 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Geometry2d.cpp
+1474871178 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Geometry2d.cpp
 	"Geometry2d.h"
 
-1474813940 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Geometry3d.cpp
+1474871200 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Geometry3d.cpp
 	"Geometry3d.h"
 
-1474814024 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/ObjModel.cpp
+1474871191 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/ObjModel.cpp
 	"ObjModel.h"
 	<fstream>
 	<shared/System.h>
 	<sstream>
 
-1474727020 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/ObjModel.h
+1474871185 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/ObjModel.h
 	<client/components/graphics/geometry/Geometry3d.h>
 
-1472938391 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Primitives.cpp
+1474871198 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Primitives.cpp
 	"Primitives.h"
 
-1472938393 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Primitives.h
+1474871183 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Primitives.h
 	<client/components/graphics/geometry/Geometry2d.h>
 	<client/components/graphics/geometry/Geometry3d.h>
 
-1474814055 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Sphere.cpp
+1474871196 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Sphere.cpp
 	"Sphere.h"
 
-1474727078 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Sphere.h
+1474871180 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/geometry/Sphere.h
 	<client/components/graphics/geometry/Geometry3d.h>
 
-1472938491 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Model.cpp
+1474871279 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Model.cpp
 	"Model.h"
 
-1474814296 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Model2d.cpp
+1474871239 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Model2d.cpp
 	"Model2d.h"
 	<client/components/Graphics.h>
 	<client/components/graphics/shaders/Shader2d.h>
 
-1472938441 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader2d.h
+1474871249 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader2d.h
 	"../Shader.h"
 	<tools/vmath.h>
 
-1474814868 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Model3d.cpp
+1474871219 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Model3d.cpp
 	"Model3d.h"
 	<client/components/Graphics.h>
 	<client/components/graphics/models/ShadowModel.h>
 	<client/components/graphics/shaders/Shader3d.h>
 
-1474815451 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/ShadowModel.h
+1474871224 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/ShadowModel.h
 	"Model3d.h"
 
-1472938445 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.h
+1474871277 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.h
 	"../Shader.h"
 	<client/components/graphics/Texture.h>
 	<tools/vmath.h>
 
-1472938416 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Particles.cpp
+1474871221 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Particles.cpp
 	"Particles.h"
 	<client/components/graphics/geometry/Primitives.h>
 	<client/components/graphics/shaders/Shader3d.h>
 	<client/components/graphics/shaders/ShaderParticle.h>
 
-1472938421 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Particles.h
+1474871241 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/Particles.h
 	"Model3d.h"
 
-1472938469 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderParticle.h
+1474871270 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderParticle.h
 	"../Shader.h"
 	<tools/vmath.h>
 
-1472996441 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/PlayerModel.cpp
+1474871233 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/PlayerModel.cpp
 	"PlayerModel.h"
 	<client/components/Loading.h>
 	<client/components/Resources.h>
 	<client/components/graphics/geometry/Sphere.h>
 	<shared/System.h>
 
-1472938570 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Loading.h
+1474871282 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Loading.h
 	"../ClientComponent.h"
 	<client/components/ui/Panel.h>
 	<functional>
 	<queue>
 
-1474815437 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/ShadowModel.cpp
+1474871236 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/models/ShadowModel.cpp
 	"ShadowModel.h"
 	<client/components/graphics/shaders/ShaderShadow.h>
 
-1474813190 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Shader.cpp
+1474871213 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Shader.cpp
 	"Shader.h"
 	<client/components/graphics/Texture.h>
 	<fstream>
@@ -2647,13 +2651,13 @@
 	<shared/System.h>
 	<vector>
 
-1474817892 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader2d.cpp
+1474871268 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader2d.cpp
 	"Shader2d.h"
 	<client/components/Graphics.h>
 	<client/components/graphics/Model.h>
 	<string>
 
-1474818549 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.cpp
+1475348461 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader3d.cpp
 	"Shader3d.h"
 	<client/components/Camera.h>
 	<client/components/Graphics.h>
@@ -2661,7 +2665,7 @@
 	<client/components/graphics/Texture.h>
 	<string>
 
-1474818161 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader3dComposer.cpp
+1474871257 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/Shader3dComposer.cpp
 	"Shader3dComposer.h"
 	<client/components/Camera.h>
 	<client/components/Graphics.h>
@@ -2669,59 +2673,60 @@
 	<client/components/graphics/shaders/ShaderShadow.h>
 	<string>
 
-1474818772 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderParticle.cpp
+1474871251 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderParticle.cpp
 	"ShaderParticle.h"
 	<client/components/Camera.h>
 	<client/components/Graphics.h>
 	<client/components/graphics/Model.h>
 	<shared/System.h>
 
-1474818837 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderShadow.cpp
+1474871259 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderShadow.cpp
 	"ShaderShadow.h"
 	<client/components/Camera.h>
 	<client/components/Graphics.h>
 	<client/components/graphics/Model.h>
 
-1474818901 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderTexture.cpp
+1474871273 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/shaders/ShaderTexture.cpp
 	"ShaderTexture.h"
 	<client/components/graphics/geometry/Primitives.h>
 	<string>
 
-1474812607 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ImageLoader.cpp
+1474871296 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ImageLoader.cpp
 	"ImageLoader.h"
 	<SDL_image.h>
 	<shared/Console.h>
 	<shared/System.h>
 
-1472938562 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ImageLoader.h
+1474871284 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ImageLoader.h
 	"../ClientComponent.h"
 	<client/components/graphics/Texture.h>
 
-1474812618 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Input.cpp
+1474871301 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Input.cpp
 	"Input.h"
 
-1474812628 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Loading.cpp
+1474871171 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Loading.cpp
 	"Loading.h"
 	<client/components/Resources.h>
 	<client/components/UI.h>
 	<client/components/ui/Layout.h>
 	<shared/System.h>
 
-1474812642 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Map.cpp
+1475347772 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Map.cpp
 	"Map.h"
 	<client/components/ImageLoader.h>
 	<client/components/Loading.h>
 	<client/components/Resources.h>
 	<client/components/graphics/geometry/Primitives.h>
 	<shared/World.h>
+	<shared/world/Projectile.h>
 	<shared/world/Tile.h>
 	<tools/Protocol.h>
 
-1472938607 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Tile.h
+1474871357 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Tile.h
 	<tools/vmath.h>
 	<vector>
 
-1474812721 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Resources.cpp
+1474871307 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Resources.cpp
 	"Resources.h"
 	<client/components/ImageLoader.h>
 	<client/components/Loading.h>
@@ -2730,13 +2735,13 @@
 	<client/components/graphics/models/PlayerModel.h>
 	<shared/System.h>
 
-1474812802 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/TextGenerator.cpp
+1474871167 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/TextGenerator.cpp
 	"TextGenerator.h"
 	<client/components/Graphics.h>
 	<shared/Console.h>
 	<shared/System.h>
 
-1474812897 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/UI.cpp
+1474871165 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/UI.cpp
 	"UI.h"
 	<client/components/Graphics.h>
 	<client/components/Input.h>
@@ -2744,43 +2749,43 @@
 	<client/components/ui/Layout.h>
 	<client/components/ui/Panel.h>
 
-1472938511 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/HorizontalLayout.cpp
+1474871336 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/HorizontalLayout.cpp
 	"HorizontalLayout.h"
 
-1472938514 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/HorizontalLayout.h
+1474871331 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/HorizontalLayout.h
 	"Layout.h"
 
-1472938516 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Label.cpp
+1474871334 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Label.cpp
 	"Label.h"
 	<client/components/Graphics.h>
 	<client/components/graphics/Texture.h>
 
-1474819743 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Layout.cpp
+1474871341 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Layout.cpp
 	"Layout.h"
 	<algorithm>
 
-1472938527 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Panel.cpp
+1474871315 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Panel.cpp
 	"Panel.h"
 	<client/components/Resources.h>
 	<client/components/graphics/geometry/Primitives.h>
 
-1472938532 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/VerticalLayout.cpp
+1474871317 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/VerticalLayout.cpp
 	"VerticalLayout.h"
 
-1472938534 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/VerticalLayout.h
+1474871320 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/VerticalLayout.h
 	"Layout.h"
 
-1474819905 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/View.cpp
+1474871328 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/View.cpp
 	"View.h"
 	<client/components/UI.h>
 
-1472938543 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Widget.cpp
+1474871324 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Widget.cpp
 	"Widget.h"
 
-1474819990 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Widget.h
+1474871322 /home/asgreywolf/Desktop/Teeworlds3d/src/client/components/ui/Widget.h
 	"View.h"
 
-1474799294 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/Console.cpp
+1474871341 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/Console.cpp
 	"Console.h"
 	<iostream>
 	<android/log.h>
@@ -2789,31 +2794,29 @@
 	"ParallelComponent.h"
 	<shared/Console.h>
 
-1474797446 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/SharedComponent.cpp
+1474871342 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/SharedComponent.cpp
 	"SharedComponent.h"
 	<list>
 
-1474822157 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp
+1475348318 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp
 	"World.h"
 	<fstream>
+	<mutex>
 	<shared/Console.h>
 	<shared/System.h>
-	<shared/world/Player.h>
-	<shared/world/Projectile.h>
-	<shared/world/Tile.h>
 
-1474798767 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Player.cpp
+1475344829 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Player.cpp
 	"Player.h"
 	<shared/System.h>
 	<shared/World.h>
 	<shared/world/Tile.h>
 
-1474813246 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Texture.cpp
+1474871206 source:/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/graphics/Texture.cpp
 	"Texture.h"
 	<client/components/Graphics.h>
 	<shared/System.h>
 
-1474800080 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.cpp
+1474871352 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.cpp
 	"System.h"
 	<SDL.h>
 	<SDL_thread.h>
@@ -2829,19 +2832,20 @@
 	<sys/types.h>
 	<unistd.h>
 
-1474787996 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Projectile.h
+1475347209 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Projectile.h
 	<tools/Positioned.h>
 	<tools/vmath.h>
 
-1474799269 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/AsyncComponent.h
+1475339883 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/AsyncComponent.h
 	"SharedComponent.h"
 	<shared/System.h>
+	<string>
 
-1474737450 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/AsyncComponent.cpp
+1474871342 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/AsyncComponent.cpp
 	"AsyncComponent.h"
 	<shared/Console.h>
 
-1474799043 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Projectile.cpp
+1475350511 source:/home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Projectile.cpp
 	"Projectile.h"
 	<shared/System.h>
 	<shared/World.h>

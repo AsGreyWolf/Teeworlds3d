@@ -4,8 +4,30 @@
 #include <shared/World.h>
 #include <shared/world/Tile.h>
 
-Player::Player(glm::uint8_t id) {
-	this->id = id;
+Player &Player::operator=(const Player &p) {
+	pos = p.pos;
+	rot = p.rot;
+	vel = p.vel;
+	dir = p.dir;
+	jumped = p.jumped;
+	hookState = p.hookState;
+	hookPos = p.hookPos;
+	hookDir = p.hookDir;
+	hookedPlayer = p.hookedPlayer;
+
+	color = p.color;
+	weapon = p.weapon;
+	emote = p.emote;
+
+	skin = p.skin;
+	nickname = p.nickname;
+
+	grounded = p.grounded;
+
+	local = p.local;
+	return *this;
+}
+Player::Player(glm::uint8_t i) : id(i) {
 	pos = glm::vec3(0, 0, 0);
 	rot = rot3(glm::vec3(0, 1, 0));
 	vel = glm::vec3(0, 0, 0);
@@ -34,6 +56,9 @@ float VelocityRamp(float value, float start, float range, float curvature) {
 	return 1.0f / pow(curvature, (value - start) / range);
 }
 void Player::Tick() {
+	if (!operator bool()) {
+		return;
+	}
 	float tuningGravity = 0.5f; // TODO: tuning
 	float tuningGroundSpeed = 10.0f;
 	float tuningAirSpeed = 5.0f;
@@ -154,17 +179,17 @@ void Player::Tick() {
 		}
 		if (tuningPlayerHooking) {
 			float distance = 0.0f;
-			for (auto player : world->players) {
-				if (player == this) {
+			for (auto &player : world->players) {
+				if (!player || player == *this) {
 					continue;
 				}
 				glm::vec3 closestPoint =
-				    glm::closestPointOnLine(hookPos, newPos, player->pos);
-				if (glm::distance(player->pos, closestPoint) < physSize + 2.0f) {
-					if (hookedPlayer == -1 || glm::distance(hookPos, player->pos) < distance) {
+				    glm::closestPointOnLine(hookPos, newPos, player.pos);
+				if (glm::distance(player.pos, closestPoint) < physSize + 2.0f) {
+					if (hookedPlayer == -1 || glm::distance(hookPos, player.pos) < distance) {
 						hookState = HOOK_GRABBED;
-						hookedPlayer = player->id;
-						distance = glm::distance(hookPos, player->pos);
+						hookedPlayer = player.id;
+						distance = glm::distance(hookPos, player.pos);
 					}
 				}
 			}
@@ -181,9 +206,9 @@ void Player::Tick() {
 	}
 	if (hookState == HOOK_GRABBED) {
 		if (hookedPlayer != -1) {
-			Player *player = world->players.at(hookedPlayer);
-			if (player != nullptr) {
-				hookPos = player->pos;
+			const Player &player = world->players.at(hookedPlayer);
+			if (player) {
+				hookPos = player.pos;
 			} else {
 				hookedPlayer = -1;
 				hookState = HOOK_RETRACTED;
@@ -211,20 +236,20 @@ void Player::Tick() {
 				vel = newVel;
 			}
 		}
-		if (hookedPlayer != -1 && (time - hookTime > 1250 ||
-		                           (world->players.at(hookedPlayer) == nullptr))) {
+		if (hookedPlayer != -1 &&
+		    (time - hookTime > 1250 || !world->players.at(hookedPlayer))) {
 			hookedPlayer = -1;
 			hookState = HOOK_RETRACTED;
 			hookPos = pos;
 		}
 	}
-	for (auto player : world->players) { // TODO: clipping
-		if (player == this || (player == nullptr)) {
+	for (auto &player : world->players) { // TODO: clipping
+		if (player == *this || !player) {
 			continue;
 		}
-		float distance = glm::distance(pos, player->pos);
+		float distance = glm::distance(pos, player.pos);
 		if (tuningPlayerColision && distance < physSize * 1.25f && distance > 0.0f) {
-			glm::vec3 dir = glm::normalize(pos - player->pos);
+			glm::vec3 dir = glm::normalize(pos - player.pos);
 			float a = (physSize * 1.45f - distance);
 			float velocity = 0.5f;
 			if (!glm::zero(vel)) {
@@ -233,15 +258,15 @@ void Player::Tick() {
 			vel += dir * a * (velocity * 0.75f);
 			vel *= 0.85f;
 		}
-		if (hookedPlayer == player->id && tuningPlayerHooking) {
-			glm::vec3 dir = glm::normalize(pos - player->pos);
+		if (hookedPlayer == player.id && tuningPlayerHooking) {
+			glm::vec3 dir = glm::normalize(pos - player.pos);
 			if (distance > physSize * 1.50f) {
 				float accel = tuningHookDragAccel * (distance / tuningHookLength);
 				float dragSpeed = tuningHookDragSpeed;
 				{
-					player->vel += accel * dir * 1.5f;
-					if (glm::length(player->vel) > dragSpeed) {
-						player->vel = glm::normalize(player->vel) * dragSpeed;
+					player.vel += accel * dir * 1.5f;
+					if (glm::length(player.vel) > dragSpeed) {
+						player.vel = glm::normalize(player.vel) * dragSpeed;
 					}
 				}
 				{

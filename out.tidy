@@ -30,12 +30,6 @@ src/tools/quad3.h:32:9: warning: move assignment operators should be marked noex
 
 Processing src/client/components/Map.cpp
 
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Map.cpp:20:7: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                if (g_World()->players[i] != nullptr) {
-                    ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Map.cpp:24:26: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                        playerModels[i].Sync(*g_World()->players[i]);
-                                              ^
 src/client/components/graphics/geometry/Geometry2d.h:10:2: warning: move constructors should be marked noexcept [misc-noexcept-move-constructor]
         Geometry2d(Geometry2d &&geom) noexcept = default;
         ^
@@ -623,63 +617,12 @@ Processing src/client/components/Input.h
 
 Processing src/client/components/Client.cpp
 
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:27:2: warning: Potential memory leak [clang-analyzer-cplusplus.NewDeleteLeaks]
-        ClientComponent::ClearComponents();
-        ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:24:9: note: Calling 'g_Client'
-        while (g_Client()->isRunning()) {
-               ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:18:29: note: '?' condition is false
-Client *g_Client() { return pClient != nullptr ? pClient : new Client(); }
-                            ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:18:60: note: Memory is allocated
-Client *g_Client() { return pClient != nullptr ? pClient : new Client(); }
-                                                           ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:24:9: note: Returned allocated memory
-        while (g_Client()->isRunning()) {
-               ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:24:2: note: Loop condition is false. Execution continues on line 27
-        while (g_Client()->isRunning()) {
-        ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:27:2: note: Potential memory leak
-        ClientComponent::ClearComponents();
-        ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:62:3: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                g_World()->players[i] = new Player(i);
+/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:26:3: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                ClientComponent::TickComponents();
                 ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:63:20: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                Player *player = g_World()->players[i];
-                                 ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:64:22: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                player->nickname = g_World()->players[i]->skin = (*skin).first;
-                                   ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:166:4: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                        g_World()->players[i]->hookState = HOOK_FLYING;
-                        ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:167:4: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                        g_World()->players[i]->hookDir =
-                        ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:168:23: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                            glm::normalize(g_World()->players[id]->pos - g_World()->players[i]->pos);
-                                           ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:168:53: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                            glm::normalize(g_World()->players[id]->pos - g_World()->players[i]->pos);
-                                                                         ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:169:4: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                        g_World()->players[i]->hookPos = g_World()->players[i]->pos;
-                        ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:169:37: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                        g_World()->players[i]->hookPos = g_World()->players[i]->pos;
-                                                         ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:170:4: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                        g_World()->players[i]->hookedPlayer = -1;
-                        ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:171:4: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                        g_World()->players[i]->hookTime = g_System()->GetTime();
-                        ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:176:4: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                        g_World()->players[i]->hookState = HOOK_IDLE;
-                        ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/client/components/Client.cpp:26:3: note: This statement is never executed
+                ClientComponent::TickComponents();
+                ^
 src/client/components/graphics/geometry/Geometry2d.h:10:2: warning: move constructors should be marked noexcept [misc-noexcept-move-constructor]
         Geometry2d(Geometry2d &&geom) noexcept = default;
         ^
@@ -898,9 +841,96 @@ Processing src/shared/AsyncComponent.h
 
 Processing src/shared/World.cpp
 
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:150:15: warning: do not use array subscript when the index is not an integer constant expression; use gsl::at() instead [cppcoreguidelines-pro-bounds-constant-array-index]
-                Player *p = players[i];
-                            ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:27:18: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                for (Player &p : players) {
+                               ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:27:18: note: This statement is never executed
+                for (Player &p : players) {
+                               ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:27:20: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                for (Player &p : players) {
+                                 ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:27:20: note: This statement is never executed
+                for (Player &p : players) {
+                                 ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:32:16: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                for (auto &p : projectiles) {
+                             ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:32:16: note: This statement is never executed
+                for (auto &p : projectiles) {
+                             ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:47:3: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                g_Console()->Err("File not found");
+                ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:47:3: note: This statement is never executed
+                g_Console()->Err("File not found");
+                ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:50:2: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+        unsigned char buf;
+        ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:50:2: note: This statement is never executed
+        unsigned char buf;
+        ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:62:13: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                tilesByPos[xi].resize(worldSize.y);
+                          ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:62:13: note: This statement is never executed
+                tilesByPos[xi].resize(worldSize.y);
+                          ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:64:18: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                        tilesByPos[xi][yi].resize(worldSize.z);
+                                      ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:64:18: note: This statement is never executed
+                        tilesByPos[xi][yi].resize(worldSize.z);
+                                      ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:67:10: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                                Tile tile;
+                                     ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:67:10: note: This statement is never executed
+                                Tile tile;
+                                     ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:86:74: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                tilesByPos[tilesById[i].x][tilesById[i].y][tilesById[i].z] = &tilesById[i];
+                                                                                       ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:86:74: note: This statement is never executed
+                tilesByPos[tilesById[i].x][tilesById[i].y][tilesById[i].z] = &tilesById[i];
+                                                                                       ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:88:20: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+        for (Tile &buffer : tilesById) {
+                          ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:88:20: note: This statement is never executed
+        for (Tile &buffer : tilesById) {
+                          ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:118:43: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+        for (size_t j = 0; j < tileset.length(); j++) {
+                                                 ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:118:43: note: This statement is never executed
+        for (size_t j = 0; j < tileset.length(); j++) {
+                                                 ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:130:3: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                projectiles.push_back(proj);
+                ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:130:3: note: This statement is never executed
+                projectiles.push_back(proj);
+                ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:132:8: warning: This statement is never executed [clang-analyzer-alpha.deadcode.UnreachableCode]
+                *pos = proj;
+                     ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:132:8: note: This statement is never executed
+                *pos = proj;
+                     ^
+/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../../include/c++/5.4.0/bits/move.h:49:14: warning: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption [clang-analyzer-alpha.core.CastToStruct]
+      return reinterpret_cast<_Tp*>
+             ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/World.cpp:136:26: note: Calling constructor for 'unique_lock'
+        std::unique_lock<Mutex> lck(mutex);
+                                ^
+/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../../include/c++/5.4.0/mutex:413:19: note: Calling '__addressof'
+      : _M_device(std::__addressof(__m)), _M_owns(false)
+                  ^
+/usr/lib/gcc/x86_64-linux-gnu/5.4.0/../../../../include/c++/5.4.0/bits/move.h:49:14: note: Casting a non-structure type to a structure type and accessing a field can lead to memory access errors or data corruption
+      return reinterpret_cast<_Tp*>
+             ^
 src/tools/quad3.h:32:9: warning: move assignment operators should be marked noexcept [misc-noexcept-move-constructor]
         quad3 &operator=(quad3 &&second) noexcept = default;
                ^
@@ -943,18 +973,12 @@ System *g_System() { return pSystem != nullptr ? pSystem : new System(); }
 /home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.cpp:126:26: warning: do not use reinterpret_cast [cppcoreguidelines-pro-type-reinterpret-cast]
         DelayedThread *thread = reinterpret_cast<DelayedThread *>(param);
                                 ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.cpp:151:52: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
-            (std::string("ThreadRunner") + std::to_string((size_t)(void *)&f)).c_str(),
-                                                          ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.cpp:151:52: warning: do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]
-            (std::string("ThreadRunner") + std::to_string((size_t)(void *)&f)).c_str(),
-                                                          ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.cpp:151:60: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
-            (std::string("ThreadRunner") + std::to_string((size_t)(void *)&f)).c_str(),
-                                                                  ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.cpp:152:6: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
-            (void *)this);
-            ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.cpp:151:39: warning: do not use reinterpret_cast [cppcoreguidelines-pro-type-reinterpret-cast]
+                              std::to_string(reinterpret_cast<size_t>(&f)))
+                                             ^
+/home/asgreywolf/Desktop/Teeworlds3d/src/shared/System.cpp:153:23: warning: do not use reinterpret_cast [cppcoreguidelines-pro-type-reinterpret-cast]
+                             reinterpret_cast<void *>(this));
+                             ^
 
 
 Processing src/shared/Console.h
@@ -981,24 +1005,6 @@ src/tools/quad3.h:32:9: warning: move assignment operators should be marked noex
 
 Processing src/shared/world/Projectile.cpp
 
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Projectile.cpp:34:3: warning: Value stored to 'Speed' is never read [clang-analyzer-deadcode.DeadStores]
-                Speed = tuningGrenadeSpeed;
-                ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Projectile.cpp:34:3: note: Value stored to 'Speed' is never read
-                Speed = tuningGrenadeSpeed;
-                ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Projectile.cpp:39:3: warning: Value stored to 'Speed' is never read [clang-analyzer-deadcode.DeadStores]
-                Speed = tuningShotgunSpeed;
-                ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Projectile.cpp:39:3: note: Value stored to 'Speed' is never read
-                Speed = tuningShotgunSpeed;
-                ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Projectile.cpp:44:3: warning: Value stored to 'Speed' is never read [clang-analyzer-deadcode.DeadStores]
-                Speed = tuningGunSpeed;
-                ^
-/home/asgreywolf/Desktop/Teeworlds3d/src/shared/world/Projectile.cpp:44:3: note: Value stored to 'Speed' is never read
-                Speed = tuningGunSpeed;
-                ^
 src/tools/quad3.h:32:9: warning: move assignment operators should be marked noexcept [misc-noexcept-move-constructor]
         quad3 &operator=(quad3 &&second) noexcept = default;
                ^

@@ -16,8 +16,9 @@ Shader3d::Shader3d()
                      GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE,
                      GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) {
 	pShader3d = this;
-	perspectiveMatrix = glm::perspective(
-	    static_cast<float>(M_PI_2), g_Graphics()->screenAspect, 1.0f, 10000.0f);
+	perspectiveMatrix =
+	    glm::perspective(static_cast<float>(M_PI * 2 / 3),
+	                     g_Graphics()->screenAspect, 1.0f, 10000.0f);
 	SetAttribute("in_Position", SHADER_POS);
 	SetAttribute("in_TexMap", SHADER_TEXMAP);
 	SetAttribute("in_Normal", SHADER_NORMAL);

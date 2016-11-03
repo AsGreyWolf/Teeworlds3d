@@ -1,46 +1,43 @@
 #include "World.h"
 
 #include <fstream>
+#include <mutex>
 #include <shared/Console.h>
 #include <shared/System.h>
-#include <shared/world/Player.h>
-#include <shared/world/Projectile.h>
-#include <shared/world/Tile.h>
 
 class World *pWorld;
 World *g_World() { return pWorld != nullptr ? pWorld : new World(); }
 
 World::World() : AsyncComponent("WORLD", 1000 / 60) {
+	std::unique_lock<Mutex> lck(mutex);
 	pWorld = this;
 	UnLoad();
 	Start();
 };
 World::~World() {
+	std::unique_lock<Mutex> lck(mutex);
 	Stop();
 	UnLoad();
-	for (auto p : players) {
-		if (p != nullptr) {
-			delete p;
-		}
-	}
 	pWorld = nullptr;
 };
 void World::AsyncTick() {
 	AsyncComponent::AsyncTick();
-	if (!tileset.empty()) {
-		for (Player *p : players) {
-			if (p != nullptr) {
-				p->Tick();
+	std::unique_lock<Mutex> lck(mutex);
+	if (isValid()) {
+		for (Player &p : players) {
+			if (p) {
+				p.Tick();
 			}
 		}
-		for (Projectile *p : projectiles) {
-			if (p != nullptr) {
-				p->Tick();
+		for (auto &p : projectiles) {
+			if (p) {
+				p.Tick();
 			}
 		}
 	}
 }
 void World::Load(const std::string &name) {
+	std::unique_lock<Mutex> lck(mutex);
 	std::string path = g_System()->GetDataFile("maps/" + name + ".map");
 
 	g_Console()->Info("Loading " + name);
@@ -125,29 +122,57 @@ void World::Load(const std::string &name) {
 		}
 	}
 }
+void World::Spawn(const Projectile &proj) {
+	std::unique_lock<Mutex> lck(mutex);
+	auto pos = find_if(projectiles.begin(), projectiles.end(),
+	                   [](Projectile &p) { return !p; });
+	if (pos == projectiles.end()) {
+		projectiles.push_back(proj);
+	} else {
+		*pos = proj;
+	}
+}
+int World::Spawn(const Player &player) {
+	std::unique_lock<Mutex> lck(mutex);
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+		if (!players[i]) {
+			players[i] = player;
+			return i;
+		}
+	}
+	return -1;
+}
 void World::UnLoad() {
+	std::unique_lock<Mutex> lck(mutex);
 	tileset = "";
+	players.clear();
+	players.reserve(MAX_PLAYERS);
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+		players.push_back(Player(i));
+	}
 	tilesById.clear();
 	tilesByPos.clear();
 	worldSize = glm::vec3(0, 0, 0);
 }
 bool World::isValid() const { return !tileset.empty(); }
-Player *World::IntersectPlayer(const glm::vec3 &pos0, const glm::vec3 &pos1,
-                               glm::vec3 *collision, glm::vec3 *beforeCollision,
-                               int except, float radius) const {
+const Player *World::IntersectPlayer(const glm::vec3 &pos0,
+                                     const glm::vec3 &pos1,
+                                     glm::vec3 *collision,
+                                     glm::vec3 *beforeCollision, int except,
+                                     float radius) const {
 	glm::vec3 pos = pos1 - pos0;
 	float minv;
-	Player *minp = nullptr;
+	const Player *minp = nullptr;
 	float len = glm::length(pos);
 	if (len <= 0) {
 		return nullptr;
 	}
 	glm::vec3 dist = glm::normalize(pos);
 	for (int i = 0; i < MAX_PLAYERS; i++) {
-		if (i == except) {
+		if (i == except || !players[i]) {
 			continue;
 		}
-		Player *p = players[i];
+		const Player *p = &players[i];
 		if (p == nullptr) {
 			continue;
 		}

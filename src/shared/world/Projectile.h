@@ -4,25 +4,28 @@
 #include <tools/Positioned.h>
 #include <tools/vmath.h>
 
-class Projectile : Positioned {
+class Projectile : public Positioned {
 public:
-	Projectile(int type, int owner, const glm::vec3 &pos, const rot3 &rot,
-	           int life, int damage, bool explosive, float force, int sound,
-	           int weapon);
+	Projectile(const glm::vec3 &pos, const rot3 &rot, int type, int life,
+	           int owner, int damage, int weapon, bool explosive, float force,
+	           int sound);
 	glm::vec3 GetPos(float time);
 	virtual void Reset();
 	virtual void Tick();
 
+	inline operator bool() const { return life > 0; }
+
 private:
-	int life;
-	int owner;
 	int type;
-	int damage;
-	int sound;
-	int weapon;
-	float force;
+	int life;
 	int startTime;
-	bool explosive;
+
+	int owner;
+	// int damage; // TODO:
+	// int weapon;
+	// bool explosive;
+	// float force;
+	// int sound;
 
 	int prevTime;
 };

@@ -13,6 +13,7 @@
 #include <shared/Console.h>
 #include <shared/System.h> //TODO: remove
 #include <shared/World.h>  //TODO: remove
+#include <shared/world/Projectile.h>
 
 class Client *pClient;
 Client *g_Client() { return pClient != nullptr ? pClient : new Client(); }
@@ -59,17 +60,17 @@ void Client::Start() {
 		if (skin == g_Resources()->skinTextures.end()) {
 			skin = g_Resources()->skinTextures.begin();
 		}
-		g_World()->players[i] = new Player(i);
-		Player *player = g_World()->players[i];
-		player->nickname = g_World()->players[i]->skin = (*skin).first;
-		player->pos = glm::vec3(rand() % 4080, rand() % 4080, 400.0);
-		player->weapon = rand() % NUM_WEAPONS;
-		player->emote = rand() % NUM_EMOTES;
-		player->rot = rot3(rand() * M_PI / RAND_MAX * 2, rand() * M_PI / RAND_MAX * 2,
-		                   rand() * M_PI / RAND_MAX * 2);
+		Player player(0);
+		player.nickname = g_World()->players[i].skin = (*skin).first;
+		player.pos = glm::vec3(rand() % 4080, rand() % 4080, 400.0);
+		player.weapon = rand() % NUM_WEAPONS;
+		player.emote = rand() % NUM_EMOTES;
+		player.rot = rot3(rand() * M_PI / RAND_MAX * 2, rand() * M_PI / RAND_MAX * 2,
+		                  rand() * M_PI / RAND_MAX * 2);
+		g_World()->Spawn(player);
 		skin++;
 	}
-	localPlayer = g_World()->players[0];
+	localPlayer = &g_World()->players[0];
 	// localPlayer->color = glm::vec4(0, 0, 0, 0.3f);
 	g_Shader3dComposer();
 	depthMap = new Panel(g_ShaderShadow()->shadowMap);
@@ -142,6 +143,11 @@ void Client::Tick() {
 	localPlayer->look = g_Camera()->rot;
 	localPlayer->local = true;
 	g_Camera()->pos = localPlayer->pos;
+	if (g_Input()->mouse[SDL_BUTTON_LEFT] != 0) {
+		g_World()->Spawn(Projectile(localPlayer->pos, localPlayer->rot,
+		                            localPlayer->weapon, 120, localPlayer->id, 0,
+		                            localPlayer->weapon, true, 50, 0));
+	}
 
 	if (g_Input()->keyboard[SDLK_RIGHT] != 0) {
 		localPlayer->pos +=
@@ -163,17 +169,17 @@ void Client::Tick() {
 	if (g_Input()->keyboard[SDLK_F1] != 0) {
 		for (int i = 1; i < MAX_PLAYERS; i++) {
 			int id = rand() % (MAX_PLAYERS - 1) + 1;
-			g_World()->players[i]->hookState = HOOK_FLYING;
-			g_World()->players[i]->hookDir =
-			    glm::normalize(g_World()->players[id]->pos - g_World()->players[i]->pos);
-			g_World()->players[i]->hookPos = g_World()->players[i]->pos;
-			g_World()->players[i]->hookedPlayer = -1;
-			g_World()->players[i]->hookTime = g_System()->GetTime();
+			g_World()->players[i].hookState = HOOK_FLYING;
+			g_World()->players[i].hookDir =
+			    glm::normalize(g_World()->players[id].pos - g_World()->players[i].pos);
+			g_World()->players[i].hookPos = g_World()->players[i].pos;
+			g_World()->players[i].hookedPlayer = -1;
+			g_World()->players[i].hookTime = g_System()->GetTime();
 		}
 	}
 	if (g_Input()->keyboard[SDLK_F2] != 0) {
 		for (int i = 1; i < MAX_PLAYERS; i++) {
-			g_World()->players[i]->hookState = HOOK_IDLE;
+			g_World()->players[i].hookState = HOOK_IDLE;
 		}
 	}
 	if (g_Input()->keyboard[SDLK_F3] != 0) {

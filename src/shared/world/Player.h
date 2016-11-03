@@ -13,7 +13,7 @@ public:
 
 	void Tick();
 
-	glm::uint8_t id;
+	const glm::uint8_t id;
 	///<summary>Velocity(speed)</summary>
 	glm::vec3 vel;
 	///<summary>Move acceleration(direction)</summary>
@@ -44,9 +44,14 @@ public:
 	bool hook;
 	bool local;
 
+	Player &operator=(const Player &p);
 	bool operator==(const Player &p) const { return p.id == id; }
+	operator bool() const { return nickname.length() > 0; }
 
 	const float physSize = 28.0f;
+
+private:
+	friend class World;
 };
 
 #endif

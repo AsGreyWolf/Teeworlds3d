@@ -146,10 +146,11 @@ DelayedThread::DelayedThread(const std::function<void()> func, long delay)
     : f(func), d(delay) {}
 DelayedThread::~DelayedThread() { Stop(); }
 void DelayedThread::Start() {
-	t = SDL_CreateThread(
-	    ThreadRunner,
-	    (std::string("ThreadRunner") + std::to_string((size_t)(void *)&f)).c_str(),
-	    (void *)this);
+	t = SDL_CreateThread(ThreadRunner,
+	                     (std::string("ThreadRunner") +
+	                      std::to_string(reinterpret_cast<size_t>(&f)))
+	                         .c_str(),
+	                     reinterpret_cast<void *>(this));
 }
 void DelayedThread::Stop() {
 	{

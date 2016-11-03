@@ -10,11 +10,13 @@ protected:
 	AsyncComponent(const std::string &tag, long delay);
 	void Start();
 	void Stop();
+	virtual void AsyncTick();
 
 public:
 	virtual void Tick() override final;
 	virtual ~AsyncComponent() override;
-	virtual void AsyncTick();
+
+	Mutex mutex;
 
 private:
 	class DelayedThread *t;

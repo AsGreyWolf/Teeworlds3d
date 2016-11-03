@@ -17,9 +17,6 @@
 		Tile->Player;
 		World->Projectile;
 		System->Projectile;
-		Player->World;
-		Tile->World;
-		Projectile->World;
 		Console->World;
 		System->World;
 		System->Console;
@@ -197,6 +194,7 @@
 	Console->ImageLoader;
 	System->ImageLoader;
 	System->Loading;
+	Projectile->Map;
 
 		Player->PlayerModel;
 		System->PlayerModel;

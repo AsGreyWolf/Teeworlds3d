@@ -4,6 +4,7 @@
 #include <client/components/Resources.h>
 #include <client/components/graphics/geometry/Primitives.h>
 #include <shared/World.h>
+#include <shared/world/Projectile.h>
 #include <shared/world/Tile.h>
 #include <tools/Protocol.h>
 
@@ -17,15 +18,30 @@ Map::~Map() {
 }
 void Map::Tick() {
 	for (int i = 0; i < MAX_PLAYERS; i++) {
-		if (g_World()->players[i] != nullptr) {
+		if (g_World()->players[i]) {
 			if (!playerModels[i].isEnabled()) {
 				playerModels[i].Enable();
 			}
-			playerModels[i].Sync(*g_World()->players[i]);
+			playerModels[i].Sync(g_World()->players[i]);
 			playerModels[i].UpdateMatrix();
 		} else if (playerModels[i].isEnabled()) {
 			playerModels[i].Disable();
 		}
+	}
+	for (size_t i = 0;
+	     i < std::min(g_World()->projectiles.size(), projectileModels.size());
+	     i++) {
+		if (g_World()->projectiles[i]) {
+			projectileModels[i].pos = g_World()->projectiles[i].pos;
+			projectileModels[i].UpdateMatrix();
+			projectileModels[i].Enable();
+		} else {
+			projectileModels[i].Disable();
+		}
+	}
+	for (size_t i = g_World()->projectiles.size(); i < projectileModels.size();
+	     i++) {
+		projectileModels[i].Disable();
 	}
 }
 bool Map::Load(const std::string &name) {
@@ -119,6 +135,7 @@ bool Map::Load(const std::string &name) {
 		terrain.UpdateMatrix();
 	});
 	playerModels.resize(MAX_PLAYERS, blankPlayer);
+	projectileModels.resize(256, g_Resources()->coordsModel); // TODO: why 256?
 	return true;
 }
 void Map::UnLoad() {
