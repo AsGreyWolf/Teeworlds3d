@@ -1,5 +1,5 @@
 #pragma once
-#include "managed_base.hpp"
+#include "component.hpp"
 #include <cassert>
 #include <set>
 #include <vector>
@@ -7,9 +7,9 @@
 namespace tee3d::shared::mgr {
 template <typename Element> struct manager;
 template <typename Element> manager<Element> &get_manager();
-template <> struct manager<managed_base> {
-	using element_type = managed_base;
-	std::vector<managed_base *> registry;
+template <> struct manager<component> {
+	using element_type = component;
+	std::vector<element_type *> registry;
 	size_t push(element_type *data) {
 		assert(data->id == -1);
 		size_t pos = registry.size();
@@ -29,7 +29,7 @@ template <> struct manager<managed_base> {
 
 private:
 	manager() = default;
-	friend manager<managed_base> &get_manager<managed_base>();
+	friend manager<component> &get_manager<component>();
 };
 template <typename Element> manager<Element> &get_manager() {
 	static manager<Element> buffer{};
@@ -39,13 +39,13 @@ template <typename Element> struct manager {
 	using element_type = Element;
 	std::set<size_t> registry;
 	size_t push(element_type *data) {
-		size_t pos = get_manager<managed_base>().push(data);
+		size_t pos = get_manager<component>().push(data);
 		registry.insert(pos);
 		return pos;
 	}
 	void pop(element_type *data) {
 		registry.erase(data->id);
-		return get_manager<managed_base>().pop(data);
+		return get_manager<component>().pop(data);
 	}
 
 	manager(const manager &) = delete;
