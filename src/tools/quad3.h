@@ -10,6 +10,7 @@
 #include <gtx/rotate_vector.hpp>
 #include <tools/quad2.h>
 
+namespace tee3d {
 class quad3 {
 public:
 	glm::vec3 p1, p2, p3, p4;
@@ -38,6 +39,7 @@ public:
 		return quad3(p1 + c, p2 + c, p3 + c, p4 + c);
 	}
 	quad3 operator-(const glm::vec3 &c) const { return operator+(-c); }
+};
 };
 
 #endif

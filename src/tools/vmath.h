@@ -20,6 +20,7 @@
 #endif
 
 namespace glm {
+using tee3d::rot3;
 template <typename genType> GLM_FUNC_DECL inline bool zero(genType const &x) {
 	return abs(x) < 1e-8;
 };

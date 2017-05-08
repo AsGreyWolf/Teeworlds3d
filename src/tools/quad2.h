@@ -10,6 +10,7 @@
 #include <gtx/closest_point.hpp>
 #include <gtx/rotate_vector.hpp>
 
+namespace tee3d {
 class quad2 {
 public:
 	glm::vec2 pos;
@@ -50,4 +51,6 @@ public:
 		return c.x >= x && c.x < x + w && c.y >= y && c.y < y + h;
 	}
 };
+};
+
 #endif

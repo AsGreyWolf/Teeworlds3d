@@ -217,6 +217,7 @@ pip-log.txt
 #custom
 teeworlds3d
 objs/*
+*.o
 Win32Project1/
 srcold/
 *.out

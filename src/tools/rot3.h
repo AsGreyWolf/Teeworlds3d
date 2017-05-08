@@ -10,6 +10,7 @@
 #include <gtx/closest_point.hpp>
 #include <gtx/rotate_vector.hpp>
 
+namespace tee3d {
 class rot3 {
 public:
 	float &x, &y, &z;
@@ -57,6 +58,7 @@ public:
 
 private:
 	glm::vec3 data;
+};
 };
 
 #endif

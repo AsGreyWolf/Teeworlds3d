@@ -1,0 +1,8 @@
+{
+  "execPath": "g++",
+  "gccDefaultCFlags": "-fsyntax-only -c -std=c14",
+  "gccDefaultCppFlags": "-fsyntax-only -c -Weffc++ -std=c++17",
+  "gccErrorLimit": 0,
+  "gccIncludePaths": "./src,./other/glm,./other/sdl/include,./other/glew/include",
+  "gccSuppressWarnings": false
+}
