@@ -220,11 +220,3 @@ teeworlds3d_shared.a
 *.o
 *.out
 .imdone/
-
-*.zip
-android/bin/*
-android/gen/*
-*.apk
-android/obj/*
-android/libs/*
-android/jni/src
