@@ -1,5 +1,6 @@
 {
-  "gccDefaultCFlags": "-fsyntax-only -c -std=c14",
-  "gccDefaultCppFlags": "-fsyntax-only -c -Weffc++ -std=c++14",
+  "execPath": "g++",
+  "gccDefaultCFlags": "-c -Wall -Wextra -std=c14",
+  "gccDefaultCppFlags": "-c -Wall -Wextra -Weffc++ -std=c++14",
   "gccIncludePaths": "./src"
 }

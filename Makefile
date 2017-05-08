@@ -1,4 +1,4 @@
-.PHONY: all clean client shared
+.PHONY: all clean client shared graph
 
 CXX = g++
 AR = ar
@@ -47,3 +47,6 @@ $(OBJS): %.o: %.cpp
 
 clean:
 	rm -rf $(TARGET) $(OBJS)
+
+graph:
+	dot -Tpng -O graph.dot
