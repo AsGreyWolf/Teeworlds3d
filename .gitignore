@@ -216,17 +216,9 @@ pip-log.txt
 
 #custom
 teeworlds3d
-objs/*
+teeworlds3d_shared.a
 *.o
-Win32Project1/
-srcold/
 *.out
-*.manifest
-math/
-*.zip
-*.exe
-*.dll
-!other/*.dll
 .imdone/
 
 *.zip

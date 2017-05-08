@@ -1,19 +1,22 @@
-.PHONY: all clean client shared android android_apk android_data
+.PHONY: all clean client shared
 
-CXX=g++
-INC_DIR = -Isrc -Iother/sdl/include -Iother/glew/include -Iother/glm
-CXXFLAGS=-c -Wall --std=c++1y -O3 -DLINUX -g -pg $(INC_DIR)
+CXX = g++
+AR = ar
+INC_DIR = -Isrc
+CXXFLAGS = -Wall --std=c++14 -O0 -DLINUX -g -pg $(INC_DIR)
+LDFLAGS = -O0 -g -pg -lGL -lGLEW -lSDL2 -lSDL2_image -lSDL2_ttf -lGLU
 SRC_DIR = src
-OBJ_DIR = objs
-LIBS = -lGL -lGLEW -lSDL2 -lSDL2_image -lSDL2_ttf -lGLU
 
 SRCS_SHARED = $(wildcard \
 	$(SRC_DIR)/*.cpp \
 	$(SRC_DIR)/shared/*.cpp \
 	$(SRC_DIR)/shared/**/*.cpp \
 	$(SRC_DIR)/shared/**/**/*.cpp \
+	$(SRC_DIR)/shared/**/**/**/*.cpp \
+	$(SRC_DIR)/shared/**/**/**/**/*.cpp \
 )
 OBJS_SHARED =  $(SRCS_SHARED:.cpp=.o)
+TARGET_SHARED = teeworlds3d_shared.a
 
 SRCS_CLIENT = $(wildcard \
 	$(SRC_DIR)/client/*.cpp \
@@ -25,47 +28,22 @@ SRCS_CLIENT = $(wildcard \
 OBJS_CLIENT = $(SRCS_CLIENT:.cpp=.o)
 TARGET_CLIENT = teeworlds3d
 
-TARGET_ANDROID_APK = SDLActivity-debug.apk
-TARGET_ANDROID_DATA = AndroidData.zip
-
 SRCS = $(wildcard $(SRCS_SHARED) $(SRCS_CLIENT))
 OBJS = $(wildcard $(OBJS_SHARED) $(OBJS_CLIENT))
-TARGET = $(TARGET_CLIENT) $(TARGET_ANDROID_APK) $(TARGET_ANDROID_DATA)
+TARGET = $(wildcard $(TARGET_SHARED) $(TARGET_CLIENT))
 
-all: client android
+all: client
 
 client: $(TARGET_CLIENT)
-$(TARGET_CLIENT): $(OBJS_CLIENT) shared
-	$(CXX) $(OBJS_CLIENT) -o $(TARGET_CLIENT) $(OBJS_SHARED) $(LIBS)
+$(TARGET_CLIENT): $(OBJS_CLIENT) $(TARGET_SHARED)
+	$(CXX) $(LDFLAGS) $(OBJS_CLIENT) $(TARGET_SHARED) -o $(TARGET_CLIENT)
 
-shared: $(OBJS_SHARED)
+shared: $(TARGET_SHARED)
+$(TARGET_SHARED): $(OBJS_SHARED)
+	$(AR) rcs $(TARGET_SHARED) $(OBJS_SHARED)
 
-$(OBJS): $(SRCS)
-	$(CXX) $(CXXFLAGS) -o $(OBJS) $(SRCS)
-
-android: $(TARGET_ANDROID_APK) $(TARGET_ANDROID_DATA)
-android_apk: $(TARGET_ANDROID_APK)
-android_data: $(TARGET_ANDROID_DATA)
-$(TARGET_ANDROID_APK):
-	rm -rf android/jni/src
-	ln -s $(realpath $(SRC_DIR)) android/jni
-	cd android/jni;ndk-build
-	cd android;ant debug
-	mv android/bin/SDLActivity-debug.apk $(TARGET_ANDROID_APK)
-$(TARGET_ANDROID_DATA):
-	mkdir tee3d
-	mv data/shaders data/shaders-gl
-	mv data/shaders-gles data/shaders
-	mv data tee3d/data
-	zip -r $(TARGET_ANDROID_DATA) tee3d
-	mv tee3d/data data
-	mv data/shaders data/shaders-gles
-	mv data/shaders-gl data/shaders
-	rm -r tee3d
+$(OBJS): %.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
 	rm -rf $(TARGET) $(OBJS)
-	rm -rf android/jni/src
-	rm -rf android/obj/*
-	rm -rf android/gen/*
-	rm -rf android/bin/*

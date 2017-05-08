@@ -7,7 +7,7 @@ echo '' > out.tidy
 		then
 			printf "\n\nProcessing $j\n\n"
 			printf "\n\nProcessing $j\n\n" >> out.tidy
-			clang-tidy $j -fix -fix-errors -- -Isrc -Iother/glm -Iother/sdl/include -Iother/glew/include -std=c++11 -x c++ >> out.tidy
+			clang-tidy $j -fix -fix-errors -- -Isrc -Iother/glm -Iother/sdl/include -Iother/glew/include -std=c++14 -x c++ >> out.tidy
 			clang-format $j > $j.tidy
 			rm $j
 			mv $j.tidy $j
